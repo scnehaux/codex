@@ -1,0 +1,214 @@
+{
+  "$id": "https://scnehaux.com/codex/gov/guidelines/schemas/sad.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "System Architecture Document (SAD) Validation Rules",
+  "type": "object",
+  "config": {
+    "target_doc": "GDC-009-sad-guideline.md"
+  },
+  "properties": {
+    "filename": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+\\.sad\\.md$"
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/metadata_rules"
+    },
+    {
+      "$ref": "#/definitions/section_rules"
+    },
+    {
+      "$ref": "#/definitions/content_rules"
+    }
+  ],
+  "definitions": {
+    "metadata_rules": {
+      "title": "Metadata Rules",
+      "description": "Rules for the YAML Frontmatter (doc_meta)",
+      "required": ["doc_meta"],
+      "properties": {
+        "doc_meta": {
+          "title": "Required Fields",
+          "allOf": [
+            {
+              "$ref": "https://scnehaux.com/codex/gov/guidelines/schemas/base.schema.json#/definitions/common_metadata_fields"
+            },
+            {
+              "type": "object",
+              "required": [
+                "owner",
+                "version",
+                "classification",
+                "review_cycle_days",
+                "last_reviewed",
+                "governed_by",
+                "parent_pad"
+              ],
+              "properties": {
+                "status": {
+                  "title": "Allowed Statuses",
+                  "type": "string",
+                  "description": "chartered = the capability is chartered and no system is in build yet; the document is a placeholder with no age pressure. draft = a system is being designed now, and the 30-day age rule applies so active work cannot stall. approved = the design is complete. deprecated = the system is being retired.",
+                  "enum": ["chartered", "draft", "approved", "deprecated"]
+                },
+                "governed_by": {
+                  "title": "Governed By",
+                  "type": ["string", "array"],
+                  "items": { "type": "string" }
+                },
+                "parent_pad": {
+                  "title": "Parent PAD",
+                  "type": ["string", "array"],
+                  "items": { "type": "string" }
+                },
+                "technologies": {
+                  "title": "Technologies Used",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["name", "type"],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Technology name exactly matching tech-radar.yaml"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Type of technology (e.g. framework, library, protocol, database, cloud-provider, language, runtime)"
+                      },
+                      "base": {
+                        "type": "string",
+                        "description": "Base technology or protocol this depends on (if applicable)"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "section_rules": {
+      "title": "Section Rules",
+      "description": "Rules for required and recommended sections in the Markdown body",
+      "required": [
+        "Purpose & Scope",
+        "Enterprise Traceability",
+        "Solution Context",
+        "Architecture Model",
+        "State & Data Architecture",
+        "Integration Contracts",
+        "Security & Trust Boundary",
+        "NFR",
+        "Deployment Strategy",
+        "Architecture Decisions"
+      ],
+      "recommended": [
+        "Assumptions",
+        "Compatibility Strategy",
+        "Migration Strategy",
+        "Alternatives"
+      ],
+      "x-titles": {
+        "required": "Required Sections",
+        "recommended": "Recommended Sections"
+      }
+    },
+    "content_rules": {
+      "title": "Content Quality Rules",
+      "description": "Rules for required and recommended keywords inside specific Markdown sections",
+      "properties": {
+        "Purpose & Scope": {
+          "type": "string",
+          "required_subsections": ["Objective", "Constraint", "Capability"],
+          "recommended": ["Requirement", "Assumption"],
+          "x-titles": {
+            "required": "Context & Scope (Required)",
+            "recommended": "Context & Scope (Recommended)"
+          }
+        },
+        "Solution Context": {
+          "type": "string",
+          "recommended": ["System Context", "External", "Internal"]
+        },
+        "Architecture Model": {
+          "type": "string",
+          "recommended": [
+            "Container",
+            "Component",
+            "Sequence",
+            "Runtime Flow",
+            "Event Flow"
+          ],
+          "x-titles": {
+            "recommended": "Architecture Model (Recommended Concepts)"
+          }
+        },
+        "State & Data Architecture": {
+          "type": "string",
+          "recommended": ["Storage", "Cache", "Schema", "Stateless"],
+          "x-titles": {
+            "recommended": "State & Data Architecture (Recommended Concepts)"
+          }
+        },
+        "Integration Contracts": {
+          "type": "string",
+          "recommended": ["API", "Event", "Consumed", "Published"],
+          "x-titles": {
+            "recommended": "Integration Contracts (Recommended Concepts)"
+          }
+        },
+        "Security & Trust Boundary": {
+          "type": "string",
+          "recommended": [
+            "Authentication",
+            "Authorization",
+            "Encryption",
+            "Secrets",
+            "Audit"
+          ],
+          "x-titles": {
+            "recommended": "Security & Trust Boundary (Recommended Concepts)"
+          }
+        },
+        "Deployment Strategy": {
+          "type": "string",
+          "required_subsections": ["CI/CD"],
+          "recommended": ["Environment", "Infrastructure"],
+          "x-titles": {
+            "recommended": "Deployment Strategy (Recommended Concepts)"
+          }
+        },
+        "Architecture Decisions": {
+          "type": "string",
+          "required_subsections": ["Rejected"]
+        },
+        "NFR": {
+          "type": "string",
+          "required_subsections": ["Blast Radius"],
+          "recommended": [
+            "Latency",
+            "Throughput",
+            "RPS",
+            "Scalability",
+            "Caching",
+            "Observability",
+            "Telemetry",
+            "Alerting",
+            "Runbook",
+            "Circuit Breaker",
+            "Retry",
+            "Timeout",
+            "Failover"
+          ],
+          "x-titles": {
+            "recommended": "NFR Derivatives (Recommended)"
+          }
+        }
+      }
+    }
+  }
+}

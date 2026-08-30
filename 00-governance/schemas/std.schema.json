@@ -1,0 +1,97 @@
+{
+  "$id": "https://scnehaux.com/codex/gov/guidelines/schemas/std.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Standard Operating Procedure (STD) Validation Rules",
+  "type": "object",
+  "config": {
+    "target_doc": "GDC-007-std-guideline.md"
+  },
+  "properties": {
+    "filename": {
+      "type": "string",
+      "pattern": "^STD-[A-Z]+(?:-[A-Z]+)?-\\d{3}-[a-z0-9-]+\\.md$"
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/metadata_rules"
+    },
+    {
+      "$ref": "#/definitions/section_rules"
+    },
+    {
+      "$ref": "#/definitions/content_rules"
+    }
+  ],
+  "definitions": {
+    "metadata_rules": {
+      "title": "Metadata Rules",
+      "description": "Rules for the YAML Frontmatter (doc_meta)",
+      "required": ["doc_meta"],
+      "properties": {
+        "doc_meta": {
+          "title": "Required Fields",
+          "allOf": [
+            {
+              "$ref": "https://scnehaux.com/codex/gov/guidelines/schemas/base.schema.json#/definitions/common_metadata_fields"
+            },
+            {
+              "type": "object",
+              "required": ["owner", "version", "classification"],
+              "properties": {
+                "status": {
+                  "title": "Allowed Statuses",
+                  "type": "string",
+                  "enum": [
+                    "adopted",
+                    "trial",
+                    "assessed",
+                    "hold",
+                    "approved",
+                    "draft",
+                    "proposed",
+                    "deprecated"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "section_rules": {
+      "title": "Section Rules",
+      "description": "Rules for required and recommended sections in the Markdown body",
+      "required": [
+        "Objective & Scope",
+        "Design Principles",
+        "Normative Rules",
+        "Exceptions",
+        "Enforcement Mechanism"
+      ],
+      "recommended": [],
+      "x-titles": {
+        "required": "Required Sections",
+        "recommended": "Recommended Sections"
+      }
+    },
+    "content_rules": {
+      "title": "Content Quality Rules",
+      "description": "Rules for required and recommended keywords inside specific Markdown sections",
+      "properties": {
+        "Exceptions": {
+          "type": "string",
+          "prohibited_keywords": [
+            "waiver",
+            "ADR",
+            "ARB",
+            "Approval Requirements"
+          ],
+          "x-titles": {
+            "prohibited_keywords": "Exceptions (Prohibited)"
+          }
+        }
+      }
+    }
+  }
+}

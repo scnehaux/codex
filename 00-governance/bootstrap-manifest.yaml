@@ -1,0 +1,72 @@
+manifest_version: 1
+kind: governance-genesis
+target_repository: scnehaux/codex
+canonical_branch: main
+created_date: 2026-08-28
+migration_mode: clean-history-re-admission
+source:
+  repository: anshacerbia2/scnehaux-architecture
+  ref: main
+  commit: 26c81c7aa8ee6de758e01ce9d1616ad5a39e707b
+genesis_contract:
+  root_commit_only: true
+  local_qualification_required: true
+  allowed_paths:
+  - 00-governance/**
+  - 06-fitness-function/**
+  - .github/**
+  - .gitignore
+  - .gitattributes
+  - Makefile
+  - pyproject.toml
+  - constraints.txt
+  - requirements.txt
+  - ROADMAP.md
+  - PLAN.md
+  - engine/**
+  - tests/**
+  - conftest.py
+  forbidden_architecture_paths:
+  - 01-enterprise/**
+  - 02-standards/**
+  - 03-domain/**
+  - 04-system/**
+  - 05-decisions/**
+  local_qualification_entrypoint: 06-fitness-function/scripts/governance_qualify.py
+post_genesis:
+  pull_request_required: true
+  direct_push_forbidden: true
+  history_rewrite_forbidden: true
+  branch_deletion_forbidden: true
+provenance:
+  legacy_history_transferred: false
+  legacy_repository_is_canonical: false
+  architecture_artifacts_admitted_in_genesis: false
+governance_control_plane:
+  lifecycle: draft
+  version_series: 0.x.x
+  architecture_admission: closed
+  required_baseline_ids:
+  - GDC-000
+  - GDC-001
+  - GDC-002
+  - GDC-003
+  - GDC-004
+  - GDC-005
+  - GDC-006
+  - GDC-007
+  - GDC-008
+  - GDC-009
+  - GDC-010
+  - GDC-011
+  admission_condition: All required baseline GDCs are status=approved and version>=1.0.0
+repository_contract:
+  repository: scnehaux/codex
+  declared_visibility: public
+  public_allowed_classifications:
+  - public
+  non_public_estate_required_for:
+  - internal
+  - restricted
+  - confidential
+  runtime_visibility_attestation_env: SCNEHAUX_REPOSITORY_VISIBILITY

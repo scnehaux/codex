@@ -1,0 +1,187 @@
+{
+  "$id": "https://scnehaux.com/codex/gov/guidelines/schemas/pad.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Product Architecture Document (PAD) Validation Rules",
+  "type": "object",
+  "config": {
+    "target_doc": "GDC-008-pad-guideline.md"
+  },
+  "properties": {
+    "filename": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9-]+\\.pad\\.md$"
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/metadata_rules"
+    },
+    {
+      "$ref": "#/definitions/section_rules"
+    },
+    {
+      "$ref": "#/definitions/content_rules"
+    }
+  ],
+  "definitions": {
+    "metadata_rules": {
+      "title": "Metadata Rules",
+      "description": "Rules for the YAML Frontmatter (doc_meta)",
+      "required": ["doc_meta"],
+      "properties": {
+        "doc_meta": {
+          "title": "Required Fields",
+          "allOf": [
+            {
+              "$ref": "https://scnehaux.com/codex/gov/guidelines/schemas/base.schema.json#/definitions/common_metadata_fields"
+            },
+            {
+              "type": "object",
+              "required": [
+                "owner",
+                "version",
+                "classification",
+                "review_cycle_days",
+                "last_reviewed",
+                "governed_by",
+                "realizes_capability",
+                "fulfilled_by"
+              ],
+              "properties": {
+                "status": {
+                  "title": "Allowed Statuses",
+                  "type": "string",
+                  "enum": ["chartered", "draft", "approved", "deprecated"]
+                },
+                "governed_by": {
+                  "title": "Governing GDC/EAD IDs",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "realizes_capability": {
+                  "title": "Capability Being Realized",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "fulfilled_by": {
+                  "title": "Downstream Implementation Systems",
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^SAD-\\d{3}(?:-[A-Z0-9-]+)?$"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "section_rules": {
+      "title": "Section Rules",
+      "description": "Rules for required and recommended sections in the Markdown body",
+      "required": [
+        "Purpose & Scope",
+        "Enterprise Traceability",
+        "Domain & Context Model",
+        "Integration Contracts",
+        "Trust & Data Boundaries",
+        "Capability NFR",
+        "Ownership & Governance"
+      ],
+      "recommended": [
+        "Assumptions & Constraints",
+        "Architectural Decisions",
+        "Evolution",
+        "References"
+      ],
+      "x-titles": {
+        "required": "Required Sections",
+        "recommended": "Recommended Sections"
+      }
+    },
+    "content_rules": {
+      "title": "Content Quality Rules",
+      "description": "Rules for required and recommended keywords inside specific Markdown sections",
+      "properties": {
+        "Purpose & Scope": {
+          "type": "string",
+          "required_subsections": ["Out Of Scope"],
+          "x-titles": {
+            "required": "Purpose & Scope (Required Concepts)"
+          }
+        },
+        "Enterprise Traceability": {
+          "type": "string",
+          "required_subsections": ["Realizes", "Relationships", "Consumed By"],
+          "x-titles": {
+            "required": "Enterprise Traceability (Required Concepts)"
+          }
+        },
+        "Domain & Context Model": {
+          "type": "string",
+          "required_subsections": ["Bounded Context", "Ubiquitous Language"],
+          "x-titles": {
+            "required": "Domain & Context Model (Required Concepts)"
+          }
+        },
+        "Integration Contracts": {
+          "type": "string",
+          "required_subsections": [
+            "Integration Provided",
+            "Integration Consumed"
+          ],
+          "x-titles": {
+            "required": "Integration Contracts (Required Concepts)"
+          }
+        },
+        "Trust & Data Boundaries": {
+          "type": "string",
+          "required_subsections": [
+            "Trust Boundary",
+            "Identity Access",
+            "Data Classification"
+          ],
+          "x-titles": {
+            "required": "Trust & Data Boundaries (Required Concepts)"
+          }
+        },
+        "Capability NFR": {
+          "type": "string",
+          "recommended": [
+            "SLA",
+            "SLO",
+            "RTO",
+            "RPO",
+            "Availability",
+            "Scalability",
+            "Peak Load",
+            "Concurrency",
+            "Compliance",
+            "Data Privacy",
+            "Data Residency",
+            "Audit",
+            "Usability",
+            "Accessibility",
+            "Interoperability",
+            "Cost Target"
+          ],
+          "x-titles": {
+            "recommended": "Capability NFR (Recommended Derivatives)"
+          }
+        },
+        "Ownership & Governance": {
+          "type": "string",
+          "required_subsections": ["Team Ownership", "Realizing Systems"],
+          "x-titles": {
+            "required": "Ownership & Governance (Required Concepts)"
+          }
+        }
+      }
+    }
+  }
+}

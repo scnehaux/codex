@@ -1,0 +1,23 @@
+__pycache__/
+*.stackdump
+*.zip
+*.pyc
+.antigravity*
+.idea/
+
+# Pytest & Coverage
+.coverage
+.pytest_cache/
+
+# Linter artifacts (do not commit run output)
+*.sarif
+lint_out.txt
+lint_output.txt
+linter_output.txt
+diff_output.txt
+break-glass-audit.log
+
+# Environment & Build
+.env
+*.egg-info/
+htmlcov/

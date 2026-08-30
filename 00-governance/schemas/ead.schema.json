@@ -1,0 +1,219 @@
+{
+  "$id": "https://scnehaux.com/codex/gov/guidelines/schemas/ead.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Enterprise Architecture Document (EAD) Validation Rules",
+  "type": "object",
+  "config": {
+    "target_doc": "GDC-006-ead-guideline.md"
+  },
+  "properties": {
+    "filename": {
+      "type": "string",
+      "pattern": "^EAD-\\d{3}-[a-z0-9-]+\\.md$"
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/metadata_rules"
+    },
+    {
+      "$ref": "#/definitions/section_rules"
+    },
+    {
+      "$ref": "#/definitions/content_rules"
+    }
+  ],
+  "definitions": {
+    "metadata_rules": {
+      "title": "Metadata Rules",
+      "description": "Rules for the YAML Frontmatter (doc_meta)",
+      "required": ["doc_meta"],
+      "properties": {
+        "doc_meta": {
+          "title": "Required Fields",
+          "allOf": [
+            {
+              "$ref": "https://scnehaux.com/codex/gov/guidelines/schemas/base.schema.json#/definitions/common_metadata_fields"
+            },
+            {
+              "type": "object",
+              "required": [
+                "owner",
+                "version",
+                "classification",
+                "review_cycle_days",
+                "last_reviewed",
+                "governed_by"
+              ],
+              "properties": {
+                "status": {
+                  "title": "Allowed Statuses",
+                  "type": "string",
+                  "enum": ["draft", "approved", "deprecated"]
+                },
+                "id": {
+                  "title": "Document ID",
+                  "type": "string",
+                  "pattern": "^EAD-\\d{3}$"
+                },
+                "governed_by": {
+                  "title": "Governed By",
+                  "type": ["string", "array"],
+                  "items": { "type": "string" }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "section_rules": {
+      "title": "Section Rules",
+      "description": "Rules for required and recommended sections in the Markdown body",
+      "required": [
+        "Purpose",
+        "Scope",
+        "Enterprise Context",
+        "Architectural Drivers & Lessons",
+        "Architecture Model",
+        "Principles & Rules",
+        "Alternatives Considered",
+        "Single Points of Failure & Graceful Degradation",
+        "Ownership",
+        "Dependencies",
+        "Traceability"
+      ],
+      "recommended": [
+        "Assumptions",
+        "Constraints",
+        "Risks",
+        "Future Direction",
+        "References"
+      ],
+      "x-titles": {
+        "required": "Required Sections",
+        "recommended": "Recommended Sections"
+      }
+    },
+    "content_rules": {
+      "title": "Content Quality Rules",
+      "description": "Rules for required and recommended keywords inside specific Markdown sections",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "doc_meta": { "properties": { "id": { "const": "EAD-001" } } }
+            }
+          },
+          "then": {
+            "properties": {
+              "Architecture Model": {
+                "required_subsections": [
+                  "Macro Capability Map",
+                  "Domain Ownership Matrix",
+                  "Strategic Domain Classification",
+                  "Capability Evolution"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "doc_meta": { "properties": { "id": { "const": "EAD-002" } } }
+            }
+          },
+          "then": {
+            "properties": {
+              "Architecture Model": {
+                "required_subsections": [
+                  "Global System Landscape",
+                  "Platform vs Product Topology",
+                  "System Dependency",
+                  "External Ecosystem"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "doc_meta": { "properties": { "id": { "const": "EAD-003" } } }
+            }
+          },
+          "then": {
+            "properties": {
+              "Architecture Model": {
+                "required_subsections": [
+                  "Data Ownership",
+                  "Transactional & Analytical Boundary",
+                  "Data Movement Strategy",
+                  "Data Governance"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "doc_meta": { "properties": { "id": { "const": "EAD-004" } } }
+            }
+          },
+          "then": {
+            "properties": {
+              "Architecture Model": {
+                "required_subsections": [
+                  "Enterprise Context Map",
+                  "Communication Strategy",
+                  "Contract Governance",
+                  "Gateway & Broker Topology"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "doc_meta": { "properties": { "id": { "const": "EAD-005" } } }
+            }
+          },
+          "then": {
+            "properties": {
+              "Architecture Model": {
+                "required_subsections": [
+                  "Platform Topology",
+                  "Internal Developer Platform Strategy",
+                  "Runtime Strategy",
+                  "Operational Model"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "doc_meta": { "properties": { "id": { "const": "EAD-006" } } }
+            }
+          },
+          "then": {
+            "properties": {
+              "Architecture Model": {
+                "required_subsections": [
+                  "Zero Trust Boundary",
+                  "Enterprise IAM Strategy",
+                  "Security Control Architecture",
+                  "Data Protection"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

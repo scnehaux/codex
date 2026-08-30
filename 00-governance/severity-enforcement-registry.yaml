@@ -1,0 +1,468 @@
+registry_version: 1
+kind: severity-enforcement-registry
+rules:
+- rule_id: unreadable_artifact
+  evidence_status: verified
+  enforcement_kind: cli-fatal
+  implementation:
+  - engine/interfaces/cli.py
+  test_evidence:
+  - tests/interfaces/test_cli.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime emitter and assertion-bearing behavioral regression evidence were resolved through the exact
+    enclosing production entrypoint
+- rule_id: corrupt_frontmatter
+  evidence_status: verified
+  enforcement_kind: cli-fatal
+  implementation:
+  - engine/interfaces/cli.py
+  test_evidence:
+  - tests/interfaces/test_cli.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime emitter and assertion-bearing behavioral regression evidence were resolved through the exact
+    enclosing production entrypoint
+- rule_id: unknown_document_type
+  evidence_status: verified
+  enforcement_kind: cli-fatal
+  implementation:
+  - engine/interfaces/cli.py
+  test_evidence:
+  - tests/interfaces/test_cli.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime emitter and assertion-bearing behavioral regression evidence were resolved through the exact
+    enclosing production entrypoint
+- rule_id: missing_validator
+  evidence_status: verified
+  enforcement_kind: cli-fatal
+  implementation:
+  - engine/interfaces/cli.py
+  test_evidence:
+  - tests/interfaces/test_cli.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime emitter and assertion-bearing behavioral regression evidence were resolved through the exact
+    enclosing production entrypoint
+- rule_id: invalid_lint_disable
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Runtime emitter and assertion-bearing regression evidence were resolved from the canonical repository via explicit-rule
+    evidence
+- rule_id: circular_dependency
+  evidence_status: verified
+  enforcement_kind: auditor
+  implementation:
+  - engine/control/auditors/dependency_scanner.py
+  test_evidence:
+  - tests/control/auditors/test_dependency_scanner.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Dependency auditor emits SeverityRule.CIRCULAR_DEPENDENCY and cycle behavior is tested
+- rule_id: cross_reference_missing
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/validators/domains/pad_validator.py
+  - engine/control/validators/metadata_rules.py
+  - engine/control/validators/structure_rules.py
+  test_evidence:
+  - tests/control/validators/domains/test_adr_validator.py
+  - tests/control/validators/domains/test_all_domains.py
+  - tests/control/validators/domains/test_ead_validator.py
+  - tests/control/validators/domains/test_gdc_validator.py
+  - tests/control/validators/domains/test_pad_validator.py
+  - tests/control/validators/domains/test_sad_validator.py
+  - tests/control/validators/domains/test_std_validator.py
+  - tests/control/validators/domains/test_tdd_validator.py
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_metadata_rules.py
+  - tests/control/validators/test_structure_rules.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime emitter and assertion-bearing behavioral regression evidence were resolved through the exact
+    enclosing production entrypoint
+- rule_id: duplicate_id
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/interfaces/cli.py
+  - engine/control/fs/crawler.py
+  test_evidence:
+  - tests/interfaces/test_cli.py
+  - tests/control/fs/test_crawler.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Duplicate document IDs are blocked by repository pre-scan and covered by regression tests
+- rule_id: inline_reference_missing
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/validators/structure_rules.py
+  test_evidence:
+  - tests/control/validators/test_structure_rules.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime emitter and assertion-bearing behavioral regression evidence were resolved through the exact
+    enclosing production entrypoint
+- rule_id: orphan_document
+  evidence_status: verified
+  enforcement_kind: auditor
+  implementation:
+  - engine/control/auditors/graph_auditor.py
+  test_evidence:
+  - tests/control/governance/test_severity_semantic_identity.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Rule identity now maps one-to-one to its canonical enforcement semantics and is locked by a differentiation regression
+    test
+- rule_id: traceability_violation
+  evidence_status: verified
+  enforcement_kind: auditor
+  implementation:
+  - engine/control/auditors/graph_auditor.py
+  - engine/control/validators/domains/pad_validator.py
+  - engine/control/validators/domains/sad_validator.py
+  - engine/control/validators/domains/tdd_validator.py
+  test_evidence:
+  - tests/control/auditors/test_graph_auditor.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Runtime emitter and assertion-bearing regression evidence were resolved from the canonical repository via explicit-rule
+    evidence
+- rule_id: broken_internal_link
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/validators/structure_rules.py
+  test_evidence:
+  - tests/control/governance/test_severity_semantic_identity.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Rule identity now maps one-to-one to its canonical enforcement semantics and is locked by a differentiation regression
+    test
+- rule_id: missing_metadata
+  evidence_status: verified
+  enforcement_kind: schema-translation
+  implementation:
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/governance/test_classification.py
+  - tests/control/governance/test_temporal.py
+  - tests/control/validators/test_base.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime semantics and assertion-bearing regression evidence resolved via schema-category-translation
+- rule_id: missing_required_subsection
+  evidence_status: verified
+  enforcement_kind: schema-translation
+  implementation:
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/governance/test_severity_semantic_identity.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Rule identity now maps one-to-one to its canonical enforcement semantics and is locked by a differentiation regression
+    test
+- rule_id: missing_section
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/validators/domains/gdc_validator.py
+  test_evidence:
+  - tests/control/validators/domains/test_adr_validator.py
+  - tests/control/validators/domains/test_all_domains.py
+  - tests/control/validators/domains/test_ead_validator.py
+  - tests/control/validators/domains/test_gdc_validator.py
+  - tests/control/validators/domains/test_pad_validator.py
+  - tests/control/validators/domains/test_sad_validator.py
+  - tests/control/validators/domains/test_std_validator.py
+  - tests/control/validators/domains/test_tdd_validator.py
+  - tests/control/validators/test_base.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Runtime emitter and assertion-bearing regression evidence were resolved from the canonical repository via behavioral-entrypoint
+    evidence
+- rule_id: missing_section_keyword
+  evidence_status: verified
+  enforcement_kind: schema-translation
+  implementation:
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime semantics and assertion-bearing regression evidence resolved via schema-category-translation
+- rule_id: schema_validation_failed
+  evidence_status: verified
+  enforcement_kind: schema-translation
+  implementation:
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime semantics and assertion-bearing regression evidence resolved via schema-category-translation
+- rule_id: subsection_order_violation
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/validators/domains/gdc_validator.py
+  test_evidence:
+  - tests/control/governance/test_severity_semantic_identity.py
+  control_owner: ''
+  target_phase: ''
+  rationale: GDC guideline validator explicitly checks sequential subsection order and emits the dedicated rule identity;
+    declared WARNING severity remains unchanged and therefore does not silently inherit generic CRITICAL severity
+- rule_id: ambiguity_rules
+  evidence_status: verified
+  enforcement_kind: dynamic-config
+  implementation:
+  - 00-governance/schemas/base.schema.json
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/interfaces/test_cli.py
+  - tests/control/validators/test_global_rules.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime semantics and assertion-bearing regression evidence resolved via base-schema-key->generic-content-rule-emitter
+- rule_id: nfr_taxonomy_violation
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/validators/structure_rules.py
+  test_evidence:
+  - tests/control/governance/test_severity_semantic_identity.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Rule identity now maps one-to-one to its canonical enforcement semantics and is locked by a differentiation regression
+    test
+- rule_id: prohibited_words
+  evidence_status: verified
+  enforcement_kind: schema-translation
+  implementation:
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/interfaces/test_cli.py
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_global_rules.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime semantics and assertion-bearing regression evidence resolved via schema-category-translation
+- rule_id: structural_integrity_violation
+  evidence_status: verified
+  enforcement_kind: auditor
+  implementation:
+  - engine/control/auditors/graph_auditor.py
+  - engine/interfaces/cli.py
+  - engine/control/validators/domains/ead_validator.py
+  - engine/control/validators/domains/gdc_validator.py
+  - engine/control/validators/structure_rules.py
+  test_evidence:
+  - tests/control/auditors/test_graph_auditor.py
+  - tests/interfaces/test_cli.py
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_structure_rules.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Runtime emitter and assertion-bearing regression evidence were resolved from the canonical repository via explicit-rule
+    evidence
+- rule_id: stylistic_deviation
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/validators/structure_rules.py
+  test_evidence:
+  - tests/control/validators/test_structure_rules.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime emitter and assertion-bearing behavioral regression evidence were resolved through the exact
+    enclosing production entrypoint
+- rule_id: approved_version_not_stable
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime emitter and assertion-bearing behavioral regression evidence were resolved through the exact
+    enclosing production entrypoint
+- rule_id: architecture_admission_violation
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/governance/lifecycle.py
+  test_evidence:
+  - tests/control/governance/test_lifecycle.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Architecture admission is explicitly enforced and regression-tested
+- rule_id: compliance_filename_match
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/control/validators/test_global_rules.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime emitter and assertion-bearing behavioral regression evidence were resolved through the exact
+    enclosing production entrypoint
+- rule_id: compliance_macro_directory
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/control/validators/test_global_rules.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime emitter and assertion-bearing behavioral regression evidence were resolved through the exact
+    enclosing production entrypoint
+- rule_id: lifecycle_age_violation
+  evidence_status: verified
+  enforcement_kind: cli-fatal
+  implementation:
+  - engine/interfaces/cli.py
+  test_evidence:
+  - tests/interfaces/test_cli.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime emitter and assertion-bearing behavioral regression evidence were resolved through the exact
+    enclosing production entrypoint
+- rule_id: exception_expired
+  evidence_status: verified
+  enforcement_kind: auditor
+  implementation:
+  - engine/control/auditors/waiver_auditor.py
+  - engine/control/validators/domains/adr_validator.py
+  test_evidence:
+  - tests/control/auditors/test_waiver_auditor.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Runtime emitter and assertion-bearing regression evidence were resolved from the canonical repository via explicit-rule
+    evidence
+- rule_id: relaxed_validation_applied
+  evidence_status: verified
+  enforcement_kind: cli-fatal
+  implementation:
+  - engine/interfaces/cli.py
+  test_evidence:
+  - tests/interfaces/test_cli.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime emitter and assertion-bearing behavioral regression evidence were resolved through the exact
+    enclosing production entrypoint
+- rule_id: review_age_violation
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime emitter and assertion-bearing behavioral regression evidence were resolved through the exact
+    enclosing production entrypoint
+- rule_id: temporal_integrity_violation
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/control/validators/test_global_rules.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime emitter and assertion-bearing behavioral regression evidence were resolved through the exact
+    enclosing production entrypoint
+- rule_id: repository_classification_violation
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/governance/classification.py
+  target_phase: ''
+  rationale: Repository classification authority explicitly emits this rule and the canonical regression suite exercises the
+    authority with assertions
+  test_evidence:
+  - tests/control/governance/test_classification.py
+- rule_id: repository_visibility_mismatch
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/governance/classification.py
+  test_evidence:
+  - tests/control/governance/test_classification.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Repository classification authority explicitly emits this rule and the canonical regression suite exercises the
+    authority with assertions
+- rule_id: version_bump_required
+  evidence_status: pending
+  enforcement_kind: deferred
+  implementation: []
+  test_evidence: []
+  control_owner: Fitness Function Authority
+  target_phase: Phase 7 Version + Mutation
+  rationale: Version mutation enforcement is intentionally deferred until the artifact/lifecycle-aware mutation policy is
+    implemented
+- rule_id: operational_stability_violation
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/validators/domains/std_validator.py
+  test_evidence:
+  - tests/control/validators/domains/test_adr_validator.py
+  - tests/control/validators/domains/test_all_domains.py
+  - tests/control/validators/domains/test_ead_validator.py
+  - tests/control/validators/domains/test_gdc_validator.py
+  - tests/control/validators/domains/test_pad_validator.py
+  - tests/control/validators/domains/test_sad_validator.py
+  - tests/control/validators/domains/test_std_validator.py
+  - tests/control/validators/domains/test_tdd_validator.py
+  - tests/control/validators/test_base.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Canonical runtime emitter and assertion-bearing behavioral regression evidence were resolved through the exact
+    enclosing production entrypoint
+- rule_id: technology_hold_violation
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Runtime emitter and assertion-bearing regression evidence were resolved from the canonical repository via explicit-rule
+    evidence
+- rule_id: technology_policy_unavailable
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Runtime emitter and assertion-bearing regression evidence were resolved from the canonical repository via explicit-rule
+    evidence
+- rule_id: unapproved_technology
+  evidence_status: verified
+  enforcement_kind: runtime-rule
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  control_owner: ''
+  target_phase: ''
+  rationale: Runtime emitter and assertion-bearing regression evidence were resolved from the canonical repository via explicit-rule
+    evidence

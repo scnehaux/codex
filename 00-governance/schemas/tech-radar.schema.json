@@ -1,0 +1,134 @@
+{
+  "$id": "https://scnehaux.com/codex/gov/guidelines/schemas/tech-radar.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Enterprise Technology Radar Validation Rules",
+  "description": "Schema for validating the tech-radar.yaml against GDC-004 (Technology Lifecycle & Standards Governance) requirements.",
+  "type": "object",
+  "required": ["technology_radar"],
+  "properties": {
+    "technology_radar": {
+      "type": "object",
+      "required": ["adopt", "trial", "assess", "hold"],
+      "properties": {
+        "adopt": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/adopt_entry" }
+        },
+        "trial": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/trial_entry" }
+        },
+        "assess": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/assess_entry" }
+        },
+        "hold": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/hold_entry" }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "base_entry": {
+      "type": "object",
+      "required": ["name", "category", "owner"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Technology name (lowercase, hyphenated)."
+        },
+        "category": {
+          "type": "string",
+          "description": "Technology category (e.g., database, frontend-framework)."
+        },
+        "owner": {
+          "type": "string",
+          "description": "Owning team or authority."
+        },
+        "rationale_adr": {
+          "type": ["string", "null"],
+          "description": "ADR ID that authorized the adoption, or null if foundational."
+        }
+      }
+    },
+    "adopt_entry": {
+      "allOf": [
+        { "$ref": "#/definitions/base_entry" },
+        {
+          "required": ["date_adopted"],
+          "properties": {
+            "date_adopted": {
+              "type": "string",
+              "format": "date",
+              "description": "Date the technology was formally adopted."
+            }
+          }
+        }
+      ]
+    },
+    "trial_entry": {
+      "allOf": [
+        { "$ref": "#/definitions/base_entry" },
+        {
+          "required": ["date_entered", "trial_end_date"],
+          "properties": {
+            "date_entered": {
+              "type": "string",
+              "format": "date",
+              "description": "Date the technology entered trial phase."
+            },
+            "trial_end_date": {
+              "type": "string",
+              "format": "date",
+              "description": "Expected end date for the trial evaluation."
+            }
+          }
+        }
+      ]
+    },
+    "assess_entry": {
+      "allOf": [
+        { "$ref": "#/definitions/base_entry" },
+        {
+          "required": ["date_entered"],
+          "properties": {
+            "date_entered": {
+              "type": "string",
+              "format": "date",
+              "description": "Date the technology entered assessment phase."
+            }
+          }
+        }
+      ]
+    },
+    "hold_entry": {
+      "allOf": [
+        { "$ref": "#/definitions/base_entry" },
+        {
+          "required": ["date_hold", "sunset_date", "successor"],
+          "properties": {
+            "date_hold": {
+              "type": "string",
+              "format": "date",
+              "description": "Date the technology was placed on hold."
+            },
+            "sunset_date": {
+              "type": "string",
+              "format": "date",
+              "description": "Date after which hard CI blocks activate."
+            },
+            "successor": {
+              "type": ["string", "null"],
+              "description": "Replacement technology name."
+            },
+            "migration_guide": {
+              "type": ["string", "null"],
+              "description": "STD ID for the migration guide, or null if pending."
+            }
+          }
+        }
+      ]
+    }
+  }
+}

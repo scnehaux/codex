@@ -1,0 +1,190 @@
+contract_version: 1
+kind: scnehaux-framework-boundary
+product:
+  name: Scnehaux Codex
+  category: ai-native-architecture-knowledge-control-plane
+  canonical_authority: git-backed-structured-architecture
+owns:
+- architecture-semantics
+- artifact-metamodel
+- relationship-ontology
+- lifecycle-semantics
+- architecture-governance
+- repository-compilation
+- graph-compilation
+- context-construction
+- structured-artifact-generation-contract
+- architecture-reasoning-workflow
+- declared-observed-reconciliation-contract
+does_not_own:
+- foundation-model
+- graph-database-engine
+- vector-database-engine
+- git-implementation
+- cloud-runtime
+- ci-product
+- business-application-runtime
+- generic-compiler-ecosystem
+logical_modules:
+  scnehaux-core:
+    responsibilities:
+    - metamodel
+    - lifecycle
+    - relationships
+    - provenance
+    - repository-model
+  scnehaux-control:
+    responsibilities:
+    - parser
+    - validators
+    - linter
+    - auditors
+    - admission
+    - evidence
+    - mutation
+  scnehaux-knowledge:
+    responsibilities:
+    - graph-ir
+    - graph-compiler
+    - retrieval
+    - context-compiler
+  scnehaux-ai:
+    responsibilities:
+    - intent-planner
+    - architecture-planner
+    - artifact-generator
+    - impact-reasoning
+    - revision-loop
+  scnehaux-observe:
+    responsibilities:
+    - source-adapters
+    - api-schema-adapters
+    - iac-adapters
+    - runtime-adapters
+    - drift-reconciliation
+  scnehaux-interface:
+    responsibilities:
+    - cli
+    - api
+    - mcp-tools
+    - github
+    - studio
+deployment:
+  default: modular-monolith
+  service-decomposition_requires_evidence: true
+company_pack:
+  may_define:
+  - principles
+  - policies
+  - artifact-profile
+  - technology-policy
+  - regulatory-context
+  - organization-context
+  - ontology-extensions
+  must_not_require_core_fork: true
+extension_points:
+- artifact-type
+- schema
+- renderer
+- validator
+- relationship-type
+- context-provider
+- retriever
+- observed-source
+- graph-store
+- semantic-index
+- model-provider
+capability_architecture:
+  model: capability-driven
+  agent_topology: runtime-configurable
+  planes:
+    knowledge:
+      capabilities:
+      - artifact-model
+      - repository-model
+      - knowledge-graph
+      - search-index
+      - observed-architecture
+    intelligence:
+      capabilities:
+      - intent-analysis
+      - architecture-planning
+      - context-compilation
+      - research
+      - architecture-synthesis
+      - ai-architecture-review
+    control:
+      capabilities:
+      - canonical-parser
+      - deterministic-validation
+      - policy
+      - simulation
+      - admission
+    governance:
+      capabilities:
+      - evidence
+      - provenance
+      - approval-orchestration
+      - audit
+      - identity-authorization
+    runtime:
+      capabilities:
+      - model-gateway
+      - tool-capability-registry
+      - agent-orchestration
+      - guardrails
+      - tracing
+      - evaluation
+      - budget-cost-control
+  primary_capabilities:
+  - intent-analysis
+  - architecture-planning
+  - knowledge-compilation
+  - context-compilation
+  - research
+  - architecture-synthesis
+  - deterministic-validation
+  - ai-architecture-review
+  - simulation-impact-analysis
+  - drift-reconciliation
+  - approval-orchestration
+  - evaluation
+  cross_cutting:
+  - evidence-provenance
+  - model-gateway
+  - tool-capability-registry
+  - guardrails
+  - trace-run-provenance
+  - identity-authorization
+  - budget-cost-control
+  stable_contracts:
+  - ContextCompiler
+  - RetrievalStrategy
+  - RetrievalRequest
+  - KnowledgeRevision
+  - SourceAuthority
+  - Claim
+  - Evidence
+  - IntentSpec
+  - ArchitecturePlan
+  - ResearchPlan
+  - ResearchPackage
+  - ContextPackage
+  - ArchitectureProposal
+  - ArtifactDraft
+  - ValidationReport
+  - SimulationReport
+  - ArchitectureReview
+  - DriftReport
+  - ApprovalPackage
+  invariants:
+    agent_is_not_authority_boundary: true
+    deterministic_validation_preferred_when_available: true
+    evidence_is_first_class: true
+    retrieval_semantics_centralized: true
+    generation_review_separable: true
+    observed_never_silently_overwrites_declared: true
+    approval_policy_configurable: true
+    provider_independent: true
+    evaluation_required_for_material_ai_runtime_change: true
+    default_deployment_remains_modular_monolith: true

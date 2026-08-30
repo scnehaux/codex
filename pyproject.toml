@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scnehaux-linter"
+version = "1.0.0"
+description = "Scnehaux Architecture Documentation Governance Linter"
+license = "MIT"
+requires-python = ">=3.13"
+dependencies = [
+    "markdown-it-py==4.0.0",
+    "jsonschema>=4.20.0",
+    "referencing==0.37.0",
+    "PyYAML==6.0.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.1.1",
+    "pytest-cov==7.1.0",
+    # `make lint-code` runs ruff and this file configures it, so it is a declared dependency
+    # rather than a tool the runner is assumed to carry. Pinned for the same reason every other
+    # dependency here is: a formatter that drifts turns a deterministic gate into one whose
+    # verdict depends on when it ran.
+    "ruff==0.15.20",
+]
+
+# The canonical product package lives at repository-root `engine/`.
+# Package discovery is intentionally scoped to that runtime package.
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["engine*"]
+
+# Canonical entrypoint. `python linter.py` never existed; the Master Fitness
+# Function is engine.interfaces.cli:main, exposed as the `scnehaux-lint` console script.
+[project.scripts]
+scnehaux-lint = "engine.interfaces.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "06-fitness-function/tests"]
+# Must be the package ROOT (parent of `engine`), matching production imports
+# (`from engine.control.parsing...`). Pointing at .../engine masked crawler.py's broken
+# `from parsing...` import — tests were green while the real CLI was dead.
+pythonpath = ["."]
+addopts = "--cov=engine --cov-fail-under=95 --cov-report=term-missing"
+
+[tool.pyright]
+extraPaths = ["."]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["E402"]
+"06-fitness-function/tests/**/*.py" = ["E402"]
+
+[tool.scnehaux.coverage]
+per_file_min = 95.0

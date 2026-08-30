@@ -1,0 +1,7 @@
+# Pinned for deterministic, reproducible governance runs (GDC-000 Pillar #1: Determinism).
+# Bump deliberately via PR; do not float. Verified against Python 3.11–3.13.
+markdown-it-py==4.0.0
+pydantic==2.13.1
+PyYAML==6.0.3
+pytest==9.1.1
+pytest-cov==7.1.0

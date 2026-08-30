@@ -1,0 +1,198 @@
+{
+  "$id": "https://scnehaux.com/codex/gov/guidelines/schemas/base.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Base Governance Rules",
+  "type": "object",
+  "config": {
+    "target_doc": "GDC-001-fitness-functions.md"
+  },
+  "x-global-config": {
+    "structure_rules": {
+      "artifact_directories": {
+        "GDC": "00-governance",
+        "EAD": "01-enterprise",
+        "STD": "02-standards",
+        "PAD": "03-domain",
+        "SAD": "04-system",
+        "ADR": "05-decisions",
+        "TDD": "docs/02-designs"
+      },
+      "ignored_files": {
+        "exact_matches": [
+          "readme.md",
+          "index.md",
+          "contributing.md",
+          "changelog.md",
+          "maturity.md",
+          "traceability.md"
+        ],
+        "patterns": [
+          "[\\\\/]templates[\\\\/]",
+          "[\\\\/]scratch[\\\\/]"
+        ]
+      },
+      "max_directory_depth": 3
+    },
+    "content_rules": {
+      "max_review_age_days": {
+        "value": 365,
+        "error_message": "Document review age of {age_days} days exceeds limit of {limit} days."
+      },
+      "min_content_length_chars": {
+        "value": 50,
+        "error_message": "Section '{section_name}' content length ({length} chars) is below minimum of {min_length} chars."
+      },
+      "prohibited_words": {
+        "patterns": [
+          "\\bmaybe\\b",
+          "\\bprobably\\b",
+          "\\bshould consider\\b",
+          "\\bTBD\\b",
+          "\\bcoming soon\\b",
+          "\\band so on\\b",
+          "\\bseamless(?:ly)?\\b",
+          "\\bobviously\\b",
+          "\\bblazingly\\b",
+          "\\btrivially\\b"
+        ],
+        "error_message": "Prohibited boilerplate or hesitant word detected. Use definitive, professional language."
+      },
+      "ambiguity_rules": {
+        "patterns": [
+          "\\b(highly|very|extremely|super|incredibly)\\s+(scalable|fast|secure|reliable|available|performant|robust|efficient)\\b"
+        ],
+        "error_message": "Vague claim detected. Must be quantified with metrics."
+      }
+    },
+    "severity_levels": {
+      "0. Engine Execution Domain (System Fatality)": {
+        "unreadable_artifact": "CRITICAL",
+        "corrupt_frontmatter": "CRITICAL",
+        "unknown_document_type": "CRITICAL",
+        "missing_validator": "CRITICAL",
+        "invalid_lint_disable": "ERROR"
+      },
+      "1. Topology & Identity Domain (Graph & Lineage)": {
+        "circular_dependency": "CRITICAL",
+        "cross_reference_missing": "ERROR",
+        "duplicate_id": "CRITICAL",
+        "inline_reference_missing": "WARNING",
+        "orphan_document": "ERROR",
+        "traceability_violation": "ERROR",
+        "broken_internal_link": "ERROR"
+      },
+      "2. Structural Compliance Domain (Shape & Completeness)": {
+        "missing_metadata": "ERROR",
+        "missing_required_subsection": "ERROR",
+        "missing_section": "ERROR",
+        "missing_section_keyword": "ERROR",
+        "schema_validation_failed": "CRITICAL",
+        "subsection_order_violation": "WARNING"
+      },
+      "3. Semantic & Quality Domain (Meaning & Language)": {
+        "ambiguity_rules": "WARNING",
+        "nfr_taxonomy_violation": "ERROR",
+        "prohibited_words": "ERROR",
+        "structural_integrity_violation": "CRITICAL",
+        "stylistic_deviation": "WARNING"
+      },
+      "4. Lifecycle & Environment Domain (Time, Space, & State)": {
+        "approved_version_not_stable": "ERROR",
+        "compliance_filename_match": "ERROR",
+        "compliance_macro_directory": "ERROR",
+        "exception_expired": "ERROR",
+        "review_age_violation": "WARNING",
+        "version_bump_required": "ERROR",
+        "architecture_admission_violation": "CRITICAL",
+        "lifecycle_age_violation": "ERROR",
+        "relaxed_validation_applied": "INFO",
+        "temporal_integrity_violation": "ERROR",
+        "repository_classification_violation": "CRITICAL",
+        "repository_visibility_mismatch": "CRITICAL"
+      },
+      "5. Architecture Constraints Domain (Hard Technical Limits)": {
+        "operational_stability_violation": "ERROR",
+        "technology_hold_violation": "CRITICAL",
+        "unapproved_technology": "ERROR",
+        "technology_policy_unavailable": "CRITICAL"
+      }
+    },
+    "blocking_severities": [
+      "CRITICAL",
+      "ERROR"
+    ]
+  },
+  "definitions": {
+    "common_metadata_fields": {
+      "title": "Common Metadata Fields",
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "status",
+        "created_date"
+      ],
+      "properties": {
+        "id": {
+          "title": "Document ID",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "owner": {
+          "title": "Owner",
+          "type": [
+            "string",
+            "array"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "version": {
+          "title": "Version",
+          "type": "string",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-zA-Z0-9-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-zA-Z0-9-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+          "error_message": "Must follow Semantic Versioning (e.g. 1.0.0)"
+        },
+        "status": {
+          "title": "Allowed Statuses",
+          "type": "string"
+        },
+        "classification": {
+          "title": "Allowed Classifications",
+          "type": "string",
+          "enum": [
+            "public",
+            "internal",
+            "restricted",
+            "confidential"
+          ]
+        },
+        "review_cycle_days": {
+          "title": "Review Cycle (Days)",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3650
+        },
+        "created_date": {
+          "title": "Created Date",
+          "type": "string",
+          "format": "date"
+        },
+        "last_updated": {
+          "title": "Last Updated Date",
+          "type": "string",
+          "format": "date"
+        },
+        "last_reviewed": {
+          "title": "Last Reviewed Date",
+          "type": "string",
+          "format": "date"
+        }
+      }
+    }
+  }
+}
