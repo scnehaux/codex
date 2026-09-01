@@ -27,9 +27,7 @@
     "metadata_rules": {
       "title": "Metadata Rules",
       "description": "Rules for the YAML Frontmatter (doc_meta)",
-      "required": [
-        "doc_meta"
-      ],
+      "required": ["doc_meta"],
       "properties": {
         "doc_meta": {
           "title": "Required Fields",
@@ -50,18 +48,11 @@
                 "status": {
                   "title": "Allowed Statuses",
                   "type": "string",
-                  "enum": [
-                    "draft",
-                    "approved",
-                    "deprecated"
-                  ]
+                  "enum": ["draft", "approved", "deprecated"]
                 },
                 "governed_by": {
                   "title": "Governed By",
-                  "type": [
-                    "string",
-                    "array"
-                  ],
+                  "type": ["string", "array"],
                   "items": {
                     "type": "string"
                   }
@@ -72,20 +63,13 @@
                   "if": {
                     "properties": {
                       "status": {
-                        "enum": [
-                          "approved",
-                          "deprecated"
-                        ]
+                        "enum": ["approved", "deprecated"]
                       }
                     },
-                    "required": [
-                      "status"
-                    ]
+                    "required": ["status"]
                   },
                   "then": {
-                    "required": [
-                      "last_reviewed"
-                    ]
+                    "required": ["last_reviewed"]
                   }
                 }
               ]
@@ -97,10 +81,7 @@
     "section_rules": {
       "title": "Section Rules",
       "description": "Rules for required and recommended sections in the Markdown body",
-      "required": [
-        "Context & Scope",
-        "Policy Framework"
-      ],
+      "required": ["Context & Scope", "Policy Framework"],
       "recommended": [
         "Enforcement Mechanism",
         "Enforcement Mechanism & Rule Reconciliation",
@@ -142,9 +123,7 @@
       "then": {
         "properties": {
           "Policy Framework": {
-            "required_subsections": [
-              "Semantic Definitions"
-            ],
+            "required_subsections": ["Semantic Definitions"],
             "if": {
               "pattern": "(?i)(?:^|\\n)(?:#{3,5}\\s+(?:[\\d\\.]+\\s+)?|\\*\\*)Semantic Definitions\\b"
             },

@@ -1,4 +1,4 @@
-.PHONY: lint lint-code lint-docs-format lint-sarif format format-code format-docs test install install-hooks generate-docs verify-generated check-waivers all coverage docker-build docker-run clean genesis-check mutation-check governance-qualify genesis-commit-check
+.PHONY: lint lint-code lint-docs-format lint-sarif format format-code format-docs test install install-hooks generate-docs verify-generated check-waivers all coverage docker-build docker-run clean genesis-check mutation-check governance-qualify genesis-commit-check mutation-ci-check github-policy-check
 
 # Run all processes (setup, generate docs, linting, and testing)
 all: install install-hooks generate-docs lint test
@@ -51,7 +51,7 @@ format-code:
 
 # Auto-format Markdown & JSON documents using Prettier
 format-docs:
-	npx --yes prettier@3.9.6 --write "**/*.md" "**/*.json"
+	python 06-fitness-function/scripts/prettier_runner.py --write
 
 # Auto-format ALL files (Python, Markdown, and JSON) at once
 format: format-code format-docs
@@ -63,7 +63,7 @@ lint-code:
 
 # Check document formatting (no auto-fix, used by CI/CD & Git hooks)
 lint-docs-format:
-	npx --yes prettier@3.9.6 --check "**/*.md" "**/*.json"
+	python 06-fitness-function/scripts/prettier_runner.py --check
 
 # Run unit tests for the linter engine (using pytest)
 test:
@@ -107,3 +107,9 @@ governance-qualify:
 # Qualify the exact staged tree for the Genesis root commit
 genesis-commit-check:
 	python 06-fitness-function/scripts/genesis_commit_qualify.py
+# Validate committed governed mutations against an explicit CI/PR base
+mutation-ci-check:
+	python 06-fitness-function/scripts/committed_mutation_integrity.py --base-ref "$(SCNEHAUX_MUTATION_BASE_REF)"
+# Validate repository-owned GitHub enforcement desired state
+github-policy-check:
+	python 06-fitness-function/scripts/github_policy_check.py

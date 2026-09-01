@@ -45,12 +45,12 @@ In addition to the global structural enforcement defined in **[GDC-001](GDC-001-
 
 <!-- AUTO-GENERATED-SCHEMA:START -->
 
-| Rule Category | Parameter | Enforcement / Value |
-| :--- | :--- | :--- |
-| **Metadata Rules** | Metadata Rules | <ul><li>doc_meta</li></ul> |
-| **Metadata Rules** | exception_info Required Fields | <ul><li>approved_by</li><li>expiry_date</li><li>risk_classification</li><li>exception_reason</li></ul> |
-| **Section Rules** | Required Sections | <ul><li>Title</li><li>Status</li><li>Context</li><li>Decision Drivers</li><li>Decision</li><li>Consequences</li><li>Compliance Impact</li><li>Alternatives Considered</li></ul> |
-| **Section Rules** | Recommended Sections | <ul></ul> |
+| Rule Category      | Parameter                      | Enforcement / Value                                                                                                                                                             |
+| :----------------- | :----------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Metadata Rules** | Metadata Rules                 | <ul><li>doc_meta</li></ul>                                                                                                                                                      |
+| **Metadata Rules** | exception_info Required Fields | <ul><li>approved_by</li><li>expiry_date</li><li>risk_classification</li><li>exception_reason</li></ul>                                                                          |
+| **Section Rules**  | Required Sections              | <ul><li>Title</li><li>Status</li><li>Context</li><li>Decision Drivers</li><li>Decision</li><li>Consequences</li><li>Compliance Impact</li><li>Alternatives Considered</li></ul> |
+| **Section Rules**  | Recommended Sections           | <ul></ul>                                                                                                                                                                       |
 
 <!-- AUTO-GENERATED-SCHEMA:END -->
 

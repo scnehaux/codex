@@ -51,11 +51,11 @@ In addition to the global structural enforcement defined in **[GDC-001](GDC-001-
 
 <!-- AUTO-GENERATED-SCHEMA:START -->
 
-| Rule Category | Parameter | Enforcement / Value |
-| :--- | :--- | :--- |
-| **Metadata Rules** | Metadata Rules | <ul><li>doc_meta</li></ul> |
-| **Section Rules** | Required Sections | <ul><li>Purpose</li><li>Scope</li><li>Technical Context</li><li>Component Design</li><li>Data Model</li><li>API / Interface</li><li>Algorithms / Logic</li><li>Configuration</li><li>Testing Strategy</li><li>Traceability</li></ul> |
-| **Section Rules** | Recommended Sections | <ul><li>Performance Notes</li><li>Security Notes</li><li>Operational Notes</li></ul> |
+| Rule Category      | Parameter            | Enforcement / Value                                                                                                                                                                                                                  |
+| :----------------- | :------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Metadata Rules** | Metadata Rules       | <ul><li>doc_meta</li></ul>                                                                                                                                                                                                           |
+| **Section Rules**  | Required Sections    | <ul><li>Purpose</li><li>Scope</li><li>Technical Context</li><li>Component Design</li><li>Data Model</li><li>API / Interface</li><li>Algorithms / Logic</li><li>Configuration</li><li>Testing Strategy</li><li>Traceability</li></ul> |
+| **Section Rules**  | Recommended Sections | <ul><li>Performance Notes</li><li>Security Notes</li><li>Operational Notes</li></ul>                                                                                                                                                 |
 
 <!-- AUTO-GENERATED-SCHEMA:END -->
 
@@ -101,17 +101,17 @@ doc_meta:
   last_reviewed: YYYY-MM-DD # Last audit date
 ```
 
-| Metadata Field      | Type    | Description / Purpose                                            |
-| ------------------- | ------- | ---------------------------------------------------------------- |
-| `id`                | String  | Unique identifier (e.g., `STD-EXAMPLE-008`).                      |
-| `title`             | String  | Descriptive title of the document.                               |
-| `owner`             | String  | Lead Owner (e.g., Software Engineer).                            |
-| `version`           | String  | Must comply with Semantic Versioning (e.g., 1.0.0).              |
-| `status`            | Enum    | The current lifecycle state (must match Allowed Statuses below). |
-| `classification`    | Enum    | The data sensitivity (must match Allowed Classifications below). |
-| `parent_sad`        | String  | The parent SAD ID this design implements (e.g., `SAD-EXAMPLE-001`).      |
-| `review_cycle_days` | Integer | The frequency in days for required review.                       |
-| `last_reviewed`     | Date    | The date of the last formal review (YYYY-MM-DD).                 |
+| Metadata Field      | Type    | Description / Purpose                                               |
+| ------------------- | ------- | ------------------------------------------------------------------- |
+| `id`                | String  | Unique identifier (e.g., `STD-EXAMPLE-008`).                        |
+| `title`             | String  | Descriptive title of the document.                                  |
+| `owner`             | String  | Lead Owner (e.g., Software Engineer).                               |
+| `version`           | String  | Must comply with Semantic Versioning (e.g., 1.0.0).                 |
+| `status`            | Enum    | The current lifecycle state (must match Allowed Statuses below).    |
+| `classification`    | Enum    | The data sensitivity (must match Allowed Classifications below).    |
+| `parent_sad`        | String  | The parent SAD ID this design implements (e.g., `SAD-EXAMPLE-001`). |
+| `review_cycle_days` | Integer | The frequency in days for required review.                          |
+| `last_reviewed`     | Date    | The date of the last formal review (YYYY-MM-DD).                    |
 
 ##### Allowed Lifecycle Statuses
 

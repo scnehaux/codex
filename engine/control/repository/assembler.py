@@ -35,6 +35,10 @@ GOVERNED_CORPUS_ROOTS = (
 
 DERIVED_MARKDOWN_FILES = frozenset({"index.md", "readme.md", "traceability.md"})
 
+GOVERNED_CORPUS_SUPPORT_PATTERNS = (
+    r"(?:^|/)00-governance/templates(?:/|$)",
+)
+
 
 class RepositoryAssemblyError(ValueError):
     """Base deterministic failure while constructing canonical repository state."""
@@ -215,12 +219,16 @@ class RepositoryAssembler:
         root = Path(repo_root).resolve()
         ignored = set(DERIVED_MARKDOWN_FILES)
         ignored.update(item.lower() for item in (ignored_files_lower or []))
+
+        patterns = list(GOVERNED_CORPUS_SUPPORT_PATTERNS)
+        patterns.extend(ignored_patterns or [])
+
         targets = [str(root / relative_root) for relative_root in GOVERNED_CORPUS_ROOTS]
         return RepositoryAssembler.load(
             targets,
             repo_root=root,
             allowed_root_dirs=set(GOVERNED_CORPUS_ROOTS),
             ignored_files_lower=sorted(ignored),
-            ignored_patterns=ignored_patterns,
+            ignored_patterns=patterns,
             namespace=namespace,
         )

@@ -23,13 +23,13 @@ The previous `phase5_semantic_foundation.py` is therefore **SUPERSEDED / DO NOT 
 
 ## 1. Status Legend
 
-| Status | Meaning |
-| --- | --- |
-| `DONE` | Implemented, tested, and currently proven by canonical gates |
-| `PARTIAL` | Some controls exist, but the full invariant is not yet closed |
-| `NOT STARTED` | Identified but not implemented in Codex |
-| `BLOCKED` | Must wait for an earlier dependency or repository lifecycle event |
-| `SUPERSEDED` | Previous implementation plan or script must not be used |
+| Status        | Meaning                                                           |
+| ------------- | ----------------------------------------------------------------- |
+| `DONE`        | Implemented, tested, and currently proven by canonical gates      |
+| `PARTIAL`     | Some controls exist, but the full invariant is not yet closed     |
+| `NOT STARTED` | Identified but not implemented in Codex                           |
+| `BLOCKED`     | Must wait for an earlier dependency or repository lifecycle event |
+| `SUPERSEDED`  | Previous implementation plan or script must not be used           |
 
 ---
 
@@ -72,19 +72,18 @@ All P0 items below must be resolved or explicitly proven non-applicable before t
 
 ## P0-A — Lifecycle, Validation, and Admission Semantics
 
-| ID | Defect / Risk | Target Invariant | Status | Current Evidence / Gap |
-| --- | --- | --- | --- | --- |
-| P0-A01 | Lifecycle state was used as validation policy | `Lifecycle State != Validation Profile != Admission Authority` | `DONE` | GDC full-validation and architecture admission are separated, but ordinary artifact relaxation still derives from global exempt statuses |
-| P0-A02 | `draft` can globally short-circuit validation | Relaxation must be artifact-aware and rule-aware | `DONE` | GDC draft is fixed; general model still needs replacement |
-| P0-A03 | `deprecated` is configured as exempt/relaxed | Retired artifacts remain full-validation baseline history | `DONE` | Must remove `deprecated` from relaxed/exempt semantics |
-| P0-A04 | ADR `accepted` is absent from generic baseline classifier | Baseline classification must be artifact-type-aware | `DONE` | Current baseline helper is not complete |
-| P0-A05 | GDC draft could previously bypass governance | GDC draft always receives full validation | `DONE` | Phase 2 regression tests prove this |
-| P0-A06 | Architecture could be admitted before stable governance | Admission is closed until declared GDC baseline is approved and >=1.0.0 | `DONE` | `governance_auditor` + bootstrap manifest |
-| P0-A07 | Genesis repository event was conflated with document approval | Genesis admission and GDC approval are independent | `DONE` | Current bootstrap model uses draft/0.x GDCs |
-| P0-A08 | Baseline authority is inferred from literal strings | Shared semantic states: pre-baseline, baseline-bearing, retired | `DONE` | Needs Lifecycle Registry |
-| P0-A09 | Validation relaxation can accidentally apply to baseline-bearing states | Only explicitly eligible pre-baseline states may relax | `DONE` | Needs explicit Validation Profile Registry |
-| P0-A10 | Lifecycle age rules and validation strictness are coupled | Age policy runs independently from validation profile | `DONE` | Current `exempt_statuses` mixes both concepts |
-
+| ID     | Defect / Risk                                                           | Target Invariant                                                        | Status | Current Evidence / Gap                                                                                                                   |
+| ------ | ----------------------------------------------------------------------- | ----------------------------------------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| P0-A01 | Lifecycle state was used as validation policy                           | `Lifecycle State != Validation Profile != Admission Authority`          | `DONE` | GDC full-validation and architecture admission are separated, but ordinary artifact relaxation still derives from global exempt statuses |
+| P0-A02 | `draft` can globally short-circuit validation                           | Relaxation must be artifact-aware and rule-aware                        | `DONE` | GDC draft is fixed; general model still needs replacement                                                                                |
+| P0-A03 | `deprecated` is configured as exempt/relaxed                            | Retired artifacts remain full-validation baseline history               | `DONE` | Must remove `deprecated` from relaxed/exempt semantics                                                                                   |
+| P0-A04 | ADR `accepted` is absent from generic baseline classifier               | Baseline classification must be artifact-type-aware                     | `DONE` | Current baseline helper is not complete                                                                                                  |
+| P0-A05 | GDC draft could previously bypass governance                            | GDC draft always receives full validation                               | `DONE` | Phase 2 regression tests prove this                                                                                                      |
+| P0-A06 | Architecture could be admitted before stable governance                 | Admission is closed until declared GDC baseline is approved and >=1.0.0 | `DONE` | `governance_auditor` + bootstrap manifest                                                                                                |
+| P0-A07 | Genesis repository event was conflated with document approval           | Genesis admission and GDC approval are independent                      | `DONE` | Current bootstrap model uses draft/0.x GDCs                                                                                              |
+| P0-A08 | Baseline authority is inferred from literal strings                     | Shared semantic states: pre-baseline, baseline-bearing, retired         | `DONE` | Needs Lifecycle Registry                                                                                                                 |
+| P0-A09 | Validation relaxation can accidentally apply to baseline-bearing states | Only explicitly eligible pre-baseline states may relax                  | `DONE` | Needs explicit Validation Profile Registry                                                                                               |
+| P0-A10 | Lifecycle age rules and validation strictness are coupled               | Age policy runs independently from validation profile                   | `DONE` | Current `exempt_statuses` mixes both concepts                                                                                            |
 
 ### P0-A Completion Evidence
 
@@ -118,15 +117,15 @@ Verified after Slice 5.1:
 
 ## P0-B — Normative Policy Coverage
 
-| ID | Defect / Risk | Target Invariant | Status | Current Evidence / Gap |
-| --- | --- | --- | --- | --- |
-| P0-B01 | A GDC `MUST` can exist only as prose | Every critical normative rule has a stable Control ID | `NOT STARTED` | No Normative Control Registry |
-| P0-B02 | Code coverage can be high while policy coverage is zero | Policy coverage is measured independently from test coverage | `NOT STARTED` | No policy-to-control metric |
-| P0-B03 | EAD implementation-agnostic rule is documented but not executed | EAD semantic boundary is machine-enforced | `NOT STARTED` | `EADValidator` remains effectively no-op |
-| P0-B04 | Type-specific validator may exist but implement nothing | Normative artifact validators cannot silently be no-op | `NOT STARTED` | Needs registry/control audit |
-| P0-B05 | A severity entry can imply enforcement that does not exist | Every blocking rule maps to executable implementation | `NOT STARTED` | Severity integrity currently checks names, not implementation |
-| P0-B06 | Tests can cover helpers without proving the documented rule | Control Registry records direct test evidence | `NOT STARTED` | Needs control → implementation → test mapping |
-| P0-B07 | Governance prose can describe behavior the engine does not perform | Engine self-documentation must match executable behavior | `NOT STARTED` | Needs control/evidence reconciliation |
+| ID     | Defect / Risk                                                      | Target Invariant                                             | Status        | Current Evidence / Gap                                        |
+| ------ | ------------------------------------------------------------------ | ------------------------------------------------------------ | ------------- | ------------------------------------------------------------- |
+| P0-B01 | A GDC `MUST` can exist only as prose                               | Every critical normative rule has a stable Control ID        | `NOT STARTED` | No Normative Control Registry                                 |
+| P0-B02 | Code coverage can be high while policy coverage is zero            | Policy coverage is measured independently from test coverage | `NOT STARTED` | No policy-to-control metric                                   |
+| P0-B03 | EAD implementation-agnostic rule is documented but not executed    | EAD semantic boundary is machine-enforced                    | `NOT STARTED` | `EADValidator` remains effectively no-op                      |
+| P0-B04 | Type-specific validator may exist but implement nothing            | Normative artifact validators cannot silently be no-op       | `NOT STARTED` | Needs registry/control audit                                  |
+| P0-B05 | A severity entry can imply enforcement that does not exist         | Every blocking rule maps to executable implementation        | `NOT STARTED` | Severity integrity currently checks names, not implementation |
+| P0-B06 | Tests can cover helpers without proving the documented rule        | Control Registry records direct test evidence                | `NOT STARTED` | Needs control → implementation → test mapping                 |
+| P0-B07 | Governance prose can describe behavior the engine does not perform | Engine self-documentation must match executable behavior     | `NOT STARTED` | Needs control/evidence reconciliation                         |
 
 ### P0-B Exit Criteria
 
@@ -150,18 +149,17 @@ A blocking `MUST` without implementation or test evidence fails repository valid
 
 ## P0-C — Relationship and Graph Integrity
 
-| ID | Defect / Risk | Target Invariant | Status | Current Evidence / Gap |
-| --- | --- | --- | --- | --- |
-| P0-C01 | Relationship vocabulary is duplicated across validators/auditors/generators | One Relationship Registry is the SSOT | `DONE` | `parent_pad`, `governed_by`, `fulfilled_by`, etc. remain duplicated |
-| P0-C02 | Existing reference is validated mostly by ID existence | Relationship target type must also be valid | `DONE` | `SAD.parent_pad -> PAD` not centrally enforced |
-| P0-C03 | Relationship source type is not centrally enforced | Invalid relationship field on wrong artifact type fails | `DONE` | Needs registry |
-| P0-C04 | Cardinality is spread across schemas | Cardinality belongs to relationship ontology | `DONE` | Needs registry |
-| P0-C05 | DAG participation is hardcoded separately | DAG semantics consume the same registry | `DONE` | `graph_auditor` still has its own tuple |
-| P0-C06 | Inverse relationships can drift | Declared inverse edges reconcile | `NOT STARTED` | Example: PAD `fulfilled_by` vs SAD `parent_pad` |
-| P0-C07 | A referenced artifact may exist but be non-authoritative | Relationship policy can require authoritative target lifecycle | `DONE` | Needs lifecycle + relationship integration |
-| P0-C08 | Example IDs can accidentally enter real graph semantics | Reserved `EXAMPLE` namespace never resolves as architecture estate | `DONE` | Current lint is zero-noise |
-| P0-C09 | Graph generator and graph auditor can interpret different ontology | Both must consume one registry/model | `NOT STARTED` | Requires RepositoryModel work |
-
+| ID     | Defect / Risk                                                               | Target Invariant                                                   | Status        | Current Evidence / Gap                                              |
+| ------ | --------------------------------------------------------------------------- | ------------------------------------------------------------------ | ------------- | ------------------------------------------------------------------- |
+| P0-C01 | Relationship vocabulary is duplicated across validators/auditors/generators | One Relationship Registry is the SSOT                              | `DONE`        | `parent_pad`, `governed_by`, `fulfilled_by`, etc. remain duplicated |
+| P0-C02 | Existing reference is validated mostly by ID existence                      | Relationship target type must also be valid                        | `DONE`        | `SAD.parent_pad -> PAD` not centrally enforced                      |
+| P0-C03 | Relationship source type is not centrally enforced                          | Invalid relationship field on wrong artifact type fails            | `DONE`        | Needs registry                                                      |
+| P0-C04 | Cardinality is spread across schemas                                        | Cardinality belongs to relationship ontology                       | `DONE`        | Needs registry                                                      |
+| P0-C05 | DAG participation is hardcoded separately                                   | DAG semantics consume the same registry                            | `DONE`        | `graph_auditor` still has its own tuple                             |
+| P0-C06 | Inverse relationships can drift                                             | Declared inverse edges reconcile                                   | `NOT STARTED` | Example: PAD `fulfilled_by` vs SAD `parent_pad`                     |
+| P0-C07 | A referenced artifact may exist but be non-authoritative                    | Relationship policy can require authoritative target lifecycle     | `DONE`        | Needs lifecycle + relationship integration                          |
+| P0-C08 | Example IDs can accidentally enter real graph semantics                     | Reserved `EXAMPLE` namespace never resolves as architecture estate | `DONE`        | Current lint is zero-noise                                          |
+| P0-C09 | Graph generator and graph auditor can interpret different ontology          | Both must consume one registry/model                               | `NOT STARTED` | Requires RepositoryModel work                                       |
 
 ### P0-C Relationship Ontology Foundation Evidence
 
@@ -198,17 +196,16 @@ Verified after Slice 5.4:
 
 ## P0-D — Temporal Integrity
 
-| ID | Defect / Risk | Target Invariant | Status | Current Evidence / Gap |
-| --- | --- | --- | --- | --- |
-| P0-D01 | JSON Schema `format: date` may be annotation-only | ISO date validation is executable | `DONE` | Current Phase 5 script was intended to fix this but has not run |
-| P0-D02 | Invalid date can bypass age validation | Invalid governed date is a blocking finding | `DONE` | Needs explicit temporal validator |
-| P0-D03 | Future `created_date` can produce negative age and pass | Future governance dates fail | `DONE` | No future-date guard |
-| P0-D04 | Future `last_reviewed` can appear fresh indefinitely | Future review dates fail | `DONE` | No future-date guard |
-| P0-D05 | Temporal ordering is not guaranteed | `created_date <= last_updated` and `created_date <= last_reviewed` | `DONE` | Needs explicit ordering |
-| P0-D06 | Governance uses ambient local clock | Evaluation date must be deterministic/injectable | `DONE` | Current `date.today()` remains |
-| P0-D07 | `review_cycle_days` lacks bounded governance semantics | Review cycles have rational min/max bounds | `DONE` | Schema only checks integer today |
-| P0-D08 | Age validation and date parsing have separate failure semantics | Temporal validation has one fail-closed authority | `DONE` | Needs consolidation |
-
+| ID     | Defect / Risk                                                   | Target Invariant                                                   | Status | Current Evidence / Gap                                          |
+| ------ | --------------------------------------------------------------- | ------------------------------------------------------------------ | ------ | --------------------------------------------------------------- |
+| P0-D01 | JSON Schema `format: date` may be annotation-only               | ISO date validation is executable                                  | `DONE` | Current Phase 5 script was intended to fix this but has not run |
+| P0-D02 | Invalid date can bypass age validation                          | Invalid governed date is a blocking finding                        | `DONE` | Needs explicit temporal validator                               |
+| P0-D03 | Future `created_date` can produce negative age and pass         | Future governance dates fail                                       | `DONE` | No future-date guard                                            |
+| P0-D04 | Future `last_reviewed` can appear fresh indefinitely            | Future review dates fail                                           | `DONE` | No future-date guard                                            |
+| P0-D05 | Temporal ordering is not guaranteed                             | `created_date <= last_updated` and `created_date <= last_reviewed` | `DONE` | Needs explicit ordering                                         |
+| P0-D06 | Governance uses ambient local clock                             | Evaluation date must be deterministic/injectable                   | `DONE` | Current `date.today()` remains                                  |
+| P0-D07 | `review_cycle_days` lacks bounded governance semantics          | Review cycles have rational min/max bounds                         | `DONE` | Schema only checks integer today                                |
+| P0-D08 | Age validation and date parsing have separate failure semantics | Temporal validation has one fail-closed authority                  | `DONE` | Needs consolidation                                             |
 
 ### P0-D Completion Evidence
 
@@ -245,14 +242,13 @@ Verified after Slice 5.2:
 
 ## P0-E — Classification and Repository Boundary
 
-| ID | Defect / Risk | Target Invariant | Status | Current Evidence / Gap |
-| --- | --- | --- | --- | --- |
-| P0-E01 | `classification` is currently only metadata | Classification must correspond to actual repository confidentiality | `DONE` | No repository visibility rule |
-| P0-E02 | Public repository may contain `classification: internal` | Public Codex admits only public governed material | `DONE` | Current copied GDC metadata must be audited |
-| P0-E03 | Schema allows `restricted` / `confidential` in a public repo | Non-public material must use a controlled private architecture estate | `DONE` | Boundary not modeled |
-| P0-E04 | Classification can create false security confidence | Metadata must never claim protection infrastructure does not provide | `DONE` | Needs repository policy |
-| P0-E05 | Future repository split may drift | Public/private estate policy must be explicit | `DONE` | Design required |
-
+| ID     | Defect / Risk                                                | Target Invariant                                                      | Status | Current Evidence / Gap                      |
+| ------ | ------------------------------------------------------------ | --------------------------------------------------------------------- | ------ | ------------------------------------------- |
+| P0-E01 | `classification` is currently only metadata                  | Classification must correspond to actual repository confidentiality   | `DONE` | No repository visibility rule               |
+| P0-E02 | Public repository may contain `classification: internal`     | Public Codex admits only public governed material                     | `DONE` | Current copied GDC metadata must be audited |
+| P0-E03 | Schema allows `restricted` / `confidential` in a public repo | Non-public material must use a controlled private architecture estate | `DONE` | Boundary not modeled                        |
+| P0-E04 | Classification can create false security confidence          | Metadata must never claim protection infrastructure does not provide  | `DONE` | Needs repository policy                     |
+| P0-E05 | Future repository split may drift                            | Public/private estate policy must be explicit                         | `DONE` | Design required                             |
 
 ### P0-E Completion Evidence
 
@@ -288,17 +284,17 @@ Non-public architecture requires a separate controlled estate
 
 ## P0-F — Schema, Validator, and Registry Integrity
 
-| ID | Defect / Risk | Target Invariant | Status | Current Evidence / Gap |
-| --- | --- | --- | --- | --- |
-| P0-F01 | A schema may be broken but never loaded because no instance exists | All schemas are validated at control-plane boot | `NOT STARTED` | Zero-corpus schema audit absent |
-| P0-F02 | `$ref` failure may remain latent | Every `$ref` resolves before artifact lint | `NOT STARTED` | Registry audit absent |
-| P0-F03 | Schema and validator registries can drift | One artifact type has exactly one schema + validator contract | `NOT STARTED` | Bijection audit absent |
-| P0-F04 | Orphan schema can silently exist | Orphan schemas fail | `NOT STARTED` | Not implemented |
-| P0-F05 | Orphan validator can silently exist | Orphan validators fail | `NOT STARTED` | Not implemented |
-| P0-F06 | Duplicate artifact registration can silently shadow behavior | Duplicate registrations fail | `NOT STARTED` | Not implemented |
-| P0-F07 | `config.target_doc` may drift from guideline | Schema → guideline mapping is validated | `PARTIAL` | Phase 2 injected target docs, but no global integrity auditor |
-| P0-F08 | Custom schema keywords can exist without registered handlers | Custom keyword registry is validated | `NOT STARTED` | Not implemented |
-| P0-F09 | Severity name integrity exists but control implementation integrity does not | Severity, control, schema, validator registries reconcile | `PARTIAL` | Severity schema checks already exist |
+| ID     | Defect / Risk                                                                | Target Invariant                                              | Status        | Current Evidence / Gap                                        |
+| ------ | ---------------------------------------------------------------------------- | ------------------------------------------------------------- | ------------- | ------------------------------------------------------------- |
+| P0-F01 | A schema may be broken but never loaded because no instance exists           | All schemas are validated at control-plane boot               | `NOT STARTED` | Zero-corpus schema audit absent                               |
+| P0-F02 | `$ref` failure may remain latent                                             | Every `$ref` resolves before artifact lint                    | `NOT STARTED` | Registry audit absent                                         |
+| P0-F03 | Schema and validator registries can drift                                    | One artifact type has exactly one schema + validator contract | `NOT STARTED` | Bijection audit absent                                        |
+| P0-F04 | Orphan schema can silently exist                                             | Orphan schemas fail                                           | `NOT STARTED` | Not implemented                                               |
+| P0-F05 | Orphan validator can silently exist                                          | Orphan validators fail                                        | `NOT STARTED` | Not implemented                                               |
+| P0-F06 | Duplicate artifact registration can silently shadow behavior                 | Duplicate registrations fail                                  | `NOT STARTED` | Not implemented                                               |
+| P0-F07 | `config.target_doc` may drift from guideline                                 | Schema → guideline mapping is validated                       | `PARTIAL`     | Phase 2 injected target docs, but no global integrity auditor |
+| P0-F08 | Custom schema keywords can exist without registered handlers                 | Custom keyword registry is validated                          | `NOT STARTED` | Not implemented                                               |
+| P0-F09 | Severity name integrity exists but control implementation integrity does not | Severity, control, schema, validator registries reconcile     | `PARTIAL`     | Severity schema checks already exist                          |
 
 ### P0-F Exit Criteria
 
@@ -308,19 +304,19 @@ Control-plane bootstrap validates every registry with zero architecture artifact
 
 ## P0-G — RepositoryModel, Generators, and Zero-Corpus Operation
 
-| ID | Defect / Risk | Target Invariant | Status | Current Evidence / Gap |
-| --- | --- | --- | --- | --- |
-| P0-G01 | Generators parse Markdown independently | One canonical parser feeds one RepositoryModel | `NOT STARTED` | Legacy parser duplication still copied |
-| P0-G02 | Generator can swallow malformed frontmatter | Malformed governed input fails generation | `NOT STARTED` | Fail-open generator paths remain |
-| P0-G03 | Generator can catch exception, print, and continue | Governance-critical generation error exits non-zero | `NOT STARTED` | Not fixed |
-| P0-G04 | `verify-generated` can trust failed generation | Reconciliation only runs after successful generation | `NOT STARTED` | Not fixed |
-| P0-G05 | ADR index assumes `05-decisions` exists | Zero architecture corpus is valid | `NOT STARTED` | Generator not bootstrap-safe |
-| P0-G06 | PAD/SAD index assumes `03/04` exists | Zero architecture corpus is valid | `NOT STARTED` | Generator not bootstrap-safe |
-| P0-G07 | Traceability generator assumes architecture layer exists | Zero architecture corpus is valid | `NOT STARTED` | Generator not bootstrap-safe |
-| P0-G08 | Generated state can be partially written | Generate → validate → atomic replace | `NOT STARTED` | Transactional generation absent |
-| P0-G09 | Maturity dashboard can hardcode healthy status | Derived telemetry must be evidence-based | `NOT STARTED` | MATURITY intentionally not copied |
-| P0-G10 | Ambient Git index can affect generator output | Generator tests are deterministic | `DONE` | Engine topography determinism was fixed |
-| P0-G11 | Architecture admission closed but generators assume architecture estate | All governance tools support governance-only mode | `NOT STARTED` | Full zero-corpus integration suite missing |
+| ID     | Defect / Risk                                                           | Target Invariant                                     | Status        | Current Evidence / Gap                     |
+| ------ | ----------------------------------------------------------------------- | ---------------------------------------------------- | ------------- | ------------------------------------------ |
+| P0-G01 | Generators parse Markdown independently                                 | One canonical parser feeds one RepositoryModel       | `NOT STARTED` | Legacy parser duplication still copied     |
+| P0-G02 | Generator can swallow malformed frontmatter                             | Malformed governed input fails generation            | `NOT STARTED` | Fail-open generator paths remain           |
+| P0-G03 | Generator can catch exception, print, and continue                      | Governance-critical generation error exits non-zero  | `NOT STARTED` | Not fixed                                  |
+| P0-G04 | `verify-generated` can trust failed generation                          | Reconciliation only runs after successful generation | `NOT STARTED` | Not fixed                                  |
+| P0-G05 | ADR index assumes `05-decisions` exists                                 | Zero architecture corpus is valid                    | `NOT STARTED` | Generator not bootstrap-safe               |
+| P0-G06 | PAD/SAD index assumes `03/04` exists                                    | Zero architecture corpus is valid                    | `NOT STARTED` | Generator not bootstrap-safe               |
+| P0-G07 | Traceability generator assumes architecture layer exists                | Zero architecture corpus is valid                    | `NOT STARTED` | Generator not bootstrap-safe               |
+| P0-G08 | Generated state can be partially written                                | Generate → validate → atomic replace                 | `NOT STARTED` | Transactional generation absent            |
+| P0-G09 | Maturity dashboard can hardcode healthy status                          | Derived telemetry must be evidence-based             | `NOT STARTED` | MATURITY intentionally not copied          |
+| P0-G10 | Ambient Git index can affect generator output                           | Generator tests are deterministic                    | `DONE`        | Engine topography determinism was fixed    |
+| P0-G11 | Architecture admission closed but generators assume architecture estate | All governance tools support governance-only mode    | `NOT STARTED` | Full zero-corpus integration suite missing |
 
 ### P0-G Exit Criteria
 
@@ -330,17 +326,17 @@ Control-plane bootstrap validates every registry with zero architecture artifact
 
 ## P0-H — Governance-Critical Test Integrity
 
-| ID | Defect / Risk | Target Invariant | Status | Current Evidence / Gap |
-| --- | --- | --- | --- | --- |
-| P0-H01 | Aggregate coverage can hide weak critical files | >=95% per governed production file | `DONE` | Hard pytest gate active for `engine/**/*.py` |
-| P0-H02 | Test environment previously masked broken production imports | Test import topology must match production | `DONE` | Current Python path matches package root |
-| P0-H03 | Coverage-only tests can exercise dead code | Dead code is deleted instead | `DONE` | `_resolve_base_ref` test/code removed |
-| P0-H04 | Unreachable defensive branches can remain to inflate denominator | Proven unreachable code is deleted/refactored | `DONE` for known branch | CLI dead relpath branch removed |
-| P0-H05 | Coverage scope only includes `engine/` | All governance-critical Python code is governed | `PARTIAL` | Generators/scripts are outside current per-file gate |
-| P0-H06 | Governance-critical generators are ungoverned by coverage | Canonical generators >=95% each | `NOT STARTED` | Coverage expansion required |
-| P0-H07 | Governance-critical scripts are ungoverned by coverage | CI/security/waiver/bootstrap scripts >=95% each | `NOT STARTED` | Coverage expansion required |
-| P0-H08 | Collection failure produced misleading coverage output | Primary collection failure must remain authoritative | `DONE` | Collection-safe coverage hook fixed |
-| P0-H09 | No adversarial malformed-repository integration corpus | Critical fail-closed paths need hostile fixtures | `NOT STARTED` | Add in Phase 5/6 |
+| ID     | Defect / Risk                                                    | Target Invariant                                     | Status                  | Current Evidence / Gap                               |
+| ------ | ---------------------------------------------------------------- | ---------------------------------------------------- | ----------------------- | ---------------------------------------------------- |
+| P0-H01 | Aggregate coverage can hide weak critical files                  | >=95% per governed production file                   | `DONE`                  | Hard pytest gate active for `engine/**/*.py`         |
+| P0-H02 | Test environment previously masked broken production imports     | Test import topology must match production           | `DONE`                  | Current Python path matches package root             |
+| P0-H03 | Coverage-only tests can exercise dead code                       | Dead code is deleted instead                         | `DONE`                  | `_resolve_base_ref` test/code removed                |
+| P0-H04 | Unreachable defensive branches can remain to inflate denominator | Proven unreachable code is deleted/refactored        | `DONE` for known branch | CLI dead relpath branch removed                      |
+| P0-H05 | Coverage scope only includes `engine/`                           | All governance-critical Python code is governed      | `PARTIAL`               | Generators/scripts are outside current per-file gate |
+| P0-H06 | Governance-critical generators are ungoverned by coverage        | Canonical generators >=95% each                      | `NOT STARTED`           | Coverage expansion required                          |
+| P0-H07 | Governance-critical scripts are ungoverned by coverage           | CI/security/waiver/bootstrap scripts >=95% each      | `NOT STARTED`           | Coverage expansion required                          |
+| P0-H08 | Collection failure produced misleading coverage output           | Primary collection failure must remain authoritative | `DONE`                  | Collection-safe coverage hook fixed                  |
+| P0-H09 | No adversarial malformed-repository integration corpus           | Critical fail-closed paths need hostile fixtures     | `NOT STARTED`           | Add in Phase 5/6                                     |
 
 ### P0-H Exit Criteria
 
@@ -350,28 +346,28 @@ All governance-critical Python production paths—not only `engine/`—have hone
 
 ## P0-I — Technology Policy Availability
 
-| ID | Defect / Risk | Target Invariant | Status | Current Evidence / Gap |
-| --- | --- | --- | --- | --- |
-| P0-I01 | Missing Tech Radar previously allowed technology validation to silently pass | Technologies declared + radar missing = blocking failure | `DONE` | Phase 4 predecessor hardening |
-| P0-I02 | Malformed Tech Radar previously silently passed | Malformed/unreadable radar = blocking failure | `DONE` | Regression tests exist |
-| P0-I03 | No technology declared should not require radar | Zero-technology governance bootstrap remains valid | `DONE` | Current behavior |
-| P0-I04 | Tech Radar lifecycle vocabulary can drift | Machine lifecycle vocabulary has one authority | `NOT STARTED` | P1 semantic normalization still required |
+| ID     | Defect / Risk                                                                | Target Invariant                                         | Status        | Current Evidence / Gap                   |
+| ------ | ---------------------------------------------------------------------------- | -------------------------------------------------------- | ------------- | ---------------------------------------- |
+| P0-I01 | Missing Tech Radar previously allowed technology validation to silently pass | Technologies declared + radar missing = blocking failure | `DONE`        | Phase 4 predecessor hardening            |
+| P0-I02 | Malformed Tech Radar previously silently passed                              | Malformed/unreadable radar = blocking failure            | `DONE`        | Regression tests exist                   |
+| P0-I03 | No technology declared should not require radar                              | Zero-technology governance bootstrap remains valid       | `DONE`        | Current behavior                         |
+| P0-I04 | Tech Radar lifecycle vocabulary can drift                                    | Machine lifecycle vocabulary has one authority           | `NOT STARTED` | P1 semantic normalization still required |
 
 ---
 
 ## P0-J — Genesis Integrity and Root of Trust
 
-| ID | Defect / Risk | Target Invariant | Status | Current Evidence / Gap |
-| --- | --- | --- | --- | --- |
-| P0-J01 | Genesis provenance could be informal | Source repository + immutable source SHA are declared | `DONE` | Bootstrap manifest contains legacy SHA |
-| P0-J02 | Genesis allowed/forbidden paths could be informal | Manifest explicitly declares both | `DONE` | Bootstrap manifest exists |
-| P0-J03 | Static manifest can drift or become malformed | Manifest integrity is executable | `PARTIAL` | Architecture admission consumes manifest; full genesis validation absent |
-| P0-J04 | First root commit can contain forbidden paths | Root commit contents must be audited | `NOT STARTED` | No root integrity auditor |
-| P0-J05 | Repository could accidentally gain multiple roots | Exactly one root commit | `BLOCKED` | Requires Genesis commit to exist |
-| P0-J06 | Genesis exception could be reused later | Genesis exception expires permanently after root commit | `BLOCKED` | Requires post-Genesis audit |
-| P0-J07 | Root manifest could mutate after Genesis | Genesis provenance must remain immutable or explicitly migrated | `BLOCKED` | Requires committed root |
-| P0-J08 | Architecture directories could enter Genesis | `01–05` forbidden in root | `PARTIAL` | Manifest forbids them but root history not yet testable |
-| P0-J09 | Support metadata could fall outside allowed root contract | All intended root support files must be explicit | `PARTIAL` | ROADMAP/PLAN not yet in repo because new script not run |
+| ID     | Defect / Risk                                             | Target Invariant                                                | Status        | Current Evidence / Gap                                                   |
+| ------ | --------------------------------------------------------- | --------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------ |
+| P0-J01 | Genesis provenance could be informal                      | Source repository + immutable source SHA are declared           | `DONE`        | Bootstrap manifest contains legacy SHA                                   |
+| P0-J02 | Genesis allowed/forbidden paths could be informal         | Manifest explicitly declares both                               | `DONE`        | Bootstrap manifest exists                                                |
+| P0-J03 | Static manifest can drift or become malformed             | Manifest integrity is executable                                | `PARTIAL`     | Architecture admission consumes manifest; full genesis validation absent |
+| P0-J04 | First root commit can contain forbidden paths             | Root commit contents must be audited                            | `NOT STARTED` | No root integrity auditor                                                |
+| P0-J05 | Repository could accidentally gain multiple roots         | Exactly one root commit                                         | `BLOCKED`     | Requires Genesis commit to exist                                         |
+| P0-J06 | Genesis exception could be reused later                   | Genesis exception expires permanently after root commit         | `BLOCKED`     | Requires post-Genesis audit                                              |
+| P0-J07 | Root manifest could mutate after Genesis                  | Genesis provenance must remain immutable or explicitly migrated | `BLOCKED`     | Requires committed root                                                  |
+| P0-J08 | Architecture directories could enter Genesis              | `01–05` forbidden in root                                       | `PARTIAL`     | Manifest forbids them but root history not yet testable                  |
+| P0-J09 | Support metadata could fall outside allowed root contract | All intended root support files must be explicit                | `PARTIAL`     | ROADMAP/PLAN not yet in repo because new script not run                  |
 
 ### P0-J Exit Criteria
 
@@ -392,14 +388,14 @@ After Genesis:
 
 ## P0-K — Version and Mutation Enforcement
 
-| ID | Defect / Risk | Target Invariant | Status | Current Evidence / Gap |
-| --- | --- | --- | --- | --- |
-| P0-K01 | `audit_version_bump()` is intentionally no-op | Version mutation policy becomes executable before stable baseline | `NOT STARTED` | Live seam exists, no implementation |
-| P0-K02 | Old implementation assumed `approved` only | Mutation policy must be artifact/lifecycle aware | `NOT STARTED` | ADR `accepted` etc. not covered |
-| P0-K03 | Any modification was treated similarly | Mutation classifier distinguishes patch/minor/major semantics | `NOT STARTED` | Design required |
-| P0-K04 | Pre-1.0 version semantics are not explicit enough | Scnehaux 0.x policy is normative and executable | `NOT STARTED` | Design required |
-| P0-K05 | Stable baseline can be changed without compatibility classification | >=1.0 mutation requires compatibility-aware version bump | `NOT STARTED` | Design required |
-| P0-K06 | ADR immutability differs from versioned artifacts | ADR mutation/supersession policy is type-aware | `NOT STARTED` | Design required |
+| ID     | Defect / Risk                                                       | Target Invariant                                                  | Status        | Current Evidence / Gap              |
+| ------ | ------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------- | ----------------------------------- |
+| P0-K01 | `audit_version_bump()` is intentionally no-op                       | Version mutation policy becomes executable before stable baseline | `NOT STARTED` | Live seam exists, no implementation |
+| P0-K02 | Old implementation assumed `approved` only                          | Mutation policy must be artifact/lifecycle aware                  | `NOT STARTED` | ADR `accepted` etc. not covered     |
+| P0-K03 | Any modification was treated similarly                              | Mutation classifier distinguishes patch/minor/major semantics     | `NOT STARTED` | Design required                     |
+| P0-K04 | Pre-1.0 version semantics are not explicit enough                   | Scnehaux 0.x policy is normative and executable                   | `NOT STARTED` | Design required                     |
+| P0-K05 | Stable baseline can be changed without compatibility classification | >=1.0 mutation requires compatibility-aware version bump          | `NOT STARTED` | Design required                     |
+| P0-K06 | ADR immutability differs from versioned artifacts                   | ADR mutation/supersession policy is type-aware                    | `NOT STARTED` | Design required                     |
 
 ### P0-K Exit Criteria
 
@@ -411,17 +407,17 @@ No stable baseline artifact can change without the required mutation/version con
 
 These items cannot be completed before a Genesis root exists, but the design must be prepared before architecture admission
 
-| ID | Defect / Risk | Target Invariant | Status | Current Evidence / Gap |
-| --- | --- | --- | --- | --- |
-| P0-L01 | Governance may claim protection not actually configured | Effective GitHub state is evidence | `BLOCKED` | Genesis not committed |
-| P0-L02 | Main direct push may remain possible | Direct push rejected | `BLOCKED` | Ruleset not installed |
-| P0-L03 | Force push may remain possible | Force push rejected | `BLOCKED` | Ruleset not installed |
-| P0-L04 | Main deletion may remain possible | Branch deletion rejected | `BLOCKED` | Ruleset not installed |
-| P0-L05 | CI may not be required | Governance status checks required | `BLOCKED` | Workflow/ruleset not installed |
-| P0-L06 | CODEOWNERS may be decorative | Required CODEOWNER approval | `BLOCKED` | Teams/owners need verification |
-| P0-L07 | Unresolved review conversations may not block | Conversation resolution required | `BLOCKED` | Ruleset not installed |
-| P0-L08 | Approval may remain stale after material change | Stale approval policy verified | `BLOCKED` | Ruleset not installed |
-| P0-L09 | Configuration can be mistaken for enforcement | Negative tests are mandatory evidence | `BLOCKED` | Requires live GitHub controls |
+| ID     | Defect / Risk                                           | Target Invariant                      | Status    | Current Evidence / Gap         |
+| ------ | ------------------------------------------------------- | ------------------------------------- | --------- | ------------------------------ |
+| P0-L01 | Governance may claim protection not actually configured | Effective GitHub state is evidence    | `BLOCKED` | Genesis not committed          |
+| P0-L02 | Main direct push may remain possible                    | Direct push rejected                  | `BLOCKED` | Ruleset not installed          |
+| P0-L03 | Force push may remain possible                          | Force push rejected                   | `BLOCKED` | Ruleset not installed          |
+| P0-L04 | Main deletion may remain possible                       | Branch deletion rejected              | `BLOCKED` | Ruleset not installed          |
+| P0-L05 | CI may not be required                                  | Governance status checks required     | `BLOCKED` | Workflow/ruleset not installed |
+| P0-L06 | CODEOWNERS may be decorative                            | Required CODEOWNER approval           | `BLOCKED` | Teams/owners need verification |
+| P0-L07 | Unresolved review conversations may not block           | Conversation resolution required      | `BLOCKED` | Ruleset not installed          |
+| P0-L08 | Approval may remain stale after material change         | Stale approval policy verified        | `BLOCKED` | Ruleset not installed          |
+| P0-L09 | Configuration can be mistaken for enforcement           | Negative tests are mandatory evidence | `BLOCKED` | Requires live GitHub controls  |
 
 ---
 
@@ -429,20 +425,20 @@ These items cannot be completed before a Genesis root exists, but the design mus
 
 Current status before Phase 5 implementation:
 
-| Domain | Done | Partial | Not Started | Blocked |
-| --- | ---: | ---: | ---: | ---: |
-| Lifecycle / validation / admission | 10 | 0 | 0 | 0 |
-| Normative policy coverage | 0 | 0 | 7 | 0 |
-| Relationship / graph | 1 | 0 | 8 | 0 |
-| Temporal integrity | 8 | 0 | 0 | 0 |
-| Classification boundary | 5 | 0 | 0 | 0 |
-| Registry integrity | 0 | 2 | 7 | 0 |
-| RepositoryModel / generators | 1 | 0 | 10 | 0 |
-| Test integrity | 5 | 1 | 3 | 0 |
-| Technology availability | 3 | 0 | 1 | 0 |
-| Genesis integrity | 2 | 4 | 1 | 2 |
-| Version / mutation | 0 | 0 | 6 | 0 |
-| GitHub enforcement | 0 | 0 | 0 | 9 |
+| Domain                             | Done | Partial | Not Started | Blocked |
+| ---------------------------------- | ---: | ------: | ----------: | ------: |
+| Lifecycle / validation / admission |   10 |       0 |           0 |       0 |
+| Normative policy coverage          |    0 |       0 |           7 |       0 |
+| Relationship / graph               |    1 |       0 |           8 |       0 |
+| Temporal integrity                 |    8 |       0 |           0 |       0 |
+| Classification boundary            |    5 |       0 |           0 |       0 |
+| Registry integrity                 |    0 |       2 |           7 |       0 |
+| RepositoryModel / generators       |    1 |       0 |          10 |       0 |
+| Test integrity                     |    5 |       1 |           3 |       0 |
+| Technology availability            |    3 |       0 |           1 |       0 |
+| Genesis integrity                  |    2 |       4 |           1 |       2 |
+| Version / mutation                 |    0 |       0 |           6 |       0 |
+| GitHub enforcement                 |    0 |       0 |           0 |       9 |
 
 The table is a planning ledger, not a maturity score
 
@@ -654,6 +650,7 @@ Only then:
 `architecture_admission: closed -> open`
 
 <!-- PHASE5-STATUS:START -->
+
 ## Phase 5 Execution Status
 
 - Slice 5.1 Lifecycle + Validation Profile — DONE/CLOSED
@@ -664,9 +661,11 @@ Only then:
 - Slice 5.6 Registry Integrity Auditor — CURRENT ACTIVE
 - Slice 5.7 RepositoryModel + Zero-Corpus — PLANNED
 - Slice 5.8 Governance-Critical Coverage Expansion — PLANNED
+
 <!-- PHASE5-STATUS:END -->
 
 <!-- P0-B-STATUS:START -->
+
 ### P0-B — Normative Policy Coverage
 
 - B01 stable Control IDs for GDC MUST — DONE
@@ -676,9 +675,11 @@ Only then:
 - B05 severity implies real enforcement — OPEN, owned by Slice 5.6 Registry Integrity Auditor
 - B06 control → test evidence — DONE for automated verified controls; unresolved controls remain explicitly pending
 - B07 docs vs executable behavior reconciliation — PARTIAL, pending controls continue in their owning phases
+
 <!-- P0-B-STATUS:END -->
 
 <!-- SLICE-5.5-CLOSEOUT:START -->
+
 ### Slice 5.5 Closeout Evidence
 
 - Status: DONE/CLOSED
@@ -702,9 +703,11 @@ Only then:
 - No commit created
 
 Open follow-through:
+
 - P0-B05 severity-to-effective-enforcement reconciliation → Slice 5.6
 - P0-B07 full narrative-to-executable reconciliation remains PARTIAL while scheduled controls are pending
 - Topology/directory/container controls → Slice 5.7
+
 <!-- SLICE-5.5-CLOSEOUT:END -->
 
 <!-- SCNEHAUX-AI-NATIVE-ROADMAP-REBASELINE -->

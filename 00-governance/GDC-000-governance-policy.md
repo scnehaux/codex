@@ -588,18 +588,18 @@ Each relationship declaration defines:
 
 The initial canonical relations are:
 
-| Relation | Source | Target | Cardinality | Direction | DAG | Authority | Inverse |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| `governed_by` | GDC | GDC | 1..* | up | yes | target exists | — |
-| `governed_by` | EAD | GDC | 1..* | up | yes | target exists | — |
-| `governed_by` | STD | GDC / EAD / PAD | 1..* | up | yes | target exists | — |
-| `governed_by` | PAD | GDC / EAD / ADR | 1..* | up | yes | target exists | — |
-| `governed_by` | SAD | GDC / EAD / STD / ADR | 1..* | up | yes | target exists | — |
-| `governed_by` | ADR | GDC / EAD / PAD / SAD | 1..* | up | yes | target exists | — |
-| `realizes_capability` | PAD | EAD | 1..* | up | yes | target exists | — |
-| `parent_pad` | SAD | PAD | 1..1 | up | yes | approved PAD when SAD is draft/approved | `fulfilled_by` |
-| `parent_sad` | TDD | SAD | 1..* | up | yes | target exists | — |
-| `fulfilled_by` | PAD | SAD | 0..* | down | no | target exists | `parent_pad` |
+| Relation              | Source | Target                | Cardinality | Direction | DAG | Authority                               | Inverse        |
+| --------------------- | ------ | --------------------- | ----------- | --------- | --- | --------------------------------------- | -------------- |
+| `governed_by`         | GDC    | GDC                   | 1..*        | up        | yes | target exists                           | —              |
+| `governed_by`         | EAD    | GDC                   | 1..*        | up        | yes | target exists                           | —              |
+| `governed_by`         | STD    | GDC / EAD / PAD       | 1..*        | up        | yes | target exists                           | —              |
+| `governed_by`         | PAD    | GDC / EAD / ADR       | 1..*        | up        | yes | target exists                           | —              |
+| `governed_by`         | SAD    | GDC / EAD / STD / ADR | 1..*        | up        | yes | target exists                           | —              |
+| `governed_by`         | ADR    | GDC / EAD / PAD / SAD | 1..*        | up        | yes | target exists                           | —              |
+| `realizes_capability` | PAD    | EAD                   | 1..*        | up        | yes | target exists                           | —              |
+| `parent_pad`          | SAD    | PAD                   | 1..1        | up        | yes | approved PAD when SAD is draft/approved | `fulfilled_by` |
+| `parent_sad`          | TDD    | SAD                   | 1..*        | up        | yes | target exists                           | —              |
+| `fulfilled_by`        | PAD    | SAD                   | 0..*        | down      | no  | target exists                           | `parent_pad`   |
 
 Downward inverse edges do not participate in cycle detection because doing so would manufacture a two-node cycle from a valid bidirectional traceability pair.
 

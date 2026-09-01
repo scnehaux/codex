@@ -56,7 +56,7 @@ def _default_git_runner(repo_root: Path) -> GitRunner:
 
 
 def _normalize(path: str) -> str:
-    return path.replace("\\", "/").lstrip("./")
+    return path.replace("\\", "/").removeprefix("./")
 
 
 def path_matches_contract(path: str, pattern: str) -> bool:

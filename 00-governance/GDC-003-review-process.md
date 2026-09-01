@@ -114,7 +114,6 @@ Because Scnehaux uses a Docs-as-Code ecosystem, the Architecture Review Process 
 
 This canonical repository (`scnehaux/codex`) follows a simplified Trunk-Based Development model.
 
-
 > [!IMPORTANT]
 >
 > The root commit defined by GDC-000 §2.6.1 is the sole Genesis Bootstrap exception to the Pull Request path. The exception expires when that root commit exists and MUST NOT be reused for any later change.

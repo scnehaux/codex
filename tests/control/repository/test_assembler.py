@@ -124,10 +124,51 @@ def test_governed_corpus_ignores_derived_and_root_support_markdown(tmp_path):
     governance = tmp_path / "00-governance"
     _write_artifact(governance / "GDC-900-test.md", document_id="GDC-900")
     (governance / "INDEX.md").write_text("# Derived index\n", encoding="utf-8")
+    templates = governance / "templates"
+    templates.mkdir()
+    (templates / "review-score-sheet.md").write_text(
+        "# Governance support template without artifact frontmatter\n",
+        encoding="utf-8",
+    )
     (tmp_path / "ROADMAP.md").write_text("# Root support\n", encoding="utf-8")
 
     model = RepositoryAssembler.load_governed_corpus(repo_root=tmp_path)
     assert tuple(record.document_id for record in model.artifacts) == ("GDC-900",)
+
+
+def test_governed_corpus_support_exclusion_does_not_weaken_fail_closed(tmp_path):
+    governance = tmp_path / "00-governance"
+    governance.mkdir()
+
+    (governance / "GDC-901-broken.md").write_text(
+        "# Governed artifact missing frontmatter\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(RepositoryIngestionError, match="Malformed artifact"):
+        RepositoryAssembler.load_governed_corpus(repo_root=tmp_path)
+
+
+def test_governed_corpus_composes_caller_ignore_patterns_with_support_policy(
+    tmp_path,
+):
+    governance = tmp_path / "00-governance"
+    _write_artifact(governance / "GDC-902-test.md", document_id="GDC-902")
+    _write_artifact(governance / "GDC-903-ignore.md", document_id="GDC-903")
+
+    templates = governance / "templates"
+    templates.mkdir()
+    (templates / "review-score-sheet.md").write_text(
+        "# support only\n",
+        encoding="utf-8",
+    )
+
+    model = RepositoryAssembler.load_governed_corpus(
+        repo_root=tmp_path,
+        ignored_patterns=[r"GDC-903-ignore\.md$"],
+    )
+
+    assert tuple(record.document_id for record in model.artifacts) == ("GDC-902",)
 
 
 def test_relationships_are_interpreted_once_into_typed_model():

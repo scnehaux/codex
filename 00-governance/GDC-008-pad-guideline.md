@@ -56,18 +56,18 @@ In addition to the global structural enforcement defined in **[GDC-001](GDC-001-
 
 <!-- AUTO-GENERATED-SCHEMA:START -->
 
-| Rule Category | Parameter | Enforcement / Value |
-| :--- | :--- | :--- |
-| **Metadata Rules** | Metadata Rules | <ul><li>doc_meta</li></ul> |
-| **Section Rules** | Required Sections | <ul><li>Purpose & Scope</li><li>Enterprise Traceability</li><li>Domain & Context Model</li><li>Integration Contracts</li><li>Trust & Data Boundaries</li><li>Capability NFR</li><li>Ownership & Governance</li></ul> |
-| **Section Rules** | Recommended Sections | <ul><li>Assumptions & Constraints</li><li>Architectural Decisions</li><li>Evolution</li><li>References</li></ul> |
-| **Content Quality Rules** | Purpose & Scope (Required Concepts) | <ul><li>Out Of Scope</li></ul> |
-| **Content Quality Rules** | Enterprise Traceability (Required Concepts) | <ul><li>Realizes</li><li>Relationships</li><li>Consumed By</li></ul> |
-| **Content Quality Rules** | Domain & Context Model (Required Concepts) | <ul><li>Bounded Context</li><li>Ubiquitous Language</li></ul> |
-| **Content Quality Rules** | Integration Contracts (Required Concepts) | <ul><li>Integration Provided</li><li>Integration Consumed</li></ul> |
-| **Content Quality Rules** | Trust & Data Boundaries (Required Concepts) | <ul><li>Trust Boundary</li><li>Identity Access</li><li>Data Classification</li></ul> |
-| **Content Quality Rules** | Capability NFR (Recommended Derivatives) | <ul><li>SLA</li><li>SLO</li><li>RTO</li><li>RPO</li><li>Availability</li><li>Scalability</li><li>Peak Load</li><li>Concurrency</li><li>Compliance</li><li>Data Privacy</li><li>Data Residency</li><li>Audit</li><li>Usability</li><li>Accessibility</li><li>Interoperability</li><li>Cost Target</li></ul> |
-| **Content Quality Rules** | Ownership & Governance (Required Concepts) | <ul><li>Team Ownership</li><li>Realizing Systems</li></ul> |
+| Rule Category             | Parameter                                   | Enforcement / Value                                                                                                                                                                                                                                                                                        |
+| :------------------------ | :------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Metadata Rules**        | Metadata Rules                              | <ul><li>doc_meta</li></ul>                                                                                                                                                                                                                                                                                 |
+| **Section Rules**         | Required Sections                           | <ul><li>Purpose & Scope</li><li>Enterprise Traceability</li><li>Domain & Context Model</li><li>Integration Contracts</li><li>Trust & Data Boundaries</li><li>Capability NFR</li><li>Ownership & Governance</li></ul>                                                                                       |
+| **Section Rules**         | Recommended Sections                        | <ul><li>Assumptions & Constraints</li><li>Architectural Decisions</li><li>Evolution</li><li>References</li></ul>                                                                                                                                                                                           |
+| **Content Quality Rules** | Purpose & Scope (Required Concepts)         | <ul><li>Out Of Scope</li></ul>                                                                                                                                                                                                                                                                             |
+| **Content Quality Rules** | Enterprise Traceability (Required Concepts) | <ul><li>Realizes</li><li>Relationships</li><li>Consumed By</li></ul>                                                                                                                                                                                                                                       |
+| **Content Quality Rules** | Domain & Context Model (Required Concepts)  | <ul><li>Bounded Context</li><li>Ubiquitous Language</li></ul>                                                                                                                                                                                                                                              |
+| **Content Quality Rules** | Integration Contracts (Required Concepts)   | <ul><li>Integration Provided</li><li>Integration Consumed</li></ul>                                                                                                                                                                                                                                        |
+| **Content Quality Rules** | Trust & Data Boundaries (Required Concepts) | <ul><li>Trust Boundary</li><li>Identity Access</li><li>Data Classification</li></ul>                                                                                                                                                                                                                       |
+| **Content Quality Rules** | Capability NFR (Recommended Derivatives)    | <ul><li>SLA</li><li>SLO</li><li>RTO</li><li>RPO</li><li>Availability</li><li>Scalability</li><li>Peak Load</li><li>Concurrency</li><li>Compliance</li><li>Data Privacy</li><li>Data Residency</li><li>Audit</li><li>Usability</li><li>Accessibility</li><li>Interoperability</li><li>Cost Target</li></ul> |
+| **Content Quality Rules** | Ownership & Governance (Required Concepts)  | <ul><li>Team Ownership</li><li>Realizing Systems</li></ul>                                                                                                                                                                                                                                                 |
 
 <!-- AUTO-GENERATED-SCHEMA:END -->
 
@@ -122,7 +122,7 @@ doc_meta:
 
 | Metadata Field      | Type    | Description / Purpose                                            |
 | ------------------- | ------- | ---------------------------------------------------------------- |
-| `id`                | String  | Unique identifier (e.g., `PAD-EXAMPLE-001`).                         |
+| `id`                | String  | Unique identifier (e.g., `PAD-EXAMPLE-001`).                     |
 | `title`             | String  | Descriptive title of the artifact.                               |
 | `owner`             | String  | Lead Owner (e.g., Domain Architect).                             |
 | `version`           | String  | Must comply with Semantic Versioning (e.g., 1.0.0).              |

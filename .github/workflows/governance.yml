@@ -1,0 +1,63 @@
+name: Scnehaux Governance
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: governance-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualification:
+    name: Governance Qualification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact revision
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.13"
+      - name: Setup Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - name: Install deterministic Python toolchain
+        run: python -m pip install -c constraints.txt -e ".[dev]"
+      - name: Resolve committed mutation baseline
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "SCNEHAUX_MUTATION_BASE_REF=${{ github.event.pull_request.base.sha }}" >> "$GITHUB_ENV"
+          else
+            echo "SCNEHAUX_MUTATION_BASE_REF=${{ github.event.before }}" >> "$GITHUB_ENV"
+          fi
+      - name: Validate GitHub desired-state policy
+        run: make github-policy-check
+      - name: Validate Python quality
+        run: make lint-code
+      - name: Validate document formatting
+        run: make lint-docs-format
+      - name: Verify generated projections
+        run: make verify-generated
+      - name: Check waiver expiry
+        run: make check-waivers
+      - name: Verify immutable Genesis root
+        run: make genesis-check
+      - name: Validate current governed snapshot
+        run: make mutation-check
+      - name: Validate committed mutation delta
+        run: make mutation-ci-check
+      - name: Qualify governance control plane
+        run: make governance-qualify

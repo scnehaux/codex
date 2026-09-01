@@ -58,7 +58,7 @@ To govern this, Scnehaux utilizes the **Aggregator-Component Pattern**:
 3. **The Traceability Pointer**: To maintain the automated CI/CD Directed Acyclic Graph (DAG) and prevent the linter from flagging the library as an illegal orphan, the library repository must explicitly declare its governance inheritance in its linter configuration:
    ```yaml
    governance:
-     master_sad: 'SAD-UIP-001-scnehaux-ui-platform'
+     master_sad: "SAD-UIP-001-scnehaux-ui-platform"
    ```
    The Compliance Engine (`engine/cli.py`) will automatically validate that the referenced Master SAD exists in the Root Architecture Registry, and gracefully exempt the local repository from the SAD requirement.
 
@@ -72,23 +72,23 @@ In addition to the global structural enforcement defined in **[GDC-001](GDC-001-
 
 <!-- AUTO-GENERATED-SCHEMA:START -->
 
-| Rule Category | Parameter | Enforcement / Value |
-| :--- | :--- | :--- |
-| **Metadata Rules** | Metadata Rules | <ul><li>doc_meta</li></ul> |
-| **Section Rules** | Required Sections | <ul><li>Purpose & Scope</li><li>Enterprise Traceability</li><li>Solution Context</li><li>Architecture Model</li><li>State & Data Architecture</li><li>Integration Contracts</li><li>Security & Trust Boundary</li><li>NFR</li><li>Deployment Strategy</li><li>Architecture Decisions</li></ul> |
-| **Section Rules** | Recommended Sections | <ul><li>Assumptions</li><li>Compatibility Strategy</li><li>Migration Strategy</li><li>Alternatives</li></ul> |
-| **Content Quality Rules** | Context & Scope (Required) | <ul><li>Objective</li><li>Constraint</li><li>Capability</li></ul> |
-| **Content Quality Rules** | Context & Scope (Recommended) | <ul><li>Requirement</li><li>Assumption</li></ul> |
-| **Content Quality Rules** | Solution Context (Recommended) | <ul><li>System Context</li><li>External</li><li>Internal</li></ul> |
-| **Content Quality Rules** | Architecture Model (Recommended Concepts) | <ul><li>Container</li><li>Component</li><li>Sequence</li><li>Runtime Flow</li><li>Event Flow</li></ul> |
-| **Content Quality Rules** | State & Data Architecture (Recommended Concepts) | <ul><li>Storage</li><li>Cache</li><li>Schema</li><li>Stateless</li></ul> |
-| **Content Quality Rules** | Integration Contracts (Recommended Concepts) | <ul><li>API</li><li>Event</li><li>Consumed</li><li>Published</li></ul> |
-| **Content Quality Rules** | Security & Trust Boundary (Recommended Concepts) | <ul><li>Authentication</li><li>Authorization</li><li>Encryption</li><li>Secrets</li><li>Audit</li></ul> |
-| **Content Quality Rules** | Deployment Strategy (Required) | <ul><li>CI/CD</li></ul> |
-| **Content Quality Rules** | Deployment Strategy (Recommended Concepts) | <ul><li>Environment</li><li>Infrastructure</li></ul> |
-| **Content Quality Rules** | Architecture Decisions (Required) | <ul><li>Rejected</li></ul> |
-| **Content Quality Rules** | NFR (Required) | <ul><li>Blast Radius</li></ul> |
-| **Content Quality Rules** | NFR Derivatives (Recommended) | <ul><li>Latency</li><li>Throughput</li><li>RPS</li><li>Scalability</li><li>Caching</li><li>Observability</li><li>Telemetry</li><li>Alerting</li><li>Runbook</li><li>Circuit Breaker</li><li>Retry</li><li>Timeout</li><li>Failover</li></ul> |
+| Rule Category             | Parameter                                        | Enforcement / Value                                                                                                                                                                                                                                                                            |
+| :------------------------ | :----------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Metadata Rules**        | Metadata Rules                                   | <ul><li>doc_meta</li></ul>                                                                                                                                                                                                                                                                     |
+| **Section Rules**         | Required Sections                                | <ul><li>Purpose & Scope</li><li>Enterprise Traceability</li><li>Solution Context</li><li>Architecture Model</li><li>State & Data Architecture</li><li>Integration Contracts</li><li>Security & Trust Boundary</li><li>NFR</li><li>Deployment Strategy</li><li>Architecture Decisions</li></ul> |
+| **Section Rules**         | Recommended Sections                             | <ul><li>Assumptions</li><li>Compatibility Strategy</li><li>Migration Strategy</li><li>Alternatives</li></ul>                                                                                                                                                                                   |
+| **Content Quality Rules** | Context & Scope (Required)                       | <ul><li>Objective</li><li>Constraint</li><li>Capability</li></ul>                                                                                                                                                                                                                              |
+| **Content Quality Rules** | Context & Scope (Recommended)                    | <ul><li>Requirement</li><li>Assumption</li></ul>                                                                                                                                                                                                                                               |
+| **Content Quality Rules** | Solution Context (Recommended)                   | <ul><li>System Context</li><li>External</li><li>Internal</li></ul>                                                                                                                                                                                                                             |
+| **Content Quality Rules** | Architecture Model (Recommended Concepts)        | <ul><li>Container</li><li>Component</li><li>Sequence</li><li>Runtime Flow</li><li>Event Flow</li></ul>                                                                                                                                                                                         |
+| **Content Quality Rules** | State & Data Architecture (Recommended Concepts) | <ul><li>Storage</li><li>Cache</li><li>Schema</li><li>Stateless</li></ul>                                                                                                                                                                                                                       |
+| **Content Quality Rules** | Integration Contracts (Recommended Concepts)     | <ul><li>API</li><li>Event</li><li>Consumed</li><li>Published</li></ul>                                                                                                                                                                                                                         |
+| **Content Quality Rules** | Security & Trust Boundary (Recommended Concepts) | <ul><li>Authentication</li><li>Authorization</li><li>Encryption</li><li>Secrets</li><li>Audit</li></ul>                                                                                                                                                                                        |
+| **Content Quality Rules** | Deployment Strategy (Required)                   | <ul><li>CI/CD</li></ul>                                                                                                                                                                                                                                                                        |
+| **Content Quality Rules** | Deployment Strategy (Recommended Concepts)       | <ul><li>Environment</li><li>Infrastructure</li></ul>                                                                                                                                                                                                                                           |
+| **Content Quality Rules** | Architecture Decisions (Required)                | <ul><li>Rejected</li></ul>                                                                                                                                                                                                                                                                     |
+| **Content Quality Rules** | NFR (Required)                                   | <ul><li>Blast Radius</li></ul>                                                                                                                                                                                                                                                                 |
+| **Content Quality Rules** | NFR Derivatives (Recommended)                    | <ul><li>Latency</li><li>Throughput</li><li>RPS</li><li>Scalability</li><li>Caching</li><li>Observability</li><li>Telemetry</li><li>Alerting</li><li>Runbook</li><li>Circuit Breaker</li><li>Retry</li><li>Timeout</li><li>Failover</li></ul>                                                   |
 
 <!-- AUTO-GENERATED-SCHEMA:END -->
 
@@ -149,17 +149,17 @@ doc_meta:
   last_reviewed: YYYY-MM-DD # Last audit date
 ```
 
-| Metadata Field      | Type    | Description / Purpose                                            |
-| ------------------- | ------- | ---------------------------------------------------------------- |
-| `id`                | String  | Unique identifier (e.g., `SAD-EXAMPLE-001`).                             |
-| `title`             | String  | Descriptive title of the artifact.                               |
-| `owner`             | String  | Lead Owner (e.g., System Architect).                             |
-| `version`           | String  | Must comply with Semantic Versioning (e.g., 1.0.0).              |
-| `status`            | Enum    | The current lifecycle state (must match Allowed Statuses below). |
-| `classification`    | Enum    | The data sensitivity (must match Allowed Classifications below). |
-| `parent_pad`        | String  | The parent PAD ID this system fulfills (e.g., `PAD-EXAMPLE-001`).    |
-| `review_cycle_days` | Integer | The frequency in days for required review.                       |
-| `last_reviewed`     | Date    | The date of the last formal review (YYYY-MM-DD).                 |
+| Metadata Field      | Type    | Description / Purpose                                             |
+| ------------------- | ------- | ----------------------------------------------------------------- |
+| `id`                | String  | Unique identifier (e.g., `SAD-EXAMPLE-001`).                      |
+| `title`             | String  | Descriptive title of the artifact.                                |
+| `owner`             | String  | Lead Owner (e.g., System Architect).                              |
+| `version`           | String  | Must comply with Semantic Versioning (e.g., 1.0.0).               |
+| `status`            | Enum    | The current lifecycle state (must match Allowed Statuses below).  |
+| `classification`    | Enum    | The data sensitivity (must match Allowed Classifications below).  |
+| `parent_pad`        | String  | The parent PAD ID this system fulfills (e.g., `PAD-EXAMPLE-001`). |
+| `review_cycle_days` | Integer | The frequency in days for required review.                        |
+| `last_reviewed`     | Date    | The date of the last formal review (YYYY-MM-DD).                  |
 
 ##### Allowed Lifecycle Statuses
 

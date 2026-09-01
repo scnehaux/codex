@@ -263,6 +263,11 @@ version_mutation_integrity:
   - post-genesis-compares-working-tree-against-head
   - mutation-control-does-not-open-architecture-admission
   - git-remains-history-and-provenance-not-policy-inference
+  - ci-compares-committed-head-against-pr-base-merge-base
+  - clean-ci-checkout-cannot-bypass-version-bump-enforcement
+  - committed-mutation-baseline-is-explicit-and-fail-closed
+  committed_mutation_authority: engine/control/governance/committed_mutation.py
+  ci_invocation: 06-fitness-function/scripts/committed_mutation_integrity.py
 governance_qualification:
   authority: engine/control/governance/readiness.py
   invocation: 06-fitness-function/scripts/governance_qualify.py
@@ -287,10 +292,14 @@ governance_qualification:
       - engine/core/governance/versioning.py
       - engine/control/governance/mutation.py
       - 06-fitness-function/scripts/mutation_integrity.py
+      - engine/control/governance/committed_mutation.py
+      - 06-fitness-function/scripts/committed_mutation_integrity.py
       test_evidence:
       - tests/core/governance/test_versioning.py
       - tests/control/governance/test_mutation.py
       - 06-fitness-function/tests/scripts/test_mutation_integrity.py
+      - tests/control/governance/test_committed_mutation.py
+      - 06-fitness-function/tests/scripts/test_committed_mutation_integrity.py
     genesis_commit_qualification:
       policy_ref: genesis_commit_qualification
       implementation:
@@ -299,6 +308,16 @@ governance_qualification:
       test_evidence:
       - tests/control/governance/test_genesis_candidate.py
       - 06-fitness-function/tests/scripts/test_genesis_commit_qualify.py
+    github_enforcement:
+      policy_ref: github_enforcement
+      implementation:
+      - 00-governance/github/main-ruleset.json
+      - .github/workflows/governance.yml
+      - .github/CODEOWNERS
+      - .github/pull_request_template.md
+      - 06-fitness-function/scripts/github_policy_check.py
+      test_evidence:
+      - 06-fitness-function/tests/scripts/test_github_policy_check.py
   contract:
   - local-qualification-is-fail-closed
   - qualification-does-not-approve-governance
@@ -322,3 +341,19 @@ genesis_commit_qualification:
   - staged-governance-baseline-remains-draft-0.x
   - staged-tree-sha-is-materialized-before-root-commit
   - architecture-admission-remains-closed
+github_enforcement:
+  desired_state: 00-governance/github/main-ruleset.json
+  workflow: .github/workflows/governance.yml
+  invocation: 06-fitness-function/scripts/github_policy_check.py
+  required_status_context: Governance Qualification
+  contract:
+  - default-branch-mutations-require-pull-request
+  - required-status-check-is-strict-against-latest-base
+  - required-status-check-validates-committed-mutation-delta
+  - force-push-is-forbidden
+  - default-branch-deletion-is-forbidden
+  - linear-history-is-required
+  - squash-is-the-only-allowed-merge-method
+  - ruleset-bypass-actors-are-empty
+  - first-party-actions-are-pinned-by-full-commit-sha
+  - mandatory-human-approval-is-zero-until-a-second-independent-reviewer-exists

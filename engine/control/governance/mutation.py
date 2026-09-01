@@ -67,7 +67,7 @@ def _default_git_runner(repo_root: Path) -> GitRunner:
 
 
 def _normalize(path: str) -> str:
-    return path.replace("\\", "/").lstrip("./")
+    return path.replace("\\", "/").removeprefix("./")
 
 
 def is_governed_document_path(path: str) -> bool:

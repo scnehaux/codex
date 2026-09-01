@@ -53,11 +53,11 @@ In addition to the global structural enforcement defined in **[GDC-001](GDC-001-
 
 <!-- AUTO-GENERATED-SCHEMA:START -->
 
-| Rule Category | Parameter | Enforcement / Value |
-| :--- | :--- | :--- |
-| **Metadata Rules** | Metadata Rules | <ul><li>doc_meta</li></ul> |
-| **Section Rules** | Required Sections | <ul><li>Purpose</li><li>Scope</li><li>Enterprise Context</li><li>Architectural Drivers & Lessons</li><li>Architecture Model</li><li>Principles & Rules</li><li>Alternatives Considered</li><li>Single Points of Failure & Graceful Degradation</li><li>Ownership</li><li>Dependencies</li><li>Traceability</li></ul> |
-| **Section Rules** | Recommended Sections | <ul><li>Assumptions</li><li>Constraints</li><li>Risks</li><li>Future Direction</li><li>References</li></ul> |
+| Rule Category      | Parameter            | Enforcement / Value                                                                                                                                                                                                                                                                                                  |
+| :----------------- | :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Metadata Rules** | Metadata Rules       | <ul><li>doc_meta</li></ul>                                                                                                                                                                                                                                                                                           |
+| **Section Rules**  | Required Sections    | <ul><li>Purpose</li><li>Scope</li><li>Enterprise Context</li><li>Architectural Drivers & Lessons</li><li>Architecture Model</li><li>Principles & Rules</li><li>Alternatives Considered</li><li>Single Points of Failure & Graceful Degradation</li><li>Ownership</li><li>Dependencies</li><li>Traceability</li></ul> |
+| **Section Rules**  | Recommended Sections | <ul><li>Assumptions</li><li>Constraints</li><li>Risks</li><li>Future Direction</li><li>References</li></ul>                                                                                                                                                                                                          |
 
 <!-- AUTO-GENERATED-SCHEMA:END -->
 

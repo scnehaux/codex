@@ -14,11 +14,13 @@ REQUIRED_CONTROL_KEYS = frozenset(
         "genesis_integrity",
         "version_mutation_integrity",
         "genesis_commit_qualification",
+        "github_enforcement",
     }
 )
 TEMPORARY_PATTERNS = ("phase*.py", "slice5_*.py")
 PERMANENT_PREFIXES = (
     "00-governance/",
+    ".github/",
     "engine/",
     "tests/",
     "06-fitness-function/",
@@ -74,7 +76,7 @@ def _load_mapping(path: Path) -> tuple[Mapping[str, Any] | None, tuple[Readiness
 
 
 def _normalize(value: str) -> str:
-    return value.replace("\\", "/").lstrip("./")
+    return value.replace("\\", "/").removeprefix("./")
 
 
 def _temporary(path: str) -> bool:
@@ -396,6 +398,20 @@ def audit_governance_readiness(
                 makefile_text,
                 "governance-qualify",
                 "06-fitness-function/scripts/governance_qualify.py",
+            )
+        )
+        findings.extend(
+            _makefile_target_findings(
+                makefile_text,
+                "mutation-ci-check",
+                "06-fitness-function/scripts/committed_mutation_integrity.py",
+            )
+        )
+        findings.extend(
+            _makefile_target_findings(
+                makefile_text,
+                "github-policy-check",
+                "06-fitness-function/scripts/github_policy_check.py",
             )
         )
 

@@ -26,10 +26,7 @@
           "maturity.md",
           "traceability.md"
         ],
-        "patterns": [
-          "[\\\\/]templates[\\\\/]",
-          "[\\\\/]scratch[\\\\/]"
-        ]
+        "patterns": ["[\\\\/]templates[\\\\/]", "[\\\\/]scratch[\\\\/]"]
       },
       "max_directory_depth": 3
     },
@@ -117,21 +114,13 @@
         "technology_policy_unavailable": "CRITICAL"
       }
     },
-    "blocking_severities": [
-      "CRITICAL",
-      "ERROR"
-    ]
+    "blocking_severities": ["CRITICAL", "ERROR"]
   },
   "definitions": {
     "common_metadata_fields": {
       "title": "Common Metadata Fields",
       "type": "object",
-      "required": [
-        "id",
-        "title",
-        "status",
-        "created_date"
-      ],
+      "required": ["id", "title", "status", "created_date"],
       "properties": {
         "id": {
           "title": "Document ID",
@@ -143,10 +132,7 @@
         },
         "owner": {
           "title": "Owner",
-          "type": [
-            "string",
-            "array"
-          ],
+          "type": ["string", "array"],
           "items": {
             "type": "string"
           }
@@ -164,12 +150,7 @@
         "classification": {
           "title": "Allowed Classifications",
           "type": "string",
-          "enum": [
-            "public",
-            "internal",
-            "restricted",
-            "confidential"
-          ]
+          "enum": ["public", "internal", "restricted", "confidential"]
         },
         "review_cycle_days": {
           "title": "Review Cycle (Days)",

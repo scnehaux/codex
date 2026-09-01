@@ -393,3 +393,29 @@ def test_nonstring_evidence_is_reported(tmp_path):
         finding.code == "evidence-path-invalid"
         for finding in report.findings
     )
+
+def test_hidden_repository_paths_preserve_leading_dot():
+    from engine.control.governance import genesis
+    from engine.control.governance import genesis_candidate
+    from engine.control.governance import mutation
+    from engine.control.governance import readiness
+    from engine.control.governance import committed_mutation
+
+    normalizers = (
+        genesis._normalize,
+        genesis_candidate._normalize,
+        mutation._normalize,
+        readiness._normalize,
+        committed_mutation._normalize,
+    )
+
+    for normalize in normalizers:
+        assert normalize(".github/CODEOWNERS") == ".github/CODEOWNERS"
+        assert normalize("./.github/CODEOWNERS") == ".github/CODEOWNERS"
+        assert normalize(".gitignore") == ".gitignore"
+        assert normalize(".gitattributes") == ".gitattributes"
+        assert (
+            normalize(r".github\workflows\governance.yml")
+            == ".github/workflows/governance.yml"
+        )
+

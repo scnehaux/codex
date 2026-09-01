@@ -4,9 +4,9 @@ from pathlib import Path
 import sys
 from types import MappingProxyType
 
-FITNESS_ROOT = Path(__file__).resolve().parents[1]
-if str(FITNESS_ROOT) not in sys.path:
-    sys.path.insert(0, str(FITNESS_ROOT))
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+if str(REPOSITORY_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPOSITORY_ROOT))
 
 from engine.control.repository import RepositoryAssembler, RepositoryModelError
 from engine.core.repository import RepositoryArtifact, RepositoryModel

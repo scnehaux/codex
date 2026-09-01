@@ -109,7 +109,6 @@ Remove duplicate `_BASELINE_STATUSES` style hardcoding
 
 ---
 
-
 ### Completion Evidence
 
 Slice 5.1 is proven complete:
@@ -165,7 +164,6 @@ Replace ambient `datetime.date.today()` use in governance logic with injected/ev
 P0-D01…D08 all `DONE`
 
 ---
-
 
 ### Completion Evidence
 
@@ -226,7 +224,6 @@ Define future private architecture estate contract for:
 P0-E01…E05 all `DONE`
 
 ---
-
 
 ### Completion Evidence
 
@@ -314,7 +311,6 @@ P0-C01/C02/C03/C04/C05/C07 → `DONE`
 P0-C09 at least `PARTIAL` until generators migrate
 
 ---
-
 
 ### Completion Evidence
 
@@ -688,6 +684,7 @@ Generate new Slice 5.1 implementation
 No Genesis commit yet
 
 <!-- PHASE5-STATUS:START -->
+
 ## Phase 5 Execution Status
 
 - Slice 5.1 Lifecycle + Validation Profile — DONE/CLOSED
@@ -698,9 +695,11 @@ No Genesis commit yet
 - Slice 5.6 Registry Integrity Auditor — CURRENT ACTIVE
 - Slice 5.7 RepositoryModel + Zero-Corpus — PLANNED
 - Slice 5.8 Governance-Critical Coverage Expansion — PLANNED
+
 <!-- PHASE5-STATUS:END -->
 
 <!-- SLICE-5.5-CLOSEOUT:START -->
+
 ### Slice 5.5 Closeout Evidence
 
 - Status: DONE/CLOSED
@@ -724,9 +723,11 @@ No Genesis commit yet
 - No commit created
 
 Open follow-through:
+
 - P0-B05 severity-to-effective-enforcement reconciliation → Slice 5.6
 - P0-B07 full narrative-to-executable reconciliation remains PARTIAL while scheduled controls are pending
 - Topology/directory/container controls → Slice 5.7
+
 <!-- SLICE-5.5-CLOSEOUT:END -->
 
 <!-- SCNEHAUX-AI-NATIVE-FRAMEWORK-REBASELINE -->

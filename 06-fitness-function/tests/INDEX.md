@@ -12,178 +12,220 @@ This index documents the test suite utilities and fixtures.
 
 ### `06-fitness-function/tests/generators/test_adr_index_repository_model.py`
 
-| Function | Description |
-| :--- | :--- |
-| **_load_generator** | *(No docstring provided)* |
-| **_write_artifact** | *(No docstring provided)* |
-| **test_governance_only_repository_is_clean_noop** | *(No docstring provided)* |
-| **test_adr_corpus_generates_expected_index** | *(No docstring provided)* |
-| **test_malformed_corpus_fails_before_existing_index_changes** | *(No docstring provided)* |
-| **test_generated_index_is_ignored_on_rerun** | *(No docstring provided)* |
-| **test_render_rejects_record_outside_decision_layer** | *(No docstring provided)* |
-| **test_main_returns_nonzero_on_repository_failure** | *(No docstring provided)* |
-| **test_main_returns_zero_on_success** | *(No docstring provided)* |
-| **test_generator_has_no_shadow_ingestion_authority** | *(No docstring provided)* |
+| Function                                                      | Description               |
+| :------------------------------------------------------------ | :------------------------ |
+| **\_load_generator**                                          | _(No docstring provided)_ |
+| **\_write_artifact**                                          | _(No docstring provided)_ |
+| **test_governance_only_repository_is_clean_noop**             | _(No docstring provided)_ |
+| **test_adr_corpus_generates_expected_index**                  | _(No docstring provided)_ |
+| **test_malformed_corpus_fails_before_existing_index_changes** | _(No docstring provided)_ |
+| **test_generated_index_is_ignored_on_rerun**                  | _(No docstring provided)_ |
+| **test_render_rejects_record_outside_decision_layer**         | _(No docstring provided)_ |
+| **test_main_returns_nonzero_on_repository_failure**           | _(No docstring provided)_ |
+| **test_main_returns_zero_on_success**                         | _(No docstring provided)_ |
+| **test_generator_has_no_shadow_ingestion_authority**          | _(No docstring provided)_ |
 
 ### `06-fitness-function/tests/generators/test_arch_generator_coverage_contracts.py`
 
-| Function | Description |
-| :--- | :--- |
-| **_load_generator** | *(No docstring provided)* |
-| **_record** | *(No docstring provided)* |
-| **_snapshot** | *(No docstring provided)* |
-| **test_arch_generator_standalone_import_bootstraps_fitness_root** | *(No docstring provided)* |
-| **test_arch_generator_atomic_write_cleans_temp_after_replace_failure** | *(No docstring provided)* |
-| **test_pad_sad_scalar_and_empty_relationship_metadata_are_supported** | *(No docstring provided)* |
-| **test_maturity_renderer_supports_empty_evidence_and_clean_registry** | *(No docstring provided)* |
-| **test_repository_assembler_rejects_unknown_architecture_identity** | *(No docstring provided)* |
-| **test_traceability_ignores_governance_artifacts** | *(No docstring provided)* |
-| **test_traceability_filters_invalid_targets_and_renders_external_target** | *(No docstring provided)* |
-| **test_remaining_arch_generator_main_success_returns_zero** | *(No docstring provided)* |
+| Function                                                                  | Description               |
+| :------------------------------------------------------------------------ | :------------------------ |
+| **\_load_generator**                                                      | _(No docstring provided)_ |
+| **\_record**                                                              | _(No docstring provided)_ |
+| **\_snapshot**                                                            | _(No docstring provided)_ |
+| **test_arch_generator_standalone_import_bootstraps_repository_root**      | _(No docstring provided)_ |
+| **test_arch_generator_atomic_write_cleans_temp_after_replace_failure**    | _(No docstring provided)_ |
+| **test_pad_sad_scalar_and_empty_relationship_metadata_are_supported**     | _(No docstring provided)_ |
+| **test_maturity_renderer_supports_empty_evidence_and_clean_registry**     | _(No docstring provided)_ |
+| **test_repository_assembler_rejects_unknown_architecture_identity**       | _(No docstring provided)_ |
+| **test_traceability_ignores_governance_artifacts**                        | _(No docstring provided)_ |
+| **test_traceability_filters_invalid_targets_and_renders_external_target** | _(No docstring provided)_ |
+| **test_remaining_arch_generator_main_success_returns_zero**               | _(No docstring provided)_ |
+| **test_arch_generator_direct_execution_resolves_repository_root**         | _(No docstring provided)_ |
 
 ### `06-fitness-function/tests/generators/test_generator_determinism.py`
 
-| Function | Description |
-| :--- | :--- |
-| **load_module** | *(No docstring provided)* |
-| **test_traceability_render_is_independent_of_snapshot_order** | *(No docstring provided)* |
-| **test_topography_render_is_independent_of_path_order** | *(No docstring provided)* |
-| **test_topography_uses_live_canonical_inputs_not_git_index** | *(No docstring provided)* |
+| Function                                                      | Description               |
+| :------------------------------------------------------------ | :------------------------ |
+| **load_module**                                               | _(No docstring provided)_ |
+| **test_traceability_render_is_independent_of_snapshot_order** | _(No docstring provided)_ |
+| **test_topography_render_is_independent_of_path_order**       | _(No docstring provided)_ |
+| **test_topography_uses_live_canonical_inputs_not_git_index**  | _(No docstring provided)_ |
 
 ### `06-fitness-function/tests/generators/test_maturity_dashboard_evidence.py`
 
-| Function | Description |
-| :--- | :--- |
-| **_load_generator** | *(No docstring provided)* |
-| **_write_artifact** | *(No docstring provided)* |
-| **_write_control_registry** | *(No docstring provided)* |
-| **test_approved_artifact_does_not_create_verified_evidence** | *(No docstring provided)* |
-| **test_dashboard_uses_explicit_control_evidence_states** | *(No docstring provided)* |
-| **test_missing_control_registry_fails_before_existing_dashboard_changes** | *(No docstring provided)* |
-| **test_malformed_corpus_fails_before_existing_dashboard_changes** | *(No docstring provided)* |
-| **test_registry_integrity_findings_are_not_reported_as_pass** | *(No docstring provided)* |
-| **test_no_synthetic_ci_or_codeowners_green_claims** | *(No docstring provided)* |
-| **test_main_returns_nonzero_on_failure** | *(No docstring provided)* |
-| **test_main_returns_zero_on_success** | *(No docstring provided)* |
+| Function                                                                  | Description               |
+| :------------------------------------------------------------------------ | :------------------------ |
+| **\_load_generator**                                                      | _(No docstring provided)_ |
+| **\_write_artifact**                                                      | _(No docstring provided)_ |
+| **\_write_control_registry**                                              | _(No docstring provided)_ |
+| **test_approved_artifact_does_not_create_verified_evidence**              | _(No docstring provided)_ |
+| **test_dashboard_uses_explicit_control_evidence_states**                  | _(No docstring provided)_ |
+| **test_missing_control_registry_fails_before_existing_dashboard_changes** | _(No docstring provided)_ |
+| **test_malformed_corpus_fails_before_existing_dashboard_changes**         | _(No docstring provided)_ |
+| **test_registry_integrity_findings_are_not_reported_as_pass**             | _(No docstring provided)_ |
+| **test_no_synthetic_ci_or_codeowners_green_claims**                       | _(No docstring provided)_ |
+| **test_main_returns_nonzero_on_failure**                                  | _(No docstring provided)_ |
+| **test_main_returns_zero_on_success**                                     | _(No docstring provided)_ |
 
 ### `06-fitness-function/tests/generators/test_pad_sad_index_repository_model.py`
 
-| Function | Description |
-| :--- | :--- |
-| **_load_generator** | *(No docstring provided)* |
-| **_write_artifact** | *(No docstring provided)* |
-| **test_governance_only_repository_is_clean_noop** | *(No docstring provided)* |
-| **test_pad_only_generates_only_domain_index** | *(No docstring provided)* |
-| **test_sad_only_generates_only_system_index** | *(No docstring provided)* |
-| **test_malformed_corpus_fails_before_existing_index_changes** | *(No docstring provided)* |
-| **test_rerun_is_deterministic_and_generated_indexes_are_not_reingested** | *(No docstring provided)* |
-| **test_render_rejects_wrong_layer_path** | *(No docstring provided)* |
-| **test_render_rejects_unsupported_artifact_type** | *(No docstring provided)* |
-| **test_generator_has_no_shadow_ingestion_authority** | *(No docstring provided)* |
-| **test_pad_sad_main_returns_nonzero_on_repository_failure** | *(No docstring provided)* |
+| Function                                                                 | Description               |
+| :----------------------------------------------------------------------- | :------------------------ |
+| **\_load_generator**                                                     | _(No docstring provided)_ |
+| **\_write_artifact**                                                     | _(No docstring provided)_ |
+| **test_governance_only_repository_is_clean_noop**                        | _(No docstring provided)_ |
+| **test_pad_only_generates_only_domain_index**                            | _(No docstring provided)_ |
+| **test_sad_only_generates_only_system_index**                            | _(No docstring provided)_ |
+| **test_malformed_corpus_fails_before_existing_index_changes**            | _(No docstring provided)_ |
+| **test_rerun_is_deterministic_and_generated_indexes_are_not_reingested** | _(No docstring provided)_ |
+| **test_render_rejects_wrong_layer_path**                                 | _(No docstring provided)_ |
+| **test_render_rejects_unsupported_artifact_type**                        | _(No docstring provided)_ |
+| **test_generator_has_no_shadow_ingestion_authority**                     | _(No docstring provided)_ |
+| **test_pad_sad_main_returns_nonzero_on_repository_failure**              | _(No docstring provided)_ |
 
 ### `06-fitness-function/tests/generators/test_support_generator_coverage_contracts.py`
 
-| Function | Description |
-| :--- | :--- |
-| **_load** | *(No docstring provided)* |
-| **test_topography_live_paths_filters_and_normalizes** | *(No docstring provided)* |
-| **test_topography_generate_and_update_document** | *(No docstring provided)* |
-| **test_functions_extract_and_markdown_table** | *(No docstring provided)* |
-| **test_functions_inject_markdown_contracts** | *(No docstring provided)* |
-| **test_functions_update_directory_index** | *(No docstring provided)* |
-| **test_functions_cli_and_lint_flowchart_contracts** | *(No docstring provided)* |
-| **test_functions_validator_flowchart_contracts** | *(No docstring provided)* |
-| **test_functions_domain_flowchart_contracts** | *(No docstring provided)* |
-| **test_functions_main_orchestrates_all_support_surfaces** | *(No docstring provided)* |
-| **test_rules_formatting_and_global_config** | *(No docstring provided)* |
-| **test_rules_generate_json_schema_covers_metadata_structure_and_content** | *(No docstring provided)* |
-| **test_rules_current_block_and_injection_contracts** | *(No docstring provided)* |
-| **_simple_schema** | *(No docstring provided)* |
-| **test_rules_process_update_and_check_modes** | *(No docstring provided)* |
-| **test_rules_main_exit_contract** | *(No docstring provided)* |
+| Function                                                                  | Description               |
+| :------------------------------------------------------------------------ | :------------------------ |
+| **\_load**                                                                | _(No docstring provided)_ |
+| **test_topography_live_paths_filters_and_normalizes**                     | _(No docstring provided)_ |
+| **test_topography_generate_and_update_document**                          | _(No docstring provided)_ |
+| **test_functions_extract_and_markdown_table**                             | _(No docstring provided)_ |
+| **test_functions_inject_markdown_contracts**                              | _(No docstring provided)_ |
+| **test_functions_update_directory_index**                                 | _(No docstring provided)_ |
+| **test_functions_cli_and_lint_flowchart_contracts**                       | _(No docstring provided)_ |
+| **test_functions_validator_flowchart_contracts**                          | _(No docstring provided)_ |
+| **test_functions_domain_flowchart_contracts**                             | _(No docstring provided)_ |
+| **test_functions_main_orchestrates_all_support_surfaces**                 | _(No docstring provided)_ |
+| **test_rules_formatting_and_global_config**                               | _(No docstring provided)_ |
+| **test_rules_generate_json_schema_covers_metadata_structure_and_content** | _(No docstring provided)_ |
+| **test_rules_current_block_and_injection_contracts**                      | _(No docstring provided)_ |
+| **\_simple_schema**                                                       | _(No docstring provided)_ |
+| **test_rules_process_update_and_check_modes**                             | _(No docstring provided)_ |
+| **test_rules_main_exit_contract**                                         | _(No docstring provided)_ |
 
 ### `06-fitness-function/tests/generators/test_traceability_repository_model.py`
 
-| Function | Description |
-| :--- | :--- |
-| **_load_generator** | *(No docstring provided)* |
-| **_write_artifact** | *(No docstring provided)* |
-| **test_governance_only_repository_is_clean_noop** | *(No docstring provided)* |
-| **test_malformed_architecture_corpus_fails_before_output** | *(No docstring provided)* |
-| **test_traceability_uses_canonical_relationship_fields** | *(No docstring provided)* |
-| **test_generated_traceability_is_ignored_on_rerun** | *(No docstring provided)* |
-| **test_generator_has_no_shadow_ingestion_authority** | *(No docstring provided)* |
-| **test_traceability_main_returns_nonzero_on_repository_failure** | *(No docstring provided)* |
+| Function                                                         | Description               |
+| :--------------------------------------------------------------- | :------------------------ |
+| **\_load_generator**                                             | _(No docstring provided)_ |
+| **\_write_artifact**                                             | _(No docstring provided)_ |
+| **test_governance_only_repository_is_clean_noop**                | _(No docstring provided)_ |
+| **test_malformed_architecture_corpus_fails_before_output**       | _(No docstring provided)_ |
+| **test_traceability_uses_canonical_relationship_fields**         | _(No docstring provided)_ |
+| **test_generated_traceability_is_ignored_on_rerun**              | _(No docstring provided)_ |
+| **test_generator_has_no_shadow_ingestion_authority**             | _(No docstring provided)_ |
+| **test_traceability_main_returns_nonzero_on_repository_failure** | _(No docstring provided)_ |
+
+### `06-fitness-function/tests/scripts/test_committed_mutation_integrity.py`
+
+| Function                            | Description               |
+| :---------------------------------- | :------------------------ |
+| **load**                            | _(No docstring provided)_ |
+| **test_missing_baseline_returns_2** | _(No docstring provided)_ |
+| **test_success_and_failure**        | _(No docstring provided)_ |
 
 ### `06-fitness-function/tests/scripts/test_genesis_commit_qualify.py`
 
-| Function | Description |
-| :--- | :--- |
-| **_load** | *(No docstring provided)* |
-| **test_entrypoint_is_thin_adapter** | *(No docstring provided)* |
-| **test_entrypoint_returns_nonzero_on_failure** | *(No docstring provided)* |
+| Function                                       | Description               |
+| :--------------------------------------------- | :------------------------ |
+| **\_load**                                     | _(No docstring provided)_ |
+| **test_entrypoint_is_thin_adapter**            | _(No docstring provided)_ |
+| **test_entrypoint_returns_nonzero_on_failure** | _(No docstring provided)_ |
 
 ### `06-fitness-function/tests/scripts/test_genesis_integrity.py`
 
-| Function | Description |
-| :--- | :--- |
-| **_load** | *(No docstring provided)* |
-| **test_genesis_integrity_entrypoint_is_thin_adapter** | *(No docstring provided)* |
-| **test_genesis_integrity_entrypoint_returns_nonzero_on_failure** | *(No docstring provided)* |
-| **test_genesis_integrity_entrypoint_runs_as_direct_python_script** | *(No docstring provided)* |
+| Function                                                           | Description               |
+| :----------------------------------------------------------------- | :------------------------ |
+| **\_load**                                                         | _(No docstring provided)_ |
+| **test_genesis_integrity_entrypoint_is_thin_adapter**              | _(No docstring provided)_ |
+| **test_genesis_integrity_entrypoint_returns_nonzero_on_failure**   | _(No docstring provided)_ |
+| **test_genesis_integrity_entrypoint_runs_as_direct_python_script** | _(No docstring provided)_ |
+
+### `06-fitness-function/tests/scripts/test_github_policy_check.py`
+
+| Function                                  | Description               |
+| :---------------------------------------- | :------------------------ |
+| **load**                                  | _(No docstring provided)_ |
+| **test_current_repository_policy_passes** | _(No docstring provided)_ |
+| **test_bypass_actor_drift_fails**         | _(No docstring provided)_ |
+| **test_floating_action_tag_fails**        | _(No docstring provided)_ |
 
 ### `06-fitness-function/tests/scripts/test_governance_qualify.py`
 
-| Function | Description |
-| :--- | :--- |
-| **_load** | *(No docstring provided)* |
-| **_green** | *(No docstring provided)* |
-| **test_control_only_composes_all_permanent_controls** | *(No docstring provided)* |
-| **test_qualification_fails_closed_on_control_failure** | *(No docstring provided)* |
-| **test_full_qualification_propagates_pytest_failure** | *(No docstring provided)* |
-| **test_full_qualification_passes_when_pytest_passes** | *(No docstring provided)* |
-| **test_permanent_qualifier_runs_directly_in_control_only_mode** | *(No docstring provided)* |
+| Function                                                        | Description               |
+| :-------------------------------------------------------------- | :------------------------ |
+| **\_load**                                                      | _(No docstring provided)_ |
+| **\_green**                                                     | _(No docstring provided)_ |
+| **test_control_only_composes_all_permanent_controls**           | _(No docstring provided)_ |
+| **test_qualification_fails_closed_on_control_failure**          | _(No docstring provided)_ |
+| **test_full_qualification_propagates_pytest_failure**           | _(No docstring provided)_ |
+| **test_full_qualification_passes_when_pytest_passes**           | _(No docstring provided)_ |
+| **test_permanent_qualifier_runs_directly_in_control_only_mode** | _(No docstring provided)_ |
 
 ### `06-fitness-function/tests/scripts/test_governance_scripts.py`
 
-| Function | Description |
-| :--- | :--- |
-| **_load** | *(No docstring provided)* |
-| **test_codeowners_parse_ignores_comments_blank_and_global** | *(No docstring provided)* |
-| **test_codeowners_resolve_file_directory_glob_and_missing** | *(No docstring provided)* |
-| **test_codeowners_main_missing_file_returns_one** | *(No docstring provided)* |
-| **test_codeowners_main_reports_stale_and_success** | *(No docstring provided)* |
-| **test_install_hook_missing_git_hooks_returns_one** | *(No docstring provided)* |
-| **test_install_hook_windows_writes_powershell** | *(No docstring provided)* |
-| **test_install_hook_unix_writes_bash_and_requests_executable_bit** | *(No docstring provided)* |
-| **test_install_hook_main_delegates** | *(No docstring provided)* |
-| **_write_adr** | *(No docstring provided)* |
-| **test_waiver_expiry_no_corpus_passes** | *(No docstring provided)* |
-| **test_waiver_expiry_ignores_non_adr_and_non_active_waivers** | *(No docstring provided)* |
-| **test_waiver_expiry_reports_expired_warning_future_and_invalid** | *(No docstring provided)* |
-| **test_waiver_expiry_malformed_frontmatter_is_skipped** | *(No docstring provided)* |
-| **test_waiver_main_delegates** | *(No docstring provided)* |
-| **test_install_hook_repository_root_contract** | *(No docstring provided)* |
+| Function                                                           | Description               |
+| :----------------------------------------------------------------- | :------------------------ |
+| **\_load**                                                         | _(No docstring provided)_ |
+| **test_codeowners_parse_ignores_comments_blank_and_global**        | _(No docstring provided)_ |
+| **test_codeowners_resolve_file_directory_glob_and_missing**        | _(No docstring provided)_ |
+| **test_codeowners_main_missing_file_returns_one**                  | _(No docstring provided)_ |
+| **test_codeowners_main_reports_stale_and_success**                 | _(No docstring provided)_ |
+| **test_install_hook_missing_git_hooks_returns_one**                | _(No docstring provided)_ |
+| **test_install_hook_windows_writes_powershell**                    | _(No docstring provided)_ |
+| **test_install_hook_unix_writes_bash_and_requests_executable_bit** | _(No docstring provided)_ |
+| **test_install_hook_main_delegates**                               | _(No docstring provided)_ |
+| **\_write_adr**                                                    | _(No docstring provided)_ |
+| **test_waiver_expiry_no_corpus_passes**                            | _(No docstring provided)_ |
+| **test_waiver_expiry_ignores_non_adr_and_non_active_waivers**      | _(No docstring provided)_ |
+| **test_waiver_expiry_reports_expired_warning_future_and_invalid**  | _(No docstring provided)_ |
+| **test_waiver_expiry_malformed_frontmatter_is_skipped**            | _(No docstring provided)_ |
+| **test_waiver_main_delegates**                                     | _(No docstring provided)_ |
+| **test_install_hook_repository_root_contract**                     | _(No docstring provided)_ |
 
 ### `06-fitness-function/tests/scripts/test_mutation_integrity.py`
 
-| Function | Description |
-| :--- | :--- |
-| **_load** | *(No docstring provided)* |
-| **test_mutation_integrity_entrypoint_is_thin_adapter** | *(No docstring provided)* |
-| **test_mutation_integrity_entrypoint_returns_nonzero** | *(No docstring provided)* |
-| **test_mutation_integrity_runs_as_direct_python_script** | *(No docstring provided)* |
+| Function                                                 | Description               |
+| :------------------------------------------------------- | :------------------------ |
+| **\_load**                                               | _(No docstring provided)_ |
+| **test_mutation_integrity_entrypoint_is_thin_adapter**   | _(No docstring provided)_ |
+| **test_mutation_integrity_entrypoint_returns_nonzero**   | _(No docstring provided)_ |
+| **test_mutation_integrity_runs_as_direct_python_script** | _(No docstring provided)_ |
+
+### `06-fitness-function/tests/scripts/test_prettier_runner.py`
+
+| Function                                                  | Description               |
+| :-------------------------------------------------------- | :------------------------ |
+| **load**                                                  | _(No docstring provided)_ |
+| **test_posix_command_uses_direct_npx**                    | _(No docstring provided)_ |
+| **test_windows_command_uses_comspec_and_quotes_npx_path** | _(No docstring provided)_ |
+| **test_missing_npx_fails_closed**                         | _(No docstring provided)_ |
+| **test_missing_windows_command_processor_fails_closed**   | _(No docstring provided)_ |
+| **test_run_prettier_invokes_expected_mode**               | _(No docstring provided)_ |
+| **test_invalid_mode_is_rejected**                         | _(No docstring provided)_ |
+| **test_main_success_and_failure**                         | _(No docstring provided)_ |
+
+### `06-fitness-function/tests/scripts/test_prettier_runner_windows_quoting.py`
+
+| Function                                                  | Description               |
+| :-------------------------------------------------------- | :------------------------ |
+| **\_load**                                                | _(No docstring provided)_ |
+| **\_windows_paths**                                       | _(No docstring provided)_ |
+| **test_windows_command_has_one_executable_quote_layer**   | _(No docstring provided)_ |
+| **test_windows_execute_uses_shell_with_explicit_comspec** | _(No docstring provided)_ |
+| **test_posix_execution_remains_shell_free**               | _(No docstring provided)_ |
+| **test_empty_windows_command_fails_closed**               | _(No docstring provided)_ |
 
 ### `06-fitness-function/tests/scripts/test_temporary_tool_hygiene.py`
 
-| Function | Description |
-| :--- | :--- |
-| **_policy** | *(No docstring provided)* |
-| **_temporary** | *(No docstring provided)* |
-| **_registry_records** | *(No docstring provided)* |
-| **test_repository_root_has_only_permanent_python_entrypoints** | *(No docstring provided)* |
-| **test_temporary_tool_patterns_are_absent_before_genesis** | *(No docstring provided)* |
-| **test_governance_registries_do_not_use_temporary_tools_as_evidence** | *(No docstring provided)* |
+| Function                                                              | Description               |
+| :-------------------------------------------------------------------- | :------------------------ |
+| **\_policy**                                                          | _(No docstring provided)_ |
+| **\_temporary**                                                       | _(No docstring provided)_ |
+| **\_registry_records**                                                | _(No docstring provided)_ |
+| **test_repository_root_has_only_permanent_python_entrypoints**        | _(No docstring provided)_ |
+| **test_temporary_tool_patterns_are_absent_before_genesis**            | _(No docstring provided)_ |
+| **test_governance_registries_do_not_use_temporary_tools_as_evidence** | _(No docstring provided)_ |
 
 <!-- AUTO-GENERATED-FUNCTIONS:END -->

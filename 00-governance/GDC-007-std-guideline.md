@@ -11,7 +11,6 @@ doc_meta:
   created_date: 2026-01-01
 ---
 
-
 # Enterprise Standards (STD) Guideline
 
 ## 1. Context & Scope
@@ -43,12 +42,12 @@ In addition to the global structural enforcement defined in **[GDC-001](GDC-001-
 
 <!-- AUTO-GENERATED-SCHEMA:START -->
 
-| Rule Category | Parameter | Enforcement / Value |
-| :--- | :--- | :--- |
-| **Metadata Rules** | Metadata Rules | <ul><li>doc_meta</li></ul> |
-| **Section Rules** | Required Sections | <ul><li>Objective & Scope</li><li>Design Principles</li><li>Normative Rules</li><li>Exceptions</li><li>Enforcement Mechanism</li></ul> |
-| **Section Rules** | Recommended Sections | <ul></ul> |
-| **Content Quality Rules** | Exceptions (Prohibited) | <ul><li>waiver</li><li>ADR</li><li>ARB</li><li>Approval Requirements</li></ul> |
+| Rule Category             | Parameter               | Enforcement / Value                                                                                                                    |
+| :------------------------ | :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------- |
+| **Metadata Rules**        | Metadata Rules          | <ul><li>doc_meta</li></ul>                                                                                                             |
+| **Section Rules**         | Required Sections       | <ul><li>Objective & Scope</li><li>Design Principles</li><li>Normative Rules</li><li>Exceptions</li><li>Enforcement Mechanism</li></ul> |
+| **Section Rules**         | Recommended Sections    | <ul></ul>                                                                                                                              |
+| **Content Quality Rules** | Exceptions (Prohibited) | <ul><li>waiver</li><li>ADR</li><li>ARB</li><li>Approval Requirements</li></ul>                                                         |
 
 <!-- AUTO-GENERATED-SCHEMA:END -->
 

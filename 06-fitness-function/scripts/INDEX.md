@@ -12,51 +12,75 @@ This index documents the internal functions and classes of the CI/CD scripts.
 
 ### `06-fitness-function/scripts/codeowners-validator.py`
 
-| Function | Description |
-| :--- | :--- |
-| **parse_codeowners** | Extract (line_number, path) tuples from CODEOWNERS, ignoring comments<br>and the global wildcard (*) rule. |
-| **resolve_path** | Check if a CODEOWNERS path pattern resolves to an existing file or<br>directory. Strips the leading slash (CODEOWNERS paths are repo-relative). |
-| **main** | *(No docstring provided)* |
+| Function             | Description                                                                                                                                     |
+| :------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
+| **parse_codeowners** | Extract (line_number, path) tuples from CODEOWNERS, ignoring comments<br>and the global wildcard (*) rule.                                      |
+| **resolve_path**     | Check if a CODEOWNERS path pattern resolves to an existing file or<br>directory. Strips the leading slash (CODEOWNERS paths are repo-relative). |
+| **main**             | _(No docstring provided)_                                                                                                                       |
+
+### `06-fitness-function/scripts/committed_mutation_integrity.py`
+
+| Function | Description               |
+| :------- | :------------------------ |
+| **main** | _(No docstring provided)_ |
 
 ### `06-fitness-function/scripts/genesis_commit_qualify.py`
 
-| Function | Description |
-| :--- | :--- |
-| **main** | *(No docstring provided)* |
+| Function | Description               |
+| :------- | :------------------------ |
+| **main** | _(No docstring provided)_ |
 
 ### `06-fitness-function/scripts/genesis_integrity.py`
 
-| Function | Description |
-| :--- | :--- |
-| **main** | *(No docstring provided)* |
+| Function | Description               |
+| :------- | :------------------------ |
+| **main** | _(No docstring provided)_ |
+
+### `06-fitness-function/scripts/github_policy_check.py`
+
+| Function | Description               |
+| :------- | :------------------------ |
+| **fail** | _(No docstring provided)_ |
+| **main** | _(No docstring provided)_ |
 
 ### `06-fitness-function/scripts/governance_qualify.py`
 
-| Function | Description |
-| :--- | :--- |
-| **_parser** | *(No docstring provided)* |
-| **main** | *(No docstring provided)* |
+| Function     | Description               |
+| :----------- | :------------------------ |
+| **\_parser** | _(No docstring provided)_ |
+| **main**     | _(No docstring provided)_ |
 
 ### `06-fitness-function/scripts/install-hooks.py`
 
-| Function | Description |
-| :--- | :--- |
-| **repository_root** | *(No docstring provided)* |
-| **install_hook** | Install a Git pre-commit hook that enforces Scnehaux Architecture Governance rules.<br>Detects the host OS and injects the appropriate shell script (PowerShell for Windows, Bash for Unix). |
-| **main** | *(No docstring provided)* |
+| Function            | Description                                                                                                                                                                                  |
+| :------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **repository_root** | _(No docstring provided)_                                                                                                                                                                    |
+| **install_hook**    | Install a Git pre-commit hook that enforces Scnehaux Architecture Governance rules.<br>Detects the host OS and injects the appropriate shell script (PowerShell for Windows, Bash for Unix). |
+| **main**            | _(No docstring provided)_                                                                                                                                                                    |
 
 ### `06-fitness-function/scripts/mutation_integrity.py`
 
-| Function | Description |
-| :--- | :--- |
-| **main** | *(No docstring provided)* |
+| Function | Description               |
+| :------- | :------------------------ |
+| **main** | _(No docstring provided)_ |
+
+### `06-fitness-function/scripts/prettier_runner.py`
+
+| Function                     | Description               |
+| :--------------------------- | :------------------------ |
+| **\_resolve_npx**            | _(No docstring provided)_ |
+| **\_prettier_args**          | _(No docstring provided)_ |
+| **\_windows_command_string** | _(No docstring provided)_ |
+| **\_execute**                | _(No docstring provided)_ |
+| **\_parser**                 | _(No docstring provided)_ |
+| **main**                     | _(No docstring provided)_ |
 
 ### `06-fitness-function/scripts/waiver-expiry-check.py`
 
-| Function | Description |
-| :--- | :--- |
-| **default_adr_dir** | *(No docstring provided)* |
+| Function                | Description                                                                                                             |
+| :---------------------- | :---------------------------------------------------------------------------------------------------------------------- |
+| **default_adr_dir**     | _(No docstring provided)_                                                                                               |
 | **check_waiver_expiry** | Scan accepted ADR exceptions for expiration.<br><br>Returns 1 for expired waivers or invalid expiry dates, otherwise 0. |
-| **main** | *(No docstring provided)* |
+| **main**                | _(No docstring provided)_                                                                                               |
 
 <!-- AUTO-GENERATED-FUNCTIONS:END -->

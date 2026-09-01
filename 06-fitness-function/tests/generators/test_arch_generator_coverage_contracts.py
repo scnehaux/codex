@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import importlib.util
+import os
 from pathlib import Path
+import subprocess
 import sys
 from types import MappingProxyType
 
@@ -64,17 +66,17 @@ def _snapshot(*records: RepositoryArtifact) -> RepositoryModel:
 
 
 @pytest.mark.parametrize("filename", ARCH_GENERATORS)
-def test_arch_generator_standalone_import_bootstraps_fitness_root(filename):
-    fitness = str(FITNESS_ROOT)
+def test_arch_generator_standalone_import_bootstraps_repository_root(filename):
+    repository = str(ROOT)
     original = list(sys.path)
 
     try:
-        sys.path[:] = [entry for entry in sys.path if entry != fitness]
+        sys.path[:] = [entry for entry in sys.path if entry != repository]
         _load_generator(
             filename,
             f"bootstrap_{Path(filename).stem}",
         )
-        assert fitness in sys.path
+        assert repository in sys.path
     finally:
         sys.path[:] = original
 
@@ -204,3 +206,31 @@ def test_remaining_arch_generator_main_success_returns_zero(
     )
 
     assert module.main() == 0
+
+@pytest.mark.parametrize(
+    "filename",
+    (
+        "generate_adr_index.py",
+        "generate_pad_sad_index.py",
+        "generate_traceability_graph.py",
+    ),
+)
+def test_arch_generator_direct_execution_resolves_repository_root(filename):
+    env = os.environ.copy()
+    env.pop("PYTHONPATH", None)
+
+    result = subprocess.run(
+        [sys.executable, str(GENERATOR_ROOT / filename)],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="strict",
+        env=env,
+    )
+
+    assert result.returncode == 0, (
+        (result.stdout or "") + "\n" + (result.stderr or "")
+    )
+    assert "ModuleNotFoundError" not in (result.stderr or "")
+
