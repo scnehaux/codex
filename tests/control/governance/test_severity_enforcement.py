@@ -1,5 +1,4 @@
 from tests.support.repository import REPOSITORY_ROOT
-from pathlib import Path
 
 import yaml
 
@@ -11,7 +10,7 @@ from engine.control.governance.severity_enforcement import (
 
 
 ROOT = REPOSITORY_ROOT
-REGISTRY = ROOT / "00-governance" / "severity-enforcement-registry.yaml"
+REGISTRY = ROOT / "governance" / "severity-enforcement-registry.yaml"
 
 
 def _severity_levels():
@@ -19,7 +18,7 @@ def _severity_levels():
     from engine.control.config.loader import parse_and_validate_global_config
 
     base = json.loads(
-        (ROOT / "00-governance" / "schemas" / "base.schema.json").read_text(
+        (ROOT / "schemas" / "base.schema.json").read_text(
             encoding="utf-8"
         )
     )
@@ -103,7 +102,7 @@ def test_registry_rejects_duplicate_missing_and_unknown_rules(tmp_path):
     )
 
     root = tmp_path
-    governance = root / "00-governance"
+    governance = root / "governance"
     governance.mkdir()
     registry.rename(governance / registry.name)
 
@@ -141,7 +140,7 @@ def test_verified_rule_requires_implementation_and_test_evidence(tmp_path):
         }
     )
 
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir()
     (governance / "severity-enforcement-registry.yaml").write_text(
         yaml.safe_dump({"rules": all_rules}, sort_keys=False),
@@ -153,8 +152,9 @@ def test_verified_rule_requires_implementation_and_test_evidence(tmp_path):
     assert any("verified rule missing implementation" in item for item in findings)
     assert any("verified rule missing test evidence" in item for item in findings)
 
+
 def _write_severity_registry(root, rules):
-    governance = root / "00-governance"
+    governance = root / "governance"
     governance.mkdir(parents=True, exist_ok=True)
     path = governance / "severity-enforcement-registry.yaml"
     path.write_text(
@@ -272,6 +272,7 @@ def test_empty_rule_id_is_rejected(tmp_path):
 
     assert any("record missing rule_id" in item for item in findings)
 
+
 def test_slice5_6_direct_candidates_are_verified_with_evidence():
     expected = {
         "invalid_lint_disable",
@@ -298,6 +299,7 @@ def test_slice5_6_direct_candidates_are_verified_with_evidence():
             candidate = value.split("::", 1)[0].split("#", 1)[0]
             assert (ROOT / candidate).exists()
 
+
 def test_slice5_6_schema_translation_and_dynamic_config_rules_are_verified():
     expected = {
         "missing_metadata",
@@ -322,6 +324,7 @@ def test_slice5_6_schema_translation_and_dynamic_config_rules_are_verified():
             candidate = value.split("::", 1)[0].split("#", 1)[0]
             assert (ROOT / candidate).exists()
 
+
 def test_slice5_6_repository_classification_rules_are_verified():
     expected = {
         "repository_classification_violation",
@@ -336,12 +339,11 @@ def test_slice5_6_repository_classification_rules_are_verified():
         record = records[rule_id]
         assert record.evidence_status == "verified"
         assert record.enforcement_kind == "runtime-rule"
-        assert record.implementation == (
-            'engine/control/governance/classification.py',
-        )
+        assert record.implementation == ("engine/control/governance/classification.py",)
         assert record.test_evidence == (
-            'tests/control/governance/test_classification.py',
+            "tests/control/governance/test_classification.py",
         )
+
 
 def test_slice5_6_behavioral_runtime_rules_are_verified():
     expected = {
@@ -376,3 +378,4 @@ def test_slice5_6_behavioral_runtime_rules_are_verified():
         for value in (*record.implementation, *record.test_evidence):
             candidate = value.split("::", 1)[0].split("#", 1)[0]
             assert (ROOT / candidate).exists()
+

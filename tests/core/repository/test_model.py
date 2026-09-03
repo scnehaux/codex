@@ -8,7 +8,9 @@ from engine.core.metamodel import ArtifactIdentity, ArtifactModel
 from engine.core.repository import RepositoryArtifact, RepositoryModel
 
 
-def _entry(path: str, artifact_id: str, artifact_type: str = "GDC") -> RepositoryArtifact:
+def _entry(
+    path: str, artifact_id: str, artifact_type: str = "GDC"
+) -> RepositoryArtifact:
     return RepositoryArtifact(
         artifact=ArtifactModel(
             identity=ArtifactIdentity(artifact_id),
@@ -22,13 +24,13 @@ def _entry(path: str, artifact_id: str, artifact_type: str = "GDC") -> Repositor
 
 
 def test_repository_model_is_deterministic_and_indexed():
-    second = _entry("04-system/SAD-002.md", "SAD-002", "SAD")
-    first = _entry("00-governance/GDC-001.md", "GDC-001")
+    second = _entry("systems/SAD-002.md", "SAD-002", "SAD")
+    first = _entry("governance/GDC-001.md", "GDC-001")
     model = RepositoryModel((second, first))
 
     assert tuple(item.path for item in model.artifacts) == (
-        "00-governance/GDC-001.md",
-        "04-system/SAD-002.md",
+        "governance/GDC-001.md",
+        "systems/SAD-002.md",
     )
     assert model.records_for_id("SAD-002") == (second,)
     assert model.artifacts_of_type("sad") == (second,)
@@ -47,7 +49,7 @@ def test_repository_model_rejects_duplicate_identity_and_path():
 
 
 def test_repository_artifact_projection_comes_from_artifact_model():
-    entry = _entry("00-governance/GDC-001.md", "GDC-001")
+    entry = _entry("governance/GDC-001.md", "GDC-001")
     assert entry.document_id == "GDC-001"
     assert entry.artifact_type == "GDC"
     assert entry.metadata["title"] == "GDC-001 title"
@@ -84,7 +86,7 @@ def test_repository_artifact_rejects_invalid_source_and_type():
 
 
 def test_repository_model_auxiliary_contracts():
-    entry = _entry("00-governance/GDC-001.md", "GDC-001")
+    entry = _entry("governance/GDC-001.md", "GDC-001")
     model = RepositoryModel((entry,))
     assert model.artifact_models == (entry.artifact,)
     assert model.semantic_state()[0][0] == entry.source_path

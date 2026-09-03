@@ -32,19 +32,15 @@ def test_ead_rejects_prescriptive_implementation_assertion():
     )
     validator.validate_type_specific()
     assert any(
-        "implementation leakage detected" in message
-        for _, message in validator.errors
+        "implementation leakage detected" in message for _, message in validator.errors
     )
 
 
 def test_ead_rejects_labeled_physical_implementation():
-    validator = _ead(
-        content="## Architecture Model\nDatabase: PostgreSQL\n"
-    )
+    validator = _ead(content="## Architecture Model\nDatabase: PostgreSQL\n")
     validator.validate_type_specific()
     assert any(
-        "implementation leakage detected" in message
-        for _, message in validator.errors
+        "implementation leakage detected" in message for _, message in validator.errors
     )
 
 
@@ -72,12 +68,7 @@ def test_ead_allows_negated_technology_example():
 
 def test_ead_ignores_fenced_illustrative_implementation():
     validator = _ead(
-        content=(
-            "## Alternatives Considered\n"
-            "```text\n"
-            "Database: PostgreSQL\n"
-            "```\n"
-        )
+        content=("## Alternatives Considered\n```text\nDatabase: PostgreSQL\n```\n")
     )
     validator.validate_type_specific()
     assert validator.errors == []

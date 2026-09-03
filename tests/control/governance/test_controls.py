@@ -18,7 +18,7 @@ def _repo_root() -> Path:
 
 def test_current_registry_has_one_record_per_normative_must_shall():
     root = _repo_root()
-    gov = root / "00-governance"
+    gov = root / "governance"
     statements = tuple(
         statement
         for path in sorted(gov.glob("GDC-*.md"))
@@ -35,7 +35,7 @@ def test_current_registry_has_one_record_per_normative_must_shall():
 def test_current_registry_structure_is_valid():
     root = _repo_root()
     records = load_control_registry(
-        root / "00-governance" / "normative-control-registry.yaml"
+        root / "governance" / "normative-control-registry.yaml"
     )
     assert registry_structure_errors(records) == ()
 
@@ -77,11 +77,12 @@ def test_load_registry_rejects_non_mapping_control(tmp_path):
     with pytest.raises(RuntimeError, match="control entry"):
         load_control_registry(path)
 
+
 def _control_record(**overrides):
     values = {
         "control_id": "CTRL-GDC-000-001",
         "source_gdc": "GDC-000",
-        "source_file": "GDC-000-governance-policy.md",
+        "source_file": "GDC-0governance-policy.md",
         "source_clause": "2. Policy Framework",
         "source_fingerprint": "abc123def456",
         "modality": "MUST",
@@ -99,9 +100,7 @@ def _control_record(**overrides):
 
 
 def test_registry_structure_errors_reject_invalid_control_id():
-    errors = registry_structure_errors(
-        (_control_record(control_id="BAD-ID"),)
-    )
+    errors = registry_structure_errors((_control_record(control_id="BAD-ID"),))
     assert any("Invalid control_id" in error for error in errors)
 
 
@@ -162,8 +161,7 @@ def test_verified_automated_control_requires_test_evidence():
     )
     errors = registry_structure_errors((record,))
     assert any(
-        "verified automated control has no test evidence" in error
-        for error in errors
+        "verified automated control has no test evidence" in error for error in errors
     )
 
 
@@ -188,6 +186,7 @@ def test_pending_or_gap_automated_control_may_expose_missing_mapping():
     )
     assert registry_structure_errors((pending, gap)) == ()
 
+
 def test_pending_or_gap_control_requires_owner_and_target_phase():
     pending = _control_record(
         control_id="CTRL-GDC-000-002",
@@ -205,14 +204,14 @@ def test_pending_or_gap_control_requires_owner_and_target_phase():
     )
 
     errors = registry_structure_errors((pending, gap))
-    assert sum(
-        "pending/gap control is missing control_owner" in error
-        for error in errors
-    ) == 2
-    assert sum(
-        "pending/gap control is missing target_phase" in error
-        for error in errors
-    ) == 2
+    assert (
+        sum("pending/gap control is missing control_owner" in error for error in errors)
+        == 2
+    )
+    assert (
+        sum("pending/gap control is missing target_phase" in error for error in errors)
+        == 2
+    )
 
 
 def test_non_automated_control_requires_enforcement_mechanism():
@@ -243,13 +242,11 @@ def test_verified_control_does_not_require_future_disposition():
 def test_current_pending_controls_have_explicit_disposition():
     root = _repo_root()
     records = load_control_registry(
-        root / "00-governance" / "normative-control-registry.yaml"
+        root / "governance" / "normative-control-registry.yaml"
     )
 
     pending_or_gap = [
-        record
-        for record in records
-        if record.evidence_status in {"pending", "gap"}
+        record for record in records if record.evidence_status in {"pending", "gap"}
     ]
     assert pending_or_gap
     assert all(record.control_owner for record in pending_or_gap)
@@ -259,7 +256,6 @@ def test_current_pending_controls_have_explicit_disposition():
 def test_current_registry_has_no_unowned_gap():
     root = _repo_root()
     records = load_control_registry(
-        root / "00-governance" / "normative-control-registry.yaml"
+        root / "governance" / "normative-control-registry.yaml"
     )
     assert not [record for record in records if record.evidence_status == "gap"]
-

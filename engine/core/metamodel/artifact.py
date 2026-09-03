@@ -29,12 +29,7 @@ def _optional(value: str | None, field_name: str) -> str | None:
 
 def _freeze(value: Any) -> Any:
     if isinstance(value, Mapping):
-        return MappingProxyType(
-            {
-                key: _freeze(item)
-                for key, item in value.items()
-            }
-        )
+        return MappingProxyType({key: _freeze(item) for key, item in value.items()})
     if isinstance(value, list):
         return tuple(_freeze(item) for item in value)
     if isinstance(value, tuple):
@@ -180,20 +175,12 @@ class ArtifactModel:
         object.__setattr__(self, "attributes", _freeze(self.attributes))
 
         relationships = tuple(self.relationships)
-        if not all(
-            isinstance(item, ArtifactRelationship)
-            for item in relationships
-        ):
-            raise TypeError(
-                "relationships must contain ArtifactRelationship"
-            )
+        if not all(isinstance(item, ArtifactRelationship) for item in relationships):
+            raise TypeError("relationships must contain ArtifactRelationship")
         object.__setattr__(self, "relationships", relationships)
 
         evidence = tuple(self.evidence)
-        if not all(
-            isinstance(item, SourceReference)
-            for item in evidence
-        ):
+        if not all(isinstance(item, SourceReference) for item in evidence):
             raise TypeError("evidence must contain SourceReference")
         object.__setattr__(self, "evidence", evidence)
 

@@ -50,7 +50,9 @@ class ArtifactDocumentState:
     def __post_init__(self) -> None:
         if not isinstance(self.identity, ArtifactIdentity):
             raise TypeError("identity must be ArtifactIdentity")
-        object.__setattr__(self, "artifact_type", _required(self.artifact_type, "artifact_type"))
+        object.__setattr__(
+            self, "artifact_type", _required(self.artifact_type, "artifact_type")
+        )
         object.__setattr__(self, "title", _required(self.title, "title"))
         object.__setattr__(
             self,

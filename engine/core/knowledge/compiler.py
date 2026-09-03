@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
-from engine.core.metamodel import ArtifactModel, KnowledgeState
+from engine.core.metamodel import ArtifactModel
 from engine.core.repository import RepositoryModel
 
 from .graph import KnowledgeEdge, KnowledgeGraph, KnowledgeNode
@@ -40,43 +40,25 @@ def _compile_artifacts(
     extra_nodes = tuple(additional_nodes)
     extra_edges = tuple(additional_edges)
 
-    if not all(
-        isinstance(artifact, ArtifactModel)
-        for artifact in artifact_list
-    ):
+    if not all(isinstance(artifact, ArtifactModel) for artifact in artifact_list):
         raise TypeError("artifacts must contain ArtifactModel")
-    if not all(
-        isinstance(node, KnowledgeNode)
-        for node in extra_nodes
-    ):
+    if not all(isinstance(node, KnowledgeNode) for node in extra_nodes):
         raise TypeError("additional_nodes must contain KnowledgeNode")
-    if not all(
-        isinstance(edge, KnowledgeEdge)
-        for edge in extra_edges
-    ):
+    if not all(isinstance(edge, KnowledgeEdge) for edge in extra_edges):
         raise TypeError("additional_edges must contain KnowledgeEdge")
 
     by_key: dict[str, ArtifactModel] = {}
     for artifact in artifact_list:
         key = artifact.canonical_key
         if key in by_key:
-            raise GraphCompilationError(
-                f"duplicate artifact identity: {key}"
-            )
+            raise GraphCompilationError(f"duplicate artifact identity: {key}")
         by_key[key] = artifact
 
-    artifact_nodes = tuple(
-        artifact_to_node(artifact)
-        for artifact in by_key.values()
-    )
-    all_node_keys = {
-        node.key for node in (*artifact_nodes, *extra_nodes)
-    }
+    artifact_nodes = tuple(artifact_to_node(artifact) for artifact in by_key.values())
+    all_node_keys = {node.key for node in (*artifact_nodes, *extra_nodes)}
 
     if len(all_node_keys) != len(artifact_nodes) + len(extra_nodes):
-        raise GraphCompilationError(
-            "duplicate knowledge node identity"
-        )
+        raise GraphCompilationError("duplicate knowledge node identity")
 
     edges: list[KnowledgeEdge] = list(extra_edges)
     for artifact in by_key.values():

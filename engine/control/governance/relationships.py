@@ -159,9 +159,7 @@ RELATIONSHIP_REGISTRY: tuple[RelationshipSpec, ...] = (
     ),
 )
 
-ALL_RELATION_FIELDS = frozenset(
-    spec.metadata_field for spec in RELATIONSHIP_REGISTRY
-)
+ALL_RELATION_FIELDS = frozenset(spec.metadata_field for spec in RELATIONSHIP_REGISTRY)
 
 
 def artifact_type_from_id(doc_id: Any) -> str | None:
@@ -179,12 +177,12 @@ def normalize_relation_values(value):
     return [value]
 
 
-def relationship_specs_for_source(source_type: str | None) -> tuple[RelationshipSpec, ...]:
+def relationship_specs_for_source(
+    source_type: str | None,
+) -> tuple[RelationshipSpec, ...]:
     normalized = str(source_type or "").upper()
     return tuple(
-        spec
-        for spec in RELATIONSHIP_REGISTRY
-        if normalized in spec.source_types
+        spec for spec in RELATIONSHIP_REGISTRY if normalized in spec.source_types
     )
 
 

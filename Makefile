@@ -9,28 +9,25 @@ install:
 
 # Install the Git hook script to block dirty/unformatted commits
 install-hooks:
-	python 06-fitness-function/scripts/install-hooks.py
+	python scripts/install-hooks.py
 
 # Automatically build/update all Markdown documents sourced from JSON Schemas or scripts
 generate-docs:
-	python 06-fitness-function/generators/generate_rules_doc.py
-	python 06-fitness-function/generators/generate_functions_doc.py
-	python 06-fitness-function/generators/generate_engine_topography.py
-	python 06-fitness-function/generators/generate_adr_index.py
-	python 06-fitness-function/generators/generate_pad_sad_index.py
-	python 06-fitness-function/generators/generate_traceability_graph.py
-	python 06-fitness-function/generators/generate_maturity_dashboard.py
+	python generators/generate_rules_doc.py
+	python generators/generate_functions_doc.py
+	python generators/generate_engine_topography.py
+	python generators/generate_adr_index.py
+	python generators/generate_pad_sad_index.py
+	python generators/generate_traceability_graph.py
+	python generators/generate_maturity_dashboard.py
 
-# Verify the committed state equals generate-then-format.
+# Verify generate-then-format is reproducible from the current repository state.
 #
-# The two steps must run in this order and the check must come after both. The generators inject
-# blocks into documents that `lint-docs-format` also governs, and their raw output is not
-# Prettier-formatted -- so comparing straight after generation asks the repository to hold
-# formatted and unformatted content simultaneously, which no commit can satisfy. Generating and
-# then formatting is the definition of the committed state, and this target is what proves a
-# checkout still matches it.
-verify-generated: generate-docs format-docs
-	git diff --exit-code || (echo "Generated documentation is out of sync. Run 'make verify-generated' locally and commit the result." && exit 1)
+# The repository may already contain intentional tracked or untracked changes. Capture that state,
+# run generation followed by formatting, then require the resulting state to be identical. This
+# proves generation is deterministic without confusing unrelated working-tree changes with drift.
+verify-generated:
+	python -c "import hashlib,os,pathlib,subprocess,sys; untracked=lambda: subprocess.check_output(['git','ls-files','--others','--exclude-standard','-z']).split(b'\0'); state=lambda: hashlib.sha256(subprocess.check_output(['git','diff','--binary','HEAD','--','.'],stderr=subprocess.DEVNULL)+b''.join(p+b'\0'+hashlib.sha256(pathlib.Path(os.fsdecode(p)).read_bytes()).digest() for p in untracked() if p)).digest(); before=state(); subprocess.run([sys.argv[1],'generate-docs'],check=True); subprocess.run([sys.argv[1],'format-docs'],check=True); after=state(); print('[PASS] Generated state is reproducible' if before==after else '[FAIL] Generate-then-format changed repository state'); sys.exit(0 if before==after else 1)" "$(MAKE)"
 
 # Run the core architecture linter to validate document compliance (C4, NFRs, etc.)
 lint:
@@ -42,28 +39,28 @@ lint-sarif:
 
 # Check for expired architecture exception waivers based on the current date
 check-waivers:
-	python 06-fitness-function/scripts/waiver-expiry-check.py
+	python scripts/waiver-expiry-check.py
 
 # Auto-format Python code using Ruff
 format-code:
-	ruff check --fix engine tests 06-fitness-function conftest.py
-	ruff format engine tests 06-fitness-function conftest.py
+	ruff check --fix engine tests generators scripts conftest.py
+	ruff format engine tests generators scripts conftest.py
 
 # Auto-format Markdown & JSON documents using Prettier
 format-docs:
-	python 06-fitness-function/scripts/prettier_runner.py --write
+	python scripts/prettier_runner.py --write
 
 # Auto-format ALL files (Python, Markdown, and JSON) at once
 format: format-code format-docs
 
 # Check Python code formatting (no auto-fix, used by CI/CD & Git hooks)
 lint-code:
-	ruff check engine tests 06-fitness-function conftest.py
-	ruff format --check engine tests 06-fitness-function conftest.py
+	ruff check engine tests generators scripts conftest.py
+	ruff format --check engine tests generators scripts conftest.py
 
 # Check document formatting (no auto-fix, used by CI/CD & Git hooks)
 lint-docs-format:
-	python 06-fitness-function/scripts/prettier_runner.py --check
+	python scripts/prettier_runner.py --check
 
 # Run unit tests for the linter engine (using pytest)
 test:
@@ -97,19 +94,19 @@ docker-run:
 	docker run --rm -v "$$(pwd):/docs" scnehaux-linter:test --target /docs
 # Verify the pre/post Genesis repository root-of-trust contract
 genesis-check:
-	python 06-fitness-function/scripts/genesis_integrity.py
+	python scripts/genesis_integrity.py
 # Verify governed document version and mutation integrity
 mutation-check:
-	python 06-fitness-function/scripts/mutation_integrity.py
+	python scripts/mutation_integrity.py
 # Qualify the complete local governance control plane
 governance-qualify:
-	python 06-fitness-function/scripts/governance_qualify.py
+	python scripts/governance_qualify.py
 # Qualify the exact staged tree for the Genesis root commit
 genesis-commit-check:
-	python 06-fitness-function/scripts/genesis_commit_qualify.py
+	python scripts/genesis_commit_qualify.py
 # Validate committed governed mutations against an explicit CI/PR base
 mutation-ci-check:
-	python 06-fitness-function/scripts/committed_mutation_integrity.py --base-ref "$(SCNEHAUX_MUTATION_BASE_REF)"
+	python scripts/committed_mutation_integrity.py --base-ref "$(SCNEHAUX_MUTATION_BASE_REF)"
 # Validate repository-owned GitHub enforcement desired state
 github-policy-check:
-	python 06-fitness-function/scripts/github_policy_check.py
+	python scripts/github_policy_check.py

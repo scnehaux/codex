@@ -24,22 +24,21 @@ def test_knowledge_foundation_is_core_only_and_declared_in_layout():
     for name in ("provenance.py", "context.py", "retrieval.py"):
         imports = _imports(knowledge / name)
         assert not any(
-            item.startswith((
-                "engine.control",
-                "engine.intelligence",
-                "engine.adapters",
-                "engine.interfaces",
-            ))
+            item.startswith(
+                (
+                    "engine.control",
+                    "engine.intelligence",
+                    "engine.adapters",
+                    "engine.interfaces",
+                )
+            )
             for item in imports
         )
 
     layout = yaml.safe_load(
-        (
-            REPOSITORY_ROOT
-            / "00-governance"
-            / "framework"
-            / "source-layout.yaml"
-        ).read_text(encoding="utf-8")
+        (REPOSITORY_ROOT / "governance" / "framework" / "source-layout.yaml").read_text(
+            encoding="utf-8"
+        )
     )
     foundation = layout["knowledge_foundation"]
     assert foundation["provenance"]["chain"] == [

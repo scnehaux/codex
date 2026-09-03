@@ -1,13 +1,12 @@
 from tests.support.repository import REPOSITORY_ROOT
 import json
-from pathlib import Path
 
 from jsonschema import Draft7Validator
 from referencing import Registry, Resource
 
 ROOT = REPOSITORY_ROOT
-BASE_PATH = ROOT / "00-governance" / "schemas" / "base.schema.json"
-GDC_PATH = ROOT / "00-governance" / "schemas" / "gdc.schema.json"
+BASE_PATH = ROOT / "schemas" / "base.schema.json"
+GDC_PATH = ROOT / "schemas" / "gdc.schema.json"
 
 
 def _validator():
@@ -52,3 +51,4 @@ def test_deprecated_gdc_requires_last_reviewed():
 def test_baseline_gdc_with_last_reviewed_is_valid_for_lifecycle_rule():
     errors = list(_validator().iter_errors(_doc("approved", True)))
     assert not any("last_reviewed" in error.message for error in errors)
+

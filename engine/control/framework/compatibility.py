@@ -17,22 +17,14 @@ def _python_files(root: Path, relative_root: str) -> tuple[Path, ...]:
     if not base.exists():
         return ()
     return tuple(
-        sorted(
-            path
-            for path in base.rglob("*.py")
-            if "__pycache__" not in path.parts
-        )
+        sorted(path for path in base.rglob("*.py") if "__pycache__" not in path.parts)
     )
 
 
 def audit_ai_native_compatibility(root: Path) -> tuple[CompatibilityFinding, ...]:
     findings: list[CompatibilityFinding] = []
 
-    parser = (
-        root
-        / 'engine' / "control" / "parsing"
-        / "markdown_ast.py"
-    )
+    parser = root / "engine" / "control" / "parsing" / "markdown_ast.py"
     if parser.is_file():
         text = parser.read_text(encoding="utf-8")
         if 're.search(r"^---' in text or 're.sub(r"^---' in text:
@@ -46,10 +38,10 @@ def audit_ai_native_compatibility(root: Path) -> tuple[CompatibilityFinding, ...
 
     generators = _python_files(
         root,
-        "06-fitness-function/generators",
+        "generators",
     )
     forbidden_generator_imports = {
-        'engine.control.parsing.markdown_ast',
+        "engine.control.parsing.markdown_ast",
         "markdown_it",
     }
     for path in generators:
@@ -82,11 +74,7 @@ def audit_ai_native_compatibility(root: Path) -> tuple[CompatibilityFinding, ...
                 )
             )
 
-    graph = (
-        root
-        / 'engine' / "core" / "knowledge"
-        / "graph.py"
-    )
+    graph = root / "engine" / "core" / "knowledge" / "graph.py"
     if graph.is_file():
         text = graph.read_text(encoding="utf-8")
         if "class KnowledgeNode" not in text:
@@ -99,11 +87,7 @@ def audit_ai_native_compatibility(root: Path) -> tuple[CompatibilityFinding, ...
             )
 
     profile = (
-        root
-        / "00-governance"
-        / "framework"
-        / "profiles"
-        / "scnehaux-codex-default.yaml"
+        root / "governance" / "framework" / "profiles" / "scnehaux-codex-default.yaml"
     )
     if not profile.is_file():
         findings.append(

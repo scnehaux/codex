@@ -15,6 +15,7 @@ from engine.control.governance.mutation import (
 
 GitRunner = Callable[[Sequence[str]], GitResult]
 
+
 @dataclass(frozen=True, slots=True)
 class CommittedMutationReport:
     base_ref: str
@@ -38,6 +39,7 @@ def _default_git_runner(repo_root: Path) -> GitRunner:
             errors="strict",
         )
         return GitResult(result.returncode, result.stdout, result.stderr)
+
     return run
 
 
@@ -48,21 +50,41 @@ def _normalize(path: str) -> str:
 def _show(git: GitRunner, ref: str, path: str, code: str):
     result = git(["show", f"{ref}:{path}"])
     if result.returncode != 0:
-        return None, (MutationFinding(code, path, f"cannot read governed document from {ref}"),)
+        return None, (
+            MutationFinding(code, path, f"cannot read governed document from {ref}"),
+        )
     return result.stdout, ()
 
 
 def _parse_entry(raw: str):
     parts = tuple(part.strip() for part in raw.split("\t"))
     if len(parts) < 2:
-        return None, (MutationFinding("invalid-committed-diff-entry", ".", f"cannot interpret git diff entry: {parts!r}"),)
+        return None, (
+            MutationFinding(
+                "invalid-committed-diff-entry",
+                ".",
+                f"cannot interpret git diff entry: {parts!r}",
+            ),
+        )
     status = parts[0]
     if status.startswith("R"):
         if len(parts) != 3:
-            return None, (MutationFinding("invalid-committed-rename-entry", ".", f"cannot interpret git rename entry: {parts!r}"),)
+            return None, (
+                MutationFinding(
+                    "invalid-committed-rename-entry",
+                    ".",
+                    f"cannot interpret git rename entry: {parts!r}",
+                ),
+            )
         return (status, _normalize(parts[1]), _normalize(parts[2])), ()
     if len(parts) != 2:
-        return None, (MutationFinding("invalid-committed-diff-entry", ".", f"cannot interpret git diff entry: {parts!r}"),)
+        return None, (
+            MutationFinding(
+                "invalid-committed-diff-entry",
+                ".",
+                f"cannot interpret git diff entry: {parts!r}",
+            ),
+        )
     path = _normalize(parts[1])
     return (status, path, path), ()
 
@@ -78,26 +100,66 @@ def audit_committed_mutation_integrity(
     git = git_runner or _default_git_runner(root)
 
     if not isinstance(base_ref, str) or not base_ref.strip():
-        return CommittedMutationReport(str(base_ref), None, head_ref, 0, (
-            MutationFinding("mutation-base-ref-invalid", ".", "base_ref must be a non-empty Git ref"),
-        ))
+        return CommittedMutationReport(
+            str(base_ref),
+            None,
+            head_ref,
+            0,
+            (
+                MutationFinding(
+                    "mutation-base-ref-invalid",
+                    ".",
+                    "base_ref must be a non-empty Git ref",
+                ),
+            ),
+        )
     if not isinstance(head_ref, str) or not head_ref.strip():
-        return CommittedMutationReport(base_ref, None, str(head_ref), 0, (
-            MutationFinding("mutation-head-ref-invalid", ".", "head_ref must be a non-empty Git ref"),
-        ))
+        return CommittedMutationReport(
+            base_ref,
+            None,
+            str(head_ref),
+            0,
+            (
+                MutationFinding(
+                    "mutation-head-ref-invalid",
+                    ".",
+                    "head_ref must be a non-empty Git ref",
+                ),
+            ),
+        )
 
     merge = git(["merge-base", base_ref, head_ref])
     if merge.returncode != 0 or not merge.stdout.strip():
-        return CommittedMutationReport(base_ref, None, head_ref, 0, (
-            MutationFinding("mutation-merge-base-failed", ".", f"cannot resolve merge-base between {base_ref} and {head_ref}"),
-        ))
+        return CommittedMutationReport(
+            base_ref,
+            None,
+            head_ref,
+            0,
+            (
+                MutationFinding(
+                    "mutation-merge-base-failed",
+                    ".",
+                    f"cannot resolve merge-base between {base_ref} and {head_ref}",
+                ),
+            ),
+        )
 
     merge_base = merge.stdout.strip().splitlines()[0].strip()
     diff = git(["diff", "--name-status", "-M", merge_base, head_ref, "--"])
     if diff.returncode != 0:
-        return CommittedMutationReport(base_ref, merge_base, head_ref, 0, (
-            MutationFinding("committed-git-diff-failed", ".", "cannot resolve committed mutation delta"),
-        ))
+        return CommittedMutationReport(
+            base_ref,
+            merge_base,
+            head_ref,
+            0,
+            (
+                MutationFinding(
+                    "committed-git-diff-failed",
+                    ".",
+                    "cannot resolve committed mutation delta",
+                ),
+            ),
+        )
 
     findings: list[MutationFinding] = []
     checked = 0
@@ -119,7 +181,9 @@ def audit_committed_mutation_integrity(
         checked += 1
 
         if status.startswith("A"):
-            text, read_findings = _show(git, head_ref, new_path, "committed-head-read-failed")
+            text, read_findings = _show(
+                git, head_ref, new_path, "committed-head-read-failed"
+            )
             findings.extend(read_findings)
             if text is not None:
                 _, parse_findings = parse_versioned_document(new_path, text)
@@ -127,21 +191,29 @@ def audit_committed_mutation_integrity(
             continue
 
         if status.startswith("D"):
-            text, read_findings = _show(git, merge_base, old_path, "committed-baseline-read-failed")
+            text, read_findings = _show(
+                git, merge_base, old_path, "committed-baseline-read-failed"
+            )
             findings.extend(read_findings)
             if text is not None:
                 before, parse_findings = parse_versioned_document(old_path, text)
                 findings.extend(parse_findings)
                 if before is not None:
-                    findings.append(MutationFinding(
-                        "governed-document-deletion",
-                        old_path,
-                        "governed documents cannot be removed as a raw deletion; use an explicit lifecycle mutation",
-                    ))
+                    findings.append(
+                        MutationFinding(
+                            "governed-document-deletion",
+                            old_path,
+                            "governed documents cannot be removed as a raw deletion; use an explicit lifecycle mutation",
+                        )
+                    )
             continue
 
-        old_text, old_read = _show(git, merge_base, old_path, "committed-baseline-read-failed")
-        new_text, new_read = _show(git, head_ref, new_path, "committed-head-read-failed")
+        old_text, old_read = _show(
+            git, merge_base, old_path, "committed-baseline-read-failed"
+        )
+        new_text, new_read = _show(
+            git, head_ref, new_path, "committed-head-read-failed"
+        )
         findings.extend(old_read)
         findings.extend(new_read)
         if old_text is None or new_text is None:
@@ -155,11 +227,13 @@ def audit_committed_mutation_integrity(
         if before is None and after is None:
             continue
         if before is not None and after is None:
-            findings.append(MutationFinding(
-                "governed-metadata-removal",
-                new_path,
-                "mutation removed governed document metadata",
-            ))
+            findings.append(
+                MutationFinding(
+                    "governed-metadata-removal",
+                    new_path,
+                    "mutation removed governed document metadata",
+                )
+            )
             continue
         if before is None:
             continue
@@ -167,7 +241,9 @@ def audit_committed_mutation_integrity(
         assert after is not None
         findings.extend(validate_document_mutation(before, after))
 
-    return CommittedMutationReport(base_ref, merge_base, head_ref, checked, tuple(findings))
+    return CommittedMutationReport(
+        base_ref, merge_base, head_ref, checked, tuple(findings)
+    )
 
 
 def assert_committed_mutation_integrity(

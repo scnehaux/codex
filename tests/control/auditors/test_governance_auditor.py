@@ -7,7 +7,7 @@ SEVERITIES = {"architecture_admission_violation": "CRITICAL"}
 
 
 def _manifest(tmp_path, state="closed", required=None):
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir(parents=True)
     data = {
         "governance_control_plane": {
@@ -62,14 +62,17 @@ def test_open_admission_accepts_stable_baseline(tmp_path):
     }
     assert audit_architecture_admission(meta, SEVERITIES, str(tmp_path)) == []
 
+
 def test_missing_manifest_is_not_a_bootstrap_repo(tmp_path):
     assert audit_architecture_admission({}, SEVERITIES, str(tmp_path)) == []
 
 
 def test_unreadable_manifest_fails_closed(tmp_path):
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir()
-    (governance / "bootstrap-manifest.yaml").write_text("governance_control_plane: [", encoding="utf-8")
+    (governance / "bootstrap-manifest.yaml").write_text(
+        "governance_control_plane: [", encoding="utf-8"
+    )
     findings = audit_architecture_admission({}, SEVERITIES, str(tmp_path))
     assert len(findings) == 1
     assert "unreadable" in findings[0][1].lower()

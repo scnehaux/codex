@@ -242,6 +242,7 @@ def test_convert_dates():
     v.validate()
     # It shouldn't crash, the dates should be converted.
 
+
 def test_lint_disable_block_start_end_scope_and_reason():
     content = (
         "<!-- lint_disable_start: prohibited_words (reason: literal policy example) -->\n"
@@ -277,6 +278,7 @@ def test_extract_rules_deduplicates_and_filters_garbage():
 
 def test_add_error_unknown_rule_is_configuration_drift():
     import pytest
+
     v = make_validator(BaseValidator, "x.md", "", {}, {}, {}, set(), {})
     with pytest.raises(RuntimeError, match="configuration drift"):
         v.add_error("does_not_exist", "boom")
@@ -296,6 +298,7 @@ def test_schema_validation_required_root_maps_missing_section():
     )
     v.validate()
     assert any("Schema validation failed at root" in message for _, message in v.errors)
+
 
 def test_schema_format_checker_rejects_invalid_calendar_date():
     schema = {

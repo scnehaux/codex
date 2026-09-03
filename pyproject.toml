@@ -38,8 +38,8 @@ include = ["engine*"]
 scnehaux-lint = "engine.interfaces.cli:main"
 
 [tool.pytest.ini_options]
-testpaths = ["tests", "06-fitness-function/tests"]
-# Must be the package ROOT (parent of `engine`), matching production imports
+testpaths = ["tests"]
+# Must be the framework/package root (parent of `engine`), matching production imports
 # (`from engine.control.parsing...`). Pointing at .../engine masked crawler.py's broken
 # `from parsing...` import — tests were green while the real CLI was dead.
 pythonpath = ["."]
@@ -50,7 +50,17 @@ extraPaths = ["."]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["E402"]
-"06-fitness-function/tests/**/*.py" = ["E402"]
+# Standalone governance/generator entrypoints intentionally bootstrap the repository root
+# before importing engine modules; keep E402 exceptions scoped to these exact files.
+"generators/generate_adr_index.py" = ["E402"]
+"generators/generate_maturity_dashboard.py" = ["E402"]
+"generators/generate_pad_sad_index.py" = ["E402"]
+"generators/generate_traceability_graph.py" = ["E402"]
+"scripts/committed_mutation_integrity.py" = ["E402"]
+"scripts/genesis_commit_qualify.py" = ["E402"]
+"scripts/genesis_integrity.py" = ["E402"]
+"scripts/governance_qualify.py" = ["E402"]
+"scripts/mutation_integrity.py" = ["E402"]
 
 [tool.scnehaux.coverage]
 per_file_min = 95.0

@@ -1,0 +1,3178 @@
+registry_version: 1
+kind: normative-control-registry
+source: governance/GDC-*.md
+policy_coverage_basis: MUST/MUST NOT/SHALL/SHALL NOT outside code fences and tables
+controls:
+- control_id: CTRL-GDC-000-001
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.1 The Ecosystem Goals
+  source_fingerprint: f15a6ec73c0c
+  modality: MUST
+  statement: Engineering Velocity at Scale (Decentralized Autonomy) To allow a hyperscale engineering organization to move
+    with the agility of a lean startup. Teams must have the autonomy to make rapid local decisions without centralized bottlenecks,
+    while still guaranteeing absolute compliance with global enterprise standards.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-000-002
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.1 The Ecosystem Goals
+  source_fingerprint: cfdc90ef618e
+  modality: MUST
+  statement: Architectural Integrity & Consistency (Lineage & Adaptability) To prevent "spaghetti architecture" and fragmented
+    technology stacks. Every system and decision must trace perfectly back to a validated business strategy. This ensures
+    clear blast radii, allowing the enterprise to rapidly adapt, pivot, or replace technologies without triggering cascading
+    failures.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-000-003
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.1 The Ecosystem Goals
+  source_fingerprint: 54017f7f4481
+  modality: MUST
+  statement: The Federated Single Source of Truth (Living Documentation) To cure the inherent chaos of undocumented hyperscale
+    engineering. The organization must possess a definitive source of truth that never lies, never rots, and is never overwhelming
+    to read. It must provide absolute clarity on system boundaries and integration contracts at all times.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-000-004
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.1 The Ecosystem Goals
+  source_fingerprint: 83fd0bf6c3b3
+  modality: MUST
+  statement: Institutional Resilience (Anti-Brain Drain) To decouple the survival of the architecture from the individuals
+    who built it. The context, rationale, and historical evolution of every system must be permanently preserved, ensuring
+    the organization survives human turnover without losing critical engineering knowledge.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-000-005
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.1 The Ecosystem Goals
+  source_fingerprint: e130f2af024e
+  modality: MUST
+  statement: Frictionless Developer Experience (DevEx) To ensure widespread adoption by integrating governance directly into
+    existing engineering habits. The governance process must become an invisible, frictionless part of the daily engineering
+    workflow rather than a bureaucratic hurdle or a separate administrative chore.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-000-006
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.2 Core Philosophy (The Existential
+    Maxims)
+  source_fingerprint: ffb9b37c2128
+  modality: MUST
+  statement: 'Predictability over Cleverness: Serving as The Goal of this ecosystem, software architecture, documentation,
+    and governance processes must be deterministic. We reject "clever" system hacks, bespoke documentation formats, and subjective
+    policy enforcement in favor of boring designs, rigidly standardized structures, and mechanically verifiable policies.'
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-000-007
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.2 Core Philosophy (The Existential
+    Maxims)
+  source_fingerprint: 569bf7d069cd
+  modality: MUST
+  statement: 'Strict Separation of Concerns (SoC): To provide The Structure for predictability, architectural responsibilities
+    must be ruthlessly isolated across all layers (Fractal Abstraction). Every artifact has a strictly bounded perimeter.
+    We decouple logical intent ("What we do") from physical execution ("How we do it") across the entire ecosystem so that
+    downstream engineering refactors do not pollute upstream strategic artifacts.'
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-000-008
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.2 Core Philosophy (The Existential
+    Maxims)
+  source_fingerprint: 58a484e34a8d
+  modality: MUST
+  statement: 'Explicit Contracts (Boundaries over Prose): Acting as The Connective Tissue between those separated concerns,
+    we do not strive for exhaustive conceptual dictionaries. Instead, we demand explicit contracts at the boundaries. Critical
+    integration points, such as document identity (YAML Frontmatter), structural schemas (JSON), API interfaces, trust boundaries,
+    failure modes, NFR targets, and ownership, must be explicitly quantified. Hand-wavy assumptions in these critical areas
+    are prohibited.'
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-000-009
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.2 Core Philosophy (The Existential
+    Maxims)
+  source_fingerprint: e3e3c5938d5b
+  modality: MUST
+  statement: 'Zero Waste (The Deletion Mandate): Dictating The Lifecycle of the medium, redundancy breeds entropy in both
+    architectural and governance artifacts. We enforce a strict Single Source of Truth (SSOT) through centralized definitions
+    and decentralized references. Execution-level artifacts that rot quickly must be aggressively deleted once built, and
+    duplicated governance policies must be ruthlessly consolidated. We rely on Git history for forensic audits rather than
+    accumulating dead archives.'
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-000-010
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.2 Core Philosophy (The Existential
+    Maxims)
+  source_fingerprint: 968ebacf4a12
+  modality: MUST
+  statement: 'Circular Governance (Metaprogramming): Serving as The Meta-Enforcer, the ecosystem binds itself. The laws that
+    govern the systems must also govern the policies themselves. The Constitution and its Guidelines are audited by the exact
+    same automated Fitness Function they mandate.'
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-000-011
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.3 SoC Artifact Domain Philosophy
+  source_fingerprint: 11f32dcab6e2
+  modality: MUST
+  statement: 'NFR Focus: Driven by the Target Audience and Blast Radius, this identifies the specific Non-Functional Requirements
+    (e.g., SLA, Latency, RTO, IAM) that must be rigorously quantified.'
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-000-012
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework
+  source_fingerprint: 4204c8e7032f
+  modality: MUST
+  statement: The policies in this framework act as automated guardrails rather than bureaucratic gates. All architecture artifacts
+    must adhere to these deterministic policies governing their boundaries, lineage, and lifecycle, ensuring teams can operate
+    with maximum autonomy without compromising the integrity of the ecosystem.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-000-013
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.1 The Boundary Constraints (Non-Leakage
+    Policy)
+  source_fingerprint: fbd936c3d95d
+  modality: MUST
+  statement: To prevent architectural entropy and uphold the C4 boundaries defined in Section 1.4 The Hybrid Metamodel, architecture
+    artifacts must never exceed their assigned C4 abstraction level. A strategic artifact must not contain execution mechanics,
+    and a component-level artifact must not attempt to establish domain-wide policies. The explicit semantic boundaries, allowed
+    schemas, and content rules for each layer are strictly decentralized to their respective GDC guidelines.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-000-014
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.2 Metadata Governance (YAML
+    Frontmatter)
+  source_fingerprint: 611c057aa7cc
+  modality: MUST
+  statement: To fulfill the core objective of Architectural Integrity & Consistency and establish a true Federated Single
+    Source of Truth, every architectural document MUST declare its identity within a YAML Frontmatter block (docmeta) at the
+    absolute top of the file.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-000-016
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.3 The Fractal Boundary (Physical
+    vs. Logical Decentralization) > 2.3.2 Logical Decentralization (The Fractal Triad)
+  source_fingerprint: 49631886b623
+  modality: MUST
+  statement: 2. Centralized Automation (The Master Fitness Function) The ecosystem maintains a centralized anchor for its
+    enforcement engine. GDC-001 — Fitness Functions acts as the Master Policy. The Constitution (GDC-000) dictates that policies
+    must be automated, but it delegates the technical architecture of this automation entirely to the Fitness Function (GDC-001).
+    GDC-001 produces the universal Root Declarative Schema and Root Executable Logic that all other domains inherit from.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-000-017
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.3 The Fractal Boundary (Physical
+    vs. Logical Decentralization) > 2.3.2 Logical Decentralization (The Fractal Triad)
+  source_fingerprint: a008348e8bc0
+  modality: MUST
+  statement: '3. Decentralized Domain Implementation (The Fractal Triad) This is where the fractal boundary truly takes effect.
+    The Separation of Concerns dictates that every specific architectural domain (e.g., PAD, SAD) must be completely decentralized
+    into its own isolated 1:1:1 triad to collaborate with the Fitness Function:'
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-000-018
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.4 Contractual Lineage (The C4
+    DAG)
+  source_fingerprint: c49afe82314b
+  modality: MUST
+  statement: 'To uphold Architectural Integrity & Consistency as established in Section 1.1 The Ecosystem Goals, artifacts
+    must strictly align with their C4-assigned boundary without leaking execution details across layers. To enforce this,
+    all artifacts in the Scnehaux ecosystem must connect to form an unbroken Directed Acyclic Graph (DAG) of Contractual Lineage.
+    Every decision and standard acts as a Cascading Constraint, flowing strictly top-down without circular dependencies:'
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-000-019
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.4 Contractual Lineage (The C4
+    DAG) > 2.4.1 DAG Integrity & Attachment Policies
+  source_fingerprint: 73283ade603d
+  modality: MUST
+  statement: 'The Core Hierarchy (EAD → PAD → SAD → TDD): Starting from the PAD and moving downwards, every artifact MUST
+    establish a strict upward relationship to exactly one structural parent above it. (A TDD attaches to a SAD, a SAD attaches
+    to a PAD, and a PAD attaches to an EAD). Orphan artifacts are strictly prohibited.'
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/relationships.py
+  - engine/control/auditors/graph_auditor.py
+  test_evidence:
+  - tests/control/governance/test_relationships.py
+  - tests/control/auditors/test_graph_auditor.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-000-020
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.5 Non-Functional Requirements
+    (NFR) Taxonomy
+  source_fingerprint: a14cdb644794
+  modality: MUST
+  statement: To enforce the AWS WAF quality standard established in Section 1.4 The Hybrid Metamodel, architectural characteristics
+    (e.g., "fast" or "secure") must never be subjective. Every NFR must map to one of the 6 pillars and translate into concrete,
+    quantifiable engineering derivatives.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-000-021
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.6 Artifact Lifecycle & Versioning
+  source_fingerprint: 227bc4c43028
+  modality: MUST
+  statement: 'Mandatory Lifecycle Metadata: Every artifact must declare its current lifecycle state (e.g., whether it is a
+    draft under review, an active baseline, or a retired concept) within its YAML frontmatter.'
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-000-022
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.6 Artifact Lifecycle & Versioning
+  source_fingerprint: e0984abe772c
+  modality: MUST
+  statement: 'Immutable Snapshots vs. Semantic Versioning: Immutable artifacts (ADRs) are not versioned, if a decision changes,
+    a new artifact must supersede the old one. All other artifacts (including GDCs, EADs, STDs, PADs, SADs, and TDDs) are
+    treated as Versioned Artifacts and must utilize Semantic Versioning.'
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: process-control
+  implementation:
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: Phase 7 Version/Mutation engine; PR review remains interim evidence
+  control_owner: Governance Process Authority
+  target_phase: Phase 7 Version + Mutation
+- control_id: CTRL-GDC-000-023
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.6 Artifact Lifecycle & Versioning
+  source_fingerprint: 1b1aa61b4dfc
+  modality: MUST
+  statement: 'The Version Bump Mandate: Once a versioned artifact reaches an approved state, any subsequent modification to
+    its architectural content MUST include a corresponding version bump in its YAML metadata.'
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/lifecycle.py
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/control/governance/test_lifecycle.py
+  - tests/control/validators/test_global_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-000-024
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.6 Artifact Lifecycle & Versioning
+  source_fingerprint: f870f7c3faaa
+  modality: MUST
+  statement: 'The Baseline Stability Mandate: A versioned artifact whose status asserts it is, or has been, an official baseline
+    (approved, deprecated) MUST carry a stable Semantic Version of 1.0.0 or higher. Semantic Versioning reserves major version
+    zero for initial development, where anything MAY change at any time; an artifact cannot simultaneously be the blueprint
+    other teams build against and a document whose contract may move underneath them. Pre-baseline statuses (chartered, draft,
+    proposed) are the correct home for 0.y.z and remain unconstrained — promotion to a baseline status and promotion to 1.0.0
+    are one act, not two. Enforced by the approvedversionnotstable fitness function.'
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  evidence_status: verified
+  evidence_expectation: baseline-bearing versioned artifacts reject 0.y.z versions
+- control_id: CTRL-GDC-000-025
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.6.1 Lifecycle State, Validation
+    Profile, and Admission Authority
+  source_fingerprint: 14292c0d4c1d
+  modality: MUST NOT
+  statement: Lifecycle state, validation strictness, and architecture admission authority are independent contracts and MUST
+    NOT be inferred from one another.
+  scope: governance-constitution
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/lifecycle.py
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/control/governance/test_lifecycle.py
+  - tests/control/validators/test_global_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-000-026
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.6.2 Genesis Governance Bootstrap
+  source_fingerprint: 1b1410f759f8
+  modality: MUST
+  statement: 'Pre-Commit Qualification: Before the root commit is created, the governance kernel MUST pass its full local
+    automated test suite and blocking Fitness Function checks.'
+  scope: governance-constitution
+  severity: CRITICAL
+  enforcement_mode: repository-control
+  implementation:
+  - GitHub repository ruleset / branch protection
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: effective repository ruleset evidence and negative enforcement test
+  control_owner: Repository Governance Authority
+  target_phase: Phase 6 Genesis Integrity
+- control_id: CTRL-GDC-000-027
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.6.2 Genesis Governance Bootstrap
+  source_fingerprint: e234f0fdf086
+  modality: MUST
+  statement: 'Provenance Required: governance/bootstrap-manifest.yaml MUST identify the canonical target repository, the
+    legacy source repository, the source ref, and the immutable source commit SHA used for re-admission.'
+  scope: governance-constitution
+  severity: CRITICAL
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 6 Genesis Integrity
+- control_id: CTRL-GDC-000-028
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.6.2 Genesis Governance Bootstrap
+  source_fingerprint: 65bad0d2ba82
+  modality: MUST
+  statement: 'History Integrity: Replacing or rewriting the root commit invalidates the governance chain of custody. The canonical
+    branch MUST therefore reject non-fast-forward updates and deletion once repository rules are activated.'
+  scope: governance-constitution
+  severity: CRITICAL
+  enforcement_mode: repository-control
+  implementation:
+  - GitHub repository ruleset / branch protection
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: effective repository ruleset evidence and negative enforcement test
+  control_owner: Repository Governance Authority
+  target_phase: Phase 9 Effective GitHub Enforcement
+- control_id: CTRL-GDC-000-029
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.8 The Quality Framework
+  source_fingerprint: ffd4f6c68677
+  modality: MUST
+  statement: While structural integrity is enforced mechanically (see 2.7 Policy-as-Code), the assessment of complex architectural
+    trade-offs (e.g., blast radius, domain coupling) cannot be automated. As a matter of policy, all subjective design decisions
+    MUST be evaluated against a standardized, objective metric to eliminate opinion-based debates.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-000-030
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.9 The Metaprogramming Principle
+    (Circular Governance)
+  source_fingerprint: 8f35a88abbc9
+  modality: MUST
+  statement: The governance ecosystem must eat its own dog food. Both the automated Fitness Functions (Policy-as-Code) and
+    the human evaluation metrics (Quality Rubric) are used to validate ALL artifacts, including the governance artifacts themselves.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-000-031
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.9 The Metaprogramming Principle
+    (Circular Governance)
+  source_fingerprint: ff6e2f83732a
+  modality: MUST
+  statement: 'The framework is entirely circular and fractal: GDC artifacts define how SADs and PADs are written, but the
+    GDC artifacts are themselves governed by their own schemas and validation schemas (as explicitly proven in GDC-005 — GDC
+    Guideline). The Architecture Authority cannot create a new policy without that policy first passing the exact same rigorous
+    validation gates that downstream engineering teams must pass.'
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-000-032
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.12 The Architecture Authority
+  source_fingerprint: c3daa2e00964
+  modality: MUST
+  statement: This ecosystem must be governed by a supreme centralized authority, acting as the "Timekeeper of the Architecture".
+    While this Constitution mandates the existence of this Architecture Authority as an organizational policy, it deliberately
+    avoids dictating the specific organizational structure (e.g., whether it is an Architecture Review Board, a Principal
+    Engineering Guild, or a Tech Council). The exact naming, limits of authority, escalation triggers, and operational procedures
+    of this body are delegated to and defined entirely within GDC-003 — Review Process.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: process-control
+  implementation:
+  - documented governance process / accountable authority
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: auditable process record or approval artifact
+  control_owner: Governance Process Authority
+  target_phase: Phase 8 Process Governance Hardening
+- control_id: CTRL-GDC-000-033
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > Repository Classification Boundary
+  source_fingerprint: acd0f11a9cd7
+  modality: MUST
+  statement: Repository visibility is a storage and disclosure boundary. Artifact classification MUST describe the protection
+    actually provided by the canonical repository estate.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/classification.py
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/control/governance/test_classification.py
+  - tests/control/validators/test_global_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-000-034
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > Repository Classification Boundary
+  source_fingerprint: f854095386fa
+  modality: MUST
+  statement: 'governed artifacts stored in this repository MUST use classification: public'
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/classification.py
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/control/governance/test_classification.py
+  - tests/control/validators/test_global_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-000-035
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > Repository Classification Boundary
+  source_fingerprint: 3e534cfd5b0d
+  modality: MUST NOT
+  statement: internal, restricted, and confidential artifacts MUST NOT be stored in a public repository
+  scope: governance-constitution
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/classification.py
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/control/governance/test_classification.py
+  - tests/control/validators/test_global_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-000-036
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > Repository Classification Boundary
+  source_fingerprint: 41aa4a66d512
+  modality: MUST NOT
+  statement: a classification label MUST NOT be treated as a confidentiality mechanism
+  scope: governance-constitution
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/classification.py
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/control/governance/test_classification.py
+  - tests/control/validators/test_global_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-000-037
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > Relationship Ontology
+  source_fingerprint: ed44823c666f
+  modality: MUST
+  statement: Governed metadata relationships form a typed architecture graph. Their semantics MUST come from one executable
+    Relationship Registry rather than from field-name conventions duplicated across validators and generators.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/relationships.py
+  - engine/control/auditors/graph_auditor.py
+  test_evidence:
+  - tests/control/governance/test_relationships.py
+  - tests/control/auditors/test_graph_auditor.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-000-038
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > Normative Control Registry
+  source_fingerprint: 15de1e5c37ad
+  modality: MUST
+  statement: Every GDC statement using MUST, MUST NOT, SHALL, or SHALL NOT is a normative control and MUST have one stable
+    Control ID in governance/normative-control-registry.yaml.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/controls.py
+  test_evidence:
+  - tests/control/governance/test_controls.py
+  evidence_status: verified
+  evidence_expectation: Normative Control Registry structure and policy coverage are machine-validated with adversarial tests
+- control_id: CTRL-GDC-000-039
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > Normative Control Registry
+  source_fingerprint: c684901c6b65
+  modality: MUST
+  statement: Each normative control MUST declare its source clause, modality, scope, severity, enforcement mode, implementation
+    mapping, and evidence status.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/controls.py
+  test_evidence:
+  - tests/control/governance/test_controls.py
+  evidence_status: verified
+  evidence_expectation: Normative Control Registry structure and policy coverage are machine-validated with adversarial tests
+- control_id: CTRL-GDC-000-040
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > Normative Control Registry
+  source_fingerprint: 682a5f2efad5
+  modality: MUST
+  statement: Automated enforcement MUST identify executable implementation and test evidence.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/controls.py
+  test_evidence:
+  - tests/control/governance/test_controls.py
+  evidence_status: verified
+  evidence_expectation: Normative Control Registry structure and policy coverage are machine-validated with adversarial tests
+- control_id: CTRL-GDC-000-041
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > Normative Control Registry
+  source_fingerprint: b1b80fe430e5
+  modality: MUST
+  statement: Human-review, process-control, and repository-control obligations MUST identify their enforcement mechanism and
+    evidence expectation without pretending they are Python rules.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/controls.py
+  test_evidence:
+  - tests/control/governance/test_controls.py
+  evidence_status: verified
+  evidence_expectation: Normative Control Registry structure and policy coverage are machine-validated with adversarial tests
+- control_id: CTRL-GDC-000-042
+  source_gdc: GDC-000
+  source_file: GDC-0governance-policy.md
+  source_clause: Documentation Governance Policy (The Constitution) > Normative Control Registry
+  source_fingerprint: 895c6413f36a
+  modality: MUST
+  statement: A missing, duplicate, stale, or unmapped normative control is a governance gap and MUST remain visible until
+    reconciled. Policy coverage and source-code test coverage are separate measures and neither substitutes for the other.
+  scope: governance-constitution
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/controls.py
+  test_evidence:
+  - tests/control/governance/test_controls.py
+  evidence_status: verified
+  evidence_expectation: missing, stale, duplicate, and malformed registry mappings remain visible
+- control_id: CTRL-GDC-001-001
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: 'Architecture Fitness Functions & Compliance Engine > 1. Context & Scope > 1.1 The Core Mandate: The Master
+    Fitness Function'
+  source_fingerprint: f2f415d15c2e
+  modality: MUST
+  statement: Rather than relying on manual, bottleneck-prone reviews, we enforce these goals through the philosophy of Separation
+    of Concerns (SoC) Artifact Domains. We mandate that every architectural perimeter must be fully automatable. To achieve
+    this, we centralize critical boundaries, taxonomies, and lineages into the document's YAML Frontmatter (docmeta) and structural
+    Abstract Syntax Tree (AST).
+  scope: fitness-function
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-001-002
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 1. Context & Scope > 1.2 The Automation Scope & Domain
+    Boundaries
+  source_fingerprint: 531d5dec9beb
+  modality: MUST
+  statement: 'To fulfill the Constitution (GDC-000), we divide deterministic validation into five definitive architectural
+    perimeters (The 5 Pillars). This list is the conceptual boundary for the control plane. Any new deterministic validation
+    rule MUST fall into one of these domains, be owned by engine/control/, and remain invokable through the canonical engine/control/linting
+    facade rather than being embedded in an interface or fitness harness:'
+  scope: deterministic-control-boundary
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - governance/framework/source-layout.yaml
+  - engine/control/linting/__init__.py
+  - engine/control/linting/facade.py
+  test_evidence:
+  - tests/control/linting/test_boundary.py
+  evidence_status: verified
+  evidence_expectation: source ownership and dependency-boundary proof
+- control_id: CTRL-GDC-001-003
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 1. Context & Scope > 1.3 The Fractal Implementation
+    Strategy
+  source_fingerprint: 01547c69eb76
+  modality: MUST
+  statement: '> The Executable Governance Philosophy: Deterministic rules belong in schemas or control-plane code, but not
+    every legitimate governance decision is mechanically decidable. Every normative update to architecture governance MUST
+    map to the canonical normative-control registry with an explicit enforcement mode, implementation mechanism, evidence
+    state, and accountable owner when automation is not authoritative. A Markdown statement without a closed policy → control
+    → implementation → evidence chain is not an enforceable governance contract.'
+  scope: governance-control-closure
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/controls.py
+  - governance/normative-control-registry.yaml
+  test_evidence:
+  - tests/control/governance/test_controls.py
+  evidence_status: verified
+  evidence_expectation: one canonical control record per normative MUST/SHALL with structural validation
+- control_id: CTRL-GDC-001-004
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework
+  source_fingerprint: fb80cf64a92b
+  modality: MUST
+  statement: The engine utilizes a decentralized, composable architecture based on the Open-Closed Principle. To contribute
+    effectively, developers must first understand the physical layout of the engine.
+  scope: fitness-function
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-001-005
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > 2.3 The Schema Architecture (JSON
+    Federation)
+  source_fingerprint: d91a9471dda9
+  modality: MUST
+  statement: 'Naming Convention Rule: To achieve dynamic Deep-Merging of the Fractal Triad, the engine automatically identifies
+    the necessary document-specific schema by extracting the Document Type prefix from the artifact''s docmeta.id (e.g., ADR-IAM-000
+    -> ADR). It then resolves the specific JSON schema file by mapping it to the strict naming convention: schemas/[doctype].schema.json
+    (where [doctype] is the exact acronym in lowercase, e.g., schemas/adr.schema.json). If a specific schema
+    is required but missing, the engine MUST trigger a Hard Block.'
+  scope: fitness-function
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-001-006
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > 2.4 Validator Federation (Polymorphic
+    Engine)
+  source_fingerprint: 13f32a0da7c3
+  modality: MUST
+  statement: 'Naming Convention Rule: To enforce the Fractal Triad, the engine/control/validators/registry.py automatically
+    maps the artifact to its validator by extracting the Document Type prefix from the artifact''s docmeta.id (e.g., ADR-IAM-000
+    -> ADR). It then attempts to load the validator class using the strict naming convention: [DocType]Validator (e.g., ADRValidator),
+    which must reside in the python file engine/control/validators/domains/[doctype]validator.py (lowercase, e.g., engine/control/validators/domains/adrvalidator.py).
+    If the registry fails to find a validator for an expected Document Type, the engine MUST trigger a Hard Block.'
+  scope: fitness-function
+  severity: CRITICAL
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-001-007
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > 2.4 Validator Federation (Polymorphic
+    Engine)
+  source_fingerprint: 7de3efb31025
+  modality: MUST
+  statement: 'Execution Isolation (validatetypespecific): To guarantee clean Separation of Concerns (SoC), global rules (e.g.,
+    checking mandatory sections, banned vocabulary) are handled entirely by the parent BaseValidator. The specialized child
+    classes (like ADRValidator or SADValidator) are strictly prohibited from implementing global logic. They MUST isolate
+    their custom domain-logic entirely within the overridden validatetypespecific() function. This function serves as the
+    exclusive sandbox for executing document-specific rules.'
+  scope: fitness-function
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-001-008
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > 2.4 NFR Taxonomy Enforcement (AWS
+    WAF)
+  source_fingerprint: e4b4d68f5ab7
+  modality: MUST
+  statement: 'To ensure non-functional requirements are structured uniformly across all systems, the engine enforces strict
+    mapping to the AWS Well-Architected Framework. Any NFRs declared in architecture documents must be categorized under one
+    of the 6 pillars (e.g., ### Security, ### Reliability). The engine/control/validators/globalrules.py module evaluates
+    the headers under the "Non-Functional Requirements" section to guarantee alignment with awswafpillars defined in the global
+    schema.'
+  scope: fitness-function
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-001-009
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > 2.4 Lifecycle-Aware Validation
+    Profiles
+  source_fingerprint: 7d2e59c87cbd
+  modality: MUST
+  statement: The Fitness Function MUST resolve document type before applying any lifecycle-based validation shortcut. Lifecycle
+    state does not select validation strictness by itself.
+  scope: fitness-function
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/lifecycle.py
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/control/governance/test_lifecycle.py
+  - tests/control/validators/test_global_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-001-010
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > Per-File Test Coverage Contract
+  source_fingerprint: cb7bb4a64bed
+  modality: MUST NOT
+  statement: The Fitness Function implementation is governed by a per-file statement coverage floor of 95% for every production
+    Python source file under engine/control/. Repository-wide average coverage is retained only as a secondary defense-in-depth
+    metric and MUST NOT compensate for an individual file below the threshold.
+  scope: fitness-function
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - pyproject.toml
+  - conftest.py
+  test_evidence:
+  - conftest.py
+  evidence_status: verified
+  evidence_expectation: pytest aggregate and per-file coverage gates
+- control_id: CTRL-GDC-001-011
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > Per-File Test Coverage Contract
+  source_fingerprint: 3f69052c3d8c
+  modality: MUST
+  statement: aggregate statement coverage MUST be at least 95%
+  scope: fitness-function
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - pyproject.toml
+  test_evidence:
+  - pytest coverage gate execution
+  evidence_status: verified
+  evidence_expectation: aggregate statement coverage gate >=95%
+- control_id: CTRL-GDC-001-012
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > Per-File Test Coverage Contract
+  source_fingerprint: adc747a9b23e
+  modality: MUST
+  statement: every individual production source file MUST be at least 95%
+  scope: fitness-function
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - pyproject.toml
+  - conftest.py
+  test_evidence:
+  - conftest.py
+  evidence_status: verified
+  evidence_expectation: pytest per-file coverage hard gate
+- control_id: CTRL-GDC-001-013
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > Dead Code and Coverage Integrity
+  source_fingerprint: 98c7ce0bf081
+  modality: MUST NOT
+  statement: Production code under engine/control/ MUST NOT retain unreachable functions, branches, commented-out implementations,
+    or compatibility paths that cannot occur under the repository's enforced invariants.
+  scope: fitness-function
+  severity: CRITICAL
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-001-fitness-functions.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: continuous code review plus dead-code audit; no artificial coverage tests
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-001-014
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > Dead Code and Coverage Integrity
+  source_fingerprint: 3269a92c1d6a
+  modality: MUST
+  statement: 'Coverage MUST represent executable production behavior:'
+  scope: fitness-function
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-001-fitness-functions.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: test review must confirm coverage represents reachable production behavior
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-001-015
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > Dead Code and Coverage Integrity
+  source_fingerprint: 3f67cdb13530
+  modality: MUST
+  statement: tests MUST exercise reachable contracts, failure modes, and supported configurations
+  scope: fitness-function
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-001-fitness-functions.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: test review must exercise reachable contracts and failure modes
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-001-016
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 6. Compliance & Enforcement
+  source_fingerprint: a1adc8ff7862
+  modality: MUST
+  statement: 'Commit Hook Checks: Pre-commit hooks must scan new architecture documents (e.g., ADRs) to verify that the YAML
+    frontmatter contains valid fields and matches the schema defined in their respective guidelines.'
+  scope: fitness-function
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-001-017
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 6. Compliance & Enforcement
+  source_fingerprint: dde8878829c6
+  modality: MUST NOT
+  statement: 'Distributed Enforcement (Remote Execution): Downstream project repositories (containing C3/C4 artifacts) MUST
+    NOT maintain their own copies of engine/interfaces/cli.py. To ensure strict, untamperable governance, local CI/CD pipelines
+    must validate documents by remotely executing the central linter.'
+  scope: fitness-function
+  severity: CRITICAL
+  enforcement_mode: repository-control
+  implementation:
+  - GitHub/downstream repository governance
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: Phase 9 effective repository/downstream enforcement evidence
+  control_owner: Repository Governance Authority
+  target_phase: Phase 9 Effective GitHub Enforcement
+- control_id: CTRL-GDC-001-018
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 6. Compliance & Enforcement > 6.1 Execution Boundary
+    & Path Sterilization (Fail-Closed Security)
+  source_fingerprint: b8533577a6b4
+  modality: MUST
+  statement: 'Path Boundary Enforcement: Any target path explicitly provided to the linter (e.g., via CLI arguments) MUST
+    resolve within the TARGETREPOROOT. Attempts to traverse outside the repository (e.g., using .. or targeting a different
+    drive volume) will trigger an immediate Hard Crash (sys.exit(1)).'
+  scope: fitness-function
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - engine/interfaces/cli.py
+  - engine/control/fs/crawler.py
+  test_evidence:
+  - tests/interfaces/test_cli.py
+  - tests/control/fs/test_crawler.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-001-019
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 6. Compliance & Enforcement > 6.2 Downstream Integration
+    (Remote Execution)
+  source_fingerprint: 302dd2113a66
+  modality: MUST
+  statement: To prevent security vulnerabilities and local tampering, downstream repositories (e.g., scnehaux-ui-platform)
+    must remotely invoke this Compliance Engine during their CI/CD runs.
+  scope: fitness-function
+  severity: CRITICAL
+  enforcement_mode: process-control
+  implementation:
+  - documented governance process / accountable authority
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: auditable process record or approval artifact
+  control_owner: Governance Process Authority
+  target_phase: Phase 8 Process Governance Hardening
+- control_id: CTRL-GDC-001-020
+  source_gdc: GDC-001
+  source_file: GDC-001-fitness-functions.md
+  source_clause: Architecture Fitness Functions & Compliance Engine > 6. Compliance & Enforcement > 6.2 Downstream Integration
+    (Remote Execution)
+  source_fingerprint: 166d85e50362
+  modality: MUST
+  statement: '> [!TIP] Testing Linter Upgrades in Downstream Repositories By default, the workflow executes the linter script
+    from the main branch. If you are developing a new linter rule in a branch (e.g., feature/strict-nfr) inside the governance
+    repository and need to test it against your downstream application code, you must override the governanceref input:'
+  scope: fitness-function
+  severity: ERROR
+  enforcement_mode: repository-control
+  implementation:
+  - GitHub repository ruleset / branch protection
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: effective repository ruleset evidence and negative enforcement test
+  control_owner: Repository Governance Authority
+  target_phase: Phase 9 Effective GitHub Enforcement
+- control_id: CTRL-GDC-002-001
+  source_gdc: GDC-002
+  source_file: GDC-002-quality-rubric.md
+  source_clause: Documentation Quality Framework > 1. Context & Scope
+  source_fingerprint: b128280ca896
+  modality: MUST
+  statement: This document defines the Qualitative Evaluation Criteria for all architectural artifacts. While other documents
+    in the governance suite define what sections must exist or how to audit them, this Framework defines the rigorous benchmark
+    the content must meet to pass the "Quality Gate" before entering the Scnehaux knowledge base.
+  scope: quality-framework
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-002-002
+  source_gdc: GDC-002
+  source_file: GDC-002-quality-rubric.md
+  source_clause: Documentation Quality Framework > 1. Context & Scope > The governance Ecosystem (Separation of Concerns)
+  source_fingerprint: 7d10e23723e7
+  modality: MUST
+  statement: 'Quality Framework (GDC-002) - [THIS DOCUMENT]: The Qualitative Standard. Defines the 10 deep architectural parameters
+    (e.g., Trade-offs, Blast Radius, Quantification) that human reviewers must evaluate.'
+  scope: quality-framework
+  severity: ERROR
+  enforcement_mode: process-control
+  implementation:
+  - documented governance process / accountable authority
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: auditable process record or approval artifact
+  control_owner: Governance Process Authority
+  target_phase: Phase 8 Process Governance Hardening
+- control_id: CTRL-GDC-002-003
+  source_gdc: GDC-002
+  source_file: GDC-002-quality-rubric.md
+  source_clause: Documentation Quality Framework > 3. Enforcement Mechanism (The Governance Layers) > 3.1 Audit Trail (No
+    Backdoor Approvals)
+  source_fingerprint: 68d6b63a6d7f
+  modality: MUST NOT
+  statement: An architecture document is only considered 'Approved' or 'Accepted' when it is formally reviewed and merged
+    via a Git Pull Request. You must not manually change the document's status without a PR, nor use external tools (like
+    Jira or Confluence) as proof of approval. The Git commit history is the only recognized proof.
+  scope: quality-framework
+  severity: CRITICAL
+  enforcement_mode: repository-control
+  implementation:
+  - GitHub repository ruleset / branch protection
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: effective repository ruleset evidence and negative enforcement test
+  control_owner: Repository Governance Authority
+  target_phase: Phase 9 Effective GitHub Enforcement
+- control_id: CTRL-GDC-002-004
+  source_gdc: GDC-002
+  source_file: GDC-002-quality-rubric.md
+  source_clause: Documentation Quality Framework > 4. Severity & Exceptions > Score Classification
+  source_fingerprint: b14fd0534afd
+  modality: MUST NOT
+  statement: 'Enforcement Rule: Documents failing to meet the minimum score of 9 Passes must not be marked as Approved, must
+    not be referenced as authoritative, and must not guide production implementation.'
+  scope: quality-framework
+  severity: CRITICAL
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: P1-B quality gate reconciliation; score cannot grant authority below threshold
+  control_owner: Architecture Review Authority
+  target_phase: Phase 8 P1-B Review and Approval Model
+- control_id: CTRL-GDC-003-001
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 2. Policy Framework > 2.1 Evaluation Rubric & Score Sheet
+  source_fingerprint: ae8b3f9e865c
+  modality: MUST
+  statement: Reviewers must evaluate the target document against the following 10 parameters. When required, the score sheet
+    must be filled out as a markdown snippet and attached directly to the Pull Request.
+  scope: review-process
+  severity: ERROR
+  enforcement_mode: repository-control
+  implementation:
+  - GitHub repository ruleset / branch protection
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: effective repository ruleset evidence and negative enforcement test
+  control_owner: Repository Governance Authority
+  target_phase: Phase 9 Effective GitHub Enforcement
+- control_id: CTRL-GDC-003-002
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 2. Policy Framework > 2.2 High-Risk Pivots (ARB Escalation Triggers)
+  source_fingerprint: 9f2497a11236
+  modality: MUST
+  statement: 'While the Peer Reviewer executes the rubric above, the Architecture Review Board (ARB) must take over if the
+    PR triggers a high-risk pivot. It is the strict responsibility of the Peer Reviewer to identify these conditions and escalate
+    the Pull Request by explicitly tagging the ARB for formal review. ARB escalation is mandatory under the following conditions:'
+  scope: review-process
+  severity: ERROR
+  enforcement_mode: repository-control
+  implementation:
+  - GitHub repository ruleset / branch protection
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: effective repository ruleset evidence and negative enforcement test
+  control_owner: Repository Governance Authority
+  target_phase: Phase 9 Effective GitHub Enforcement
+- control_id: CTRL-GDC-003-003
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 3. The Git Workflow & Access Control > 3.1 Branching Strategy
+  source_fingerprint: d60dd9413de1
+  modality: MUST NOT
+  statement: '> The root commit defined by GDC-000 §2.6.1 is the sole Genesis Bootstrap exception to the Pull Request path.
+    The exception expires when that root commit exists and MUST NOT be reused for any later change.'
+  scope: review-process
+  severity: CRITICAL
+  enforcement_mode: repository-control
+  implementation:
+  - GitHub repository ruleset / branch protection
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: effective repository ruleset evidence and negative enforcement test
+  control_owner: Repository Governance Authority
+  target_phase: Phase 9 Effective GitHub Enforcement
+- control_id: CTRL-GDC-003-004
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 3. The Git Workflow & Access Control > 3.1 Branching Strategy
+  source_fingerprint: cae6767e16e5
+  modality: MUST
+  statement: 'Short-Lived Branches: All changes must be made on feature branches (e.g., feature/add-payment-sad or update/iam-pad-v1.1).'
+  scope: review-process
+  severity: ERROR
+  enforcement_mode: repository-control
+  implementation:
+  - GitHub repository ruleset / branch protection
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: effective repository ruleset evidence and negative enforcement test
+  control_owner: Repository Governance Authority
+  target_phase: Phase 9 Effective GitHub Enforcement
+- control_id: CTRL-GDC-003-005
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 3. The Git Workflow & Access Control > 3.2 Branch Protection & Merge Rules
+  source_fingerprint: 54fbf5011049
+  modality: MUST
+  statement: 'Every Pull Request targeting main must satisfy the following algorithmic and human gates:'
+  scope: review-process
+  severity: ERROR
+  enforcement_mode: repository-control
+  implementation:
+  - GitHub repository ruleset / branch protection
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: effective repository ruleset evidence and negative enforcement test
+  control_owner: Repository Governance Authority
+  target_phase: Phase 9 Effective GitHub Enforcement
+- control_id: CTRL-GDC-003-006
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 3. The Git Workflow & Access Control > 3.2 Branch Protection & Merge Rules
+  source_fingerprint: 8e0fac4d97ad
+  modality: MUST
+  statement: 'The Machine Gate (GDC-001): The CI/CD Linter must return an Exit 0. If the linter fails, the Pull Request is
+    hard-blocked.'
+  scope: review-process
+  severity: CRITICAL
+  enforcement_mode: repository-control
+  implementation:
+  - GitHub repository ruleset / branch protection
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: effective repository ruleset evidence and negative enforcement test
+  control_owner: Repository Governance Authority
+  target_phase: Phase 9 Effective GitHub Enforcement
+- control_id: CTRL-GDC-003-007
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 3. The Git Workflow & Access Control > 3.2 Branch Protection & Merge Rules
+  source_fingerprint: ab1e6bd9c730
+  modality: MUST
+  statement: 'The Human Gate (Lead Approval): Because architecture documentation acts as a binding contract, standard "Peer
+    Review" is insufficient. Every Pull Request must be explicitly approved by the Lead of the respective owning team according
+    to the following matrix. CRITICAL: This must be enforced via GitHub Branch Protection Rules requiring at least 1 review
+    from a CODEOWNERS matched team.'
+  scope: review-process
+  severity: ERROR
+  enforcement_mode: repository-control
+  implementation:
+  - GitHub repository ruleset / branch protection
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: effective repository ruleset evidence and negative enforcement test
+  control_owner: Repository Governance Authority
+  target_phase: Phase 9 Effective GitHub Enforcement
+- control_id: CTRL-GDC-003-008
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 3. The Git Workflow & Access Control > 3.2 Branch Protection & Merge Rules
+  source_fingerprint: a5e25efa15e3
+  modality: MUST
+  statement: 'The ARB Gate (Two Escalation Paths): The Architecture Review Board (ARB) must approve the Pull Request if it
+    reaches their desk via either of these two paths:'
+  scope: review-process
+  severity: ERROR
+  enforcement_mode: repository-control
+  implementation:
+  - GitHub repository ruleset / branch protection
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: effective repository ruleset evidence and negative enforcement test
+  control_owner: Repository Governance Authority
+  target_phase: Phase 9 Effective GitHub Enforcement
+- control_id: CTRL-GDC-003-009
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 3. The Git Workflow & Access Control > 3.2 Branch Protection & Merge Rules
+  source_fingerprint: 1437acc488cb
+  modality: MUST
+  statement: 'Path B (Human Escalation): The Pull Request modifies a standard domain document (PAD/SAD), but its content triggers
+    a "High-Risk Pivot" (see Section 2.2: High-Risk Pivots (ARB Escalation Triggers)). Because Git cannot read business context,
+    the Peer Reviewer is strictly prohibited from merging and MUST manually escalate the Pull Request by tagging the ARB.'
+  scope: review-process
+  severity: ERROR
+  enforcement_mode: repository-control
+  implementation:
+  - GitHub repository ruleset / branch protection
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: effective repository ruleset evidence and negative enforcement test
+  control_owner: Repository Governance Authority
+  target_phase: Phase 9 Effective GitHub Enforcement
+- control_id: CTRL-GDC-003-010
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 3. The Git Workflow & Access Control > 3.2 Branch Protection & Merge Rules
+  source_fingerprint: ff7c83c37d7c
+  modality: MUST
+  statement: 'Merge Strategy & Cleanup: Only Squash and Merge is permitted to ensure the main branch history remains clean,
+    linear, and readable. Upon a successful merge, the source feature branch MUST be automatically deleted to prevent branch
+    clutter.'
+  scope: review-process
+  severity: ERROR
+  enforcement_mode: repository-control
+  implementation:
+  - GitHub repository ruleset / branch protection
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: effective repository ruleset evidence and negative enforcement test
+  control_owner: Repository Governance Authority
+  target_phase: Phase 9 Effective GitHub Enforcement
+- control_id: CTRL-GDC-003-011
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 3. The Git Workflow & Access Control > 3.3 Conflict Mitigation Strategy
+  source_fingerprint: 41095fe1adbc
+  modality: MUST
+  statement: If a rare collision occurs, standard Git rebasing protocols apply. The later PR must pull the latest main and
+    manually resolve the conflict prior to merging.
+  scope: review-process
+  severity: ERROR
+  enforcement_mode: repository-control
+  implementation:
+  - GitHub repository ruleset / branch protection
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: effective repository ruleset evidence and negative enforcement test
+  control_owner: Repository Governance Authority
+  target_phase: Phase 9 Effective GitHub Enforcement
+- control_id: CTRL-GDC-003-012
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 4. Temporal Governance & Document Lifecycle > 4.1.1 Temporal Integrity Contract
+  source_fingerprint: 1dba5cb5af51
+  modality: MUST NOT
+  statement: createddate, lastupdated, and lastreviewed MUST NOT be later than the governance evaluation date
+  scope: review-process
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/temporal.py
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/control/governance/test_temporal.py
+  - tests/control/validators/test_global_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-003-013
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 4. Temporal Governance & Document Lifecycle > 4.1.1 Temporal Integrity Contract
+  source_fingerprint: 68a0353a3ee9
+  modality: MUST NOT
+  statement: createddate MUST NOT be later than lastupdated when both are present
+  scope: review-process
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/temporal.py
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/control/governance/test_temporal.py
+  - tests/control/validators/test_global_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-003-014
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 4. Temporal Governance & Document Lifecycle > 4.1.1 Temporal Integrity Contract
+  source_fingerprint: eae9a10263e5
+  modality: MUST NOT
+  statement: createddate MUST NOT be later than lastreviewed when both are present
+  scope: review-process
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/temporal.py
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/control/governance/test_temporal.py
+  - tests/control/validators/test_global_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-003-015
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 4. Temporal Governance & Document Lifecycle > 4.1.1 Temporal Integrity Contract
+  source_fingerprint: 1b659f689fff
+  modality: MUST
+  statement: reviewcycledays MUST be between 1 and 3650 days
+  scope: review-process
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/temporal.py
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/control/governance/test_temporal.py
+  - tests/control/validators/test_global_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-003-016
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 4. Temporal Governance & Document Lifecycle > 4.2 Lifecycle State, Validation
+    Profile, and Admission Authority
+  source_fingerprint: a28cbe0f842f
+  modality: MUST NOT
+  statement: A lifecycle value MUST NOT grant a validation bypass by itself. The validation profile is selected by the artifact-aware
+    lifecycle registry.
+  scope: review-process
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/lifecycle.py
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/control/governance/test_lifecycle.py
+  - tests/control/validators/test_global_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-003-017
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 5. Enforcement Mechanism > 5.1 Scoring & Action Protocols
+  source_fingerprint: f45a57e530e6
+  modality: MUST
+  statement: 'Reject (Score < 9): The document fails to meet the minimum threshold and must be revised. It cannot be merged.'
+  scope: review-process
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-003-018
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 5. Enforcement Mechanism > 5.1 Scoring & Action Protocols
+  source_fingerprint: 58e93002bb97
+  modality: MUST
+  statement: 'Exceptions: If a criterion is fundamentally "Not Applicable" (N/A) for a specific document type, the reviewer
+    must mark it as Pass but explicitly document the justification in the Reviewer Notes.'
+  scope: review-process
+  severity: ERROR
+  enforcement_mode: process-control
+  implementation:
+  - documented governance process / accountable authority
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: auditable process record or approval artifact
+  control_owner: Governance Process Authority
+  target_phase: Phase 8 Process Governance Hardening
+- control_id: CTRL-GDC-004-001
+  source_gdc: GDC-004
+  source_file: GDC-004-tech-lifecycle.md
+  source_clause: Technology Lifecycle & Standards Governance > 2. Policy Framework > 2.1 Standards Maturity Model
+  source_fingerprint: 25160262f2ec
+  modality: MUST
+  statement: 'To prevent rigid compliance grids, every enterprise standard must declare one of four maturity phases:'
+  scope: technology-lifecycle
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-004-002
+  source_gdc: GDC-004
+  source_file: GDC-004-tech-lifecycle.md
+  source_clause: Technology Lifecycle & Standards Governance > 2. Policy Framework > 2.1 Standards Maturity Model
+  source_fingerprint: 451cb8d4d485
+  modality: MUST
+  statement: 'Hold (Retirement): The standard is deprecated. New implementations are prohibited from adopting it. Existing
+    implementations must schedule a migration path to replacement systems.'
+  scope: technology-lifecycle
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-004-003
+  source_gdc: GDC-004
+  source_file: GDC-004-tech-lifecycle.md
+  source_clause: Technology Lifecycle & Standards Governance > 2. Policy Framework > 2.2 Technology Sunset & Deprecation Strategy
+  source_fingerprint: a3c94f14a81a
+  modality: MUST
+  statement: 'When a standard technology, framework, or library decays (due to security concerns, obsolescence, or vendor
+    deprecation), the system must execute this 3-Stage Sunset Strategy:'
+  scope: technology-lifecycle
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-004-004
+  source_gdc: GDC-004
+  source_file: GDC-004-tech-lifecycle.md
+  source_clause: Technology Lifecycle & Standards Governance > 2. Policy Framework > 2.2 Technology Sunset & Deprecation Strategy
+  source_fingerprint: 22f7b0b6a7e5
+  modality: MUST
+  statement: The ARB must publish a companion migration guide or successor standard within 30 days.
+  scope: technology-lifecycle
+  severity: ERROR
+  enforcement_mode: process-control
+  implementation:
+  - documented governance process / accountable authority
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: auditable process record or approval artifact
+  control_owner: Governance Process Authority
+  target_phase: Phase 8 Process Governance Hardening
+- control_id: CTRL-GDC-004-005
+  source_gdc: GDC-004
+  source_file: GDC-004-tech-lifecycle.md
+  source_clause: Technology Lifecycle & Standards Governance > 3. Enforcement Mechanism > 3.3 Rule Conflict Resolution Matrix
+  source_fingerprint: 3559d329db76
+  modality: MUST NOT
+  statement: 'Exception Rule: Performance must not override Security on public network boundaries. Performance is permitted
+    to override Audit tracing only for isolated, local high-frequency loop executions (e.g., local state evaluation).'
+  scope: technology-lifecycle
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-004-006
+  source_gdc: GDC-004
+  source_file: GDC-004-tech-lifecycle.md
+  source_clause: Technology Lifecycle & Standards Governance > 4. Severity & Exceptions > 4.1 Applicability Criteria Framework
+  source_fingerprint: 66f47dbd4f60
+  modality: MUST NOT
+  statement: 'To prevent excessive exception waivers, standards must not apply absolute mandates unconditionally. Standards
+    must declare an Applicability Criteria Matrix:'
+  scope: technology-lifecycle
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-004-007
+  source_gdc: GDC-004
+  source_file: GDC-004-tech-lifecycle.md
+  source_clause: Technology Lifecycle & Standards Governance > 4. Severity & Exceptions > 4.2 Exception Waiver Procedure
+  source_fingerprint: 665fb58fff48
+  modality: MUST
+  statement: 'When a team must deviate from a mandatory engineering standard or architectural constraint (e.g. using an uncertified
+    database engine or violating a frontend layer limit):'
+  scope: technology-lifecycle
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-004-008
+  source_gdc: GDC-004
+  source_file: GDC-004-tech-lifecycle.md
+  source_clause: Technology Lifecycle & Standards Governance > 4. Severity & Exceptions > 4.2 Exception Waiver Procedure
+  source_fingerprint: 83ab9a56ec51
+  modality: MUST
+  statement: 'Waiver Request Initiation: The requesting team must draft a dedicated local project Exception ADR detailing
+    the deviation, the specific standard rule being bypassed, and the mitigation strategies implemented.'
+  scope: technology-lifecycle
+  severity: ERROR
+  enforcement_mode: process-control
+  implementation:
+  - documented governance process / accountable authority
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: auditable process record or approval artifact
+  control_owner: Governance Process Authority
+  target_phase: Phase 8 P1-D Waiver Governance
+- control_id: CTRL-GDC-004-009
+  source_gdc: GDC-004
+  source_file: GDC-004-tech-lifecycle.md
+  source_clause: Technology Lifecycle & Standards Governance > 4. Severity & Exceptions > 4.2 Exception Waiver Procedure
+  source_fingerprint: 7df3c00ef46b
+  modality: MUST
+  statement: 'Time-Bound Review Commitments: The reviewing authority must issue an official decision (Approved, Rejected,
+    or Request Info) within 5 business days of the waiver ADR submission.'
+  scope: technology-lifecycle
+  severity: ERROR
+  enforcement_mode: process-control
+  implementation:
+  - documented governance process / accountable authority
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: auditable process record or approval artifact
+  control_owner: Governance Process Authority
+  target_phase: Phase 8 P1-D Waiver Governance
+- control_id: CTRL-GDC-004-010
+  source_gdc: GDC-004
+  source_file: GDC-004-tech-lifecycle.md
+  source_clause: Technology Lifecycle & Standards Governance > 4. Severity & Exceptions > 4.2 Exception Waiver Procedure
+  source_fingerprint: befc49760375
+  modality: MUST
+  statement: 'Auditing and Expiration: Approved waivers must carry an expiration date not exceeding 365 days from approval.
+    The team must re-submit the waiver for review annually or execute the migration path back to standard compliance.'
+  scope: technology-lifecycle
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-005-001
+  source_gdc: GDC-005
+  source_file: GDC-005-gdc-guideline.md
+  source_clause: Governance Document Contract (GDC) Guideline > 1. Context & Scope
+  source_fingerprint: 20082d317eff
+  modality: MUST
+  statement: In accordance with the Circular Governance (Metaprogramming), the Governance framework must subject itself to
+    the exact same rigorous validation criteria it imposes on downstream architectures.
+  scope: governance-guideline
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-005-002
+  source_gdc: GDC-005
+  source_file: GDC-005-gdc-guideline.md
+  source_clause: Governance Document Contract (GDC) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.1 Naming
+    Conventions
+  source_fingerprint: ce20eda9bee4
+  modality: MUST
+  statement: 'The filename must strictly adhere to the regex: ^GDC-\d{3}-[a-z0-9-]+\.md$. If a GDC is acting as a downstream
+    guideline, its name must end with -guideline.md.'
+  scope: governance-guideline
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-005-003
+  source_gdc: GDC-005
+  source_file: GDC-005-gdc-guideline.md
+  source_clause: Governance Document Contract (GDC) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.2 Taxonomy
+  source_fingerprint: 5dd86f89b99c
+  modality: MUST
+  statement: 'All Governance Document Contracts (GDC) must be placed strictly in the root of the governance/ directory.
+    To maintain the "Fractal Triad" of automated governance (Policy, Rules, and Schemas), supplementary technical enforcement
+    assets must be categorized into their respective subdirectories:'
+  scope: governance-guideline
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-005-004
+  source_gdc: GDC-005
+  source_file: GDC-005-gdc-guideline.md
+  source_clause: Governance Document Contract (GDC) Guideline > 2. Policy Framework > 2.5 The Downstream Guideline Interface
+  source_fingerprint: eb1e64076afd
+  modality: MUST
+  statement: To be recognized by the Linter as a Downstream Guideline, the artifact's filename MUST end with the suffix -guideline.md
+    (e.g., GDC-009-pad-guideline.md).
+  scope: governance-guideline
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-005-005
+  source_gdc: GDC-005
+  source_file: GDC-005-gdc-guideline.md
+  source_clause: Governance Document Contract (GDC) Guideline > 2. Policy Framework > 2.5 The Downstream Guideline Interface
+  source_fingerprint: 59e5f026cfa7
+  modality: MUST
+  statement: 'Any GDC adopting this interface must explicitly define the following 4 structural pillars to completely eradicate
+    implicit knowledge:'
+  scope: governance-guideline
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-005-006
+  source_gdc: GDC-005
+  source_file: GDC-005-gdc-guideline.md
+  source_clause: Governance Document Contract (GDC) Guideline > 2. Policy Framework > 2.5 The Downstream Guideline Interface
+  source_fingerprint: ade52319a492
+  modality: MUST
+  statement: 'Taxonomy & Directory Structure: Must define exactly where the downstream artifacts are allowed to be physically
+    stored (e.g., root repo vs project repos).'
+  scope: governance-guideline
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-005-gdc-guideline.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: guideline review evidence for explicit taxonomy and directory semantics
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-005-007
+  source_gdc: GDC-005
+  source_file: GDC-005-gdc-guideline.md
+  source_clause: Governance Document Contract (GDC) Guideline > 2. Policy Framework > 2.5 The Downstream Guideline Interface
+  source_fingerprint: b51b9410ceea
+  modality: MUST
+  statement: 'Naming Conventions: Must define the exact Regex pattern the downstream artifact filenames must adhere to.'
+  scope: governance-guideline
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-005-008
+  source_gdc: GDC-005
+  source_file: GDC-005-gdc-guideline.md
+  source_clause: Governance Document Contract (GDC) Guideline > 2. Policy Framework > 2.5 The Downstream Guideline Interface
+  source_fingerprint: ed6789a04090
+  modality: MUST
+  statement: 'Artifact Section Semantics: Must explicitly list all required and optional markdown ## sections the downstream
+    artifact must contain.'
+  scope: governance-guideline
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-005-009
+  source_gdc: GDC-005
+  source_file: GDC-005-gdc-guideline.md
+  source_clause: Governance Document Contract (GDC) Guideline > 2. Policy Framework > 2.5 The Downstream Guideline Interface
+  source_fingerprint: 62149e0fb380
+  modality: MUST
+  statement: 'Metadata Schema Properties: Must define the precise YAML frontmatter (docmeta) schema required for the downstream
+    artifact.'
+  scope: governance-guideline
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-005-010
+  source_gdc: GDC-005
+  source_file: GDC-005-gdc-guideline.md
+  source_clause: Governance Document Contract (GDC) Guideline > 3. The Reconciliation Flow (Adding or Modifying Rules)
+  source_fingerprint: 2812591a76c3
+  modality: MUST
+  statement: 'If you need to introduce a new constraint or modify an existing rule across any of the architecture artifacts,
+    you must follow this exact flow to maintain the integrity of the CI/CD linter:'
+  scope: governance-guideline
+  severity: ERROR
+  enforcement_mode: process-control
+  implementation:
+  - governance/GDC-005-gdc-guideline.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: governance-rule change PR demonstrates reconciliation flow
+  control_owner: Governance Process Authority
+  target_phase: Phase 8 Process Governance Hardening
+- control_id: CTRL-GDC-005-011
+  source_gdc: GDC-005
+  source_file: GDC-005-gdc-guideline.md
+  source_clause: Governance Document Contract (GDC) Guideline > 3. The Reconciliation Flow (Adding or Modifying Rules)
+  source_fingerprint: 4374e093488c
+  modality: MUST
+  statement: 'Reconcile Documentation (Generate, Don''t Duplicate): To maintain the Single Source of Truth (SSOT), the human-readable
+    markdown tables inside the Guideline artifacts must be synchronized with the YAML. You MUST regenerate the documentation
+    by executing:'
+  scope: governance-guideline
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-005-012
+  source_gdc: GDC-005
+  source_file: GDC-005-gdc-guideline.md
+  source_clause: Governance Document Contract (GDC) Guideline > 3. The Reconciliation Flow (Adding or Modifying Rules)
+  source_fingerprint: 394078fd423d
+  modality: MUST
+  statement: 'Update Semantic Definitions: The automated script only updates the machine-readable table. You MUST manually
+    update the Semantic Definitions section in the corresponding Guideline artifact to explain the "Why" and "How" behind
+    your new constraints for human readers.'
+  scope: governance-guideline
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-005-013
+  source_gdc: GDC-005
+  source_file: GDC-005-gdc-guideline.md
+  source_clause: Governance Document Contract (GDC) Guideline > 3. The Reconciliation Flow (Adding or Modifying Rules)
+  source_fingerprint: 35b6b6455848
+  modality: MUST
+  statement: 'Qualitative Synchronization (Human Governance): If your rule modification impacts the qualitative evaluation
+    of architecture (e.g., prohibiting new vague terms, demanding new quantitative NFR metrics, or altering risk disclosure
+    requirements), you MUST also manually synchronize the human-driven governance artifacts:'
+  scope: governance-guideline
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-006-001
+  source_gdc: GDC-006
+  source_file: GDC-006-ead-guideline.md
+  source_clause: Enterprise Architecture Document (EAD) Guideline > 1. Context & Scope > 1.1 Philosophy & Decision Horizon
+  source_fingerprint: b4224c88a369
+  modality: MUST
+  statement: 'Decision question: "What must the enterprise become, and under what principles?" An EAD is the enterprise north-star
+    (the central-planning tier): it sets direction, never a system design.'
+  scope: ead
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-006-002
+  source_gdc: GDC-006
+  source_file: GDC-006-ead-guideline.md
+  source_clause: Enterprise Architecture Document (EAD) Guideline > 1. Context & Scope > 1.1 Philosophy & Decision Horizon
+  source_fingerprint: b0685c768f5e
+  modality: MUST NOT
+  statement: Stability / half-life — Permanent (strategic horizon). EADs change only when enterprise strategy itself shifts;
+    they are the slowest-moving artifacts in the ecosystem. Volatile detail must not live here.
+  scope: ead
+  severity: CRITICAL
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-006-003
+  source_gdc: GDC-006
+  source_file: GDC-006-ead-guideline.md
+  source_clause: Enterprise Architecture Document (EAD) Guideline > 2. Policy Framework > 2.1 Agnosticity Policies
+  source_fingerprint: 48689889cdcc
+  modality: MUST
+  statement: EADs must remain conceptually agnostic (e.g., Capability, Data, Integration domains) and at a high level of abstraction.
+    Strict SLA (Service Level Agreement) metrics (e.g., P95 <= 200ms or >= 95% availability) are mandated, but implementation-specific
+    details are prohibited. The sole exception is the Platform & Cloud Strategy domain (EAD-EXAMPLE-005), which must explicitly
+    define the enterprise technology portfolio and execution runtimes.
+  scope: ead
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/validators/domains/ead_validator.py
+  test_evidence:
+  - tests/control/validators/domains/test_ead_validator.py
+  evidence_status: verified
+  evidence_expectation: machine-enforced GDC-006 agnosticity with EAD-005 exception
+- control_id: CTRL-GDC-006-004
+  source_gdc: GDC-006
+  source_file: GDC-006-ead-guideline.md
+  source_clause: Enterprise Architecture Document (EAD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.1
+    Naming Conventions
+  source_fingerprint: 43deadf4e721
+  modality: MUST
+  statement: 'The filename must strictly adhere to the regex: ^EAD-\d{3}-[a-z0-9-]+\.md$.'
+  scope: ead
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-006-005
+  source_gdc: GDC-006
+  source_file: GDC-006-ead-guideline.md
+  source_clause: Enterprise Architecture Document (EAD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.2
+    Taxonomy
+  source_fingerprint: 9e188030007f
+  modality: MUST
+  statement: EAD artifacts must remain flat within the enterprise/ directory.
+  scope: ead
+  severity: ERROR
+  enforcement_mode: automated
+  implementation: []
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: Slice 5.7 RepositoryModel must enforce EAD flat placement within enterprise through one canonical
+    repository topology authority with adversarial test evidence
+  control_owner: RepositoryModel / Topology Authority
+  target_phase: Slice 5.7 RepositoryModel + Zero-Corpus
+- control_id: CTRL-GDC-006-006
+  source_gdc: GDC-006
+  source_file: GDC-006-ead-guideline.md
+  source_clause: Enterprise Architecture Document (EAD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.4
+    Metadata Schema Properties
+  source_fingerprint: eeb41392a43f
+  modality: MUST
+  statement: Every EAD artifact must include a YAML frontmatter block containing metadata such as id, title, owner, version,
+    status, and classification.
+  scope: ead
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-007-001
+  source_gdc: GDC-007
+  source_file: GDC-007-std-guideline.md
+  source_clause: Enterprise Standards (STD) Guideline > 1. Context & Scope > 1.1 STD vs ADR (Living Law vs Historical Log)
+  source_fingerprint: cea7b3d9af1d
+  modality: MUST
+  statement: STD (Standard) is a living document. It represents the active, mandatory ruleset that engineers must follow today.
+    When rules change, the STD file is updated to reflect the current state of truth.
+  scope: std
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-007-002
+  source_gdc: GDC-007
+  source_file: GDC-007-std-guideline.md
+  source_clause: Enterprise Standards (STD) Guideline > 2. Policy Framework > 2.1 Specificity & Opinionation
+  source_fingerprint: 93df559c66b5
+  modality: MUST
+  statement: 'Domain & Local Standards: Must be fiercely technology-specific and framework-opinionated. They map global requirements
+    directly to concrete code implementations (e.g., "Use React 18", "Use Prisma" in the ui-platform repo).'
+  scope: std
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-007-003
+  source_gdc: GDC-007
+  source_file: GDC-007-std-guideline.md
+  source_clause: Enterprise Standards (STD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.2 Taxonomy
+  source_fingerprint: f58b99bb0acf
+  modality: MUST
+  statement: Because STDs are authored at both the Root Enterprise level and the Local Project level, they must utilize different
+    structural taxonomies appropriate for their scope.
+  scope: std
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-007-004
+  source_gdc: GDC-007
+  source_file: GDC-007-std-guideline.md
+  source_clause: Enterprise Standards (STD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.2 Taxonomy
+  source_fingerprint: 9145db6b27c3
+  modality: MUST
+  statement: Enterprise Level (Architecture Repo) Enterprise standards must strictly adhere to a Domain-Driven Taxonomy within the
+    standards/ directory.
+  scope: std
+  severity: ERROR
+  enforcement_mode: automated
+  implementation: []
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: Slice 5.7 RepositoryModel must enforce Enterprise STD domain taxonomy within standards through
+    one canonical repository topology authority with adversarial test evidence
+  control_owner: RepositoryModel / Topology Authority
+  target_phase: Slice 5.7 RepositoryModel + Zero-Corpus
+- control_id: CTRL-GDC-007-005
+  source_gdc: GDC-007
+  source_file: GDC-007-std-guideline.md
+  source_clause: Enterprise Standards (STD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.2 Taxonomy
+  source_fingerprint: ebe22202ec08
+  modality: MUST
+  statement: Project Level (Local Repo) Because a project repository inherently represents a single Domain or System, Domain-Driven
+    Taxonomy is redundant. Local standards must utilize Module/Feature-Driven Taxonomy to closely mirror the source code structure.
+  scope: std
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-007-006
+  source_gdc: GDC-007
+  source_file: GDC-007-std-guideline.md
+  source_clause: Enterprise Standards (STD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.3 Directory Structure
+  source_fingerprint: 18eaba74e315
+  modality: MUST
+  statement: Project Level (Local Repo) Must reside in the docs/01-standards/ directory.
+  scope: std
+  severity: ERROR
+  enforcement_mode: automated
+  implementation: []
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: Slice 5.7 RepositoryModel must enforce Local STD placement within docs/01-standards through one canonical
+    repository topology authority with adversarial test evidence
+  control_owner: RepositoryModel / Topology Authority
+  target_phase: Slice 5.7 RepositoryModel + Zero-Corpus
+- control_id: CTRL-GDC-007-007
+  source_gdc: GDC-007
+  source_file: GDC-007-std-guideline.md
+  source_clause: Enterprise Standards (STD) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit > 2.4.1 Standard Maturity
+    Model
+  source_fingerprint: '422859286816'
+  modality: MUST
+  statement: To prevent rigid compliance grids from stifling innovation, every enterprise standard must declare a maturity
+    phase in its status field.
+  scope: std
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-007-008
+  source_gdc: GDC-007
+  source_file: GDC-007-std-guideline.md
+  source_clause: Enterprise Standards (STD) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit > 2.4.1 Standard Maturity
+    Model
+  source_fingerprint: 5e6524666da7
+  modality: MUST
+  statement: All STD artifacts must declare one of the four phases defined in GDC-004 in their status metadata field.
+  scope: std
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-007-009
+  source_gdc: GDC-007
+  source_file: GDC-007-std-guideline.md
+  source_clause: Enterprise Standards (STD) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit > 2.4.2 The Living Specification
+    Principle (Mutability & Versioning)
+  source_fingerprint: 8c2cda9a539a
+  modality: MUST
+  statement: 'Versioning Doctrine (SemVer): Every update to an STD must increment the version metadata field following Semantic
+    Versioning (X.Y.Z):'
+  scope: std
+  severity: ERROR
+  enforcement_mode: process-control
+  implementation:
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: Phase 7 mutation engine will automate STD version increment enforcement
+  control_owner: Governance Process Authority
+  target_phase: Phase 7 Version + Mutation
+- control_id: CTRL-GDC-007-010
+  source_gdc: GDC-007
+  source_file: GDC-007-std-guideline.md
+  source_clause: Enterprise Standards (STD) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit > 2.4.2 The Living Specification
+    Principle (Mutability & Versioning)
+  source_fingerprint: e446b8dfa450
+  modality: MUST
+  statement: 'ADR Authorization Invariant: Any change resulting in a Major (X.0.0) version bump of an enterprise standard
+    MUST be authorized by an approved ADR. The governedby metadata field of the STD must be updated to point to the new ADR.'
+  scope: std
+  severity: ERROR
+  enforcement_mode: process-control
+  implementation:
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: Phase 7 mutation engine will verify major STD bump authorization by approved ADR
+  control_owner: Governance Process Authority
+  target_phase: Phase 7 Version + Mutation
+- control_id: CTRL-GDC-008-001
+  source_gdc: GDC-008
+  source_file: GDC-008-pad-guideline.md
+  source_clause: Product Architecture Document (PAD) Guideline > 1. Context & Scope > 1.1 Philosophy & Decision Horizon
+  source_fingerprint: 83fdc4dac594
+  modality: MUST
+  statement: Stability / half-life — 10+ years (one-way door). The longest-lived C2 artifact. To stay durable it must remain
+    thin — capability, boundaries, contracts, NFR promises — and exclude implementation detail.
+  scope: pad
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-008-002
+  source_gdc: GDC-008
+  source_file: GDC-008-pad-guideline.md
+  source_clause: Product Architecture Document (PAD) Guideline > 2. Policy Framework > 2.1 Agnosticity & Stability
+  source_fingerprint: 3b1669592699
+  modality: MUST
+  statement: 'Agnosticity Policy: PADs must remain technology-agnostic at the physical infrastructure level. They establish
+    logical capabilities, trust boundaries, and conceptual integration policies (e.g., SLA targets). Concrete API specifications
+    must be delegated to downstream Web Developer Portals, and physical container details belong in SADs.'
+  scope: pad
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-008-003
+  source_gdc: GDC-008
+  source_file: GDC-008-pad-guideline.md
+  source_clause: Product Architecture Document (PAD) Guideline > 2. Policy Framework > 2.1 Agnosticity & Stability
+  source_fingerprint: 4f4297afd573
+  modality: MUST
+  statement: 'Stability: Because they govern logical rather than physical boundaries, PADs are designed to be highly stable.
+    Future physical decompositions (e.g., splitting a monolithic HRIS backend into separate Payroll and Employee microservices)
+    must require zero modification to the core domain contracts established within the PAD.'
+  scope: pad
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-008-004
+  source_gdc: GDC-008
+  source_file: GDC-008-pad-guideline.md
+  source_clause: Product Architecture Document (PAD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.1 Naming
+    Conventions
+  source_fingerprint: 7e4d8476f620
+  modality: MUST
+  statement: 'The filename must strictly adhere to the regex: ^[a-z0-9-]+\.pad\.md$.'
+  scope: pad
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-008-005
+  source_gdc: GDC-008
+  source_file: GDC-008-pad-guideline.md
+  source_clause: Product Architecture Document (PAD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.2 Taxonomy
+  source_fingerprint: a675fe197ea7
+  modality: MUST
+  statement: 'PADs are single, cohesive artifacts ([domain].pad.md). The Cohesion Rule: Splitting a PAD into separate micro-files
+    (e.g., separating it into security.md and operations.md) is strictly prohibited. All domain aspects must be fully encapsulated
+    within the single canonical artifact''s mandated sections to prevent drift.'
+  scope: pad
+  severity: CRITICAL
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-008-006
+  source_gdc: GDC-008
+  source_file: GDC-008-pad-guideline.md
+  source_clause: Product Architecture Document (PAD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.3 Directory
+    Structure
+  source_fingerprint: b35cafe811bc
+  modality: MUST
+  statement: They must utilize Asset Container Folders (domains/[domain]/), which act as an isolation boundary for the .pad.md
+    file and its supporting assets (e.g., architecture diagrams, PlantUML files).
+  scope: pad
+  severity: ERROR
+  enforcement_mode: automated
+  implementation: []
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: Slice 5.7 RepositoryModel must enforce PAD asset-container placement within domains/[domain] through
+    one canonical repository topology authority with adversarial test evidence
+  control_owner: RepositoryModel / Topology Authority
+  target_phase: Slice 5.7 RepositoryModel + Zero-Corpus
+- control_id: CTRL-GDC-008-007
+  source_gdc: GDC-008
+  source_file: GDC-008-pad-guideline.md
+  source_clause: Product Architecture Document (PAD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.4 Metadata
+    Schema Properties
+  source_fingerprint: 30e012f0d3f1
+  modality: MUST
+  statement: 'Every PAD must begin with a YAML frontmatter block containing these fields:'
+  scope: pad
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-008-008
+  source_gdc: GDC-008
+  source_file: GDC-008-pad-guideline.md
+  source_clause: Product Architecture Document (PAD) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit
+  source_fingerprint: 6028a5fc33d8
+  modality: MUST
+  statement: As the Single Source of Truth (SSOT) for Product Architecture Documents (PAD), the PAD represents highly stable
+    domain capabilities. They must undergo a periodic review every reviewcycledays (default 180 days) to ensure structural
+    integrity and relevance against the enterprise capability map.
+  scope: pad
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/temporal.py
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/control/governance/test_temporal.py
+  - tests/control/validators/test_global_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-009-001
+  source_gdc: GDC-009
+  source_file: GDC-009-sad-guideline.md
+  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.1 Specificity & Containment
+  source_fingerprint: 62a9a27f12f2
+  modality: MUST
+  statement: 'Specificity Rule: Unlike PADs, SADs must completely drop agnosticity. They must explicitly specify the concrete
+    physical deployment topology, technology stacks, cache stores, database engines, and physical container boundaries.'
+  scope: sad
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-009-002
+  source_gdc: GDC-009
+  source_file: GDC-009-sad-guideline.md
+  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.1 Specificity & Containment
+  source_fingerprint: 65e021f7dc71
+  modality: MUST
+  statement: 'Containment Invariant: SADs must explicitly document failure containment boundaries, specifically defining the
+    Blast Radius for all major failure modes.'
+  scope: sad
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-009-003
+  source_gdc: GDC-009
+  source_file: GDC-009-sad-guideline.md
+  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.1 Specificity & Containment
+  source_fingerprint: aca12c8b5100
+  modality: MUST
+  statement: 'Physical Container Separation (Deployable Units Only): To prevent logical boundaries from being contaminated
+    by deployment-specific execution mechanics, every distinct deployable unit must have its own SAD. Non-deployable components
+    (e.g., shared UI libraries, internal SDKs) are strictly exempt from requiring a standalone SAD (see Section 2.2). For
+    deployable systems, a single Identity PAD (scnehaux-iam.pad.md) might be fulfilled by:'
+  scope: sad
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-009-004
+  source_gdc: GDC-009
+  source_file: GDC-009-sad-guideline.md
+  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.2 The Master SAD Federation (Multi-Repo
+    & SDKs)
+  source_fingerprint: 315df5e7c6f3
+  modality: MUST
+  statement: 'The Host Repository (The Master SAD): The primary repository responsible for compiling or deploying the final
+    execution unit acts as the Aggregator. It must maintain the Master SAD. This artifact defines the aggregate physical topology,
+    treating the remote SDKs and libraries as internal components within its container boundary.'
+  scope: sad
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-009-005
+  source_gdc: GDC-009
+  source_file: GDC-009-sad-guideline.md
+  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.2 The Master SAD Federation (Multi-Repo
+    & SDKs)
+  source_fingerprint: 0aee40182514
+  modality: MUST
+  statement: 'The Traceability Pointer: To maintain the automated CI/CD Directed Acyclic Graph (DAG) and prevent the linter
+    from flagging the library as an illegal orphan, the library repository must explicitly declare its governance inheritance
+    in its linter configuration:'
+  scope: sad
+  severity: ERROR
+  enforcement_mode: automated
+  implementation: []
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: Slice 5.7 RepositoryModel must enforce Library/SDK master_sad governance inheritance through one canonical
+    repository topology authority with adversarial test evidence
+  control_owner: RepositoryModel / Topology Authority
+  target_phase: Slice 5.7 RepositoryModel + Zero-Corpus
+- control_id: CTRL-GDC-009-006
+  source_gdc: GDC-009
+  source_file: GDC-009-sad-guideline.md
+  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.3 The Schema Architecture
+  source_fingerprint: de189dd84577
+  modality: MUST
+  statement: 'Physical Containment Audit: The linter will verify that SADs contain technology-specific information. Unlike
+    PADs, SADs must specify the concrete database engines, cache stores, and container topologies.'
+  scope: sad
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-009-007
+  source_gdc: GDC-009
+  source_file: GDC-009-sad-guideline.md
+  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.2 Taxonomy
+  source_fingerprint: 210fc1790b59
+  modality: MUST
+  statement: 'SADs are single, cohesive artifacts ([system-name].sad.md or [system-name]-[suffix].sad.md). The Cohesion Rule:
+    Splitting a SAD into separate micro-files (e.g., separating it into security.md and operations.md) is strictly prohibited.
+    All system aspects must be fully encapsulated within the single canonical artifact''s mandated sections to prevent drift.'
+  scope: sad
+  severity: CRITICAL
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-009-008
+  source_gdc: GDC-009
+  source_file: GDC-009-sad-guideline.md
+  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.2 Taxonomy
+  source_fingerprint: 792f3ed1b859
+  modality: MUST
+  statement: 'Grouping Rule: The implementation of a single logical PAD will often result in multiple physical SADs. To maintain
+    cohesion, all SADs fulfilling the same domain must be grouped together within a single [system-name] directory. Do not
+    create separate root folders for each container. (Reminder: While they share a folder, each physical container must still
+    be documented by exactly one SAD).'
+  scope: sad
+  severity: ERROR
+  enforcement_mode: automated
+  implementation: []
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: Slice 5.7 RepositoryModel must enforce SAD grouping by parent domain/system through one canonical
+    repository topology authority with adversarial test evidence
+  control_owner: RepositoryModel / Topology Authority
+  target_phase: Slice 5.7 RepositoryModel + Zero-Corpus
+- control_id: CTRL-GDC-009-009
+  source_gdc: GDC-009
+  source_file: GDC-009-sad-guideline.md
+  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.3 Directory
+    Structure
+  source_fingerprint: 5fb63cc0cbc8
+  modality: MUST
+  statement: They must utilize Asset Container Folders (systems/[system-name]/), which act as an isolation boundary for
+    the system's .sad.md files and supporting assets (e.g., deployment topology diagrams).
+  scope: sad
+  severity: ERROR
+  enforcement_mode: automated
+  implementation: []
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: Slice 5.7 RepositoryModel must enforce SAD asset-container placement within systems/[system] through
+    one canonical repository topology authority with adversarial test evidence
+  control_owner: RepositoryModel / Topology Authority
+  target_phase: Slice 5.7 RepositoryModel + Zero-Corpus
+- control_id: CTRL-GDC-009-010
+  source_gdc: GDC-009
+  source_file: GDC-009-sad-guideline.md
+  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.4 Metadata
+    Schema Properties
+  source_fingerprint: db5f20632269
+  modality: MUST
+  statement: 'Every SAD must begin with a YAML frontmatter block containing these fields:'
+  scope: sad
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-009-011
+  source_gdc: GDC-009
+  source_file: GDC-009-sad-guideline.md
+  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.6 Parent
+    PAD Activation Gate
+  source_fingerprint: d9898cc5e67b
+  modality: SHALL NOT
+  statement: a SAD SHALL NOT enter draft while its parent PAD is not approved
+  scope: sad
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/relationships.py
+  - engine/control/auditors/graph_auditor.py
+  test_evidence:
+  - tests/control/governance/test_relationships.py
+  - tests/control/auditors/test_graph_auditor.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-009-012
+  source_gdc: GDC-009
+  source_file: GDC-009-sad-guideline.md
+  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.6 Parent
+    PAD Activation Gate
+  source_fingerprint: 72fc1938cdc5
+  modality: SHALL NOT
+  statement: a SAD SHALL NOT enter approved while its parent PAD is not approved
+  scope: sad
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/relationships.py
+  - engine/control/auditors/graph_auditor.py
+  test_evidence:
+  - tests/control/governance/test_relationships.py
+  - tests/control/auditors/test_graph_auditor.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-009-013
+  source_gdc: GDC-009
+  source_file: GDC-009-sad-guideline.md
+  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit
+  source_fingerprint: 63df4d4c6b72
+  modality: MUST
+  statement: All SAD artifacts must undergo a periodic review every reviewcycledays (default 180 days) to ensure structural
+    integrity and relevance against the enterprise capability map.
+  scope: sad
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/temporal.py
+  - engine/control/validators/global_rules.py
+  test_evidence:
+  - tests/control/governance/test_temporal.py
+  - tests/control/validators/test_global_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-009-014
+  source_gdc: GDC-009
+  source_file: GDC-009-sad-guideline.md
+  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit
+  source_fingerprint: ca1c00d1f320
+  modality: MUST
+  statement: 'Blast Radius Analysis: Under the Resilience section, every major failure mode must specify the Blast Radius
+    (e.g., "Single User Session", "Full Tenant Isolation", "Entire Platform Outage") to pass the review gate.'
+  scope: sad
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-010-001
+  source_gdc: GDC-010
+  source_file: GDC-010-adr-guideline.md
+  source_clause: Architecture Decision Record (ADR) Guideline > 1. Context & Scope
+  source_fingerprint: 430f8474f964
+  modality: MUST
+  statement: Architecture is rarely a straight line. As our systems evolve, we frequently encounter crossroads where we must
+    introduce a new paradigm, deviate from the 'paved road' (established Engineering Standards / STD), or accept a critical
+    trade-off to meet business demands.
+  scope: adr
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-010-002
+  source_gdc: GDC-010
+  source_file: GDC-010-adr-guideline.md
+  source_clause: Architecture Decision Record (ADR) Guideline > 2. Policy Framework > 2.1 ADR Taxonomy & Types
+  source_fingerprint: 25167f9f7ea3
+  modality: MUST
+  statement: 'Every ADR must declare its adrtype to clarify the intent of the decision. The allowed types are:'
+  scope: adr
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-010-003
+  source_gdc: GDC-010
+  source_file: GDC-010-adr-guideline.md
+  source_clause: Architecture Decision Record (ADR) Guideline > 2. Policy Framework > 2.2 The Schema Architecture
+  source_fingerprint: 453c6ac817d0
+  modality: MUST
+  statement: 'Automated Waiver Expiration (Hard Block): The CI pipeline performs temporal validation on Exception ADRs. If
+    an active (accepted) waiver ADR reaches its expirydate, the linter triggers a Hard CI Block (Exit 1) with an exceptionexpired
+    error. To clear this block, the team must either resolve the technical debt or secure a waiver renewal. In either case,
+    the expired ADR''s status MUST be transitioned from accepted to either deprecated (if the debt is resolved and the waiver
+    is no longer needed) or superseded (if a new Exception ADR is approved to extend the timeline). It cannot revert to proposed
+    or be arbitrarily deleted.'
+  scope: adr
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-010-004
+  source_gdc: GDC-010
+  source_file: GDC-010-adr-guideline.md
+  source_clause: Architecture Decision Record (ADR) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.1 Naming
+    Conventions
+  source_fingerprint: b9991b649bae
+  modality: MUST
+  statement: 'ADR filenames must adhere to the pattern ^ADR-[A-Z]{2,4}(?:-[A-Z]{2,4})?-\d{3}-[a-z0-9-]+\.md$. Example: ADR-EXAMPLE-001-api-design.md
+    or ADR-EXAMPLE-002-color-palette.md.'
+  scope: adr
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-010-005
+  source_gdc: GDC-010
+  source_file: GDC-010-adr-guideline.md
+  source_clause: Architecture Decision Record (ADR) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.4 Metadata
+    Schema Properties > Semantic Versioning Classification
+  source_fingerprint: 6f1acfc5df47
+  modality: MUST
+  statement: N/A for Architecture Decision Records (ADRs). ADRs are immutable historical records. If an ADR changes, it must
+    be superseded by a new ADR rather than versioned.
+  scope: adr
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-010-006
+  source_gdc: GDC-010
+  source_file: GDC-010-adr-guideline.md
+  source_clause: Architecture Decision Record (ADR) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit > 2.4.1 Document
+    Lifecycle & Statuses
+  source_fingerprint: a30ebe7d2a6e
+  modality: MUST
+  statement: 'Every architectural decision must progress through a managed, auditable lifecycle. An ADR must exist in one
+    of five explicit states:'
+  scope: adr
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-010-007
+  source_gdc: GDC-010
+  source_file: GDC-010-adr-guideline.md
+  source_clause: Architecture Decision Record (ADR) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit > 2.4.1 Document
+    Lifecycle & Statuses
+  source_fingerprint: 400db46a6a31
+  modality: MUST
+  statement: 'Superseded: The decision has been replaced by a newer ADR. The newer ADR must explicitly reference the superseded
+    record by ID.'
+  scope: adr
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-010-008
+  source_gdc: GDC-010
+  source_file: GDC-010-adr-guideline.md
+  source_clause: Architecture Decision Record (ADR) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit > 2.4.2 The Immutability
+    Principle
+  source_fingerprint: 9091089b5628
+  modality: MUST
+  statement: An ADR is a strict historical record. Once an ADR reaches the Accepted or Rejected state, its core substantive
+    content (Context, Decision Drivers, Decision, Consequences) MUST NEVER BE MODIFIED.
+  scope: adr
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-010-009
+  source_gdc: GDC-010
+  source_file: GDC-010-adr-guideline.md
+  source_clause: Architecture Decision Record (ADR) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit > 2.4.2 The Immutability
+    Principle
+  source_fingerprint: bc458cbc589d
+  modality: MUST
+  statement: If a decision needs to be reversed or fundamentally changed, you must create a new ADR (using the replacement
+    type) and update the old ADR's status to Superseded.
+  scope: adr
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-010-010
+  source_gdc: GDC-010
+  source_file: GDC-010-adr-guideline.md
+  source_clause: Architecture Decision Record (ADR) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit > 2.4.2 The Immutability
+    Principle
+  source_fingerprint: e2de0cd94f60
+  modality: MUST
+  statement: '> Unlike living documents (EAD, PAD, SAD, TDD), ADRs do not use Major.Minor.Patch versioning. ADRs are immutable,
+    point-in-time decision records. Once an ADR is accepted, its architectural content must never be modified. If the architectural
+    decision changes in the future, a NEW ADR must be authored which explicitly supersedes the old one.'
+  scope: adr
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-010-011
+  source_gdc: GDC-010
+  source_file: GDC-010-adr-guideline.md
+  source_clause: Architecture Decision Record (ADR) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit > 2.4.3 Resolving
+    Expired Waivers (Exception ADRs)
+  source_fingerprint: ba7bced65b5e
+  modality: MUST
+  statement: 'When an Exception ADR reaches its expirydate, the CI pipeline will block the repository. To clear the block,
+    the team must execute one of the following three scenarios:'
+  scope: adr
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/validators/domains/adr_validator.py
+  - engine/control/auditors/waiver_auditor.py
+  test_evidence:
+  - tests/control/validators/domains/test_adr_validator.py
+  - tests/control/auditors/test_waiver_auditor.py
+  evidence_status: verified
+  evidence_expectation: expired accepted exception ADR blocks until lifecycle resolution
+- control_id: CTRL-GDC-010-012
+  source_gdc: GDC-010
+  source_file: GDC-010-adr-guideline.md
+  source_clause: Architecture Decision Record (ADR) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit > 2.4.3 Resolving
+    Expired Waivers (Exception ADRs)
+  source_fingerprint: db250325cdff
+  modality: MUST
+  statement: 'Action: The organization must update the Global STD to officially permit the new technology or pattern.'
+  scope: adr
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - engine/control/validators/metadata_rules.py
+  test_evidence:
+  - tests/control/validators/test_metadata_rules.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-010-013
+  source_gdc: GDC-010
+  source_file: GDC-010-adr-guideline.md
+  source_clause: Architecture Decision Record (ADR) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit > 2.4.3 Resolving
+    Expired Waivers (Exception ADRs)
+  source_fingerprint: c1a4e8c322b1
+  modality: MUST
+  statement: 'Action: The team must submit a new Exception ADR to the ARB, requesting an extension of the waiver for another
+    cycle (paying the "bureaucracy tax").'
+  scope: adr
+  severity: ERROR
+  enforcement_mode: process-control
+  implementation:
+  - documented governance process / accountable authority
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: auditable process record or approval artifact
+  control_owner: Governance Process Authority
+  target_phase: Phase 8 P1-D Waiver Governance
+- control_id: CTRL-GDC-011-001
+  source_gdc: GDC-011
+  source_file: GDC-011-tdd-guideline.md
+  source_clause: Technical Design Document (TDD) Guideline > 2. Policy Framework > 2.1 Directory Taxonomy
+  source_fingerprint: 3e4f67fe7801
+  modality: MUST NOT
+  statement: 'Requirement: TDDs are owned by the System/deployable they implement. A single-System repository uses <repo>/designs/;
+    a repository containing multiple independently governed Systems uses <system-root>/designs/. A repository-level
+    shared TDD folder MUST NOT mix designs from different parent SADs.'
+  scope: tdd
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - engine/control/governance/relationships.py
+  - engine/control/auditors/graph_auditor.py
+  test_evidence:
+  - tests/control/governance/test_relationships.py
+  - tests/control/auditors/test_graph_auditor.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-011-002
+  source_gdc: GDC-011
+  source_file: GDC-011-tdd-guideline.md
+  source_clause: Technical Design Document (TDD) Guideline > 2. Policy Framework > 2.2 The Schema Architecture
+  source_fingerprint: 5e89e6735d30
+  modality: MUST NOT
+  statement: 'Remote Execution (Security Constraint): Downstream project repositories must not maintain local copies of the
+    linter. Local CI/CD pipelines must invoke the central linter remotely. See GDC-001: Architecture Fitness Functions for
+    detailed setup instructions.'
+  scope: tdd
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-011-003
+  source_gdc: GDC-011
+  source_file: GDC-011-tdd-guideline.md
+  source_clause: Technical Design Document (TDD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.1 Naming
+    Conventions
+  source_fingerprint: 74aef4a98dab
+  modality: MUST
+  statement: 'The filename must strictly adhere to the regex: ^TDD-[a-z0-9-]+-[a-z0-9-]+-\d{3}[A-Z]-[a-z0-9-]+\.md$.'
+  scope: tdd
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-011-004
+  source_gdc: GDC-011
+  source_file: GDC-011-tdd-guideline.md
+  source_clause: Technical Design Document (TDD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.2 Taxonomy
+  source_fingerprint: e38bd42d3a9d
+  modality: MUST
+  statement: 'TDDs are single, cohesive documents (TDD-[REPO]-[COMPONENT].md). The Cohesion Rule: Splitting a TDD into separate
+    micro-files (e.g., separating it into schema.md and tests.md) is strictly prohibited. All component design aspects must
+    be fully encapsulated within the single canonical document''s mandated sections to prevent drift.'
+  scope: tdd
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-011-005
+  source_gdc: GDC-011
+  source_file: GDC-011-tdd-guideline.md
+  source_clause: Technical Design Document (TDD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.3 Directory
+    Structure
+  source_fingerprint: 05d8a2015abd
+  modality: MUST
+  statement: Must reside in designs/ adjacent to the owning System/deployable source root. Repository-root designs/
+    is valid only when the repository represents one System/deployable. In multi-System repositories, each System/deployable
+    owns its own <system-root>/designs/ namespace.
+  scope: tdd
+  severity: ERROR
+  enforcement_mode: automated
+  implementation: []
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: Slice 5.7 RepositoryModel must enforce TDD placement adjacent to owning deployable through one canonical
+    repository topology authority with adversarial test evidence
+  control_owner: RepositoryModel / Topology Authority
+  target_phase: Slice 5.7 RepositoryModel + Zero-Corpus
+- control_id: CTRL-GDC-011-006
+  source_gdc: GDC-011
+  source_file: GDC-011-tdd-guideline.md
+  source_clause: Technical Design Document (TDD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.4 Metadata
+    Schema Properties
+  source_fingerprint: 65af3822016e
+  modality: MUST
+  statement: 'Every TDD must begin with a YAML frontmatter block containing these fields:'
+  scope: tdd
+  severity: ERROR
+  enforcement_mode: automated
+  implementation:
+  - schemas/*.schema.json
+  - engine/control/validators/base.py
+  test_evidence:
+  - tests/control/validators/test_base.py
+  - tests/control/validators/test_gdc_schema_lifecycle.py
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
+- control_id: CTRL-GDC-011-007
+  source_gdc: GDC-011
+  source_file: GDC-011-tdd-guideline.md
+  source_clause: Technical Design Document (TDD) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit > 2.4.1 TDD Fate
+    Matrix
+  source_fingerprint: 77c99f9b678c
+  modality: MUST
+  statement: 'TDDs are ephemeral. Their lifecycle must follow the Ephemeral TDD Matrix:'
+  scope: tdd
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review
+- control_id: CTRL-GDC-011-008
+  source_gdc: GDC-011
+  source_file: GDC-011-tdd-guideline.md
+  source_clause: Technical Design Document (TDD) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit > 2.4.1 TDD Fate
+    Matrix
+  source_fingerprint: 0b989573cafa
+  modality: MUST
+  statement: 'Class B (Component & Feature Detail): Standard feature implementation layouts. The final API contract is moved
+    to the Source Code (e.g., OpenAPI/Swagger) and the physical TDD file is deleted once verified in production. They must
+    never be folded into the SAD to prevent C3 detail pollution in C2 documents.'
+  scope: tdd
+  severity: ERROR
+  enforcement_mode: human-review
+  implementation:
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence: []
+  evidence_status: pending
+  evidence_expectation: review record / approval evidence
+  control_owner: Architecture Review Authority
+  target_phase: Phase 10 Governance 1.0 Review

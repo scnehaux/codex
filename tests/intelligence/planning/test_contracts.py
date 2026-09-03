@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import pytest
 
-from engine.core.knowledge import ContextBudget, ContextScope, RetrievalMode, RetrievalRequest
+from engine.core.knowledge import (
+    ContextBudget,
+    ContextScope,
+    RetrievalMode,
+    RetrievalRequest,
+)
 from engine.intelligence.planning import ArchitecturePlan, IntentSpec, PlanStep
 
 
@@ -22,11 +27,29 @@ def test_intent_normalizes_and_exposes_semantic_state():
 @pytest.mark.parametrize(
     "kwargs,match",
     [
-        ({"intent_id": " ", "objective": "x", "scopes": (ContextScope.DOMAIN,)}, "intent_id"),
+        (
+            {"intent_id": " ", "objective": "x", "scopes": (ContextScope.DOMAIN,)},
+            "intent_id",
+        ),
         ({"intent_id": "i", "objective": "x", "scopes": ()}, "scopes"),
         ({"intent_id": "i", "objective": "x", "scopes": ("domain",)}, "ContextScope"),
-        ({"intent_id": "i", "objective": "x", "scopes": (ContextScope.DOMAIN, ContextScope.DOMAIN)}, "unique"),
-        ({"intent_id": "i", "objective": "x", "scopes": (ContextScope.DOMAIN,), "constraints": ("x", "x")}, "unique"),
+        (
+            {
+                "intent_id": "i",
+                "objective": "x",
+                "scopes": (ContextScope.DOMAIN, ContextScope.DOMAIN),
+            },
+            "unique",
+        ),
+        (
+            {
+                "intent_id": "i",
+                "objective": "x",
+                "scopes": (ContextScope.DOMAIN,),
+                "constraints": ("x", "x"),
+            },
+            "unique",
+        ),
     ],
 )
 def test_intent_rejects_invalid_shape(kwargs, match):

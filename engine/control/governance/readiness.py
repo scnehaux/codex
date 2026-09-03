@@ -19,11 +19,14 @@ REQUIRED_CONTROL_KEYS = frozenset(
 )
 TEMPORARY_PATTERNS = ("phase*.py", "slice5_*.py")
 PERMANENT_PREFIXES = (
-    "00-governance/",
+    "governance/",
+    "schemas/",
+    "templates/",
     ".github/",
     "engine/",
+    "generators/",
+    "scripts/",
     "tests/",
-    "06-fitness-function/",
 )
 PERMANENT_ROOT_FILES = frozenset(
     {
@@ -51,7 +54,9 @@ class GovernanceReadinessReport:
         return not self.findings
 
 
-def _load_mapping(path: Path) -> tuple[Mapping[str, Any] | None, tuple[ReadinessFinding, ...]]:
+def _load_mapping(
+    path: Path,
+) -> tuple[Mapping[str, Any] | None, tuple[ReadinessFinding, ...]]:
     try:
         data = yaml.safe_load(path.read_text(encoding="utf-8"))
     except (OSError, yaml.YAMLError) as exc:
@@ -86,9 +91,8 @@ def _temporary(path: str) -> bool:
 
 def _permanent_path(path: str) -> bool:
     normalized = _normalize(path)
-    return (
-        normalized in PERMANENT_ROOT_FILES
-        or any(normalized.startswith(prefix) for prefix in PERMANENT_PREFIXES)
+    return normalized in PERMANENT_ROOT_FILES or any(
+        normalized.startswith(prefix) for prefix in PERMANENT_PREFIXES
     )
 
 
@@ -170,10 +174,7 @@ def _makefile_target_findings(
         )
 
     lines = text.splitlines()
-    index = next(
-        i for i, line in enumerate(lines)
-        if line.strip() == marker
-    )
+    index = next(i for i, line in enumerate(lines) if line.strip() == marker)
     body = lines[index + 1 : index + 4]
 
     if not any(command in line for line in body):
@@ -194,12 +195,8 @@ def audit_governance_readiness(
     root = Path(repo_root).resolve()
     findings: list[ReadinessFinding] = []
 
-    source_layout_path = (
-        root / "00-governance" / "framework" / "source-layout.yaml"
-    )
-    bootstrap_path = (
-        root / "00-governance" / "bootstrap-manifest.yaml"
-    )
+    source_layout_path = root / "governance" / "framework" / "source-layout.yaml"
+    bootstrap_path = root / "governance" / "bootstrap-manifest.yaml"
     makefile_path = root / "Makefile"
 
     source_layout, layout_findings = _load_mapping(source_layout_path)
@@ -256,9 +253,8 @@ def audit_governance_readiness(
                         continue
 
                     policy_ref = closure.get("policy_ref")
-                    if (
-                        not isinstance(policy_ref, str)
-                        or not isinstance(source_layout.get(policy_ref), dict)
+                    if not isinstance(policy_ref, str) or not isinstance(
+                        source_layout.get(policy_ref), dict
                     ):
                         findings.append(
                             ReadinessFinding(
@@ -329,7 +325,7 @@ def audit_governance_readiness(
                 )
 
             if contract.get("local_qualification_entrypoint") != (
-                "06-fitness-function/scripts/governance_qualify.py"
+                "scripts/governance_qualify.py"
             ):
                 findings.append(
                     ReadinessFinding(
@@ -355,10 +351,7 @@ def audit_governance_readiness(
 
         if (
             not isinstance(provenance, dict)
-            or provenance.get(
-                "architecture_artifacts_admitted_in_genesis"
-            )
-            is not False
+            or provenance.get("architecture_artifacts_admitted_in_genesis") is not False
         ):
             findings.append(
                 ReadinessFinding(
@@ -383,43 +376,39 @@ def audit_governance_readiness(
             _makefile_target_findings(
                 makefile_text,
                 "genesis-check",
-                "06-fitness-function/scripts/genesis_integrity.py",
+                "scripts/genesis_integrity.py",
             )
         )
         findings.extend(
             _makefile_target_findings(
                 makefile_text,
                 "mutation-check",
-                "06-fitness-function/scripts/mutation_integrity.py",
+                "scripts/mutation_integrity.py",
             )
         )
         findings.extend(
             _makefile_target_findings(
                 makefile_text,
                 "governance-qualify",
-                "06-fitness-function/scripts/governance_qualify.py",
+                "scripts/governance_qualify.py",
             )
         )
         findings.extend(
             _makefile_target_findings(
                 makefile_text,
                 "mutation-ci-check",
-                "06-fitness-function/scripts/committed_mutation_integrity.py",
+                "scripts/committed_mutation_integrity.py",
             )
         )
         findings.extend(
             _makefile_target_findings(
                 makefile_text,
                 "github-policy-check",
-                "06-fitness-function/scripts/github_policy_check.py",
+                "scripts/github_policy_check.py",
             )
         )
 
-    root_python = sorted(
-        path.name
-        for path in root.glob("*.py")
-        if path.is_file()
-    )
+    root_python = sorted(path.name for path in root.glob("*.py") if path.is_file())
     if root_python != ["conftest.py"]:
         findings.append(
             ReadinessFinding(

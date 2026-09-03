@@ -87,9 +87,7 @@ def extract_normative_statements(path: Path) -> tuple[NormativeStatement, ...]:
         if modality not in NORMATIVE_MODALITIES:
             continue
 
-        statement = _strip_inline_markdown(
-            re.sub(r"^\s*(?:[-*+]|\d+[.)])\s+", "", raw)
-        )
+        statement = _strip_inline_markdown(re.sub(r"^\s*(?:[-*+]|\d+[.)])\s+", "", raw))
         clause = " > ".join(title for _, title in headings) or "(document root)"
         parts = path.stem.split("-", 2)
         gdc_id = "-".join(parts[:2])
@@ -216,15 +214,8 @@ def coverage_drift(
     records: tuple[ControlRecord, ...],
 ) -> tuple[tuple[str, ...], tuple[str, ...]]:
     source_keys = {(s.source_gdc, s.fingerprint) for s in statements}
-    registry_keys = {
-        (r.source_gdc, r.source_fingerprint)
-        for r in records
-    }
+    registry_keys = {(r.source_gdc, r.source_fingerprint) for r in records}
 
-    missing = tuple(
-        sorted(f"{gdc}/{fp}" for gdc, fp in source_keys - registry_keys)
-    )
-    stale = tuple(
-        sorted(f"{gdc}/{fp}" for gdc, fp in registry_keys - source_keys)
-    )
+    missing = tuple(sorted(f"{gdc}/{fp}" for gdc, fp in source_keys - registry_keys))
+    stale = tuple(sorted(f"{gdc}/{fp}" for gdc, fp in registry_keys - source_keys))
     return missing, stale

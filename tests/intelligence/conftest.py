@@ -16,7 +16,7 @@ from engine.core.knowledge import (
 )
 from engine.core.metamodel import KnowledgeState, SourceReference
 from engine.intelligence.planning import ArchitecturePlan, IntentSpec, PlanStep
-from engine.intelligence.research import ResearchPackage, ResearchPlan, ResearchQuestion
+from engine.intelligence.research import ResearchPlan, ResearchQuestion
 
 
 @pytest.fixture
@@ -32,7 +32,9 @@ def evidence() -> Evidence:
 
 @pytest.fixture
 def declared_claim(evidence: Evidence) -> Claim:
-    return Claim("claim-declared", "Declared fact", KnowledgeState.DECLARED, (evidence,))
+    return Claim(
+        "claim-declared", "Declared fact", KnowledgeState.DECLARED, (evidence,)
+    )
 
 
 @pytest.fixture
@@ -69,21 +71,30 @@ def intent() -> IntentSpec:
 
 
 @pytest.fixture
-def architecture_plan(intent: IntentSpec, retrieval_request: RetrievalRequest) -> ArchitecturePlan:
+def architecture_plan(
+    intent: IntentSpec, retrieval_request: RetrievalRequest
+) -> ArchitecturePlan:
     return ArchitecturePlan(
         "plan-1",
         intent,
         (
             PlanStep("context", "context-compilation", "Compile bounded context"),
             PlanStep("research", "research", "Resolve evidence gaps", ("context",)),
-            PlanStep("synthesis", "architecture-synthesis", "Synthesize proposal", ("research",)),
+            PlanStep(
+                "synthesis",
+                "architecture-synthesis",
+                "Synthesize proposal",
+                ("research",),
+            ),
         ),
         (retrieval_request,),
     )
 
 
 @pytest.fixture
-def research_plan(architecture_plan: ArchitecturePlan, retrieval_request: RetrievalRequest) -> ResearchPlan:
+def research_plan(
+    architecture_plan: ArchitecturePlan, retrieval_request: RetrievalRequest
+) -> ResearchPlan:
     return ResearchPlan(
         "research-1",
         architecture_plan.plan_id,

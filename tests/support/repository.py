@@ -12,14 +12,12 @@ def find_repository_root(start: Path) -> Path:
     for candidate in (current, *current.parents):
         if (
             (candidate / "pyproject.toml").is_file()
-            and (candidate / "00-governance").is_dir()
+            and (candidate / "governance").is_dir()
             and (candidate / "engine").is_dir()
         ):
             return candidate
 
-    raise RuntimeError(
-        f"Unable to locate repository root from {start}"
-    )
+    raise RuntimeError(f"Unable to locate repository root from {start}")
 
 
 REPOSITORY_ROOT = find_repository_root(Path(__file__))

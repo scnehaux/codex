@@ -26,7 +26,10 @@ class GraphSimulationPolicy:
     cycle_relationship_types: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
-        values = tuple(_required(item, "cycle_relationship_types") for item in self.cycle_relationship_types)
+        values = tuple(
+            _required(item, "cycle_relationship_types")
+            for item in self.cycle_relationship_types
+        )
         if len(values) != len(set(values)):
             raise ValueError("cycle_relationship_types must be unique")
         object.__setattr__(self, "cycle_relationship_types", tuple(sorted(values)))
@@ -54,7 +57,9 @@ def _overlay(current: KnowledgeGraph, proposed: KnowledgeGraph) -> KnowledgeGrap
     )
 
 
-def _cycle_nodes(graph: KnowledgeGraph, relationship_types: tuple[str, ...]) -> tuple[tuple[str, ...], ...]:
+def _cycle_nodes(
+    graph: KnowledgeGraph, relationship_types: tuple[str, ...]
+) -> tuple[tuple[str, ...], ...]:
     if not relationship_types:
         return ()
     allowed = set(relationship_types)
@@ -74,7 +79,9 @@ def _cycle_nodes(graph: KnowledgeGraph, relationship_types: tuple[str, ...]) -> 
         if node in on_stack:
             cycle = stack[on_stack[node] :]
             if cycle:
-                rotations = [tuple(cycle[index:] + cycle[:index]) for index in range(len(cycle))]
+                rotations = [
+                    tuple(cycle[index:] + cycle[:index]) for index in range(len(cycle))
+                ]
                 cycles.add(min(rotations))
             return
         if node in visited:
@@ -100,7 +107,9 @@ def simulate_graph(
     proposed: KnowledgeGraph,
     policy: GraphSimulationPolicy = GraphSimulationPolicy(),
 ) -> SimulationReport:
-    if not isinstance(current, KnowledgeGraph) or not isinstance(proposed, KnowledgeGraph):
+    if not isinstance(current, KnowledgeGraph) or not isinstance(
+        proposed, KnowledgeGraph
+    ):
         raise TypeError("current and proposed must be KnowledgeGraph")
     if not isinstance(policy, GraphSimulationPolicy):
         raise TypeError("policy must be GraphSimulationPolicy")
@@ -127,7 +136,10 @@ def simulate_graph(
         if _edge_state(edge) not in current_edge_states:
             changed.update((edge.source_key, edge.target_key))
     for edge in current.edges:
-        if edge.source_key in proposed_nodes and _edge_state(edge) not in proposed_edge_states:
+        if (
+            edge.source_key in proposed_nodes
+            and _edge_state(edge) not in proposed_edge_states
+        ):
             changed.update((edge.source_key, edge.target_key))
 
     impacted = set(changed)
@@ -148,7 +160,10 @@ def simulate_graph(
         )
     )
 
-    if current.semantic_state() != current_state or proposed.semantic_state() != proposed_state:
+    if (
+        current.semantic_state() != current_state
+        or proposed.semantic_state() != proposed_state
+    ):
         raise RuntimeError("graph simulation must not mutate input graph state")
 
     return SimulationReport(

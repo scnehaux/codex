@@ -34,22 +34,32 @@ def pytest_sessionfinish(session, exitstatus):
 
     for source in sorted(engine_root.rglob("*.py")):
         try:
-            _filename, statements, _excluded, missing, _formatted = cov.analysis2(str(source))
+            _filename, statements, _excluded, missing, _formatted = cov.analysis2(
+                str(source)
+            )
         except Exception as exc:
             failures.append((source, 0.0, f"coverage analysis failed: {exc}"))
             continue
 
         executable = len(statements)
-        percent = 100.0 if executable == 0 else ((executable - len(missing)) / executable) * 100.0
+        percent = (
+            100.0
+            if executable == 0
+            else ((executable - len(missing)) / executable) * 100.0
+        )
         if percent + 1e-9 < threshold:
             failures.append((source, percent, f"missing lines: {missing}"))
 
     if failures:
         if terminal:
-            terminal.write_sep("=", f"PER-FILE COVERAGE GATE FAILED (< {threshold:.0f}%)")
+            terminal.write_sep(
+                "=", f"PER-FILE COVERAGE GATE FAILED (< {threshold:.0f}%)"
+            )
             for source, percent, detail in failures:
                 rel = source.relative_to(root)
                 terminal.write_line(f"{rel}: {percent:.2f}% — {detail}")
         session.exitstatus = pytest.ExitCode.TESTS_FAILED
     elif terminal:
-        terminal.write_sep("=", f"PER-FILE COVERAGE GATE PASSED (>= {threshold:.0f}% EACH)")
+        terminal.write_sep(
+            "=", f"PER-FILE COVERAGE GATE PASSED (>= {threshold:.0f}% EACH)"
+        )

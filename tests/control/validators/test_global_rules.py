@@ -14,7 +14,7 @@ ROOT = str(REPOSITORY_ROOT)
 
 def _global_rules():
     with open(
-        os.path.join(ROOT, "00-governance", "schemas", "base.schema.json"),
+        os.path.join(ROOT, "schemas", "base.schema.json"),
         encoding="utf-8",
     ) as f:
         return json.load(f).get("x-global-config", {})
@@ -123,10 +123,10 @@ def test_validate_technologies_whitelist(monkeypatch):
 
 
 def test_compliance_placement_macro_dir():
-    rules = {"structure_rules": {"standard_directory": {"SAD": "04-system"}}}
+    rules = {"structure_rules": {"standard_directory": {"SAD": "systems"}}}
     v_valid = make_validator(
         rules=rules,
-        file_path="/home/repo/04-system/scnehaux-ui-platform/SAD-003.sad.md",
+        file_path="/home/repo/systems/scnehaux-ui-platform/SAD-003.sad.md",
         filename="SAD-003.sad.md",
         doc_meta={"id": "SAD-003"},
     )
@@ -136,7 +136,7 @@ def test_compliance_placement_macro_dir():
 
     v_invalid = make_validator(
         rules=rules,
-        file_path="/home/repo/03-domain/scnehaux-ui-platform/SAD-003.sad.md",
+        file_path="/home/repo/domains/scnehaux-ui-platform/SAD-003.sad.md",
         filename="SAD-003.sad.md",
         doc_meta={"id": "SAD-003"},
     )
@@ -144,14 +144,14 @@ def test_compliance_placement_macro_dir():
     _validate_compliance_placement(v_invalid)
     assert len(v_invalid.errors) == 1
     assert (
-        "must be located within the '04-system/' macro-directory"
+        "must be located within the 'systems/' macro-directory"
         in v_invalid.errors[0][1]
     )
 
 
 def test_compliance_placement_filename_match():
     v_valid = make_validator(
-        file_path="/home/repo/04-system/scnehaux-ui-platform/SAD-003-design-tokens.sad.md",
+        file_path="/home/repo/systems/scnehaux-ui-platform/SAD-003-design-tokens.sad.md",
         filename="SAD-003-design-tokens.sad.md",
         doc_meta={"id": "SAD-003"},
     )
@@ -160,7 +160,7 @@ def test_compliance_placement_filename_match():
     assert len(v_valid.errors) == 0
 
     v_invalid = make_validator(
-        file_path="/home/repo/04-system/scnehaux-ui-platform/design-tokens.md",
+        file_path="/home/repo/systems/scnehaux-ui-platform/design-tokens.md",
         filename="design-tokens.md",
         doc_meta={"id": "SAD-003"},
     )
@@ -168,6 +168,7 @@ def test_compliance_placement_filename_match():
     _validate_compliance_placement(v_invalid)
     assert len(v_invalid.errors) == 1
     assert "must start with the document ID 'SAD-003'" in v_invalid.errors[0][1]
+
 
 def test_temporal_integrity_is_wired_into_common_validation(monkeypatch):
     v = make_validator(
@@ -182,6 +183,6 @@ def test_temporal_integrity_is_wired_into_common_validation(monkeypatch):
     _validate_temporal_integrity(v)
 
     assert any(
-        severity == "ERROR" and "future" in message
-        for severity, message in v.errors
+        severity == "ERROR" and "future" in message for severity, message in v.errors
     )
+

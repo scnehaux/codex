@@ -58,7 +58,7 @@ def _normalize(path: str) -> str:
 
 
 def _load_manifest(root: Path) -> Mapping[str, object]:
-    path = root / "00-governance" / "bootstrap-manifest.yaml"
+    path = root / "governance" / "bootstrap-manifest.yaml"
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
 
     if not isinstance(data, dict):
@@ -95,7 +95,7 @@ def audit_genesis_commit_candidate(
             findings=(
                 GenesisCandidateFinding(
                     code="bootstrap-manifest-invalid",
-                    path="00-governance/bootstrap-manifest.yaml",
+                    path="governance/bootstrap-manifest.yaml",
                     message=str(exc),
                 ),
             ),
@@ -108,8 +108,7 @@ def audit_genesis_commit_candidate(
                 code="genesis-already-exists",
                 path=".",
                 message=(
-                    "Genesis commit qualification is only valid while HEAD "
-                    "is unborn"
+                    "Genesis commit qualification is only valid while HEAD is unborn"
                 ),
             )
         )
@@ -224,8 +223,7 @@ def audit_genesis_commit_candidate(
             matches = [
                 path
                 for path in staged_files
-                if path.startswith(f"00-governance/{doc_id}-")
-                and path.endswith(".md")
+                if path.startswith(f"governance/{doc_id}-") and path.endswith(".md")
             ]
 
             if len(matches) != 1:
@@ -250,7 +248,7 @@ def audit_genesis_commit_candidate(
         findings.append(
             GenesisCandidateFinding(
                 code="staged-governance-baseline-invalid",
-                path="00-governance",
+                path="governance",
                 message=message,
             )
         )

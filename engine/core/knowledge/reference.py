@@ -42,9 +42,8 @@ class ExternalRef:
             raise ValueError("uri must not be blank")
         if not authority:
             raise ValueError("authority must not be blank")
-        if (
-            self.provenance is not None
-            and not isinstance(self.provenance, SourceReference)
+        if self.provenance is not None and not isinstance(
+            self.provenance, SourceReference
         ):
             raise TypeError("provenance must be SourceReference or None")
         object.__setattr__(self, "uri", uri)

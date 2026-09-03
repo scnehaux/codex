@@ -17,11 +17,9 @@ from tests.support.repository import REPOSITORY_ROOT
 
 
 MANIFEST = yaml.safe_load(
-    (
-        REPOSITORY_ROOT
-        / "00-governance"
-        / "bootstrap-manifest.yaml"
-    ).read_text(encoding="utf-8")
+    (REPOSITORY_ROOT / "governance" / "bootstrap-manifest.yaml").read_text(
+        encoding="utf-8"
+    )
 )
 
 
@@ -40,6 +38,7 @@ def _gdc(doc_id: str, *, status: str = "draft", version: str = "0.0.1") -> str:
 def _runner(mapping):
     def run(args):
         return mapping.get(tuple(args), GitResult(1, "", "missing fake command"))
+
     return run
 
 
@@ -67,7 +66,7 @@ def test_candidate_paths_reject_forbidden_and_outside_allowlist():
     findings = validate_candidate_paths(
         (
             "engine/control/a.py",
-            "01-enterprise/EAD-001.md",
+            "enterprise/EAD-001.md",
             "random.bin",
         ),
         MANIFEST,
@@ -78,16 +77,13 @@ def test_candidate_paths_reject_forbidden_and_outside_allowlist():
 
 def test_gdc_snapshot_requires_exact_draft_zero_x_baseline():
     required = MANIFEST["governance_control_plane"]["required_baseline_ids"]
-    documents = {
-        f"00-governance/{doc_id}-test.md": _gdc(doc_id)
-        for doc_id in required
-    }
+    documents = {f"governance/{doc_id}-test.md": _gdc(doc_id) for doc_id in required}
     assert validate_gdc_snapshot(documents, MANIFEST) == ()
 
     broken = dict(documents)
     broken.pop(next(iter(broken)))
     first_id = required[1]
-    broken[f"00-governance/{first_id}-dup.md"] = _gdc(
+    broken[f"governance/{first_id}-dup.md"] = _gdc(
         first_id,
         status="approved",
         version="1.0.0",
@@ -95,13 +91,12 @@ def test_gdc_snapshot_requires_exact_draft_zero_x_baseline():
     findings = validate_gdc_snapshot(broken, MANIFEST)
     assert any("missing" in item for item in findings)
     assert any(
-        "duplicate" in item or "status" in item or "0.x.x" in item
-        for item in findings
+        "duplicate" in item or "status" in item or "0.x.x" in item for item in findings
     )
 
 
 def test_pre_genesis_audit_uses_live_candidate_and_canonical_branch(tmp_path):
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir()
 
     (governance / "bootstrap-manifest.yaml").write_text(
@@ -110,12 +105,12 @@ def test_pre_genesis_audit_uses_live_candidate_and_canonical_branch(tmp_path):
     )
 
     required = MANIFEST["governance_control_plane"]["required_baseline_ids"]
-    candidates = ["00-governance/bootstrap-manifest.yaml"]
+    candidates = ["governance/bootstrap-manifest.yaml"]
 
     for doc_id in required:
         path = governance / f"{doc_id}-test.md"
         path.write_text(_gdc(doc_id), encoding="utf-8")
-        candidates.append(f"00-governance/{path.name}")
+        candidates.append(f"governance/{path.name}")
 
     mapping = {
         ("rev-parse", "--verify", "HEAD"): GitResult(1),
@@ -139,7 +134,7 @@ def test_pre_genesis_audit_uses_live_candidate_and_canonical_branch(tmp_path):
 
 
 def test_pre_genesis_audit_rejects_wrong_branch(tmp_path):
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir()
     (governance / "bootstrap-manifest.yaml").write_text(
         yaml.safe_dump(MANIFEST, sort_keys=False),
@@ -165,7 +160,7 @@ def test_pre_genesis_audit_rejects_wrong_branch(tmp_path):
 
 
 def test_post_genesis_audit_reads_root_commit_snapshot(tmp_path):
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir()
     (governance / "bootstrap-manifest.yaml").write_text(
         yaml.safe_dump(MANIFEST, sort_keys=False),
@@ -173,14 +168,15 @@ def test_post_genesis_audit_reads_root_commit_snapshot(tmp_path):
     )
 
     required = MANIFEST["governance_control_plane"]["required_baseline_ids"]
-    tree = ["00-governance/bootstrap-manifest.yaml"]
+    tree = ["governance/bootstrap-manifest.yaml"]
     mapping = {
         ("rev-parse", "--verify", "HEAD"): GitResult(0, "head\n"),
         ("rev-list", "--max-parents=0", "HEAD"): GitResult(0, "rootsha\n"),
+        ("show", "rootsha:governance/bootstrap-manifest.yaml"): GitResult(0, yaml.safe_dump(MANIFEST, sort_keys=False)),
     }
 
     for doc_id in required:
-        path = f"00-governance/{doc_id}-test.md"
+        path = f"governance/{doc_id}-test.md"
         tree.append(path)
         mapping[("show", f"rootsha:{path}")] = GitResult(0, _gdc(doc_id))
 
@@ -199,7 +195,7 @@ def test_post_genesis_audit_reads_root_commit_snapshot(tmp_path):
 
 
 def test_post_genesis_requires_exactly_one_root_commit(tmp_path):
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir()
     (governance / "bootstrap-manifest.yaml").write_text(
         yaml.safe_dump(MANIFEST, sort_keys=False),
@@ -232,6 +228,7 @@ def test_assert_genesis_integrity_raises_on_findings(tmp_path):
 
 def _manifest_copy():
     import copy
+
     return copy.deepcopy(MANIFEST)
 
 
@@ -247,9 +244,7 @@ def _manifest_copy():
             "source repository",
         ),
         (
-            lambda m: m["source"].__setitem__(
-                "repository", m["target_repository"]
-            ),
+            lambda m: m["source"].__setitem__("repository", m["target_repository"]),
             "cannot equal target",
         ),
         (
@@ -265,9 +260,7 @@ def _manifest_copy():
             "genesis_contract",
         ),
         (
-            lambda m: m["genesis_contract"].__setitem__(
-                "root_commit_only", False
-            ),
+            lambda m: m["genesis_contract"].__setitem__("root_commit_only", False),
             "root_commit_only",
         ),
         (
@@ -277,9 +270,7 @@ def _manifest_copy():
             "local_qualification_required",
         ),
         (
-            lambda m: m["genesis_contract"].__setitem__(
-                "allowed_paths", "bad"
-            ),
+            lambda m: m["genesis_contract"].__setitem__("allowed_paths", "bad"),
             "allowed_paths",
         ),
         (
@@ -328,10 +319,8 @@ def _manifest_copy():
         ),
     ],
 )
-def test_manifest_contract_failures_are_explicit(
-    tmp_path, mutator, expected
-):
-    governance = tmp_path / "00-governance"
+def test_manifest_contract_failures_are_explicit(tmp_path, mutator, expected):
+    governance = tmp_path / "governance"
     governance.mkdir()
     manifest = _manifest_copy()
     mutator(manifest)
@@ -375,44 +364,32 @@ def test_gdc_validation_fails_closed_for_missing_governance_contract():
     manifest["governance_control_plane"] = None
     assert "unavailable" in validate_gdc_snapshot({}, manifest)[0]
 
-    manifest["governance_control_plane"] = {
-        "required_baseline_ids": "bad"
-    }
+    manifest["governance_control_plane"] = {"required_baseline_ids": "bad"}
     assert "required_baseline_ids" in validate_gdc_snapshot({}, manifest)[0]
 
 
 def test_gdc_snapshot_reports_malformed_unknown_and_bad_versions():
     manifest = _manifest_copy()
-    required = manifest["governance_control_plane"][
-        "required_baseline_ids"
-    ]
-    documents = {
-        f"00-governance/{doc_id}-test.md": _gdc(doc_id)
-        for doc_id in required
-    }
+    required = manifest["governance_control_plane"]["required_baseline_ids"]
+    documents = {f"governance/{doc_id}-test.md": _gdc(doc_id) for doc_id in required}
 
-    documents["00-governance/GDC-000-test.md"] = "not-frontmatter"
-    documents["00-governance/GDC-999-extra.md"] = _gdc("GDC-999")
+    documents["governance/GDC-000-test.md"] = "not-frontmatter"
+    documents["governance/GDC-999-extra.md"] = _gdc("GDC-999")
 
     bad_id = required[1]
-    documents[f"00-governance/{bad_id}-test.md"] = (
-        "---\n"
-        "doc_meta:\n"
-        "  id: 123\n"
-        "  version: 0.0.1\n"
-        "  status: draft\n"
-        "---\n"
+    documents[f"governance/{bad_id}-test.md"] = (
+        "---\ndoc_meta:\n  id: 123\n  version: 0.0.1\n  status: draft\n---\n"
     )
 
     bad_version_id = required[2]
-    documents[f"00-governance/{bad_version_id}-test.md"] = _gdc(
+    documents[f"governance/{bad_version_id}-test.md"] = _gdc(
         bad_version_id,
         status="approved",
         version="banana",
     )
 
     numeric_version_id = required[3]
-    documents[f"00-governance/{numeric_version_id}-test.md"] = (
+    documents[f"governance/{numeric_version_id}-test.md"] = (
         "---\n"
         "doc_meta:\n"
         f"  id: {numeric_version_id}\n"
@@ -431,7 +408,7 @@ def test_gdc_snapshot_reports_malformed_unknown_and_bad_versions():
 
 
 def test_load_invalid_bootstrap_manifest_is_reported(tmp_path):
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir()
 
     (governance / "bootstrap-manifest.yaml").write_text(
@@ -448,7 +425,7 @@ def test_load_invalid_bootstrap_manifest_is_reported(tmp_path):
 
 
 def test_pre_genesis_git_failures_are_findings(tmp_path):
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir()
     (governance / "bootstrap-manifest.yaml").write_text(
         yaml.safe_dump(MANIFEST, sort_keys=False),
@@ -471,18 +448,12 @@ def test_pre_genesis_git_failures_are_findings(tmp_path):
         ),
     )
 
-    assert any(
-        "cannot resolve current Git branch" in item
-        for item in report.findings
-    )
-    assert any(
-        "cannot enumerate" in item
-        for item in report.findings
-    )
+    assert any("cannot resolve current Git branch" in item for item in report.findings)
+    assert any("cannot enumerate" in item for item in report.findings)
 
 
 def test_post_genesis_git_failures_are_findings(tmp_path):
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir()
     (governance / "bootstrap-manifest.yaml").write_text(
         yaml.safe_dump(MANIFEST, sort_keys=False),
@@ -499,8 +470,7 @@ def test_post_genesis_git_failures_are_findings(tmp_path):
         ),
     )
     assert any(
-        "cannot resolve Git root commit" in item
-        for item in unresolved_root.findings
+        "cannot resolve Git root commit" in item for item in unresolved_root.findings
     )
 
     root = "rootsha"
@@ -524,24 +494,21 @@ def test_post_genesis_git_failures_are_findings(tmp_path):
         ),
     )
     assert any(
-        "cannot enumerate root commit tree" in item
-        for item in tree_failure.findings
+        "cannot enumerate root commit tree" in item for item in tree_failure.findings
     )
 
 
 def test_post_genesis_missing_or_unreadable_gdc_is_reported(tmp_path):
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir()
     (governance / "bootstrap-manifest.yaml").write_text(
         yaml.safe_dump(MANIFEST, sort_keys=False),
         encoding="utf-8",
     )
 
-    required = MANIFEST["governance_control_plane"][
-        "required_baseline_ids"
-    ]
+    required = MANIFEST["governance_control_plane"]["required_baseline_ids"]
     root = "rootsha"
-    tree = ["00-governance/bootstrap-manifest.yaml"]
+    tree = ["governance/bootstrap-manifest.yaml"]
     mapping = {
         ("rev-parse", "--verify", "HEAD"): GitResult(0, "head\n"),
         (
@@ -549,24 +516,23 @@ def test_post_genesis_missing_or_unreadable_gdc_is_reported(tmp_path):
             "--max-parents=0",
             "HEAD",
         ): GitResult(0, root + "\n"),
+            ("show", f"{root}:governance/bootstrap-manifest.yaml"): GitResult(0, yaml.safe_dump(MANIFEST, sort_keys=False)),
     }
 
     first = required[0]
     tree.extend(
         [
-            f"00-governance/{first}-a.md",
-            f"00-governance/{first}-b.md",
+            f"governance/{first}-a.md",
+            f"governance/{first}-b.md",
         ]
     )
 
     second = required[1]
-    second_path = f"00-governance/{second}-test.md"
+    second_path = f"governance/{second}-test.md"
     tree.append(second_path)
     mapping[("show", f"{root}:{second_path}")] = GitResult(1)
 
-    mapping[
-        ("ls-tree", "-r", "--name-only", root)
-    ] = GitResult(
+    mapping[("ls-tree", "-r", "--name-only", root)] = GitResult(
         0,
         "\n".join(tree) + "\n",
     )
@@ -575,14 +541,8 @@ def test_post_genesis_missing_or_unreadable_gdc_is_reported(tmp_path):
         tmp_path,
         git_runner=_runner(mapping),
     )
-    assert any(
-        first in item and "missing" in item
-        for item in report.findings
-    )
-    assert any(
-        second in item and "missing" in item
-        for item in report.findings
-    )
+    assert any(first in item and "missing" in item for item in report.findings)
+    assert any(second in item and "missing" in item for item in report.findings)
 
 
 def test_default_git_runner_is_exercised_by_real_unborn_repository(
@@ -597,16 +557,14 @@ def test_default_git_runner_is_exercised_by_real_unborn_repository(
         text=True,
     )
 
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir()
     (governance / "bootstrap-manifest.yaml").write_text(
         yaml.safe_dump(MANIFEST, sort_keys=False),
         encoding="utf-8",
     )
 
-    required = MANIFEST["governance_control_plane"][
-        "required_baseline_ids"
-    ]
+    required = MANIFEST["governance_control_plane"]["required_baseline_ids"]
     for doc_id in required:
         (governance / f"{doc_id}-test.md").write_text(
             _gdc(doc_id),
@@ -616,6 +574,8 @@ def test_default_git_runner_is_exercised_by_real_unborn_repository(
     report = audit_genesis_integrity(tmp_path)
     assert report.mode == "pre-genesis"
     assert report.ok
+
+
 def test_default_git_runner_reads_utf8_root_snapshot_post_genesis(
     tmp_path,
 ):
@@ -637,7 +597,7 @@ def test_default_git_runner_reads_utf8_root_snapshot_post_genesis(
         check=True,
     )
 
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir()
 
     (governance / "bootstrap-manifest.yaml").write_text(
@@ -645,13 +605,11 @@ def test_default_git_runner_reads_utf8_root_snapshot_post_genesis(
         encoding="utf-8",
     )
 
-    required = MANIFEST["governance_control_plane"][
-        "required_baseline_ids"
-    ]
+    required = MANIFEST["governance_control_plane"]["required_baseline_ids"]
 
     for doc_id in required:
         (governance / f"{doc_id}-test.md").write_text(
-            _gdc(doc_id) + "Unicode decode sentinel: ŝ\n",
+            _gdc(doc_id) + "Unicode decode sentinel: Å\n",
             encoding="utf-8",
         )
 
@@ -670,3 +628,5 @@ def test_default_git_runner_reads_utf8_root_snapshot_post_genesis(
     report = audit_genesis_integrity(tmp_path)
     assert report.mode == "post-genesis"
     assert report.ok
+
+

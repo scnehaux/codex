@@ -69,13 +69,10 @@ class ContextPackage:
     def __post_init__(self) -> None:
         if not isinstance(self.budget, ContextBudget):
             raise TypeError("budget must be ContextBudget")
-        if (
-            self.knowledge_revision is not None
-            and not isinstance(self.knowledge_revision, KnowledgeRevision)
+        if self.knowledge_revision is not None and not isinstance(
+            self.knowledge_revision, KnowledgeRevision
         ):
-            raise TypeError(
-                "knowledge_revision must be KnowledgeRevision or None"
-            )
+            raise TypeError("knowledge_revision must be KnowledgeRevision or None")
 
         entries = tuple(self.entries)
         if not all(isinstance(item, ContextEntry) for item in entries):

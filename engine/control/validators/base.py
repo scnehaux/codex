@@ -362,8 +362,12 @@ class BaseValidator:
             "$id",
             "https://scnehaux.com/codex/gov/guidelines/schemas/base.schema.json",
         )
-        registry = Registry().with_resource(base_id, Resource.from_contents(base_schema))
-        validator = ExtendedValidator(schema=self.domain_schema, registry=registry,
+        registry = Registry().with_resource(
+            base_id, Resource.from_contents(base_schema)
+        )
+        validator = ExtendedValidator(
+            schema=self.domain_schema,
+            registry=registry,
             format_checker=jsonschema.FormatChecker(),
         )
         for e in validator.iter_errors(doc_instance):

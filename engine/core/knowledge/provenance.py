@@ -22,9 +22,7 @@ def _optional(value: str | None, field_name: str) -> str | None:
 
 def _freeze(value: Any) -> Any:
     if isinstance(value, Mapping):
-        return MappingProxyType(
-            {key: _freeze(item) for key, item in value.items()}
-        )
+        return MappingProxyType({key: _freeze(item) for key, item in value.items()})
     if isinstance(value, list):
         return tuple(_freeze(item) for item in value)
     if isinstance(value, tuple):
@@ -106,9 +104,7 @@ class Evidence:
             self.source.revision is not None
             and self.source.revision != self.revision.revision_id
         ):
-            raise ValueError(
-                "source revision must match KnowledgeRevision.revision_id"
-            )
+            raise ValueError("source revision must match KnowledgeRevision.revision_id")
         if not isinstance(self.attributes, Mapping):
             raise TypeError("attributes must be a mapping")
         object.__setattr__(self, "attributes", _freeze(self.attributes))

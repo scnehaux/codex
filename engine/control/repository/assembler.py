@@ -25,19 +25,18 @@ from engine.core.metamodel import (
 from engine.core.repository import RepositoryArtifact, RepositoryModel
 
 GOVERNED_CORPUS_ROOTS = (
-    "00-governance",
-    "01-enterprise",
-    "02-standards",
-    "03-domain",
-    "04-system",
-    "05-decisions",
+    "governance",
+    "enterprise",
+    "standards",
+    "domains",
+    "systems",
+    "designs",
+    "decisions",
 )
 
 DERIVED_MARKDOWN_FILES = frozenset({"index.md", "readme.md", "traceability.md"})
 
-GOVERNED_CORPUS_SUPPORT_PATTERNS = (
-    r"(?:^|/)00-governance/templates(?:/|$)",
-)
+GOVERNED_CORPUS_SUPPORT_PATTERNS = (r"(?:^|/)templates(?:/|$)",)
 
 
 class RepositoryAssemblyError(ValueError):
@@ -94,9 +93,7 @@ class RepositoryAssembler:
             "knowledge_state", KnowledgeState.DECLARED.value
         )
         try:
-            knowledge_state = KnowledgeState(
-                str(raw_knowledge_state).strip().lower()
-            )
+            knowledge_state = KnowledgeState(str(raw_knowledge_state).strip().lower())
         except ValueError as exc:
             raise RepositoryIngestionError(
                 f"Artifact '{source_path}' has invalid knowledge_state "
@@ -108,7 +105,9 @@ class RepositoryAssembler:
         relation_fields = set()
         for spec in relationship_specs_for_source(artifact_type):
             relation_fields.add(spec.metadata_field)
-            for raw_target in normalize_relation_values(metadata.get(spec.metadata_field)):
+            for raw_target in normalize_relation_values(
+                metadata.get(spec.metadata_field)
+            ):
                 if not isinstance(raw_target, str) or not raw_target.strip():
                     raise RepositoryIngestionError(
                         f"Artifact '{source_path}' relationship '{spec.metadata_field}' "

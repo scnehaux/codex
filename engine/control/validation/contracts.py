@@ -63,7 +63,9 @@ class ValidationReport:
         ids = [item.finding_id for item in findings]
         if len(ids) != len(set(ids)):
             raise ValueError("validation finding_id values must be unique")
-        object.__setattr__(self, "findings", tuple(sorted(findings, key=lambda item: item.finding_id)))
+        object.__setattr__(
+            self, "findings", tuple(sorted(findings, key=lambda item: item.finding_id))
+        )
 
     @property
     def outcome(self) -> ValidationOutcome:

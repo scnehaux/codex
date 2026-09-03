@@ -5,14 +5,16 @@ import sys
 from engine.control.config.severity import SeverityRule
 import importlib.util
 from engine.interfaces.cli import print_errors, lint_file, build_sarif
-from engine.control.config.constants import GOVERNANCE_ROOT
+from engine.control.config.constants import FRAMEWORK_ROOT
 from tests.support.repository import REPOSITORY_ROOT
 
 
 @pytest.fixture(autouse=True)
 def setup_test_environment(monkeypatch, tmp_path):
     # Mock validation so tests running in temp dir don't abort immediately
-    monkeypatch.setattr('engine.interfaces.cli._validate_execution_root', lambda x: None)
+    monkeypatch.setattr(
+        "engine.interfaces.cli._validate_execution_root", lambda x: None
+    )
     # CD into tmp_path so os.getcwd() returns tmp_path, preventing cross-drive relpath ValueErrors
     monkeypatch.chdir(tmp_path)
 
@@ -32,7 +34,7 @@ def _write_md(
 def _global_rules():
     from engine.interfaces.cli import load_json_schema_file
 
-    path = os.path.join(GOVERNANCE_ROOT, "00-governance", "schemas", "base.schema.json")
+    path = os.path.join(FRAMEWORK_ROOT, "schemas", "base.schema.json")
     rules = load_json_schema_file(path).get("x-global-config", {})
     if "severity_levels" in rules:
         flat_sev = {}
@@ -316,7 +318,7 @@ def test_main_clean_run(tmp_path, monkeypatch):
             {
                 "SAD-TEST-001": {
                     "parent_pad": "PAD-TEST-001",
-                        "governed_by": ["GDC-000"],
+                    "governed_by": ["GDC-000"],
                     "_filepath": "SAD-TEST-001.sad.md",
                 }
             },
@@ -334,11 +336,9 @@ def test_main_clean_run(tmp_path, monkeypatch):
 def test_main_failing_run(tmp_path, monkeypatch):
     """main() should exit 1 when there are blocking errors."""
     fm = "doc_meta:\n  id: SAD-TEST-001"  # Missing required metadata
-    (tmp_path / "04-system").mkdir()
-    _write_md(tmp_path / "04-system", "SAD-TEST-001.sad.md", fm)
-    monkeypatch.setattr(
-        sys, "argv", ["cli.py", "--target", str(tmp_path / "04-system")]
-    )
+    (tmp_path / "systems").mkdir()
+    _write_md(tmp_path / "systems", "SAD-TEST-001.sad.md", fm)
+    monkeypatch.setattr(sys, "argv", ["cli.py", "--target", str(tmp_path / "systems")])
 
     with pytest.raises(SystemExit) as e:
         import engine.interfaces.cli as linter
@@ -350,13 +350,13 @@ def test_main_failing_run(tmp_path, monkeypatch):
 def test_main_json_format(tmp_path, monkeypatch):
     """main() in JSON format."""
     fm = "doc_meta:\n  id: SAD-TEST-001"
-    (tmp_path / "04-system").mkdir(exist_ok=True)
-    _write_md(tmp_path / "04-system", "SAD-TEST-001.sad.md", fm)
+    (tmp_path / "systems").mkdir(exist_ok=True)
+    _write_md(tmp_path / "systems", "SAD-TEST-001.sad.md", fm)
 
     monkeypatch.setattr(
         sys,
         "argv",
-        ["cli.py", "--target", str(tmp_path / "04-system"), "--format", "json"],
+        ["cli.py", "--target", str(tmp_path / "systems"), "--format", "json"],
     )
 
     with pytest.raises(SystemExit) as e:
@@ -369,13 +369,13 @@ def test_main_json_format(tmp_path, monkeypatch):
 def test_main_sarif_format(tmp_path, monkeypatch):
     """main() in SARIF format."""
     fm = "doc_meta:\n  id: SAD-TEST-001"
-    (tmp_path / "04-system").mkdir(exist_ok=True)
-    _write_md(tmp_path / "04-system", "SAD-TEST-001.sad.md", fm)
+    (tmp_path / "systems").mkdir(exist_ok=True)
+    _write_md(tmp_path / "systems", "SAD-TEST-001.sad.md", fm)
 
     monkeypatch.setattr(
         sys,
         "argv",
-        ["cli.py", "--target", str(tmp_path / "04-system"), "--format", "sarif"],
+        ["cli.py", "--target", str(tmp_path / "systems"), "--format", "sarif"],
     )
 
     with pytest.raises(SystemExit) as e:
@@ -463,9 +463,7 @@ def test_build_sarif_empty_results():
 
 
 def _load_generator():
-    gen_path = str(
-        REPOSITORY_ROOT / "06-fitness-function" / "generators" / "generate_rules_doc.py"
-    )
+    gen_path = str(REPOSITORY_ROOT / "generators" / "generate_rules_doc.py")
     spec = importlib.util.spec_from_file_location("genrules", gen_path)
     assert spec is not None and spec.loader is not None, "Failed to load spec"
     mod = importlib.util.module_from_spec(spec)
@@ -506,8 +504,8 @@ def test_main_with_file_target(tmp_path, monkeypatch):
         "doc_meta:\n  id: SAD-TEST-001\n  parent_pad: PAD-TEST-001\n  status: approved\n  last_reviewed: "
         + datetime.date.today().isoformat()
     )
-    (tmp_path / "04-system").mkdir(exist_ok=True)
-    fpath = _write_md(tmp_path / "04-system", "SAD-TEST-001.sad.md", fm)
+    (tmp_path / "systems").mkdir(exist_ok=True)
+    fpath = _write_md(tmp_path / "systems", "SAD-TEST-001.sad.md", fm)
     monkeypatch.setattr(sys, "argv", ["cli.py", "--target", str(fpath)])
 
     # Also test stream reconfigure exception coverage
@@ -562,21 +560,21 @@ def test_tech_radar_failure(tmp_path, monkeypatch):
     _write_md(tmp_path, "SAD-TEST-001.sad.md", fm)
 
     # Create invalid tech-radar.yaml inside mocked directories
-    (tmp_path / "01-enterprise").mkdir()
-    (tmp_path / "00-governance" / "schemas").mkdir(parents=True)
+    (tmp_path / "enterprise").mkdir()
+    (tmp_path / "schemas").mkdir(parents=True)
 
-    radar = tmp_path / "01-enterprise" / "tech-radar.yaml"
+    radar = tmp_path / "enterprise" / "tech-radar.yaml"
     radar.write_text("invalid_radar: true")
 
     # We need a valid schema so it attempts to validate and fails
-    schema = tmp_path / "00-governance" / "schemas" / "tech-radar.schema.json"
+    schema = tmp_path / "schemas" / "tech-radar.schema.json"
     schema.write_text('{"type": "object", "required": ["version"]}')
 
     # Mock schemas to force failure
     monkeypatch.setattr(sys, "argv", ["cli.py", "--target", str(tmp_path)])
-    monkeypatch.setattr('engine.control.linting.facade.GOVERNANCE_ROOT', str(tmp_path))
+    monkeypatch.setattr("engine.control.linting.facade.FRAMEWORK_ROOT", str(tmp_path))
     monkeypatch.setattr(
-        'engine.interfaces.cli.BASE_SCHEMA_PATH', "fake"
+        "engine.interfaces.cli.BASE_SCHEMA_PATH", "fake"
     )  # Just so it doesn't crash on base schema loading
 
     def mock_load_json(path):
@@ -599,7 +597,7 @@ def test_tech_radar_failure(tmp_path, monkeypatch):
             }
         }
 
-    monkeypatch.setattr('engine.interfaces.cli.load_json_schema_file', mock_load_json)
+    monkeypatch.setattr("engine.interfaces.cli.load_json_schema_file", mock_load_json)
 
     with pytest.raises(SystemExit) as e:
         main()
@@ -613,18 +611,18 @@ def test_tech_radar_yaml_parse_error(tmp_path, monkeypatch):
     from engine.interfaces.cli import main
 
     _write_md(tmp_path, "SAD-TEST-001.sad.md", "doc_meta:\n  id: SAD-TEST-001")
-    (tmp_path / "01-enterprise").mkdir()
-    radar = tmp_path / "01-enterprise" / "tech-radar.yaml"
+    (tmp_path / "enterprise").mkdir()
+    radar = tmp_path / "enterprise" / "tech-radar.yaml"
     radar.write_text("invalid\n  yaml: : :")
-    schema = tmp_path / "01-enterprise" / "schema.json"
+    schema = tmp_path / "enterprise" / "schema.json"
     schema.write_text("{}")
 
     monkeypatch.setattr(sys, "argv", ["cli.py", "--target", str(tmp_path)])
-    monkeypatch.setattr('engine.interfaces.cli.TECH_RADAR_YAML_PATH', str(radar))
-    monkeypatch.setattr('engine.interfaces.cli.TECH_RADAR_SCHEMA_PATH', str(schema))
-    monkeypatch.setattr('engine.interfaces.cli.BASE_SCHEMA_PATH', "fake")
+    monkeypatch.setattr("engine.interfaces.cli.TECH_RADAR_YAML_PATH", str(radar))
+    monkeypatch.setattr("engine.interfaces.cli.TECH_RADAR_SCHEMA_PATH", str(schema))
+    monkeypatch.setattr("engine.interfaces.cli.BASE_SCHEMA_PATH", "fake")
     monkeypatch.setattr(
-        'engine.interfaces.cli.load_json_schema_file',
+        "engine.interfaces.cli.load_json_schema_file",
         lambda p: {
             "x-global-config": {
                 "severity_levels": {
@@ -656,22 +654,22 @@ def test_tech_radar_validation_error_json(tmp_path, monkeypatch):
     from engine.interfaces.cli import main
 
     _write_md(tmp_path, "SAD-TEST-001.sad.md", "doc_meta:\n  id: SAD-TEST-001")
-    (tmp_path / "01-enterprise").mkdir()
-    radar = tmp_path / "01-enterprise" / "tech-radar.yaml"
+    (tmp_path / "enterprise").mkdir()
+    radar = tmp_path / "enterprise" / "tech-radar.yaml"
     radar.write_text(
         "version: 1"
     )  # valid yaml, invalid schema (assuming missing required fields)
-    schema = tmp_path / "01-enterprise" / "schema.json"
+    schema = tmp_path / "enterprise" / "schema.json"
     schema.write_text('{"type": "object", "required": ["missing_field"]}')
 
     monkeypatch.setattr(
         sys, "argv", ["cli.py", "--target", str(tmp_path), "--format", "json"]
     )
-    monkeypatch.setattr('engine.interfaces.cli.TECH_RADAR_YAML_PATH', str(radar))
-    monkeypatch.setattr('engine.interfaces.cli.TECH_RADAR_SCHEMA_PATH', str(schema))
-    monkeypatch.setattr('engine.interfaces.cli.BASE_SCHEMA_PATH', "fake")
+    monkeypatch.setattr("engine.interfaces.cli.TECH_RADAR_YAML_PATH", str(radar))
+    monkeypatch.setattr("engine.interfaces.cli.TECH_RADAR_SCHEMA_PATH", str(schema))
+    monkeypatch.setattr("engine.interfaces.cli.BASE_SCHEMA_PATH", "fake")
     monkeypatch.setattr(
-        'engine.interfaces.cli.load_json_schema_file',
+        "engine.interfaces.cli.load_json_schema_file",
         lambda p: {
             "x-global-config": {
                 "severity_levels": {
@@ -706,11 +704,11 @@ def test_main_filters(tmp_path, monkeypatch):
     (tmp_path / "test.copy.md").write_text("# Copy")
 
     monkeypatch.setattr(sys, "argv", ["cli.py", "--target", str(tmp_path)])
-    monkeypatch.setattr('engine.control.linting.facade.GOVERNANCE_ROOT', str(tmp_path))
-    monkeypatch.setattr('engine.interfaces.cli.TECH_RADAR_YAML_PATH', "fake")
-    monkeypatch.setattr('engine.interfaces.cli.BASE_SCHEMA_PATH', "fake")
+    monkeypatch.setattr("engine.control.linting.facade.FRAMEWORK_ROOT", str(tmp_path))
+    monkeypatch.setattr("engine.interfaces.cli.TECH_RADAR_YAML_PATH", "fake")
+    monkeypatch.setattr("engine.interfaces.cli.BASE_SCHEMA_PATH", "fake")
     monkeypatch.setattr(
-        'engine.interfaces.cli.load_json_schema_file',
+        "engine.interfaces.cli.load_json_schema_file",
         lambda p: {
             "x-global-config": {
                 "severity_levels": {
@@ -896,8 +894,8 @@ def test_main_skipped_target_json(tmp_path, monkeypatch):
     monkeypatch.setattr(
         sys, "argv", ["cli.py", "--target", str(invalid_dir), "--format", "json"]
     )
-    monkeypatch.setattr('engine.control.linting.facade.GOVERNANCE_ROOT', str(tmp_path))
-    monkeypatch.setattr('engine.interfaces.cli.BASE_SCHEMA_PATH', "fake")
+    monkeypatch.setattr("engine.control.linting.facade.FRAMEWORK_ROOT", str(tmp_path))
+    monkeypatch.setattr("engine.interfaces.cli.BASE_SCHEMA_PATH", "fake")
 
     def mock_load_json(path):
         return {
@@ -906,7 +904,7 @@ def test_main_skipped_target_json(tmp_path, monkeypatch):
             }
         }
 
-    monkeypatch.setattr('engine.interfaces.cli.load_json_schema_file', mock_load_json)
+    monkeypatch.setattr("engine.interfaces.cli.load_json_schema_file", mock_load_json)
 
     with pytest.raises(SystemExit) as e:
         main()

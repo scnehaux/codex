@@ -1,6 +1,6 @@
 # Architecture Governance Evidence Dashboard
 
-> **Auto-generated** by `06-fitness-function/generators/generate_maturity_dashboard.py`
+> **Auto-generated** by `generators/generate_maturity_dashboard.py`
 
 > This dashboard separates repository inventory from governance evidence. Artifact presence or lifecycle status is not treated as proof of maturity or compliance.
 
@@ -18,8 +18,8 @@
 
 ## 2. Normative Control Evidence
 
-- Total registered controls: **166**
-- `pending`: **89**
+- Total registered controls: **165**
+- `pending`: **88**
 - `verified`: **77**
 
 ## 3. Evidence Registry Integrity

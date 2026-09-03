@@ -115,7 +115,9 @@ def _manifest_findings(manifest: Mapping[str, object]) -> tuple[str, ...]:
             findings.append("legacy source repository cannot equal target repository")
         if not isinstance(source_ref, str) or not source_ref.strip():
             findings.append("legacy source ref must be non-empty")
-        if not isinstance(source_commit, str) or not FULL_SHA_RE.fullmatch(source_commit):
+        if not isinstance(source_commit, str) or not FULL_SHA_RE.fullmatch(
+            source_commit
+        ):
             findings.append("legacy source commit must be an immutable 40-hex SHA")
 
     contract = manifest.get("genesis_contract")
@@ -125,11 +127,15 @@ def _manifest_findings(manifest: Mapping[str, object]) -> tuple[str, ...]:
         if contract.get("root_commit_only") is not True:
             findings.append("genesis_contract.root_commit_only must be true")
         if contract.get("local_qualification_required") is not True:
-            findings.append("genesis_contract.local_qualification_required must be true")
+            findings.append(
+                "genesis_contract.local_qualification_required must be true"
+            )
         if not isinstance(contract.get("allowed_paths"), list):
             findings.append("genesis_contract.allowed_paths must be a list")
         if not isinstance(contract.get("forbidden_architecture_paths"), list):
-            findings.append("genesis_contract.forbidden_architecture_paths must be a list")
+            findings.append(
+                "genesis_contract.forbidden_architecture_paths must be a list"
+            )
 
     provenance = manifest.get("provenance")
     if not isinstance(provenance, dict):
@@ -266,9 +272,7 @@ def _pre_genesis_snapshot(
             f"found {branch.stdout.strip()!r}"
         )
 
-    candidate = git(
-        ["ls-files", "--cached", "--others", "--exclude-standard"]
-    )
+    candidate = git(["ls-files", "--cached", "--others", "--exclude-standard"])
     if candidate.returncode != 0:
         findings.append("cannot enumerate non-ignored Genesis candidate files")
         candidate_files: tuple[str, ...] = ()
@@ -283,70 +287,104 @@ def _pre_genesis_snapshot(
 
     gdc_docs = {
         _normalize(str(path.relative_to(repo_root))): path.read_text(encoding="utf-8")
-        for path in sorted((repo_root / "00-governance").glob("GDC-*.md"))
+        for path in sorted((repo_root / "governance").glob("GDC-*.md"))
     }
 
     return candidate_files, gdc_docs, tuple(findings)
 
 
 def _post_genesis_snapshot(
-    manifest: Mapping[str, object],
     git: GitRunner,
-) -> tuple[tuple[str, ...], Mapping[str, str], str | None, tuple[str, ...]]:
+) -> tuple[
+    tuple[str, ...],
+    Mapping[str, str],
+    Mapping[str, object] | None,
+    str | None,
+    tuple[str, ...],
+]:
+    """Audit Genesis from its immutable root tree, including its historical path contract."""
     findings: list[str] = []
 
     roots = git(["rev-list", "--max-parents=0", "HEAD"])
     if roots.returncode != 0:
-        return (), {}, None, ("cannot resolve Git root commit",)
+        return (), {}, None, None, ("cannot resolve Git root commit",)
 
     root_commits = tuple(
-        line.strip()
-        for line in roots.stdout.splitlines()
-        if line.strip()
+        line.strip() for line in roots.stdout.splitlines() if line.strip()
     )
-
     if len(root_commits) != 1:
         findings.append(
             f"repository must have exactly one root commit, found {len(root_commits)}"
         )
-        return (), {}, None, tuple(findings)
+        return (), {}, None, None, tuple(findings)
 
     root_commit = root_commits[0]
-
     tree = git(["ls-tree", "-r", "--name-only", root_commit])
     if tree.returncode != 0:
-        findings.append("cannot enumerate root commit tree")
-        candidate_files: tuple[str, ...] = ()
-    else:
-        candidate_files = tuple(
-            sorted(
-                _normalize(line.strip())
-                for line in tree.stdout.splitlines()
-                if line.strip()
-            )
+        return (), {}, None, root_commit, ("cannot enumerate root commit tree",)
+
+    candidate_files = tuple(
+        sorted(
+            _normalize(line.strip())
+            for line in tree.stdout.splitlines()
+            if line.strip()
         )
+    )
+
+    manifest_paths = tuple(
+        candidate
+        for candidate in candidate_files
+        if Path(candidate).name == "bootstrap-manifest.yaml"
+    )
+    if len(manifest_paths) != 1:
+        findings.append(
+            "root commit must contain exactly one bootstrap-manifest.yaml, "
+            f"found {len(manifest_paths)}"
+        )
+        return candidate_files, {}, None, root_commit, tuple(findings)
+
+    manifest_path = manifest_paths[0]
+    shown_manifest = git(["show", f"{root_commit}:{manifest_path}"])
+    if shown_manifest.returncode != 0:
+        findings.append("cannot read bootstrap manifest from immutable root commit")
+        return candidate_files, {}, None, root_commit, tuple(findings)
+
+    try:
+        historical_manifest = _load_manifest_text(shown_manifest.stdout)
+    except (ValueError, yaml.YAMLError) as exc:
+        findings.append(f"cannot parse immutable root bootstrap manifest: {exc}")
+        return candidate_files, {}, None, root_commit, tuple(findings)
 
     gdc_docs: dict[str, str] = {}
-    governance = manifest.get("governance_control_plane")
-    required = governance.get("required_baseline_ids", []) if isinstance(governance, dict) else []
+    governance = historical_manifest.get("governance_control_plane")
+    required = (
+        governance.get("required_baseline_ids", [])
+        if isinstance(governance, dict)
+        else []
+    )
 
     if isinstance(required, list):
         for doc_id in required:
-            prefix = f"00-governance/{doc_id}-"
+            prefix = f"{doc_id}-"
             matches = [
-                path
-                for path in candidate_files
-                if path.startswith(prefix) and path.endswith(".md")
+                candidate
+                for candidate in candidate_files
+                if Path(candidate).name.startswith(prefix) and candidate.endswith(".md")
             ]
             if len(matches) != 1:
                 continue
-
-            path = matches[0]
-            shown = git(["show", f"{root_commit}:{path}"])
+            candidate = matches[0]
+            shown = git(["show", f"{root_commit}:{candidate}"])
             if shown.returncode == 0:
-                gdc_docs[path] = shown.stdout
+                gdc_docs[candidate] = shown.stdout
 
-    return candidate_files, gdc_docs, root_commit, tuple(findings)
+    return (
+        candidate_files,
+        gdc_docs,
+        historical_manifest,
+        root_commit,
+        tuple(findings),
+    )
 
 
 def audit_genesis_integrity(
@@ -354,37 +392,50 @@ def audit_genesis_integrity(
     *,
     git_runner: GitRunner | None = None,
 ) -> GenesisIntegrityReport:
+    """Validate current pre-Genesis state or immutable historical Genesis after root creation."""
     root = Path(repo_root).resolve()
     git = git_runner or _default_git_runner(root)
-
-    manifest_path = root / "00-governance" / "bootstrap-manifest.yaml"
-
-    try:
-        manifest = _load_manifest_text(
-            manifest_path.read_text(encoding="utf-8")
-        )
-    except (OSError, ValueError, yaml.YAMLError) as exc:
-        return GenesisIntegrityReport(
-            mode="invalid",
-            candidate_files=(),
-            root_commit=None,
-            findings=(f"cannot load bootstrap manifest: {exc}",),
-        )
-
-    findings = list(_manifest_findings(manifest))
     head = git(["rev-parse", "--verify", "HEAD"])
+    findings: list[str] = []
 
     if head.returncode != 0:
         mode = "pre-genesis"
+        manifest_path = root / "governance" / "bootstrap-manifest.yaml"
+        try:
+            manifest = _load_manifest_text(manifest_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError, yaml.YAMLError) as exc:
+            return GenesisIntegrityReport(
+                mode="invalid",
+                candidate_files=(),
+                root_commit=None,
+                findings=(f"cannot load bootstrap manifest: {exc}",),
+            )
+
+        findings.extend(_manifest_findings(manifest))
         candidate_files, gdc_docs, git_findings = _pre_genesis_snapshot(
             root, manifest, git
         )
         root_commit = None
     else:
         mode = "post-genesis"
-        candidate_files, gdc_docs, root_commit, git_findings = _post_genesis_snapshot(
-            manifest, git
-        )
+        (
+            candidate_files,
+            gdc_docs,
+            manifest,
+            root_commit,
+            git_findings,
+        ) = _post_genesis_snapshot(git)
+
+        if manifest is None:
+            findings.extend(git_findings)
+            return GenesisIntegrityReport(
+                mode=mode,
+                candidate_files=candidate_files,
+                root_commit=root_commit,
+                findings=tuple(findings),
+            )
+
+        findings.extend(_manifest_findings(manifest))
 
     findings.extend(git_findings)
     findings.extend(validate_candidate_paths(candidate_files, manifest))
@@ -407,8 +458,7 @@ def assert_genesis_integrity(
 
     if report.findings:
         raise RuntimeError(
-            "Genesis integrity audit failed:\n  - "
-            + "\n  - ".join(report.findings)
+            "Genesis integrity audit failed:\n  - " + "\n  - ".join(report.findings)
         )
 
     return report

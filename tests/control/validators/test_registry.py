@@ -7,10 +7,10 @@ def test_detect_doc_type():
     dummy_rules = {
         "structure_rules": {
             "artifact_directories": {
-                "GDC": "00-governance",
-                "PAD": "03-domain",
-                "SAD": "04-system",
-                "ADR": "05-decisions",
+                "GDC": "governance",
+                "PAD": "domains",
+                "SAD": "systems",
+                "ADR": "decisions",
             }
         }
     }

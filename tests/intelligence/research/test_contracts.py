@@ -2,8 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from engine.core.knowledge import Claim, KnowledgeRevision
-from engine.core.metamodel import KnowledgeState
+from engine.core.knowledge import KnowledgeRevision
 from engine.intelligence.research import (
     ResearchFinding,
     ResearchPackage,
@@ -28,7 +27,9 @@ def test_research_question_requires_retrieval_request(retrieval_request):
         ResearchQuestion("q", "x", retrieval_request, " ")
 
 
-def test_research_plan_rejects_empty_duplicate_and_untyped(architecture_plan, retrieval_request):
+def test_research_plan_rejects_empty_duplicate_and_untyped(
+    architecture_plan, retrieval_request
+):
     question = ResearchQuestion("q", "x", retrieval_request)
     with pytest.raises(ValueError, match="empty"):
         ResearchPlan("rp", architecture_plan.plan_id, ())
@@ -69,7 +70,10 @@ def test_research_package_rejects_bad_lineage(research_plan, declared_claim):
     with pytest.raises(ValueError, match="unique"):
         ResearchPackage(
             research_plan,
-            (ResearchFinding("f", "q-1", declared_claim), ResearchFinding("f", "q-1", declared_claim)),
+            (
+                ResearchFinding("f", "q-1", declared_claim),
+                ResearchFinding("f", "q-1", declared_claim),
+            ),
         )
     with pytest.raises(ValueError, match="known questions"):
         ResearchPackage(research_plan, (), ("unknown",))

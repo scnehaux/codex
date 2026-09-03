@@ -8,8 +8,10 @@ from typing import Iterable
 
 import jsonschema
 
-from engine.control.config.severity import SeverityRule
-from engine.control.governance.controls import load_control_registry, registry_structure_errors
+from engine.control.governance.controls import (
+    load_control_registry,
+    registry_structure_errors,
+)
 from engine.control.governance.severity_enforcement import severity_registry_findings
 from engine.control.validators.registry import VALIDATOR_REGISTRY
 from engine.control.validators.schema_extensions import (
@@ -84,9 +86,7 @@ _DRAFT7_KEYWORDS = frozenset(
     }
 )
 
-_SCHEMA_MAP_CHILDREN = frozenset(
-    {"properties", "patternProperties", "definitions"}
-)
+_SCHEMA_MAP_CHILDREN = frozenset({"properties", "patternProperties", "definitions"})
 _SCHEMA_SINGLE_CHILDREN = frozenset(
     {
         "additionalProperties",
@@ -219,11 +219,7 @@ def _validator_findings(repo_root: Path, artifact_schemas: dict) -> list[str]:
     for doc_type in sorted(validator_types - schema_types):
         findings.append(f"F05 {doc_type}: orphan validator registration")
 
-    registry_path = (
-        repo_root
-        / 'engine' / "control" / "validators"
-        / "registry.py"
-    )
+    registry_path = repo_root / "engine" / "control" / "validators" / "registry.py"
     for key in _duplicate_validator_keys(registry_path):
         findings.append(f"F06 {key}: duplicate validator registration")
 
@@ -325,6 +321,7 @@ def _severity_findings(
     repo_root = engine_root.parent.parent
     return list(severity_registry_findings(repo_root, severity_levels))
 
+
 def _looks_like_repo_path(value: str) -> bool:
     return "/" in value and not value.startswith(("http://", "https://"))
 
@@ -348,12 +345,9 @@ def _evidence_path_exists(repo_root: Path, value: str) -> bool:
 
 
 def _control_findings(repo_root: Path) -> list[str]:
-    registry_path = repo_root / "00-governance" / "normative-control-registry.yaml"
+    registry_path = repo_root / "governance" / "normative-control-registry.yaml"
     records = load_control_registry(registry_path)
-    findings = [
-        f"CONTROL {message}"
-        for message in registry_structure_errors(records)
-    ]
+    findings = [f"CONTROL {message}" for message in registry_structure_errors(records)]
 
     for record in records:
         if record.evidence_status != "verified":
@@ -374,9 +368,9 @@ def audit_registry_integrity(
     severity_levels: dict,
 ) -> tuple[str, ...]:
     root = Path(repo_root).resolve()
-    governance_dir = root / "00-governance"
-    schema_dir = governance_dir / "schemas"
-    engine_root = root / 'engine' / 'control'
+    governance_dir = root / "governance"
+    schema_dir = root / "schemas"
+    engine_root = root / "engine" / "control"
 
     try:
         schemas = _schema_files(schema_dir)
@@ -415,12 +409,8 @@ def assert_registry_integrity(
     findings = audit_registry_integrity(repo_root, severity_levels)
     if findings:
         preview = "\n".join(f"  - {finding}" for finding in findings[:20])
-        suffix = (
-            f"\n  ... +{len(findings) - 20} more"
-            if len(findings) > 20
-            else ""
-        )
+        suffix = f"\n  ... +{len(findings) - 20} more" if len(findings) > 20 else ""
         raise RuntimeError(
-            "Governance registry integrity audit failed:\n"
-            f"{preview}{suffix}"
+            f"Governance registry integrity audit failed:\n{preview}{suffix}"
         )
+

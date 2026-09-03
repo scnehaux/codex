@@ -77,9 +77,7 @@ class RetrievalRequest:
         allowed_states = tuple(self.allowed_states)
         if not allowed_states:
             raise ValueError("allowed_states must not be empty")
-        if not all(
-            isinstance(item, KnowledgeState) for item in allowed_states
-        ):
+        if not all(isinstance(item, KnowledgeState) for item in allowed_states):
             raise TypeError("allowed_states must contain KnowledgeState")
         if len(allowed_states) != len(set(allowed_states)):
             raise ValueError("allowed_states must be unique")
@@ -95,16 +93,13 @@ class RetrievalStrategy(Protocol):
     """Replaceable retrieval implementation; strategy topology is not authority."""
 
     @property
-    def mode(self) -> RetrievalMode:
-        ...
+    def mode(self) -> RetrievalMode: ...
 
-    def retrieve(self, request: RetrievalRequest) -> tuple[ContextEntry, ...]:
-        ...
+    def retrieve(self, request: RetrievalRequest) -> tuple[ContextEntry, ...]: ...
 
 
 @runtime_checkable
 class ContextCompiler(Protocol):
     """Contract for compiling hybrid retrieval into one bounded ContextPackage."""
 
-    def compile(self, request: RetrievalRequest) -> ContextPackage:
-        ...
+    def compile(self, request: RetrievalRequest) -> ContextPackage: ...

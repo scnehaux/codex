@@ -6,7 +6,6 @@ from engine.control.validators.metadata_rules import (
     _validate_technologies_whitelist,
     validate_lifecycle_age,
 )
-from engine.control.config.severity import SeverityRule
 import datetime
 import engine.control.validators.metadata_rules as metadata_rules
 
@@ -47,6 +46,7 @@ def test_baseline_status_at_major_version_zero_is_refused():
         assert len(v.errors) == 1, f"{doc_type} {status} at 0.4.0 was accepted"
         assert "major version zero" in v.errors[0][1]
 
+
 def test_pre_baseline_statuses_may_sit_at_major_version_zero():
     """Pre-baseline lifecycle states may correctly remain on Semantic Versioning major zero."""
     rules = {"rules": {}, "severity_levels": {}}
@@ -65,6 +65,7 @@ def test_pre_baseline_statuses_may_sit_at_major_version_zero():
         v.doc_type_name = doc_type
         _validate_approved_version_stability(v)
         assert len(v.errors) == 0, f"{doc_type} {status} at 0.1.0 was refused"
+
 
 def test_stable_versions_and_unversioned_artifacts_pass():
     rules = {"rules": {}, "severity_levels": {}}
@@ -90,6 +91,7 @@ def test_stable_versions_and_unversioned_artifacts_pass():
     v.doc_type_name = "ADR"
     _validate_approved_version_stability(v)
     assert len(v.errors) == 0
+
 
 def test_version_stability_no_meta():
     v = make_validator(doc_meta={})
@@ -126,10 +128,6 @@ def test_cross_references_no_meta():
     v = make_validator(doc_meta={})
     _validate_cross_references(v)
     assert len(v.errors) == 0
-
-
-
-
 
 
 def test_validate_technologies_whitelist(monkeypatch, tmp_path):
@@ -188,6 +186,7 @@ def test_validate_technologies_whitelist(monkeypatch, tmp_path):
     _validate_technologies_whitelist(v3)
     assert any("technology on HOLD" in e[1] for e in v3.errors)
 
+
 def test_validate_technologies_whitelist_missing_tech_radar(monkeypatch, tmp_path):
     rules = {
         "severity_levels": {
@@ -213,6 +212,7 @@ def test_validate_technologies_whitelist_missing_tech_radar(monkeypatch, tmp_pat
     assert v.errors[0][0] == "CRITICAL"
     assert "policy source is unavailable" in v.errors[0][1]
 
+
 def test_validate_lifecycle_age_is_artifact_aware():
     old_date = (datetime.date.today() - datetime.timedelta(days=35)).isoformat()
     fresh_date = (datetime.date.today() - datetime.timedelta(days=10)).isoformat()
@@ -226,26 +226,35 @@ def test_validate_lifecycle_age_is_artifact_aware():
     assert len(errs) == 1
     assert "exceeding limit of 30 days" in errs[0][1]
 
-    assert validate_lifecycle_age(
-        {"created_date": fresh_date},
-        "SAD",
-        "draft",
-        "WARNING",
-    ) == []
+    assert (
+        validate_lifecycle_age(
+            {"created_date": fresh_date},
+            "SAD",
+            "draft",
+            "WARNING",
+        )
+        == []
+    )
 
-    assert validate_lifecycle_age(
-        {"created_date": old_date},
-        "GDC",
-        "draft",
-        "WARNING",
-    ) == []
+    assert (
+        validate_lifecycle_age(
+            {"created_date": old_date},
+            "GDC",
+            "draft",
+            "WARNING",
+        )
+        == []
+    )
 
-    assert validate_lifecycle_age(
-        {"last_updated": old_date},
-        "GDC",
-        "deprecated",
-        "WARNING",
-    ) == []
+    assert (
+        validate_lifecycle_age(
+            {"last_updated": old_date},
+            "GDC",
+            "deprecated",
+            "WARNING",
+        )
+        == []
+    )
 
 
 def test_validate_lifecycle_age_requires_anchor_when_policy_exists():
@@ -255,9 +264,12 @@ def test_validate_lifecycle_age_requires_anchor_when_policy_exists():
 
 
 def test_validate_lifecycle_age_ignores_unparseable_date_until_temporal_phase():
-    assert validate_lifecycle_age(
-        {"created_date": "not-a-date"},
-        "EAD",
-        "draft",
-        "WARNING",
-    ) == []
+    assert (
+        validate_lifecycle_age(
+            {"created_date": "not-a-date"},
+            "EAD",
+            "draft",
+            "WARNING",
+        )
+        == []
+    )

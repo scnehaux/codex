@@ -1,16 +1,10 @@
 from tests.support.repository import REPOSITORY_ROOT
-from pathlib import Path
 
 import yaml
 
 
 ROOT = REPOSITORY_ROOT
-CONTRACT = (
-    ROOT
-    / "00-governance"
-    / "framework"
-    / "scnehaux-framework.yaml"
-)
+CONTRACT = ROOT / "governance" / "framework" / "scnehaux-framework.yaml"
 
 
 def test_framework_boundary_contract_is_generic_and_complete():
@@ -18,8 +12,7 @@ def test_framework_boundary_contract_is_generic_and_complete():
 
     assert data["kind"] == "scnehaux-framework-boundary"
     assert (
-        data["product"]["canonical_authority"]
-        == "git-backed-structured-architecture"
+        data["product"]["canonical_authority"] == "git-backed-structured-architecture"
     )
 
     modules = data["logical_modules"]

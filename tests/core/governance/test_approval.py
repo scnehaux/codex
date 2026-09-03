@@ -43,9 +43,7 @@ def test_approval_package_and_human_decision():
 def test_approval_requires_governed_exception_for_mechanical_blocker():
     item = package(mechanically_eligible=False)
     with pytest.raises(ValueError):
-        ApprovalDecision(
-            "DEC-1", item, DecisionOutcome.APPROVED, "human", "a", "r"
-        )
+        ApprovalDecision("DEC-1", item, DecisionOutcome.APPROVED, "human", "a", "r")
     decision = ApprovalDecision(
         "DEC-2",
         item,
@@ -64,9 +62,12 @@ def test_policy_approval_requires_explicit_auto_approval_eligibility():
             "D", package(), DecisionOutcome.APPROVED, "policy", "policy-1", "r"
         )
     auto = package(auto_approval_eligible=True)
-    assert ApprovalDecision(
-        "D", auto, DecisionOutcome.APPROVED, "policy", "policy-1", "r"
-    ).authority_type == "policy"
+    assert (
+        ApprovalDecision(
+            "D", auto, DecisionOutcome.APPROVED, "policy", "policy-1", "r"
+        ).authority_type
+        == "policy"
+    )
 
 
 def test_approval_package_rejects_invalid_policy_shapes():

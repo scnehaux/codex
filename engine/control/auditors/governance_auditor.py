@@ -18,7 +18,7 @@ def audit_architecture_admission(
     repo_root: str,
 ) -> list[tuple[str, str, str]]:
     # Enforce the bootstrap architecture-admission boundary.
-    manifest_path = os.path.join(repo_root, "00-governance", "bootstrap-manifest.yaml")
+    manifest_path = os.path.join(repo_root, "governance", "bootstrap-manifest.yaml")
     if not os.path.exists(manifest_path):
         return []
 
@@ -82,7 +82,9 @@ def audit_architecture_admission(
         major = _major(meta.get("version"))
 
         if status != "approved":
-            findings.append(f"{doc_id} status is '{status or 'missing'}', expected 'approved'")
+            findings.append(
+                f"{doc_id} status is '{status or 'missing'}', expected 'approved'"
+            )
         if major is None or major < 1:
             findings.append(
                 f"{doc_id} version is '{meta.get('version', '')}', expected >=1.0.0"

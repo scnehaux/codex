@@ -16,7 +16,20 @@ from engine.core.governance.versioning import SemanticVersion
 ARTIFACT_NAME_RE = re.compile(
     r"^(?:GDC|EAD|PAD|SAD|TDD|ADR|STD)-[A-Za-z0-9][A-Za-z0-9._-]*\.md$"
 )
-GOVERNED_ROOT_PREFIXES = tuple(f"{index:02d}-" for index in range(6))
+GOVERNED_DOCUMENT_ROOTS = frozenset(
+    {
+        "governance",
+        "enterprise",
+        "standards",
+        "domains",
+        "systems",
+        "designs",
+        "decisions",
+    }
+)
+# Historical compatibility only: immutable pre-rebaseline history used numbered
+# top-level roots. Current repository layout MUST use GOVERNED_DOCUMENT_ROOTS above.
+LEGACY_NUMBERED_GOVERNED_ROOT_RE = re.compile(r"^0[0-5]-[A-Za-z0-9][A-Za-z0-9._-]*$")
 
 
 @dataclass(frozen=True, slots=True)
@@ -79,9 +92,9 @@ def is_governed_document_path(path: str) -> bool:
 
     root = parts[0]
     return (
-        root.startswith(GOVERNED_ROOT_PREFIXES)
-        and normalized.lower().endswith(".md")
-    )
+        root in GOVERNED_DOCUMENT_ROOTS
+        or LEGACY_NUMBERED_GOVERNED_ROOT_RE.fullmatch(root) is not None
+    ) and normalized.lower().endswith(".md")
 
 
 def _looks_versioned(path: str, text: str) -> bool:
@@ -189,9 +202,7 @@ def validate_document_mutation(
             MutationFinding(
                 code="version-regression",
                 path=after.path,
-                message=(
-                    f"version regressed: {before.version} -> {after.version}"
-                ),
+                message=(f"version regressed: {before.version} -> {after.version}"),
             )
         )
     elif after.version == before.version:
@@ -209,7 +220,9 @@ def validate_document_mutation(
     return tuple(findings)
 
 
-def _candidate_paths(git: GitRunner) -> tuple[tuple[str, ...], tuple[MutationFinding, ...]]:
+def _candidate_paths(
+    git: GitRunner,
+) -> tuple[tuple[str, ...], tuple[MutationFinding, ...]]:
     result = git(
         [
             "ls-files",
@@ -290,8 +303,7 @@ def _scan_current_documents(
                     code="duplicate-document-id",
                     path=path,
                     message=(
-                        f"{document.document_id} already exists at "
-                        f"{existing.path}"
+                        f"{document.document_id} already exists at {existing.path}"
                     ),
                 )
             )
@@ -411,8 +423,7 @@ def _audit_post_genesis_mutations(
             continue
 
         if not (
-            is_governed_document_path(old_path)
-            or is_governed_document_path(new_path)
+            is_governed_document_path(old_path) or is_governed_document_path(new_path)
         ):
             continue
 
@@ -444,9 +455,7 @@ def _audit_post_genesis_mutations(
                 MutationFinding(
                     code="governed-metadata-removal",
                     path=new_path,
-                    message=(
-                        "mutation removed governed document metadata"
-                    ),
+                    message=("mutation removed governed document metadata"),
                 )
             )
             continue
@@ -485,9 +494,7 @@ def audit_version_mutation_integrity(
         mode = "pre-genesis"
     else:
         mode = "post-genesis"
-        findings.extend(
-            _audit_post_genesis_mutations(root, git)
-        )
+        findings.extend(_audit_post_genesis_mutations(root, git))
 
     return MutationReport(
         mode=mode,

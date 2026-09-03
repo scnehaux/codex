@@ -23,13 +23,11 @@ from engine.control.config.loader import parse_and_validate_global_config
 
 
 ROOT = REPOSITORY_ROOT
-SCHEMA_DIR = ROOT / "00-governance" / "schemas"
+SCHEMA_DIR = ROOT / "schemas"
 
 
 def _base_schema():
-    return json.loads(
-        (SCHEMA_DIR / "base.schema.json").read_text(encoding="utf-8")
-    )
+    return json.loads((SCHEMA_DIR / "base.schema.json").read_text(encoding="utf-8"))
 
 
 def _severity_levels():
@@ -39,16 +37,12 @@ def _severity_levels():
 
 def test_structural_registry_integrity_before_severity_reconciliation():
     findings = audit_registry_integrity(ROOT, _severity_levels())
-    assert not [
-        finding
-        for finding in findings
-        if not finding.startswith("F09 ")
-    ]
+    assert not [finding for finding in findings if not finding.startswith("F09 ")]
 
 
 def test_assert_registry_integrity_raises_with_preview(monkeypatch):
     monkeypatch.setattr(
-        'engine.control.auditors.registry_integrity_auditor.audit_registry_integrity',
+        "engine.control.auditors.registry_integrity_auditor.audit_registry_integrity",
         lambda *_: ("F01 broken", "F02 broken"),
     )
     with pytest.raises(RuntimeError, match="F01 broken"):
@@ -115,7 +109,7 @@ def test_validator_findings_detect_missing_schema_surface():
 
 
 def test_target_doc_findings_cover_missing_missing_file_and_wrong_guideline(tmp_path):
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir()
 
     missing_config = tmp_path / "ead.schema.json"
@@ -205,38 +199,37 @@ def test_severity_findings_detect_missing_and_extra_mapping():
     mutated["not_a_real_rule"] = "ERROR"
 
     findings = _severity_findings(
-        ROOT / 'engine' / 'control',
+        ROOT / "engine" / "control",
         mutated,
         _base_schema(),
     )
     assert any(
-        missing_key in finding and "missing schema" in finding
-        for finding in findings
+        missing_key in finding and "missing schema" in finding for finding in findings
     )
     assert any("not_a_real_rule" in finding for finding in findings)
 
 
 def test_evidence_path_exists_supports_literal_glob_and_pytest_node(tmp_path):
-    path = tmp_path / "00-governance" / "schemas"
+    path = tmp_path / "schemas"
     path.mkdir(parents=True)
     schema = path / "x.schema.json"
     schema.write_text("{}", encoding="utf-8")
 
     assert _evidence_path_exists(
         tmp_path,
-        "00-governance/schemas/x.schema.json",
+        "schemas/x.schema.json",
     )
     assert _evidence_path_exists(
         tmp_path,
-        "00-governance/schemas/*.schema.json",
+        "schemas/*.schema.json",
     )
     assert _evidence_path_exists(
         tmp_path,
-        "00-governance/schemas/x.schema.json::test_example",
+        "schemas/x.schema.json::test_example",
     )
     assert not _evidence_path_exists(
         tmp_path,
-        "00-governance/schemas/missing*.schema.json",
+        "schemas/missing*.schema.json",
     )
 
 
@@ -246,13 +239,14 @@ def test_control_findings_has_no_false_positive_for_current_evidence_paths():
 
 
 def test_audit_fail_closed_on_schema_boot_error(tmp_path):
-    schema_dir = tmp_path / "00-governance" / "schemas"
+    schema_dir = tmp_path / "schemas"
     schema_dir.mkdir(parents=True)
     (schema_dir / "bad.schema.json").write_text("{", encoding="utf-8")
 
     findings = audit_registry_integrity(tmp_path, {})
     assert len(findings) == 1
     assert findings[0].startswith("F01 schema boot validation failed:")
+
 
 def test_validator_findings_detect_orphan_schema_and_doc_type_mismatch(
     monkeypatch,
@@ -321,7 +315,7 @@ def test_schema_ref_findings_detect_local_pointer_failure(tmp_path):
 
 def test_assert_registry_integrity_truncates_long_failure_preview(monkeypatch):
     monkeypatch.setattr(
-        'engine.control.auditors.registry_integrity_auditor.audit_registry_integrity',
+        "engine.control.auditors.registry_integrity_auditor.audit_registry_integrity",
         lambda *_: tuple(f"F09 finding-{index}" for index in range(21)),
     )
     with pytest.raises(RuntimeError) as exc:
@@ -331,3 +325,4 @@ def test_assert_registry_integrity_truncates_long_failure_preview(monkeypatch):
     assert "finding-19" in message
     assert "finding-20" not in message
     assert "... +1 more" in message
+

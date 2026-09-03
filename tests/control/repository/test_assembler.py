@@ -100,13 +100,17 @@ def test_missing_unknown_and_duplicate_identity_fail_before_model_creation(tmp_p
 
     (tmp_path / "missing.md").unlink()
     _write_artifact(tmp_path / "unknown.md", document_id="UNKNOWN-001")
-    with pytest.raises(RepositoryIdentityError, match="Unknown governed artifact identity"):
+    with pytest.raises(
+        RepositoryIdentityError, match="Unknown governed artifact identity"
+    ):
         RepositoryAssembler.load(str(tmp_path), repo_root=tmp_path)
 
     (tmp_path / "unknown.md").unlink()
     _write_artifact(tmp_path / "a.md", document_id="GDC-999")
     _write_artifact(tmp_path / "b.md", document_id="GDC-999")
-    with pytest.raises(RepositoryIdentityError, match="duplicate canonical artifact identity"):
+    with pytest.raises(
+        RepositoryIdentityError, match="duplicate canonical artifact identity"
+    ):
         RepositoryAssembler.load(str(tmp_path), repo_root=tmp_path)
 
 
@@ -121,7 +125,7 @@ def test_boundary_failure_is_normalized_to_assembly_error(tmp_path):
 
 
 def test_governed_corpus_ignores_derived_and_root_support_markdown(tmp_path):
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     _write_artifact(governance / "GDC-900-test.md", document_id="GDC-900")
     (governance / "INDEX.md").write_text("# Derived index\n", encoding="utf-8")
     templates = governance / "templates"
@@ -137,7 +141,7 @@ def test_governed_corpus_ignores_derived_and_root_support_markdown(tmp_path):
 
 
 def test_governed_corpus_support_exclusion_does_not_weaken_fail_closed(tmp_path):
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir()
 
     (governance / "GDC-901-broken.md").write_text(
@@ -152,7 +156,7 @@ def test_governed_corpus_support_exclusion_does_not_weaken_fail_closed(tmp_path)
 def test_governed_corpus_composes_caller_ignore_patterns_with_support_policy(
     tmp_path,
 ):
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     _write_artifact(governance / "GDC-902-test.md", document_id="GDC-902")
     _write_artifact(governance / "GDC-903-ignore.md", document_id="GDC-903")
 
@@ -180,7 +184,7 @@ def test_relationships_are_interpreted_once_into_typed_model():
             "parent_pad": "PAD-001",
             "governed_by": ["GDC-000"],
         },
-        source_path="04-system/SAD-001.md",
+        source_path="systems/SAD-001.md",
     )
     assert tuple(
         (relation.relation_type, relation.target.artifact_id)
