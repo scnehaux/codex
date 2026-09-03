@@ -360,154 +360,297 @@ Configuration text alone is not evidence
 
 ---
 
-# 4. PHASE 11 — DECLARATIVE SEMANTIC AUTHORITY
+# 4. PHASE 11 — EXECUTABLE FRAMEWORK & DECLARATIVE SEMANTIC AUTHORITY
 
-Phase 11 extracts architecture ontology definitions from Python implementation without changing existing relationship meaning
+Phase 11 separates authored framework semantics from Python implementation and establishes the first canonical repository trust boundary.
 
-This phase is intentionally after effective GitHub enforcement so the foundational semantic refactor occurs under proven repository controls
+Core invariants:
 
-## Slice 11.1 — Relationship Ontology Contract
+- Runtime behavior MUST derive from an immutable `ExecutableFramework` deterministically compiled from governed declarative framework contracts
+- Python implementation MUST NOT independently redefine framework semantics
+- JSON Schema owns structural validation only; runtime governance configuration and semantic policy MUST live outside schemas
+- No parsed, unvalidated, or revision-unbound artifact state may enter canonical knowledge compilation
+- `ValidatedRepositorySnapshot` is the first canonical authority permitted to feed knowledge compilation
+- Existing Scnehaux semantics are extracted, normalized, and formalized; Phase 11 MUST NOT silently redefine established governance meaning
 
-### Invariant
+## Slice 11.1 — Declarative Framework Contract
 
-Architecture relationship vocabulary and rules are authored once in a declarative, versioned contract
+### Target
 
-Target authored contract:
+Define the governed authored inputs that describe a Scnehaux framework without requiring Python edits for ordinary semantic evolution.
 
-```text
-governance/framework/relationship-ontology.yaml
-```
+Required contract families:
 
-The contract declares at minimum:
+- framework identity and version
+- artifact type declarations
+- repository layout policy
+- lifecycle policy
+- relationship ontology
+- schema bindings
+- validator bindings
+- governance and severity policy references
+- extension declarations and compatibility metadata
 
-```text
-ontology identity
-ontology namespace
-ontology version
-relationship name
-source artifact types
-target artifact types
-cardinality
-direction
-DAG participation
-authority requirement
-inverse relation
-```
+### Acceptance
 
----
+- declarative contracts have explicit schema/version identity
+- contract loading is deterministic and fail-closed
+- duplicate or conflicting semantic ownership is rejected
+- existing runtime semantics can be represented without loss
 
-## Slice 11.2 — Typed Ontology Compiler
+## Slice 11.2 — Artifact Type / Layout / Lifecycle Contracts
 
-### Invariant
+### Target
 
-YAML is not repeatedly interpreted by every consumer
+Remove independent runtime ownership of artifact vocabulary, repository topology, and lifecycle semantics from Python registries.
 
-Target flow:
+The declarative model MUST define:
 
-```text
-relationship-ontology.yaml
-→ OntologyLoader / Compiler
-→ immutable typed RelationshipOntology
-→ all semantic consumers
-```
+- artifact type identity and family
+- canonical repository location
+- schema binding
+- validator capability binding
+- allowed lifecycle states
+- semantic lifecycle class
+- validation profile
+- lifecycle age policy when applicable
 
-Parse once, interpret once, consume everywhere
+### Acceptance
 
-The declarative definition is the canonical authored semantic contract
+- `ARTIFACT_TYPES`, governed corpus roots, and lifecycle mappings no longer act as independent semantic authorities
+- TDD has one explicit topology contract
+- artifact discovery and type detection derive from compiled framework state
+- semantic layout is not inferred from numbered directory names
 
-The compiled typed model is the canonical runtime semantic representation
+## Slice 11.3 — Relationship Ontology
 
----
+### Target
 
-## Slice 11.3 — Consumer Migration
+Extract relationship semantics from Python into a versioned machine-readable ontology.
 
-Migrate relationship-semantic consumers to the compiled ontology model
+The ontology MUST define:
 
-At minimum:
+- relationship identity
+- metadata field
+- allowed source and target artifact types
+- cardinality
+- direction
+- DAG participation
+- inverse relation when applicable
+- authority constraints
+- lifecycle/status constraints where semantically required
 
-- RepositoryAssembler orchestration
-- semantic relationship validation
-- graph validation
-- graph compilation
-- orphan/reference validation
-- traceability generation
-- schema projections that use relationship vocabulary
+### Acceptance
 
-Parser responsibilities remain syntactic only
+- `RELATIONSHIP_REGISTRY` is no longer authored in Python
+- parser/frontmatter stores relationship instances only
+- prose may explain ontology rules but cannot redefine them
+- schema validation does not become the semantic relationship authority
+- current Scnehaux relationship meaning is preserved unless changed by a separately governed decision
 
-Assembler may orchestrate semantic compilation but MUST NOT own independent relationship rules
+## Slice 11.4 — FrameworkCompiler + ExecutableFramework
 
----
+### Target
 
-## Slice 11.4 — Schema Projection Boundary
-
-JSON Schema remains responsible for structural validation:
-
-```text
-required
-type
-format
-shape
-simple syntactic enum
-```
-
-Complex semantic relationship rules belong to the ontology and semantic validator
-
-Where a simple schema enum is useful, it SHOULD be generated from ontology authority rather than independently maintained
-
----
-
-## Slice 11.5 — Core and Extension Model
-
-Core Scnehaux ontology must remain reusable
-
-Required layering:
+Introduce a deterministic compilation boundary from declarative contracts to immutable runtime authority.
 
 ```text
-Scnehaux Core Ontology
-→ Framework Profile
-→ Company Pack
-→ Company Architecture
+Declarative Framework Contracts
+        ↓
+FrameworkCompiler
+        ↓
+ExecutableFramework
 ```
 
-Default extension semantics:
+`ExecutableFramework` MUST expose typed immutable runtime registries/policies for:
+
+- artifact types
+- repository layout
+- lifecycle
+- relationship ontology
+- schema bindings
+- validator bindings
+- governance/severity policy
+
+### Acceptance
+
+- equivalent declarative input always compiles to equivalent semantic state
+- ambiguous, incomplete, or conflicting contracts fail compilation
+- runtime consumers receive `ExecutableFramework` rather than loading semantic fragments independently
+- compiled semantic state has a deterministic digest or equivalent identity
+
+## Slice 11.5 — Schema Boundary & Validation Pipeline
+
+### Target
+
+Restore the boundary:
 
 ```text
-extend                    : allowed when governed
-restrict                  : allowed when governed
-override core meaning     : forbidden by default
+JSON Schema
+= structural shape
+
+ExecutableFramework
+= runtime framework semantics
+
+RelationshipOntology
+= relationship semantics
+
+Governance controls
+= enforcement policy
 ```
 
-Company-specific vocabulary MUST NOT be hardcoded into core ontology
+Move non-structural runtime configuration out of `base.schema.json`, including repository layout and enforcement configuration that is not JSON-document shape.
 
----
+Establish:
 
-## Slice 11.6 — Ontology Version and Compatibility
+```text
+SourceDocument
+↓
+ParsedArtifact
+↓
+ArtifactCandidate
+↓
+Deterministic Validation
+↓
+ValidationReport
+```
 
-A declarative ontology is a constitutional contract and therefore requires explicit evolution semantics
+### Acceptance
+
+- JSON Schema no longer acts as repository/governance configuration storage
+- document type detection derives from `ExecutableFramework`
+- full structural, lifecycle, relationship, and governance validation occurs before canonical promotion
+- invalid candidates remain available for diagnostics but cannot become canonical repository knowledge
+
+## Slice 11.6 — Provenance-Bound Repository Ingestion
+
+### Target
+
+Bind canonical Git-backed architecture ingestion to immutable repository provenance without making generic `SourceReference` Git-specific.
+
+Git-backed canonical ingestion MUST establish at minimum:
+
+- repository identity
+- architecture namespace
+- immutable revision / commit SHA
+- repository-relative source path
+- source content digest
+
+Generic source contracts remain provider-independent so future observed sources do not inherit Git-specific assumptions.
+
+### Acceptance
+
+- canonical Git ingestion cannot silently omit repository identity or revision
+- artifact provenance can distinguish identical artifact IDs across repositories and revisions
+- source content can be integrity-checked against its recorded digest
+- provenance identity is deterministic and reconstructable
+
+## Slice 11.7 — ValidatedRepositorySnapshot
+
+### Target
+
+Create the first canonical repository trust boundary.
+
+```text
+ArtifactCandidate
+↓
+Deterministic Validation
+↓
+Revision-Bound Provenance
+↓
+ValidatedRepositorySnapshot
+↓
+Canonical Knowledge Compilation
+```
+
+The existing `RepositoryModel` compatibility surface may remain temporarily, but canonical knowledge compilation MUST consume only validated snapshot state.
+
+### Acceptance
+
+- malformed or semantically invalid artifacts cannot enter a validated snapshot
+- unresolved required relationships cannot enter canonical knowledge
+- snapshot identity includes framework identity and repository provenance
+- KnowledgeGraph compilation rejects unvalidated repository state
+- snapshot construction is deterministic for the same framework + repository revision
+
+## Slice 11.8 — Framework Extension / Company Pack Model
+
+### Target
+
+Allow organization-specific semantics without core forks.
+
+Layering:
+
+```text
+Scnehaux Core Framework
+        ↓
+Framework Profile
+        ↓
+Company Pack
+        ↓
+Governed Extensions
+        ↓
+FrameworkCompiler
+```
+
+Extension policy MUST distinguish:
+
+- additive extension
+- governed restriction
+- compatibility-preserving override where explicitly allowed
+- forbidden core semantic override
+
+### Acceptance
+
+- company-specific artifact types or relationship extensions do not require editing core Python
+- extension conflicts fail closed
+- core semantic replacement is forbidden by default
+- compiled framework provenance identifies all contributing contract layers
+
+## Slice 11.9 — Compatibility & Versioning
+
+### Target
+
+Make framework evolution explicit and reproducible.
 
 Define:
 
-- ontology identity
-- namespace
-- semantic version
-- compatibility classification
-- migration requirements
-- provenance
+- framework semantic version
+- ontology version
+- extension compatibility range
+- migration rules
+- deprecation policy
+- compiled framework identity
+- backward-compatibility expectations
 
-Moving hardcoded rules from Python into unversioned YAML is NOT sufficient completion
+### Acceptance
+
+- incompatible framework changes are detectable before repository compilation
+- framework/profile/company-pack combinations are reproducible
+- semantic migrations are explicit rather than inferred
+- historical repository revisions can be interpreted against the framework authority that governed them
 
 ### Phase 11 Exit
 
-- no relationship vocabulary is independently hardcoded in semantic consumers
-- declarative ontology is the canonical authored semantic contract
-- immutable typed ontology is the canonical runtime semantic representation
-- prose explains and references semantics but does not redefine them
-- frontmatter stores relationship instances only
-- JSON Schema is not a competing complex semantic authority
-- extension layering is governed and tested
+Phase 11 is complete only when:
 
----
+- declarative framework contracts are the authored semantic authority
+- `FrameworkCompiler` deterministically produces immutable `ExecutableFramework`
+- artifact type, layout, lifecycle, relationship, schema-binding, validator-binding, and governance policy consumers derive from that runtime authority
+- JSON Schema is restricted to structural validation responsibilities
+- canonical Git ingestion is repository-, namespace-, revision-, path-, and digest-bound
+- only `ValidatedRepositorySnapshot` may feed canonical knowledge compilation
+- extension/company-pack semantics work without a core fork
+- framework compatibility and semantic versioning are enforced
+
+Phase 11 explicitly does NOT include:
+
+- Artifact → Claim/Evidence projection
+- ContextScope redesign
+- IntentSpec/capability routing redesign
+- model-provider, MCP, agent, or studio implementation
+
+Those concerns begin only after the canonical repository trust boundary is established.
 
 # 5. PHASE 12 — REPRODUCIBILITY AND SUPPLY-CHAIN CLOSURE
 
@@ -532,7 +675,7 @@ Governance 1.0 may be released only when:
 - all root-of-trust P0 controls are closed in the normative control registry
 - current canonical qualification is green
 - effective GitHub enforcement is proven
-- declarative semantic authority is installed and validated
+- executable framework and declarative semantic authority are installed and validated
 - ontology compatibility contract exists
 - reproducible dependency/toolchain contract is closed
 - required GDCs are approved and versioned for stable baseline
@@ -593,7 +736,7 @@ Do not begin ontology extraction as part of a formatter/lint repair commit
 - Genesis Integrity — DONE/CLOSED
 - Version and Mutation Authority — IMPLEMENTED, ACTIVE BRANCH RECONCILIATION REQUIRED
 - Phase 10 GitHub Enforcement and Stabilization — CURRENT ACTIVE
-- Phase 11 Declarative Semantic Authority — PLANNED
+- Phase 11 Executable Framework & Declarative Semantic Authority — PLANNED
 - Phase 12 Reproducibility and Supply-Chain Closure — PLANNED
 - Phase 13 Governance 1.0 — BLOCKED
 - Phase 14 Architecture Re-Admission — BLOCKED

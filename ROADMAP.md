@@ -133,50 +133,63 @@ Phase 10 is `DONE` only when both stabilization and effective enforcement are pr
 
 ---
 
-# 4. PHASE 11 — DECLARATIVE SEMANTIC AUTHORITY
+# 4. PHASE 11 — EXECUTABLE FRAMEWORK & DECLARATIVE SEMANTIC AUTHORITY
 
-**Status: PLANNED**
+Goal: compile governed declarative framework semantics into one immutable runtime authority and prevent unvalidated or revision-unbound repository state from entering canonical knowledge.
 
-Goal:
-
-> Extract relationship ontology definitions from Python implementation into a declarative, versioned constitutional contract while retaining a single immutable typed runtime semantic model
-
-## 4.1 Ontology Ledger
-
-| ID      | Invariant                                                                          | Status    |
-| ------- | ---------------------------------------------------------------------------------- | --------- |
-| ONT-001 | Declarative relationship ontology owns authored vocabulary and rules               | `PLANNED` |
-| ONT-002 | Ontology has identity, namespace, version, provenance, and compatibility semantics | `PLANNED` |
-| ONT-003 | Ontology compiles once into immutable typed `RelationshipOntology`                 | `PLANNED` |
-| ONT-004 | Parser contains no architecture relationship semantics                             | `PLANNED` |
-| ONT-005 | Assembler orchestrates semantics but owns no duplicate semantic rules              | `PLANNED` |
-| ONT-006 | Validator, graph, generators, and repository model consume one compiled ontology   | `PLANNED` |
-| ONT-007 | JSON Schema remains structural or consumes generated ontology projections          | `PLANNED` |
-| ONT-008 | Frontmatter stores relationship instances only                                     | `PLANNED` |
-| ONT-009 | Core, profile, and company-extension layering is explicit                          | `PLANNED` |
-| ONT-010 | Core semantic override is forbidden by default                                     | `PLANNED` |
-
-Target semantic flow:
+## 4.1 Phase 11 Dependency Chain
 
 ```text
-relationship-ontology.yaml
-→ Ontology Compiler
-→ immutable typed RelationshipOntology
-→ semantic validation / graph / repository compilation / projections
+Declarative Framework Contract
+↓
+Artifact Type / Layout / Lifecycle Contracts
++
+Relationship Ontology
+↓
+FrameworkCompiler
+↓
+ExecutableFramework
+↓
+Schema Boundary + Validation Pipeline
+↓
+Provenance-Bound Repository Ingestion
+↓
+ValidatedRepositorySnapshot
+↓
+Canonical Knowledge
 ```
 
-Target extension flow:
+## 4.2 Phase 11 Ledger
 
-```text
-Scnehaux Core Ontology
-→ Framework Profile
-→ Company Pack
-→ Company Architecture
-```
+| Slice | Capability                                   | Status  | Exit Evidence                                                                |
+| ----- | -------------------------------------------- | ------- | ---------------------------------------------------------------------------- |
+| 11.1  | Declarative Framework Contract               | PLANNED | Governed, versioned contract model exists and fails closed                   |
+| 11.2  | Artifact Type / Layout / Lifecycle Contracts | PLANNED | Runtime type/layout/lifecycle semantics derive from declarative contracts    |
+| 11.3  | Relationship Ontology                        | PLANNED | Relationship semantics are machine-readable and no longer authored in Python |
+| 11.4  | FrameworkCompiler + ExecutableFramework      | PLANNED | Deterministic immutable compiled runtime authority exists                    |
+| 11.5  | Schema Boundary & Validation Pipeline        | PLANNED | JSON Schema is structural-only and invalid candidates cannot be promoted     |
+| 11.6  | Provenance-Bound Repository Ingestion        | PLANNED | Canonical Git ingestion is repository/namespace/revision/path/digest bound   |
+| 11.7  | ValidatedRepositorySnapshot                  | PLANNED | Only validated revision-bound snapshots can feed canonical knowledge         |
+| 11.8  | Framework Extension / Company Pack Model     | PLANNED | Company semantics extend core without Python/core fork                       |
+| 11.9  | Compatibility & Versioning                   | PLANNED | Framework/ontology/extensions have enforceable compatibility contracts       |
 
-Phase 11 MUST NOT begin as part of a formatter/lint stabilization commit
+## 4.3 Phase 11 Hard Invariants
 
----
+- Runtime behavior MUST derive from an immutable `ExecutableFramework` deterministically compiled from governed declarative contracts
+- Python implementation MUST NOT independently redefine framework semantics
+- JSON Schema MUST NOT remain the authority for runtime repository/governance semantics
+- No parsed, unvalidated, or revision-unbound artifact state may enter canonical knowledge compilation
+- `ValidatedRepositorySnapshot` is the first canonical repository trust boundary
+- Existing Scnehaux semantics are extracted and formalized, not silently reinvented
+
+## 4.4 Explicitly Deferred Beyond Phase 11
+
+- deterministic Artifact → Claim/Evidence projection
+- ContextScope / KnowledgeState / working-revision axis cleanup
+- IntentSpec and capability-registry redesign
+- AI routing, model-provider, MCP, agent, studio, or chatbot runtime
+
+Phase 11 MUST NOT begin as part of Phase 10 enforcement stabilization. It starts only after Phase 10 external enforcement trust-boundary evidence is complete.
 
 # 5. PHASE 12 — REPRODUCIBILITY AND SUPPLY-CHAIN CLOSURE
 
@@ -206,7 +219,7 @@ Governance 1.0 requires:
 
 - all root-of-trust P0 controls closed in `normative-control-registry.yaml`
 - Phase 10 effective enforcement proven
-- Phase 11 declarative semantic authority proven
+- Phase 11 executable framework and declarative semantic authority proven
 - Phase 12 reproducibility closure proven
 - required GDCs approved at stable versions
 - release metadata binds governance, engine, ontology/schema, and source commit versions
@@ -251,7 +264,7 @@ STAB-001 Formatter Contract
 → GHE-005 Install Ruleset
 → GHE-006 Negative Evidence
 → GHE-007 Drift Closure
-→ Phase 11 Declarative Semantic Authority
+→ Phase 11 Executable Framework & Declarative Semantic Authority
 → Phase 12 Reproducibility
 → Phase 13 Governance 1.0
 → Phase 14 Architecture Re-Admission
@@ -265,7 +278,7 @@ This critical path is the authoritative sequencing until new observed evidence c
 
 - Genesis Integrity — DONE/CLOSED
 - Phase 10 GitHub Enforcement and Stabilization — ACTIVE
-- Phase 11 Declarative Semantic Authority — PLANNED
+- Phase 11 Executable Framework & Declarative Semantic Authority — PLANNED
 - Phase 12 Reproducibility and Supply-Chain Closure — PLANNED
 - Phase 13 Governance 1.0 — BLOCKED
 - Phase 14 Architecture Re-Admission — BLOCKED
