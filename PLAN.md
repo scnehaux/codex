@@ -13,7 +13,8 @@ Current execution authority:
 - Numeric directory prefixes are retired; semantic ordering and dependency come from metadata and graph contracts
 - Framework resources resolve from Codex; organization architecture policy instances resolve from the consumer repository
 - Immutable Genesis evidence is interpreted from the root commit's own historical manifest and layout
-- External GitHub trust-boundary activation follows this repository-boundary rebaseline, not vice versa
+- External SCM trust-boundary activation follows this repository-boundary rebaseline, not vice versa
+- GitHub is the first reference SCM provider; provider-specific enforcement remains an adapter concern rather than core governance semantics
 
 <!-- REPOSITORY-BOUNDARY-REBASELINE:END -->
 
@@ -92,13 +93,15 @@ SCNEHAUX_MUTATION_BASE_REF=35ba5f427b8fcda41e8bb3a989cdf21cdf8e31cc make mutatio
 make governance-qualify
 ```
 
-`make governance-qualify` is necessary but not sufficient for Phase 10 completion because committed-delta validation and effective external GitHub enforcement are separate controls
+`make governance-qualify` is necessary but not sufficient for Phase 10 completion because committed-delta validation and effective external SCM enforcement are separate controls. `make github-policy-check` remains the current reference-provider gate until Slice 10.7 extracts the provider adapter contract
 
 ---
 
-# 3. PHASE 10 — GITHUB ENFORCEMENT AND STABILIZATION
+# 3. PHASE 10 — SCM ENFORCEMENT AND STABILIZATION
 
-Phase 10 closes the active branch before any new architecture-semantic refactor begins
+Phase 10 closes the active branch before any new architecture-semantic refactor begins.
+
+GitHub is the first reference SCM provider. The core enforcement architecture MUST remain provider-neutral so GitHub, GitLab, or a future SCM provider can be supported through adapters without redefining governance semantics.
 
 ## Slice 10.1 — Cross-Platform Formatting Contract
 
@@ -224,19 +227,35 @@ Run the complete canonical qualification sequence from a clean checkout
 - Genesis root remains immutable
 - committed mutation delta is valid
 
-Only after Slice 10.5 is green may effective GitHub enforcement be activated
+Only after Slice 10.5 is green may SCM enforcement work proceed to the external trust boundary.
 
 ---
 
-## Slice 10.6 — Enforcement Trust Boundary
+## Slice 10.6 — SCM Enforcement Trust Boundary
 
-### Invariant
+### Invariants
 
-A pull request MUST NOT be able to become the sole authority that weakens the control used to qualify that same pull request
+A candidate change MUST NOT be able to become the sole authority that weakens the control used to qualify that same candidate change.
+
+Repository boundary is not trust boundary.
+
+The enforcement authority that prevents self-authorization MUST exist outside the candidate mutation being evaluated.
 
 ### Required Work
 
-Introduce a trusted enforcement boundary for governance-critical paths, including at minimum:
+Define the provider-neutral trust model:
+
+```text
+Codex Core Governance
+        ↓
+SCM Enforcement Contract
+        ↓
+Provider Adapter
+        ↓
+External Provider / Server Authority
+```
+
+Current GitHub governance-critical paths include at minimum:
 
 ```text
 .github/workflows/**
@@ -246,37 +265,68 @@ engine/control/governance/**
 scripts/*governance*
 ```
 
-The trusted boundary may use an independently anchored guardian workflow, external GitHub App/controller, repository ruleset policy, or equivalent mechanism
+Future provider adapters MAY use different native paths and mechanisms. Those provider details MUST NOT become core governance semantics.
 
-The ordinary PR workflow may validate candidate code, but it MUST NOT be the only authority protecting its own definition
+Acceptable trust anchors include provider organization/enterprise controls, independently anchored required workflows, server-side receive hooks, external controllers, or equivalent mechanisms whose authority cannot be weakened by the candidate change.
+
+A third repository is NOT required merely to support multiple SCM providers. Splitting repositories MUST NOT be used as a substitute for a real trust boundary.
 
 ### Acceptance
 
 - enforcement architecture has an explicit authority boundary
-- guardrail changes cannot self-authorize
-- enforcement code has negative tests
+- candidate guardrail changes cannot self-authorize
+- provider-specific controls are outside core semantic authority
+- enforcement boundary has negative tests
+- GitHub can act as the first reference provider without becoming a Codex core dependency
 
 ---
 
-## Slice 10.7 — GitHub Desired-State Semantic Validation
+## Slice 10.7 — SCM Desired-State Semantic Validation
 
 ### Required Work
 
-Replace text-fragment-only workflow checks with structured validation where practical
+Introduce a provider-neutral SCM enforcement contract and keep provider-native configuration as an adapter projection.
+
+Canonical direction:
+
+```text
+SCMEnforcementPolicy
+        ↓
+Provider Adapter
+        ├─ GitHub ruleset / Actions / CODEOWNERS
+        └─ GitLab protected branch / CI / approval controls
+```
+
+GitLab support is an extension point in this phase, not an implementation requirement.
+
+Refactor current GitHub desired-state validation so semantic meaning is not owned by text fragments or GitHub-native JSON.
 
 Validate at minimum:
 
-- workflow trigger semantics
-- permissions
-- checkout safety properties
-- exact required job/check identity
-- required steps
-- pinned action revisions
-- ruleset semantics
-- CODEOWNERS semantics
+- protected/default branch intent
+- change-through-review requirement
+- force-push and deletion policy
+- required qualification intent
+- review and thread-resolution policy
+- allowed merge strategy
+- provider workflow trigger semantics
+- provider permissions
+- checkout/source safety properties
+- required check/job mapping
+- pinned provider action/runtime dependencies where supported
+- provider-native ruleset/branch-policy semantics
+- ownership semantics
 - repository settings required by governance
 
-Desired-state validation remains separate from live-state observation
+The existing `make github-policy-check` remains the current reference-provider gate until adapter extraction is implemented. It MUST NOT be renamed ahead of implementation.
+
+### Acceptance
+
+- one provider-neutral authored enforcement contract exists
+- GitHub configuration is a provider projection, not the semantic authority
+- provider adapters cannot redefine canonical governance meaning
+- desired-state validation is structured and fail-closed
+- provider-neutral policy validation remains separate from live-state observation
 
 ---
 
@@ -288,7 +338,7 @@ Normative governance requires independent human approval while the current repos
 
 ### Required Work
 
-Model the temporary exception explicitly:
+Model the temporary exception in provider-neutral policy:
 
 ```text
 normative target        : >=1 independent governed approval
@@ -297,27 +347,34 @@ reason                  : no second independent reviewer available
 exit condition          : second qualified reviewer becomes available
 ```
 
-The exception MUST be visible in governance policy and MUST have a deterministic exit condition
+Provider adapters translate that policy into their native review/approval controls.
+
+The exception MUST be visible in governance policy and MUST have a deterministic exit condition.
+
+Existing provider-specific normative wording in review governance MUST be reconciled through a separately governed GDC mutation rather than silently changed as roadmap prose.
 
 ---
 
-## Slice 10.9 — Live-State Observer
+## Slice 10.9 — SCM Live-State Observer
 
 ### Required Work
 
-Observe actual GitHub state independently from repository desired configuration
+Observe actual provider state independently from repository desired configuration.
 
 Model:
 
 ```text
 Policy
 → Desired State
+→ Provider Adapter
 → Privileged Reconciler / Admin Boundary
-→ GitHub
+→ SCM Provider
 → Observer
 → Effective State
 → Evidence
 ```
+
+The observer contract MUST be provider-neutral. Provider adapters supply native observation details.
 
 ### Acceptance
 
@@ -330,13 +387,26 @@ effective
 drifted
 ```
 
+And evidence identifies:
+
+```text
+provider
+repository
+observed_revision
+observation_time
+effective_policy
+drift
+```
+
 ---
 
-## Slice 10.10 — Activation and Negative Enforcement Evidence
+## Slice 10.10 — Provider Activation and Negative Enforcement Evidence
 
-Install the effective controls only after Slices 10.1–10.9 are ready
+Activate effective controls only after Slices 10.1–10.9 are ready.
 
-Required evidence:
+GitHub is the first reference-provider activation. GitLab support does not block Phase 10 completion.
+
+Required evidence against the activated reference provider:
 
 1. direct push to `main` rejected
 2. force push rejected
@@ -347,16 +417,20 @@ Required evidence:
 7. stale review handling matches policy
 8. only allowed merge method is accepted
 9. post-install observer reports no desired/effective drift
+10. provider-native configuration cannot redefine provider-neutral governance semantics
 
-Configuration text alone is not evidence
+Configuration text alone is not evidence.
 
 ### Phase 10 Exit
 
 - clean-checkout internal qualification green
-- effective GitHub controls installed
-- negative enforcement evidence captured
+- provider-neutral SCM enforcement contract exists
+- reference-provider adapter is installed and effective
+- external trust boundary prevents self-authorization
+- negative enforcement evidence is captured
 - desired/effective drift is zero
-- branch merge-ready through the governed path
+- core governance does not depend on GitHub- or GitLab-specific semantics
+- branch is merge-ready through the governed path
 
 ---
 
@@ -663,7 +737,7 @@ Required work includes:
 - define lock/hash policy
 - make Node/Prettier resolution reproducible
 - define runner/runtime version policy
-- retain full-SHA GitHub Action pinning
+- pin provider CI/action dependencies immutably where supported; keep current GitHub Actions on full commit SHAs
 - document and test dependency update procedure
 
 ---
@@ -674,7 +748,7 @@ Governance 1.0 may be released only when:
 
 - all root-of-trust P0 controls are closed in the normative control registry
 - current canonical qualification is green
-- effective GitHub enforcement is proven
+- effective SCM enforcement is proven on the activated reference provider
 - executable framework and declarative semantic authority are installed and validated
 - ontology compatibility contract exists
 - reproducible dependency/toolchain contract is closed
@@ -725,7 +799,7 @@ Slice 10.1 Cross-Platform Formatting Contract
 → Slice 10.5 Internal Qualification
 ```
 
-Do not activate the live GitHub ruleset before the stabilization wave is green
+Do not activate reference-provider enforcement before the SCM trust boundary and desired-state contract are ready
 
 Do not begin ontology extraction as part of a formatter/lint repair commit
 
@@ -735,7 +809,7 @@ Do not begin ontology extraction as part of a formatter/lint repair commit
 
 - Genesis Integrity — DONE/CLOSED
 - Version and Mutation Authority — IMPLEMENTED, ACTIVE BRANCH RECONCILIATION REQUIRED
-- Phase 10 GitHub Enforcement and Stabilization — CURRENT ACTIVE
+- Phase 10 SCM Enforcement and Stabilization — CURRENT ACTIVE
 - Phase 11 Executable Framework & Declarative Semantic Authority — PLANNED
 - Phase 12 Reproducibility and Supply-Chain Closure — PLANNED
 - Phase 13 Governance 1.0 — BLOCKED
