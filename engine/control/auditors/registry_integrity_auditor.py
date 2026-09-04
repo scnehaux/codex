@@ -413,4 +413,3 @@ def assert_registry_integrity(
         raise RuntimeError(
             f"Governance registry integrity audit failed:\n{preview}{suffix}"
         )
-

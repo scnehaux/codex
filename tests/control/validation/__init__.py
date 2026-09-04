@@ -40,4 +40,3 @@ def test_validation_contract_rejects_bad_values():
                 ValidationFinding("x", "b", "m", False),
             ),
         )
-

@@ -145,4 +145,3 @@ def test_gdc_non_guideline_file_skipped():
 
 
 # ---------- TDD ----------
-

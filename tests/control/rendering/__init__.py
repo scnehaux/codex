@@ -186,4 +186,3 @@ def test_rendering_support_types_and_parse_failure(monkeypatch):
     monkeypatch.setattr(rendering, "parse_frontmatter", lambda text: (None, "broken"))
     with pytest.raises(ValueError, match="cannot be parsed"):
         rendering.verify_round_trip(payload, source_path="x.md")
-

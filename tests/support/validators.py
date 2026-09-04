@@ -71,4 +71,3 @@ def make_validator(
     if filename is not None:
         validator.filename = filename
     return validator
-

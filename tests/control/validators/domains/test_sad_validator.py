@@ -132,4 +132,3 @@ def test_draft_sad_allowed_under_approved_pad():
     )
     v.validate_type_specific()
     assert len(v.errors) == 0
-

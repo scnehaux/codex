@@ -596,4 +596,3 @@ def test_rules_main_exit_contract(monkeypatch):
         lambda check=False: [("GDC-001.md", "drift")],
     )
     assert module.main(["--check"]) == 1
-

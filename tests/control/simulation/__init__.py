@@ -67,4 +67,3 @@ def test_graph_simulation_policy_and_types_fail_closed():
         simulate_graph(
             report_id="S", draft_id="D", current=graph, proposed=graph, policy=object()
         )
-

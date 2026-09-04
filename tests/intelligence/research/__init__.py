@@ -83,4 +83,3 @@ def test_research_package_rejects_bad_lineage(research_plan, declared_claim):
         ResearchPackage(research_plan, (), ("q-1",), "rev")
     with pytest.raises(ValueError, match="findings or unresolved"):
         ResearchPackage(research_plan, ())
-

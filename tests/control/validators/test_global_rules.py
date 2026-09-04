@@ -185,4 +185,3 @@ def test_temporal_integrity_is_wired_into_common_validation(monkeypatch):
     assert any(
         severity == "ERROR" and "future" in message for severity, message in v.errors
     )
-

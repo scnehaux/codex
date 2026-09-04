@@ -172,7 +172,9 @@ def test_post_genesis_audit_reads_root_commit_snapshot(tmp_path):
     mapping = {
         ("rev-parse", "--verify", "HEAD"): GitResult(0, "head\n"),
         ("rev-list", "--max-parents=0", "HEAD"): GitResult(0, "rootsha\n"),
-        ("show", "rootsha:governance/bootstrap-manifest.yaml"): GitResult(0, yaml.safe_dump(MANIFEST, sort_keys=False)),
+        ("show", "rootsha:governance/bootstrap-manifest.yaml"): GitResult(
+            0, yaml.safe_dump(MANIFEST, sort_keys=False)
+        ),
     }
 
     for doc_id in required:
@@ -516,7 +518,9 @@ def test_post_genesis_missing_or_unreadable_gdc_is_reported(tmp_path):
             "--max-parents=0",
             "HEAD",
         ): GitResult(0, root + "\n"),
-            ("show", f"{root}:governance/bootstrap-manifest.yaml"): GitResult(0, yaml.safe_dump(MANIFEST, sort_keys=False)),
+        ("show", f"{root}:governance/bootstrap-manifest.yaml"): GitResult(
+            0, yaml.safe_dump(MANIFEST, sort_keys=False)
+        ),
     }
 
     first = required[0]
@@ -628,5 +632,3 @@ def test_default_git_runner_reads_utf8_root_snapshot_post_genesis(
     report = audit_genesis_integrity(tmp_path)
     assert report.mode == "post-genesis"
     assert report.ok
-
-

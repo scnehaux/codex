@@ -325,4 +325,3 @@ def test_assert_registry_integrity_truncates_long_failure_preview(monkeypatch):
     assert "finding-19" in message
     assert "finding-20" not in message
     assert "... +1 more" in message
-

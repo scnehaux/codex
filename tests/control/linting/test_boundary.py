@@ -57,5 +57,3 @@ def test_control_layout_declares_linting_responsibility():
         )
     )
     assert "linting" in layout["package"]["control"]["responsibility"]
-
-

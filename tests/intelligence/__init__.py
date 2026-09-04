@@ -87,4 +87,3 @@ def test_governance_maps_intelligence_contract_authority():
         "ArchitectureProposal",
         "ArtifactDraft",
     } <= stable
-

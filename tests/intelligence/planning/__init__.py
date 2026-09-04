@@ -100,4 +100,3 @@ def test_architecture_plan_requires_typed_inputs(intent):
         ArchitecturePlan("p", intent, ("step",))
     with pytest.raises(TypeError, match="RetrievalRequest"):
         ArchitecturePlan("p", intent, (PlanStep("a", "x", "x"),), ("request",))
-

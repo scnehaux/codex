@@ -909,4 +909,3 @@ def test_main_skipped_target_json(tmp_path, monkeypatch):
     with pytest.raises(SystemExit) as e:
         main()
     assert e.value.code == 1
-

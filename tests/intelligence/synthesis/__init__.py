@@ -189,4 +189,3 @@ def test_artifact_draft_rejects_invalid_payload_and_lineage(
         ArtifactDraft(
             "d", "SAD", proposal, Payload("x"), (proposed_claim.claim_id,), " "
         )
-

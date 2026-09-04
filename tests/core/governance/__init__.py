@@ -44,4 +44,3 @@ def test_semantic_version_orders_lexicographically_by_components():
 def test_semantic_version_rejects_negative_components():
     with pytest.raises(ValueError):
         SemanticVersion(-1, 0, 0)
-

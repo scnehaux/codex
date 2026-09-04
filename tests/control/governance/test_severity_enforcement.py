@@ -18,9 +18,7 @@ def _severity_levels():
     from engine.control.config.loader import parse_and_validate_global_config
 
     base = json.loads(
-        (ROOT / "schemas" / "base.schema.json").read_text(
-            encoding="utf-8"
-        )
+        (ROOT / "schemas" / "base.schema.json").read_text(encoding="utf-8")
     )
     _, severity_levels, _ = parse_and_validate_global_config(base)
     return severity_levels
@@ -378,4 +376,3 @@ def test_slice5_6_behavioral_runtime_rules_are_verified():
         for value in (*record.implementation, *record.test_evidence):
             candidate = value.split("::", 1)[0].split("#", 1)[0]
             assert (ROOT / candidate).exists()
-

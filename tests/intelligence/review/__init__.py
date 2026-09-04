@@ -48,4 +48,3 @@ def test_review_contract_additional_validation_paths():
         ArchitectureReview("r", "d", "reviewer", "summary", validation_report_id=" ")
     review = ArchitectureReview("r", "d", "reviewer", "summary")
     assert review.findings == ()
-

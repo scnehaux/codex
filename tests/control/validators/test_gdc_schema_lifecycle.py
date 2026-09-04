@@ -51,4 +51,3 @@ def test_deprecated_gdc_requires_last_reviewed():
 def test_baseline_gdc_with_last_reviewed_is_valid_for_lifecycle_rule():
     errors = list(_validator().iter_errors(_doc("approved", True)))
     assert not any("last_reviewed" in error.message for error in errors)
-
