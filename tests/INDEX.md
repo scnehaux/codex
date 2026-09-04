@@ -1054,12 +1054,14 @@ This index documents the test suite utilities and fixtures.
 
 ### `tests/scripts/test_github_policy_check.py`
 
-| Function                                  | Description               |
-| :---------------------------------------- | :------------------------ |
-| **load**                                  | _(No docstring provided)_ |
-| **test_current_repository_policy_passes** | _(No docstring provided)_ |
-| **test_bypass_actor_drift_fails**         | _(No docstring provided)_ |
-| **test_floating_action_tag_fails**        | _(No docstring provided)_ |
+| Function                                                           | Description               |
+| :----------------------------------------------------------------- | :------------------------ |
+| **load**                                                           | _(No docstring provided)_ |
+| **test_current_repository_policy_passes**                          | _(No docstring provided)_ |
+| **test_bypass_actor_drift_fails**                                  | _(No docstring provided)_ |
+| **test_floating_action_tag_fails**                                 | _(No docstring provided)_ |
+| **test_candidate_workflow_cannot_emit_external_authority_context** | _(No docstring provided)_ |
+| **test_candidate_revision_cannot_be_external_authority**           | _(No docstring provided)_ |
 
 ### `tests/scripts/test_governance_qualify.py`
 

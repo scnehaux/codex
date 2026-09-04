@@ -316,6 +316,7 @@ governance_qualification:
       policy_ref: github_reference_enforcement
       implementation:
       - governance/github/main-ruleset.json
+      - governance/github/authority-binding.yaml
       - .github/workflows/governance.yml
       - .github/CODEOWNERS
       - .github/pull_request_template.md
@@ -362,9 +363,11 @@ github_reference_enforcement:
   provider: github
   role: reference-provider-adapter
   desired_state: governance/github/main-ruleset.json
+  external_authority_binding: governance/github/authority-binding.yaml
   workflow: .github/workflows/governance.yml
   invocation: scripts/github_policy_check.py
-  required_status_context: Governance Qualification
+  candidate_status_context: Governance Qualification
+  external_authority_status_context: Codex Governance Authority
   contract:
   - default-branch-mutations-require-pull-request
   - required-status-check-is-strict-against-latest-base

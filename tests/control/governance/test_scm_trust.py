@@ -89,6 +89,30 @@ def test_current_repository_trust_boundary_passes():
             "external-authority-not-independent",
         ),
         (
+            lambda data: data["required_external_authority"][
+                "identity_binding"
+            ].__setitem__("candidate_may_select_effective_identity", True),
+            "candidate-effective-identity-selection-forbidden",
+        ),
+        (
+            lambda data: data["required_external_authority"][
+                "evaluator_runtime"
+            ].__setitem__("candidate_revision_as_authority", True),
+            "candidate-revision-authority-forbidden",
+        ),
+        (
+            lambda data: data["required_external_authority"][
+                "evaluator_runtime"
+            ].__setitem__("candidate_auto_deploy", True),
+            "candidate-auto-deploy-forbidden",
+        ),
+        (
+            lambda data: data["required_external_authority"][
+                "evaluator_runtime"
+            ].__setitem__("privileged_promotion_required", False),
+            "privileged-authority-promotion-required",
+        ),
+        (
             lambda data: data["required_external_authority"].__setitem__(
                 "capabilities", "bad"
             ),
@@ -146,8 +170,7 @@ def test_yaml_load_failure_is_reported(tmp_path):
     report = audit_scm_trust_boundary(tmp_path)
 
     assert any(
-        finding.code == "trust-contract-load-failed"
-        for finding in report.findings
+        finding.code == "trust-contract-load-failed" for finding in report.findings
     )
 
 
@@ -159,8 +182,7 @@ def test_yaml_root_shape_failure_is_reported(tmp_path):
     report = audit_scm_trust_boundary(tmp_path)
 
     assert any(
-        finding.code == "trust-contract-root-invalid"
-        for finding in report.findings
+        finding.code == "trust-contract-root-invalid" for finding in report.findings
     )
 
 

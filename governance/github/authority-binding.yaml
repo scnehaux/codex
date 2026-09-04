@@ -1,0 +1,20 @@
+contract_version: 1
+kind: scm-external-authority-binding
+provider: github
+role: reference-provider
+desired_state_only: true
+authority:
+  type: github-app
+  check_context: Codex Governance Authority
+  expected_source_binding: integration_id
+  integration_id: null
+evaluator:
+  execution_location: external
+  authority_revision: null
+  candidate_revision_as_authority: false
+  auto_deploy_from_candidate: false
+  promotion: privileged-explicit
+activation:
+  state: planned
+  effective_enforcement_claimed: false
+  activation_slice: "10.10"

@@ -24,6 +24,7 @@ def test_current_repository_policy_passes():
 def test_bypass_actor_drift_fails(tmp_path, monkeypatch):
     for rel in (
         "governance/github/main-ruleset.json",
+        "governance/github/authority-binding.yaml",
         ".github/workflows/governance.yml",
         ".github/CODEOWNERS",
         ".github/pull_request_template.md",
@@ -44,6 +45,7 @@ def test_bypass_actor_drift_fails(tmp_path, monkeypatch):
 def test_floating_action_tag_fails(tmp_path, monkeypatch):
     for rel in (
         "governance/github/main-ruleset.json",
+        "governance/github/authority-binding.yaml",
         ".github/workflows/governance.yml",
         ".github/CODEOWNERS",
         ".github/pull_request_template.md",
@@ -59,6 +61,53 @@ def test_floating_action_tag_fails(tmp_path, monkeypatch):
             "actions/checkout@v6",
         ),
         encoding="utf-8",
+    )
+    module = load()
+    monkeypatch.setattr(module, "ROOT", tmp_path)
+    assert module.main() == 1
+
+
+def test_candidate_workflow_cannot_emit_external_authority_context(
+    tmp_path, monkeypatch
+):
+    for rel in (
+        "governance/github/main-ruleset.json",
+        "governance/github/authority-binding.yaml",
+        ".github/workflows/governance.yml",
+        ".github/CODEOWNERS",
+        ".github/pull_request_template.md",
+    ):
+        src = REPOSITORY_ROOT / rel
+        dst = tmp_path / rel
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(src, dst)
+    workflow = tmp_path / ".github/workflows/governance.yml"
+    workflow.write_text(
+        workflow.read_text(encoding="utf-8") + "\n# Codex Governance Authority\n",
+        encoding="utf-8",
+    )
+    module = load()
+    monkeypatch.setattr(module, "ROOT", tmp_path)
+    assert module.main() == 1
+
+
+def test_candidate_revision_cannot_be_external_authority(tmp_path, monkeypatch):
+    for rel in (
+        "governance/github/main-ruleset.json",
+        "governance/github/authority-binding.yaml",
+        ".github/workflows/governance.yml",
+        ".github/CODEOWNERS",
+        ".github/pull_request_template.md",
+    ):
+        src = REPOSITORY_ROOT / rel
+        dst = tmp_path / rel
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(src, dst)
+    binding = tmp_path / "governance/github/authority-binding.yaml"
+    data = __import__("yaml").safe_load(binding.read_text(encoding="utf-8"))
+    data["evaluator"]["candidate_revision_as_authority"] = True
+    binding.write_text(
+        __import__("yaml").safe_dump(data, sort_keys=False), encoding="utf-8"
     )
     module = load()
     monkeypatch.setattr(module, "ROOT", tmp_path)

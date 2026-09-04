@@ -60,6 +60,7 @@ extraPaths = ["."]
 "scripts/genesis_commit_qualify.py" = ["E402"]
 "scripts/genesis_integrity.py" = ["E402"]
 "scripts/governance_qualify.py" = ["E402"]
+"scripts/scm_trust_boundary_check.py" = ["E402"]
 "scripts/mutation_integrity.py" = ["E402"]
 
 [tool.scnehaux.coverage]

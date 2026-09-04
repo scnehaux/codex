@@ -272,6 +272,20 @@ Acceptable trust anchors include provider organization/enterprise controls, inde
 
 A third repository is NOT required merely to support multiple SCM providers. Splitting repositories MUST NOT be used as a substitute for a real trust boundary.
 
+GitHub Free reference strategy:
+
+```text
+Repository ruleset
+→ required check: Codex Governance Authority
+→ expected source: dedicated GitHub App integration_id
+→ external evaluator from pinned trusted revision
+→ privileged explicit promotion
+```
+
+`Governance Qualification` remains candidate validation only. The candidate workflow MUST NOT emit `Codex Governance Authority`.
+
+The provider-neutral contract remains reusable by GitLab. A future GitLab adapter binds the same external-authority semantics to a GitLab-native mechanism (for example a Self-Managed server-side receive hook or another independently administered provider control) without changing SCM core meaning.
+
 ### Acceptance
 
 - enforcement architecture has an explicit authority boundary

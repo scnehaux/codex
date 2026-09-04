@@ -135,6 +135,8 @@ Hard boundaries:
 - repository boundaries and trust boundaries are separate concerns; moving governance into another repository does not by itself solve self-authorization
 - no third repository is required merely to support multiple SCM providers
 - the authority that prevents a candidate change from weakening its own guardrail MUST exist outside that candidate change
+- GitHub Free reference binding uses a dedicated GitHub App identity and external evaluator runtime
+- GitLab remains a provider adapter target over the same provider-neutral trust semantics
 
 ## 3.3 Effective Enforcement Ledger
 

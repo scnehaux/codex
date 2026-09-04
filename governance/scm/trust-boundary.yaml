@@ -8,6 +8,14 @@ required_external_authority:
   required: true
   mutable_by_candidate: false
   independently_administered: true
+  identity_binding:
+    required: true
+    candidate_may_define_desired_binding: true
+    candidate_may_select_effective_identity: false
+  evaluator_runtime:
+    candidate_revision_as_authority: false
+    candidate_auto_deploy: false
+    privileged_promotion_required: true
   capabilities:
   - block-guardrail-self-authorization
   - protect-governance-critical-mutations

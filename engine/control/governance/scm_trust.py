@@ -90,7 +90,9 @@ def audit_scm_trust_boundary(repo_root: str | Path) -> SCMTrustBoundaryReport:
         )
 
     if data.get("contract_version") != 1:
-        findings.append(_f("trust-contract-version-invalid", "contract_version must be 1"))
+        findings.append(
+            _f("trust-contract-version-invalid", "contract_version must be 1")
+        )
 
     if data.get("kind") != "scm-enforcement-trust-boundary":
         findings.append(
@@ -110,7 +112,9 @@ def audit_scm_trust_boundary(repo_root: str | Path) -> SCMTrustBoundaryReport:
 
     candidate = data.get("candidate_state")
     if not isinstance(candidate, dict):
-        findings.append(_f("candidate-state-invalid", "candidate_state must be a mapping"))
+        findings.append(
+            _f("candidate-state-invalid", "candidate_state must be a mapping")
+        )
     else:
         if candidate.get("may_validate_candidate") is not True:
             findings.append(
@@ -157,6 +161,68 @@ def audit_scm_trust_boundary(repo_root: str | Path) -> SCMTrustBoundaryReport:
                     "external enforcement authority must be independently administered",
                 )
             )
+
+        identity = authority.get("identity_binding")
+        if not isinstance(identity, dict):
+            findings.append(
+                _f(
+                    "external-authority-identity-binding-invalid",
+                    "external authority identity_binding must be a mapping",
+                )
+            )
+        else:
+            if identity.get("required") is not True:
+                findings.append(
+                    _f(
+                        "external-authority-identity-binding-required",
+                        "effective external authority identity must be explicitly bound",
+                    )
+                )
+            if identity.get("candidate_may_define_desired_binding") is not True:
+                findings.append(
+                    _f(
+                        "desired-binding-contract-invalid",
+                        "candidate state may propose desired provider binding",
+                    )
+                )
+            if identity.get("candidate_may_select_effective_identity") is not False:
+                findings.append(
+                    _f(
+                        "candidate-effective-identity-selection-forbidden",
+                        "candidate state must not select effective external authority identity",
+                    )
+                )
+
+        runtime = authority.get("evaluator_runtime")
+        if not isinstance(runtime, dict):
+            findings.append(
+                _f(
+                    "external-authority-runtime-invalid",
+                    "external authority evaluator_runtime must be a mapping",
+                )
+            )
+        else:
+            if runtime.get("candidate_revision_as_authority") is not False:
+                findings.append(
+                    _f(
+                        "candidate-revision-authority-forbidden",
+                        "candidate revision must not execute as the external authority",
+                    )
+                )
+            if runtime.get("candidate_auto_deploy") is not False:
+                findings.append(
+                    _f(
+                        "candidate-auto-deploy-forbidden",
+                        "candidate state must not auto-deploy the authority evaluator",
+                    )
+                )
+            if runtime.get("privileged_promotion_required") is not True:
+                findings.append(
+                    _f(
+                        "privileged-authority-promotion-required",
+                        "authority evaluator promotion must cross a privileged external boundary",
+                    )
+                )
 
         caps = authority.get("capabilities")
         if not isinstance(caps, list):
@@ -226,8 +292,7 @@ def assert_scm_trust_boundary(repo_root: str | Path) -> SCMTrustBoundaryReport:
         raise RuntimeError(
             "SCM enforcement trust-boundary audit failed:\n  - "
             + "\n  - ".join(
-                f"[{finding.code}] {finding.message}"
-                for finding in report.findings
+                f"[{finding.code}] {finding.message}" for finding in report.findings
             )
         )
 
