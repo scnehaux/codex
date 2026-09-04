@@ -45,7 +45,9 @@ jobs:
           fi
       - name: Validate SCM trust-boundary contract
         run: make scm-trust-boundary-check
-      - name: Validate GitHub reference-provider desired-state policy
+      - name: Validate provider-neutral SCM desired-state semantics
+        run: make scm-policy-check
+      - name: Validate GitHub reference-provider projection
         run: make github-policy-check
       - name: Validate Python quality
         run: make lint-code

@@ -1,0 +1,38 @@
+contract_version: 1
+kind: scm-enforcement-policy
+provider_neutral: true
+default_branch:
+  selector: default
+  changes_require_review: true
+  deletion_allowed: false
+  force_push_allowed: false
+  linear_history_required: true
+merge:
+  allowed_methods:
+  - squash
+review:
+  required_approvals: 0
+  dismiss_stale_on_push: true
+  require_code_owner_review: false
+  require_last_push_approval: false
+  require_thread_resolution: true
+bypass:
+  allowed: false
+qualification:
+  candidate:
+    required: true
+    context: Governance Qualification
+    strict_against_latest_base: true
+  external_authority:
+    required: true
+    context: Codex Governance Authority
+workflow:
+  pull_request_default_branch: true
+  push_default_branch: true
+  repository_contents_permission: read
+  committed_mutation_validation_required: true
+  full_governance_qualification_required: true
+ownership:
+  repository_default_owner_required: true
+  governance_path_owner_required: true
+  provider_config_owner_required: true

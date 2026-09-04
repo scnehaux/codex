@@ -173,6 +173,7 @@ capability_architecture:
   - ContextPackage
   - ArchitectureProposal
   - ArtifactDraft
+  - SCMEnforcementPolicy
   - ValidationReport
   - SimulationReport
   - ArchitectureReview

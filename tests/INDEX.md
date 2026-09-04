@@ -10,6 +10,19 @@ This index documents the test suite utilities and fixtures.
 
 ## List of functions
 
+### `tests/adapters/scm/test_github.py`
+
+| Function                                                           | Description               |
+| :----------------------------------------------------------------- | :------------------------ |
+| **\_copy**                                                         | _(No docstring provided)_ |
+| **\_codes**                                                        | _(No docstring provided)_ |
+| **test_current_github_projection_matches_provider_neutral_policy** | _(No docstring provided)_ |
+| **test_ruleset_projection_drift_is_detected**                      | _(No docstring provided)_ |
+| **test_workflow_is_validated_structurally_not_by_comments**        | _(No docstring provided)_ |
+| **test_candidate_workflow_cannot_emit_external_authority_job**     | _(No docstring provided)_ |
+| **test_authority_binding_and_codeowners_projection_drift**         | _(No docstring provided)_ |
+| **test_malformed_provider_state_fails_closed**                     | _(No docstring provided)_ |
+
 ### `tests/control/auditors/test_dependency_scanner.py`
 
 | Function                                      | Description               |
@@ -343,6 +356,16 @@ This index documents the test suite utilities and fixtures.
 | :---------------------------------------------------- | :------------------------ |
 | **test_repository_declares_canonical_lf_text_policy** | _(No docstring provided)_ |
 | **test_genesis_bootstrap_allows_gitattributes**       | _(No docstring provided)_ |
+
+### `tests/control/governance/test_scm_policy.py`
+
+| Function                                                  | Description               |
+| :-------------------------------------------------------- | :------------------------ |
+| **\_write**                                               | _(No docstring provided)_ |
+| **test_current_policy_loads_as_immutable_typed_contract** | _(No docstring provided)_ |
+| **test_policy_corruption_fails_closed**                   | _(No docstring provided)_ |
+| **test_yaml_failure_and_root_shape_fail_closed**          | _(No docstring provided)_ |
+| **test_missing_policy_fails_closed**                      | _(No docstring provided)_ |
 
 ### `tests/control/governance/test_scm_trust.py`
 
@@ -1054,14 +1077,12 @@ This index documents the test suite utilities and fixtures.
 
 ### `tests/scripts/test_github_policy_check.py`
 
-| Function                                                           | Description               |
-| :----------------------------------------------------------------- | :------------------------ |
-| **load**                                                           | _(No docstring provided)_ |
-| **test_current_repository_policy_passes**                          | _(No docstring provided)_ |
-| **test_bypass_actor_drift_fails**                                  | _(No docstring provided)_ |
-| **test_floating_action_tag_fails**                                 | _(No docstring provided)_ |
-| **test_candidate_workflow_cannot_emit_external_authority_context** | _(No docstring provided)_ |
-| **test_candidate_revision_cannot_be_external_authority**           | _(No docstring provided)_ |
+| Function                                      | Description               |
+| :-------------------------------------------- | :------------------------ |
+| **\_load**                                    | _(No docstring provided)_ |
+| **test_current_repository_projection_passes** | _(No docstring provided)_ |
+| **test_policy_failure_is_reported**           | _(No docstring provided)_ |
+| **test_projection_failure_is_reported**       | _(No docstring provided)_ |
 
 ### `tests/scripts/test_governance_qualify.py`
 
@@ -1130,6 +1151,14 @@ This index documents the test suite utilities and fixtures.
 | **test_windows_execute_uses_explicit_command_processor** | _(No docstring provided)_ |
 | **test_missing_windows_command_processor_fails_closed**  | _(No docstring provided)_ |
 | **test_posix_execution_remains_shell_free**              | _(No docstring provided)_ |
+
+### `tests/scripts/test_scm_policy_check.py`
+
+| Function                                  | Description               |
+| :---------------------------------------- | :------------------------ |
+| **\_load**                                | _(No docstring provided)_ |
+| **test_current_repository_policy_passes** | _(No docstring provided)_ |
+| **test_policy_failure_is_reported**       | _(No docstring provided)_ |
 
 ### `tests/scripts/test_scm_trust_boundary_check.py`
 

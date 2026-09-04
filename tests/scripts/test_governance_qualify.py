@@ -46,6 +46,11 @@ def _green(monkeypatch, module):
     )
     monkeypatch.setattr(
         module,
+        "assert_scm_enforcement_policy",
+        lambda root: None,
+    )
+    monkeypatch.setattr(
+        module,
         "assert_genesis_integrity",
         lambda root: _Genesis(),
     )

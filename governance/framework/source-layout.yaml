@@ -312,9 +312,19 @@ governance_qualification:
       test_evidence:
       - tests/control/governance/test_scm_trust.py
       - tests/scripts/test_scm_trust_boundary_check.py
+    scm_desired_state_semantics:
+      policy_ref: scm_desired_state_semantics
+      implementation:
+      - governance/scm/enforcement-policy.yaml
+      - engine/control/governance/scm_policy.py
+      - scripts/scm_policy_check.py
+      test_evidence:
+      - tests/control/governance/test_scm_policy.py
+      - tests/scripts/test_scm_policy_check.py
     github_reference_enforcement:
       policy_ref: github_reference_enforcement
       implementation:
+      - engine/adapters/scm/github.py
       - governance/github/main-ruleset.json
       - governance/github/authority-binding.yaml
       - .github/workflows/governance.yml
@@ -322,6 +332,7 @@ governance_qualification:
       - .github/pull_request_template.md
       - scripts/github_policy_check.py
       test_evidence:
+      - tests/adapters/scm/test_github.py
       - tests/scripts/test_github_policy_check.py
   contract:
   - local-qualification-is-fail-closed
@@ -359,26 +370,35 @@ scm_enforcement_trust_boundary:
   - repository-boundary-is-not-trust-boundary
   - provider-adapters-do-not-own-governance-semantics
   - design-time-trust-contract-does-not-prove-effective-enforcement
+scm_desired_state_semantics:
+  authority: governance/scm/enforcement-policy.yaml
+  parser: engine/control/governance/scm_policy.py
+  invocation: scripts/scm_policy_check.py
+  provider_neutral: true
+  contract:
+  - authored-policy-owns-scm-enforcement-meaning
+  - python-validates-contract-shape-without-redefining-authored-values
+  - provider-adapters-project-policy-without-redefining-semantics
+  - desired-state-validation-is-distinct-from-live-state-observation
+  - github-is-reference-adapter-and-gitlab-remains-extension-point
+
 github_reference_enforcement:
   provider: github
   role: reference-provider-adapter
+  semantic_authority: governance/scm/enforcement-policy.yaml
+  adapter: engine/adapters/scm/github.py
   desired_state: governance/github/main-ruleset.json
   external_authority_binding: governance/github/authority-binding.yaml
   workflow: .github/workflows/governance.yml
   invocation: scripts/github_policy_check.py
-  candidate_status_context: Governance Qualification
-  external_authority_status_context: Codex Governance Authority
   contract:
-  - default-branch-mutations-require-pull-request
-  - required-status-check-is-strict-against-latest-base
-  - required-status-check-validates-committed-mutation-delta
-  - force-push-is-forbidden
-  - default-branch-deletion-is-forbidden
-  - linear-history-is-required
-  - squash-is-the-only-allowed-merge-method
-  - ruleset-bypass-actors-are-empty
-  - first-party-actions-are-pinned-by-full-commit-sha
-  - mandatory-human-approval-is-zero-until-a-second-independent-reviewer-exists
+  - github-native-configuration-is-projection-only
+  - adapter-must-preserve-provider-neutral-policy-semantics
+  - workflow-is-parsed-structurally-not-by-unscoped-text-fragments
+  - github-specific-action-pinning-remains-provider-adapter-safety
+  - candidate-workflow-cannot-emit-external-authority-context
+  - desired-projection-does-not-claim-effective-provider-state
+
 tooling:
   roots:
     generators: generators

@@ -40,7 +40,6 @@ This index documents the internal functions and classes of the CI/CD scripts.
 
 | Function | Description               |
 | :------- | :------------------------ |
-| **fail** | _(No docstring provided)_ |
 | **main** | _(No docstring provided)_ |
 
 ### `scripts/governance_qualify.py`
@@ -75,6 +74,12 @@ This index documents the internal functions and classes of the CI/CD scripts.
 | **run_prettier**             | _(No docstring provided)_ |
 | **\_parser**                 | _(No docstring provided)_ |
 | **main**                     | _(No docstring provided)_ |
+
+### `scripts/scm_policy_check.py`
+
+| Function | Description               |
+| :------- | :------------------------ |
+| **main** | _(No docstring provided)_ |
 
 ### `scripts/scm_trust_boundary_check.py`
 

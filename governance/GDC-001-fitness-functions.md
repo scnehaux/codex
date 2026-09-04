@@ -3,7 +3,7 @@ doc_meta:
   id: GDC-001
   title: Architecture Fitness Functions & Compliance Engine
   owner: Architecture Authority
-  version: 0.1.1
+  version: 0.1.2
   status: draft
   classification: public
   governed_by: [GDC-000]
@@ -88,6 +88,9 @@ The production deterministic control plane resides under `engine/control/`. Its 
 ```text
 codex/
 │   ├── engine/                  # (Product runtime)
+│   │   ├── adapters/
+│   │   │   └── scm/
+│   │   │       └── github.py
 │   │   ├── control/
 │   │   │   ├── auditors/          # (External environment validators)
 │   │   │   │   ├── dependency_scanner.py
@@ -114,6 +117,7 @@ codex/
 │   │   │   │   ├── mutation.py
 │   │   │   │   ├── readiness.py
 │   │   │   │   ├── relationships.py
+│   │   │   │   ├── scm_policy.py
 │   │   │   │   ├── scm_trust.py
 │   │   │   │   ├── severity_enforcement.py
 │   │   │   │   └── temporal.py
@@ -195,9 +199,13 @@ codex/
 │   │   ├── install-hooks.py
 │   │   ├── mutation_integrity.py
 │   │   ├── prettier_runner.py
+│   │   ├── scm_policy_check.py
 │   │   ├── scm_trust_boundary_check.py
 │   │   └── waiver-expiry-check.py
 │   └── tests/                   # (Product test estate)
+│       ├── adapters/
+│       │   └── scm/
+│       │       └── test_github.py
 │       ├── control/
 │       │   ├── auditors/         # (External environment validators)
 │       │   │   ├── test_dependency_scanner.py
@@ -223,6 +231,7 @@ codex/
 │       │   │   ├── test_readiness.py
 │       │   │   ├── test_relationships.py
 │       │   │   ├── test_repository_text_policy.py
+│       │   │   ├── test_scm_policy.py
 │       │   │   ├── test_scm_trust.py
 │       │   │   ├── test_severity_enforcement.py
 │       │   │   ├── test_severity_semantic_identity.py
@@ -307,6 +316,7 @@ codex/
 │       │   ├── test_mutation_integrity.py
 │       │   ├── test_prettier_runner.py
 │       │   ├── test_prettier_runner_windows_quoting.py
+│       │   ├── test_scm_policy_check.py
 │       │   ├── test_scm_trust_boundary_check.py
 │       │   └── test_temporary_tool_hygiene.py
 │       └── support/

@@ -15,6 +15,7 @@ REQUIRED_CONTROL_KEYS = frozenset(
         "version_mutation_integrity",
         "genesis_commit_qualification",
         "scm_enforcement_trust_boundary",
+        "scm_desired_state_semantics",
         "github_reference_enforcement",
     }
 )
@@ -406,6 +407,13 @@ def audit_governance_readiness(
                 makefile_text,
                 "scm-trust-boundary-check",
                 "scripts/scm_trust_boundary_check.py",
+            )
+        )
+        findings.extend(
+            _makefile_target_findings(
+                makefile_text,
+                "scm-policy-check",
+                "scripts/scm_policy_check.py",
             )
         )
         findings.extend(

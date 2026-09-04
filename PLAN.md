@@ -29,7 +29,7 @@ Canonical branch                  : main
 Genesis root commit               : CREATED
 Genesis SHA                       : 35ba5f427b8fcda41e8bb3a989cdf21cdf8e31cc
 Active implementation branch      : phase10/github-enforcement
-Observed branch HEAD              : ff32d981d1e4b302c6d6ac4ae3de606ec1a47a54
+Plan baseline commit                : 2c971fe8167a598c6996b1f74bbb4413012fb7e1
 Architecture admission            : CLOSED
 Governance lifecycle              : draft / 0.x
 Live GitHub repository ruleset    : NOT INSTALLED
@@ -314,6 +314,15 @@ Provider Adapter
 ```
 
 GitLab support is an extension point in this phase, not an implementation requirement.
+
+Implementation boundary for this slice:
+
+- `governance/scm/enforcement-policy.yaml` is the authored provider-neutral semantic authority
+- `engine/control/governance/scm_policy.py` loads an immutable typed contract and validates shape/types without independently choosing policy values
+- `engine/adapters/scm/github.py` validates GitHub native desired state as a projection of the authored SCM policy
+- GitHub workflow semantics are parsed structurally; unscoped text-fragment matching is not semantic authority
+- GitLab remains a first-class `scm-provider` extension point and must consume the same policy contract when implemented
+- live/effective provider state remains Slice 10.9/10.10 and is not inferred from repository desired state
 
 Refactor current GitHub desired-state validation so semantic meaning is not owned by text fragments or GitHub-native JSON.
 
