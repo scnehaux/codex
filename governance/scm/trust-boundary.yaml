@@ -1,0 +1,22 @@
+contract_version: 1
+kind: scm-enforcement-trust-boundary
+provider_neutral: true
+candidate_state:
+  may_validate_candidate: true
+  may_be_sole_guardrail_authority: false
+required_external_authority:
+  required: true
+  mutable_by_candidate: false
+  independently_administered: true
+  capabilities:
+  - block-guardrail-self-authorization
+  - protect-governance-critical-mutations
+protected_concerns:
+- ci-definition
+- ownership-definition
+- provider-policy-projection
+- governance-enforcement-code
+- governance-entrypoint
+evidence:
+  proves_effective_enforcement: false
+  activation_slice: "10.10"

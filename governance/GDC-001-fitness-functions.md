@@ -3,7 +3,7 @@ doc_meta:
   id: GDC-001
   title: Architecture Fitness Functions & Compliance Engine
   owner: Architecture Authority
-  version: 0.1.0
+  version: 0.1.1
   status: draft
   classification: public
   governed_by: [GDC-000]
@@ -114,6 +114,7 @@ codex/
 │   │   │   │   ├── mutation.py
 │   │   │   │   ├── readiness.py
 │   │   │   │   ├── relationships.py
+│   │   │   │   ├── scm_trust.py
 │   │   │   │   ├── severity_enforcement.py
 │   │   │   │   └── temporal.py
 │   │   │   ├── INDEX.md
@@ -194,6 +195,7 @@ codex/
 │   │   ├── install-hooks.py
 │   │   ├── mutation_integrity.py
 │   │   ├── prettier_runner.py
+│   │   ├── scm_trust_boundary_check.py
 │   │   └── waiver-expiry-check.py
 │   └── tests/                   # (Product test estate)
 │       ├── control/
@@ -221,6 +223,7 @@ codex/
 │       │   │   ├── test_readiness.py
 │       │   │   ├── test_relationships.py
 │       │   │   ├── test_repository_text_policy.py
+│       │   │   ├── test_scm_trust.py
 │       │   │   ├── test_severity_enforcement.py
 │       │   │   ├── test_severity_semantic_identity.py
 │       │   │   └── test_temporal.py
@@ -304,6 +307,7 @@ codex/
 │       │   ├── test_mutation_integrity.py
 │       │   ├── test_prettier_runner.py
 │       │   ├── test_prettier_runner_windows_quoting.py
+│       │   ├── test_scm_trust_boundary_check.py
 │       │   └── test_temporary_tool_hygiene.py
 │       └── support/
 │           ├── repository.py

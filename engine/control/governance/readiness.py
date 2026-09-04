@@ -14,7 +14,8 @@ REQUIRED_CONTROL_KEYS = frozenset(
         "genesis_integrity",
         "version_mutation_integrity",
         "genesis_commit_qualification",
-        "github_enforcement",
+        "scm_enforcement_trust_boundary",
+        "github_reference_enforcement",
     }
 )
 TEMPORARY_PATTERNS = ("phase*.py", "slice5_*.py")
@@ -398,6 +399,13 @@ def audit_governance_readiness(
                 makefile_text,
                 "mutation-ci-check",
                 "scripts/committed_mutation_integrity.py",
+            )
+        )
+        findings.extend(
+            _makefile_target_findings(
+                makefile_text,
+                "scm-trust-boundary-check",
+                "scripts/scm_trust_boundary_check.py",
             )
         )
         findings.extend(

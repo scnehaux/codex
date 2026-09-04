@@ -43,7 +43,9 @@ jobs:
           else
             echo "SCNEHAUX_MUTATION_BASE_REF=${{ github.event.before }}" >> "$GITHUB_ENV"
           fi
-      - name: Validate GitHub desired-state policy
+      - name: Validate SCM trust-boundary contract
+        run: make scm-trust-boundary-check
+      - name: Validate GitHub reference-provider desired-state policy
         run: make github-policy-check
       - name: Validate Python quality
         run: make lint-code

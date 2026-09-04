@@ -344,6 +344,17 @@ This index documents the test suite utilities and fixtures.
 | **test_repository_declares_canonical_lf_text_policy** | _(No docstring provided)_ |
 | **test_genesis_bootstrap_allows_gitattributes**       | _(No docstring provided)_ |
 
+### `tests/control/governance/test_scm_trust.py`
+
+| Function                                           | Description               |
+| :------------------------------------------------- | :------------------------ |
+| **\_materialize**                                  | _(No docstring provided)_ |
+| **test_current_repository_trust_boundary_passes**  | _(No docstring provided)_ |
+| **test_trust_boundary_corruption_fails_closed**    | _(No docstring provided)_ |
+| **test_yaml_load_failure_is_reported**             | _(No docstring provided)_ |
+| **test_yaml_root_shape_failure_is_reported**       | _(No docstring provided)_ |
+| **test_assertion_raises_with_structured_findings** | _(No docstring provided)_ |
+
 ### `tests/control/governance/test_severity_enforcement.py`
 
 | Function                                                                              | Description               |
@@ -1117,6 +1128,14 @@ This index documents the test suite utilities and fixtures.
 | **test_windows_execute_uses_explicit_command_processor** | _(No docstring provided)_ |
 | **test_missing_windows_command_processor_fails_closed**  | _(No docstring provided)_ |
 | **test_posix_execution_remains_shell_free**              | _(No docstring provided)_ |
+
+### `tests/scripts/test_scm_trust_boundary_check.py`
+
+| Function                                    | Description               |
+| :------------------------------------------ | :------------------------ |
+| **\_load**                                  | _(No docstring provided)_ |
+| **test_current_repository_contract_passes** | _(No docstring provided)_ |
+| **test_invalid_contract_fails_closed**      | _(No docstring provided)_ |
 
 ### `tests/scripts/test_temporary_tool_hygiene.py`
 

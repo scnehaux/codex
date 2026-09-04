@@ -76,6 +76,12 @@ This index documents the internal functions and classes of the CI/CD scripts.
 | **\_parser**                 | _(No docstring provided)_ |
 | **main**                     | _(No docstring provided)_ |
 
+### `scripts/scm_trust_boundary_check.py`
+
+| Function | Description               |
+| :------- | :------------------------ |
+| **main** | _(No docstring provided)_ |
+
 ### `scripts/waiver-expiry-check.py`
 
 | Function                | Description                                                                                                             |

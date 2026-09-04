@@ -6,6 +6,7 @@ principles:
 - deterministic-and-probabilistic-capabilities-are-separated
 - fitness-functions-are-verification-not-product-runtime
 - adapters-do-not-own-domain-semantics
+- scm-provider-adapters-do-not-own-governance-semantics
 - interfaces-do-not-own-domain-semantics
 package:
   root: engine
@@ -56,6 +57,7 @@ package:
   adapters:
     responsibility:
     - git
+    - scm-provider
     - graph-store
     - semantic-index
     - model-provider
@@ -301,8 +303,17 @@ governance_qualification:
       test_evidence:
       - tests/control/governance/test_genesis_candidate.py
       - tests/scripts/test_genesis_commit_qualify.py
-    github_enforcement:
-      policy_ref: github_enforcement
+    scm_enforcement_trust_boundary:
+      policy_ref: scm_enforcement_trust_boundary
+      implementation:
+      - governance/scm/trust-boundary.yaml
+      - engine/control/governance/scm_trust.py
+      - scripts/scm_trust_boundary_check.py
+      test_evidence:
+      - tests/control/governance/test_scm_trust.py
+      - tests/scripts/test_scm_trust_boundary_check.py
+    github_reference_enforcement:
+      policy_ref: github_reference_enforcement
       implementation:
       - governance/github/main-ruleset.json
       - .github/workflows/governance.yml
@@ -334,7 +345,22 @@ genesis_commit_qualification:
   - staged-governance-baseline-remains-draft-0.x
   - staged-tree-sha-is-materialized-before-root-commit
   - architecture-admission-remains-closed
-github_enforcement:
+scm_enforcement_trust_boundary:
+  authority: engine/control/governance/scm_trust.py
+  desired_state: governance/scm/trust-boundary.yaml
+  invocation: scripts/scm_trust_boundary_check.py
+  provider_neutral: true
+  contract:
+  - candidate-repository-state-is-not-sufficient-enforcement-authority
+  - external-authority-is-required
+  - external-authority-is-not-mutable-by-candidate
+  - external-authority-is-independently-administered
+  - repository-boundary-is-not-trust-boundary
+  - provider-adapters-do-not-own-governance-semantics
+  - design-time-trust-contract-does-not-prove-effective-enforcement
+github_reference_enforcement:
+  provider: github
+  role: reference-provider-adapter
   desired_state: governance/github/main-ruleset.json
   workflow: .github/workflows/governance.yml
   invocation: scripts/github_policy_check.py

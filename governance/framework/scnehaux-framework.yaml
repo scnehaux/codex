@@ -67,7 +67,7 @@ logical_modules:
     - cli
     - api
     - mcp-tools
-    - github
+    - scm-provider-interface
     - studio
 deployment:
   default: modular-monolith
@@ -94,6 +94,7 @@ extension_points:
 - graph-store
 - semantic-index
 - model-provider
+- scm-provider
 capability_architecture:
   model: capability-driven
   agent_topology: runtime-configurable

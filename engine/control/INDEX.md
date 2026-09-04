@@ -210,6 +210,15 @@ This index documents the internal functions and classes of the Fitness Function 
 | **dag_relation_specs_for_source**  | _(No docstring provided)_ |
 | **relationship_contract_findings** | _(No docstring provided)_ |
 
+### `engine/control/governance/scm_trust.py`
+
+| Function                      | Description               |
+| :---------------------------- | :------------------------ |
+| **SCMTrustBoundaryReport.ok** | _(No docstring provided)_ |
+| **\_f**                       | _(No docstring provided)_ |
+| **audit_scm_trust_boundary**  | _(No docstring provided)_ |
+| **assert_scm_trust_boundary** | _(No docstring provided)_ |
+
 ### `engine/control/governance/severity_enforcement.py`
 
 | Function                               | Description               |

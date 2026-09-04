@@ -112,7 +112,7 @@ def main() -> int:
     if not template.is_file():
         return fail("pull request template is missing")
 
-    print("[PASS] GitHub enforcement desired-state policy")
+    print("[PASS] GitHub reference-provider enforcement desired-state policy")
     print("  required check: Governance Qualification")
     print("  pull request: required")
     print("  merge method: squash only")

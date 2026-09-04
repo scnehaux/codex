@@ -18,6 +18,7 @@ from engine.control.governance.mutation import (
 from engine.control.governance.readiness import (
     assert_governance_readiness,
 )
+from engine.control.governance.scm_trust import assert_scm_trust_boundary
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -38,6 +39,7 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         readiness = assert_governance_readiness(root)
+        assert_scm_trust_boundary(root)
         genesis = assert_genesis_integrity(root)
         mutation = assert_version_mutation_integrity(root)
     except RuntimeError as exc:
@@ -46,6 +48,7 @@ def main(argv: list[str] | None = None) -> int:
 
     print("[PASS] Governance control qualification")
     print(f"  controls: {len(readiness.checked_controls)}")
+    print("  SCM trust boundary: DECLARED (effective enforcement separate)")
     print(f"  Genesis mode: {genesis.mode}")
     print(f"  mutation mode: {mutation.mode}")
     print("  architecture admission: CLOSED")

@@ -1,4 +1,4 @@
-.PHONY: lint lint-code lint-docs-format lint-sarif format format-code format-docs test install install-hooks generate-docs verify-generated check-waivers all coverage docker-build docker-run clean genesis-check mutation-check governance-qualify genesis-commit-check mutation-ci-check github-policy-check
+.PHONY: lint lint-code lint-docs-format lint-sarif format format-code format-docs test install install-hooks generate-docs verify-generated check-waivers all coverage docker-build docker-run clean genesis-check mutation-check governance-qualify genesis-commit-check mutation-ci-check scm-trust-boundary-check github-policy-check
 
 # Run all processes (setup, generate docs, linting, and testing)
 all: install install-hooks generate-docs lint test
@@ -107,6 +107,9 @@ genesis-commit-check:
 # Validate committed governed mutations against an explicit CI/PR base
 mutation-ci-check:
 	python scripts/committed_mutation_integrity.py --base-ref "$(SCNEHAUX_MUTATION_BASE_REF)"
-# Validate repository-owned GitHub enforcement desired state
+# Validate provider-neutral SCM enforcement trust-boundary contract
+scm-trust-boundary-check:
+	python scripts/scm_trust_boundary_check.py
+# Validate repository-owned GitHub reference-provider enforcement desired state
 github-policy-check:
 	python scripts/github_policy_check.py

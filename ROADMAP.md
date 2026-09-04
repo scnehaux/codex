@@ -138,15 +138,15 @@ Hard boundaries:
 
 ## 3.3 Effective Enforcement Ledger
 
-| ID      | Invariant                                                                           | Status    | Current Gap                                                                       |
-| ------- | ----------------------------------------------------------------------------------- | --------- | --------------------------------------------------------------------------------- |
-| SCM-001 | Candidate change cannot self-authorize weakening of its own governance guardrail    | `ACTIVE`  | current GitHub workflow still participates in defining its own required check     |
-| SCM-002 | Provider-neutral enforcement policy is distinct from provider-native configuration  | `PLANNED` | GitHub ruleset/workflow semantics are still the authored enforcement shape        |
-| SCM-003 | Desired provider state is validated semantically rather than by text fragments only | `PARTIAL` | current GitHub checker mostly inspects strings and exact JSON fragments           |
-| SCM-004 | Human review bootstrap exception is explicit and temporary                          | `PARTIAL` | normative >=1 approval conflicts with current 0-approval bootstrap desired state  |
-| SCM-005 | Effective provider state is observed independently from desired configuration       | `PLANNED` | no provider-neutral live-state observer/evidence model                            |
-| SCM-006 | Reference-provider controls are installed and proven                                | `BLOCKED` | GitHub has no effective ruleset and the external trust boundary is not yet closed |
-| SCM-007 | Desired/effective enforcement drift is zero                                         | `BLOCKED` | requires observer, provider activation, and negative enforcement evidence         |
+| ID      | Invariant                                                                              | Status    | Current Gap                                                                       |
+| ------- | -------------------------------------------------------------------------------------- | --------- | --------------------------------------------------------------------------------- |
+| SCM-001 | Trust model rejects candidate-local state as sufficient governance guardrail authority | `ACTIVE`  | provider-neutral trust contract and negative proof are not yet qualified          |
+| SCM-002 | Provider-neutral enforcement policy is distinct from provider-native configuration     | `PLANNED` | GitHub ruleset/workflow semantics are still the authored enforcement shape        |
+| SCM-003 | Desired provider state is validated semantically rather than by text fragments only    | `PARTIAL` | current GitHub checker mostly inspects strings and exact JSON fragments           |
+| SCM-004 | Human review bootstrap exception is explicit and temporary                             | `PARTIAL` | normative >=1 approval conflicts with current 0-approval bootstrap desired state  |
+| SCM-005 | Effective provider state is observed independently from desired configuration          | `PLANNED` | no provider-neutral live-state observer/evidence model                            |
+| SCM-006 | Reference-provider controls are installed and proven                                   | `BLOCKED` | GitHub has no effective ruleset and the external trust boundary is not yet closed |
+| SCM-007 | Desired/effective enforcement drift is zero                                            | `BLOCKED` | requires observer, provider activation, and negative enforcement evidence         |
 
 ### Phase 10 Effective Enforcement Exit Evidence
 

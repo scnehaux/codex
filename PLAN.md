@@ -82,6 +82,7 @@ Never:
 The active branch is not merge-ready until the following sequence is green from a clean checkout:
 
 ```bash
+make scm-trust-boundary-check
 make github-policy-check
 make lint-code
 make lint-docs-format
@@ -274,10 +275,11 @@ A third repository is NOT required merely to support multiple SCM providers. Spl
 ### Acceptance
 
 - enforcement architecture has an explicit authority boundary
-- candidate guardrail changes cannot self-authorize
+- trust model rejects candidate-local repository state as sufficient guardrail authority
 - provider-specific controls are outside core semantic authority
 - enforcement boundary has negative tests
 - GitHub can act as the first reference provider without becoming a Codex core dependency
+- design-time trust validation MUST NOT be reported as proof of effective provider enforcement; activation evidence remains Slice 10.10
 
 ---
 
