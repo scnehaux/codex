@@ -182,7 +182,7 @@ def audit_github_projection(
     )
     _check(
         pull.get("require_code_owner_review")
-        is policy.review.require_code_owner_review,
+        is policy.review.effective_require_qualified_owner_approval,
         "code-owner-review-projection-mismatch",
         "GitHub code-owner review behavior does not match SCM policy",
         findings,
@@ -195,7 +195,8 @@ def audit_github_projection(
         findings,
     )
     _check(
-        pull.get("required_approving_review_count") == policy.review.required_approvals,
+        pull.get("required_approving_review_count")
+        == policy.review.effective_required_approvals,
         "approval-count-projection-mismatch",
         "GitHub approval count does not match SCM policy",
         findings,

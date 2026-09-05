@@ -1397,22 +1397,25 @@ controls:
   source_gdc: GDC-003
   source_file: GDC-003-review-process.md
   source_clause: Architecture Review Process > 3. The Git Workflow & Access Control > 3.2 Branch Protection & Merge Rules
-  source_fingerprint: ab1e6bd9c730
+  source_fingerprint: b49213592d4e
   modality: MUST
   statement: 'The Human Gate (Lead Approval): Because architecture documentation acts as a binding contract, standard "Peer
-    Review" is insufficient. Every Pull Request must be explicitly approved by the Lead of the respective owning team according
-    to the following matrix. CRITICAL: This must be enforced via GitHub Branch Protection Rules requiring at least 1 review
-    from a CODEOWNERS matched team.'
+    Review" is insufficient. The normative target is at least 1 independent governed approval by the Lead of the respective
+    owning team according to the following matrix. SCM provider enforcement MUST project this requirement without becoming
+    the semantic authority.'
   scope: review-process
   severity: ERROR
-  enforcement_mode: repository-control
+  enforcement_mode: automated
   implementation:
-  - GitHub repository ruleset / branch protection
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: effective repository ruleset evidence and negative enforcement test
-  control_owner: Repository Governance Authority
-  target_phase: Phase 9 Effective GitHub Enforcement
+  - governance/scm/enforcement-policy.yaml
+  - engine/control/governance/scm_policy.py
+  - engine/adapters/scm/github.py
+  test_evidence:
+  - tests/control/governance/test_scm_policy.py
+  - tests/adapters/scm/test_github.py
+  - tests/scripts/test_scm_policy_check.py
+  evidence_status: verified
+  evidence_expectation: provider-neutral review target is validated and provider projection preserves semantic authority
 - control_id: CTRL-GDC-003-008
   source_gdc: GDC-003
   source_file: GDC-003-review-process.md
@@ -1613,6 +1616,29 @@ controls:
   evidence_expectation: auditable process record or approval artifact
   control_owner: Governance Process Authority
   target_phase: Phase 8 Process Governance Hardening
+- control_id: CTRL-GDC-003-019
+  source_gdc: GDC-003
+  source_file: GDC-003-review-process.md
+  source_clause: Architecture Review Process > 3. The Git Workflow & Access Control > 3.2 Branch Protection & Merge Rules
+  source_fingerprint: 76ab39bffeaa
+  modality: MUST
+  statement: 'Bootstrap exception: The exception MUST be explicit, retain the Pull Request path and all machine gates, and
+    expire when the independent qualified reviewer count reaches 2. While fewer than 2 independent qualified reviewers are
+    available, the provider-neutral SCM policy may temporarily project 0 mandatory approvals and disable mandatory code-owner
+    approval. The provider adapter MUST NOT invent, broaden, or silently retain this exception.'
+  scope: review-process
+  severity: CRITICAL
+  enforcement_mode: automated
+  implementation:
+  - governance/scm/enforcement-policy.yaml
+  - engine/control/governance/scm_policy.py
+  - engine/adapters/scm/github.py
+  test_evidence:
+  - tests/control/governance/test_scm_policy.py
+  - tests/adapters/scm/test_github.py
+  - tests/scripts/test_scm_policy_check.py
+  evidence_status: verified
+  evidence_expectation: bootstrap review exception is explicit, temporary, exit-bound, and projected from provider-neutral policy
 - control_id: CTRL-GDC-004-001
   source_gdc: GDC-004
   source_file: GDC-004-tech-lifecycle.md

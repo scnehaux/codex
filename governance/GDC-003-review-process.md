@@ -3,7 +3,7 @@ doc_meta:
   id: GDC-003
   title: Architecture Review Process
   owner: Architecture Authority
-  version: 0.1.0
+  version: 0.2.0
   status: draft
   classification: public
   governed_by: [GDC-000]
@@ -127,7 +127,9 @@ This canonical repository (`scnehaux/codex`) follows a simplified Trunk-Based De
 Every Pull Request targeting `main` must satisfy the following algorithmic and human gates:
 
 1. **The Machine Gate (GDC-001)**: The CI/CD Linter must return an `Exit 0`. If the linter fails, the Pull Request is hard-blocked.
-2. **The Human Gate (Lead Approval)**: Because architecture documentation acts as a binding contract, standard "Peer Review" is insufficient. Every Pull Request must be explicitly approved by the **Lead** of the respective owning team according to the following matrix. **CRITICAL:** This must be enforced via GitHub Branch Protection Rules requiring at least 1 review from a `CODEOWNERS` matched team.
+2. **The Human Gate (Lead Approval)**: Because architecture documentation acts as a binding contract, standard "Peer Review" is insufficient. The normative target is at least **1 independent governed approval** by the **Lead** of the respective owning team according to the following matrix. SCM provider enforcement MUST project this requirement without becoming the semantic authority.
+
+   **Bootstrap exception:** The exception MUST be explicit, retain the Pull Request path and all machine gates, and expire when the independent qualified reviewer count reaches 2. While fewer than 2 independent qualified reviewers are available, the provider-neutral SCM policy may temporarily project **0 mandatory approvals** and disable mandatory code-owner approval. The provider adapter MUST NOT invent, broaden, or silently retain this exception.
 
 | Document Type              | Target Scope        | Required Lead Approver (PR Reviewer)                                        |
 | :------------------------- | :------------------ | :-------------------------------------------------------------------------- |

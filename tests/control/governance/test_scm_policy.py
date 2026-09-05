@@ -30,6 +30,16 @@ def test_current_policy_loads_as_immutable_typed_contract():
     policy = load_scm_enforcement_policy(REPOSITORY_ROOT)
     assert policy.default_branch.selector == "default"
     assert policy.merge.allowed_methods == ("squash",)
+    assert policy.review.normative_target.minimum_independent_approvals == 1
+    assert policy.review.normative_target.require_qualified_owner_approval is True
+    assert policy.review.bootstrap_exception.active is True
+    assert policy.review.effective_required_approvals == 0
+    assert policy.review.effective_require_qualified_owner_approval is False
+    assert policy.review.bootstrap_exception.exit_condition.signal == (
+        "independent-qualified-reviewer-count"
+    )
+    assert policy.review.bootstrap_exception.exit_condition.operator == "gte"
+    assert policy.review.bootstrap_exception.exit_condition.value == 2
     assert policy.qualification.candidate.context == "Governance Qualification"
     assert (
         policy.qualification.external_authority.context == "Codex Governance Authority"
@@ -41,7 +51,7 @@ def test_current_policy_loads_as_immutable_typed_contract():
 @pytest.mark.parametrize(
     "mutator",
     (
-        lambda data: data.__setitem__("contract_version", 2),
+        lambda data: data.__setitem__("contract_version", 3),
         lambda data: data.__setitem__("kind", "github-ruleset"),
         lambda data: data.__setitem__("provider_neutral", False),
         lambda data: data.__setitem__("extra", True),
@@ -52,7 +62,22 @@ def test_current_policy_loads_as_immutable_typed_contract():
         lambda data: data["merge"].__setitem__("allowed_methods", []),
         lambda data: data["merge"].__setitem__("allowed_methods", ["squash", "squash"]),
         lambda data: data.__setitem__("review", []),
-        lambda data: data["review"].__setitem__("required_approvals", -1),
+        lambda data: data["review"]["normative_target"].__setitem__(
+            "minimum_independent_approvals", 0
+        ),
+        lambda data: data["review"]["bootstrap_exception"].__setitem__(
+            "required_approvals", -1
+        ),
+        lambda data: data["review"]["bootstrap_exception"].__setitem__(
+            "required_approvals", 1
+        ),
+        lambda data: data["review"]["bootstrap_exception"].__setitem__("reason", ""),
+        lambda data: data["review"]["bootstrap_exception"].__setitem__(
+            "exit_condition", []
+        ),
+        lambda data: data["review"]["bootstrap_exception"][
+            "exit_condition"
+        ].__setitem__("value", 0),
         lambda data: data.__setitem__("bypass", []),
         lambda data: data.__setitem__("qualification", []),
         lambda data: data["qualification"].__setitem__("candidate", []),

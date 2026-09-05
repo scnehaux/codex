@@ -12,16 +12,17 @@ This index documents the test suite utilities and fixtures.
 
 ### `tests/adapters/scm/test_github.py`
 
-| Function                                                           | Description               |
-| :----------------------------------------------------------------- | :------------------------ |
-| **\_copy**                                                         | _(No docstring provided)_ |
-| **\_codes**                                                        | _(No docstring provided)_ |
-| **test_current_github_projection_matches_provider_neutral_policy** | _(No docstring provided)_ |
-| **test_ruleset_projection_drift_is_detected**                      | _(No docstring provided)_ |
-| **test_workflow_is_validated_structurally_not_by_comments**        | _(No docstring provided)_ |
-| **test_candidate_workflow_cannot_emit_external_authority_job**     | _(No docstring provided)_ |
-| **test_authority_binding_and_codeowners_projection_drift**         | _(No docstring provided)_ |
-| **test_malformed_provider_state_fails_closed**                     | _(No docstring provided)_ |
+| Function                                                            | Description               |
+| :------------------------------------------------------------------ | :------------------------ |
+| **\_copy**                                                          | _(No docstring provided)_ |
+| **\_codes**                                                         | _(No docstring provided)_ |
+| **test_current_github_projection_matches_provider_neutral_policy**  | _(No docstring provided)_ |
+| **test_active_bootstrap_review_exception_projects_effective_state** | _(No docstring provided)_ |
+| **test_ruleset_projection_drift_is_detected**                       | _(No docstring provided)_ |
+| **test_workflow_is_validated_structurally_not_by_comments**         | _(No docstring provided)_ |
+| **test_candidate_workflow_cannot_emit_external_authority_job**      | _(No docstring provided)_ |
+| **test_authority_binding_and_codeowners_projection_drift**          | _(No docstring provided)_ |
+| **test_malformed_provider_state_fails_closed**                      | _(No docstring provided)_ |
 
 ### `tests/control/auditors/test_dependency_scanner.py`
 

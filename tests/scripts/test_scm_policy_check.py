@@ -16,8 +16,14 @@ def _load():
     return module
 
 
-def test_current_repository_policy_passes():
+def test_current_repository_policy_passes(capsys):
     assert _load().main() == 0
+    output = capsys.readouterr().out
+    assert "review target: >=1 independent governed approval" in output
+    assert (
+        "review effective: 0 mandatory approvals (bootstrap exception active)" in output
+    )
+    assert "independent-qualified-reviewer-count gte 2" in output
 
 
 def test_policy_failure_is_reported(monkeypatch, capsys):

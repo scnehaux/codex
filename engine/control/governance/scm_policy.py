@@ -29,12 +29,46 @@ class MergePolicy:
 
 
 @dataclass(frozen=True, slots=True)
-class ReviewPolicy:
+class ReviewTargetPolicy:
+    minimum_independent_approvals: int
+    require_qualified_owner_approval: bool
+
+
+@dataclass(frozen=True, slots=True)
+class ReviewBootstrapExitCondition:
+    signal: str
+    operator: str
+    value: int
+
+
+@dataclass(frozen=True, slots=True)
+class ReviewBootstrapExceptionPolicy:
+    active: bool
     required_approvals: int
+    require_qualified_owner_approval: bool
+    reason: str
+    exit_condition: ReviewBootstrapExitCondition
+
+
+@dataclass(frozen=True, slots=True)
+class ReviewPolicy:
+    normative_target: ReviewTargetPolicy
+    bootstrap_exception: ReviewBootstrapExceptionPolicy
     dismiss_stale_on_push: bool
-    require_code_owner_review: bool
     require_last_push_approval: bool
     require_thread_resolution: bool
+
+    @property
+    def effective_required_approvals(self) -> int:
+        if self.bootstrap_exception.active:
+            return self.bootstrap_exception.required_approvals
+        return self.normative_target.minimum_independent_approvals
+
+    @property
+    def effective_require_qualified_owner_approval(self) -> bool:
+        if self.bootstrap_exception.active:
+            return self.bootstrap_exception.require_qualified_owner_approval
+        return self.normative_target.require_qualified_owner_approval
 
 
 @dataclass(frozen=True, slots=True)
@@ -120,6 +154,12 @@ def _nonnegative_int(value: object, path: str) -> int:
     return value
 
 
+def _positive_int(value: object, path: str) -> int:
+    if type(value) is not int or value < 1:
+        raise SCMPolicyError(f"{path} must be a positive integer")
+    return value
+
+
 def _string_tuple(value: object, path: str) -> tuple[str, ...]:
     if not isinstance(value, list) or not value:
         raise SCMPolicyError(f"{path} must be a non-empty list")
@@ -153,8 +193,8 @@ def load_scm_enforcement_policy(repo_root: str | Path) -> SCMEnforcementPolicy:
         },
         "policy",
     )
-    if root["contract_version"] != 1:
-        raise SCMPolicyError("contract_version must be 1")
+    if root["contract_version"] != 2:
+        raise SCMPolicyError("contract_version must be 2")
     if root["kind"] != "scm-enforcement-policy":
         raise SCMPolicyError("kind must be scm-enforcement-policy")
     if root["provider_neutral"] is not True:
@@ -180,14 +220,57 @@ def load_scm_enforcement_policy(repo_root: str | Path) -> SCMEnforcementPolicy:
     _keys(
         review,
         {
-            "required_approvals",
+            "normative_target",
+            "bootstrap_exception",
             "dismiss_stale_on_push",
-            "require_code_owner_review",
             "require_last_push_approval",
             "require_thread_resolution",
         },
         "review",
     )
+    review_target = _mapping(review["normative_target"], "review.normative_target")
+    _keys(
+        review_target,
+        {"minimum_independent_approvals", "require_qualified_owner_approval"},
+        "review.normative_target",
+    )
+    review_exception = _mapping(
+        review["bootstrap_exception"],
+        "review.bootstrap_exception",
+    )
+    _keys(
+        review_exception,
+        {
+            "active",
+            "required_approvals",
+            "require_qualified_owner_approval",
+            "reason",
+            "exit_condition",
+        },
+        "review.bootstrap_exception",
+    )
+    review_exit = _mapping(
+        review_exception["exit_condition"],
+        "review.bootstrap_exception.exit_condition",
+    )
+    _keys(
+        review_exit,
+        {"signal", "operator", "value"},
+        "review.bootstrap_exception.exit_condition",
+    )
+
+    target_approvals = _positive_int(
+        review_target["minimum_independent_approvals"],
+        "review.normative_target.minimum_independent_approvals",
+    )
+    exception_approvals = _nonnegative_int(
+        review_exception["required_approvals"],
+        "review.bootstrap_exception.required_approvals",
+    )
+    if exception_approvals >= target_approvals:
+        raise SCMPolicyError(
+            "active bootstrap exception must reduce the normative approval requirement"
+        )
 
     bypass = _mapping(root["bypass"], "bypass")
     _keys(bypass, {"allowed"}, "bypass")
@@ -257,17 +340,45 @@ def load_scm_enforcement_policy(repo_root: str | Path) -> SCMEnforcementPolicy:
             ),
         ),
         review=ReviewPolicy(
-            required_approvals=_nonnegative_int(
-                review["required_approvals"],
-                "review.required_approvals",
+            normative_target=ReviewTargetPolicy(
+                minimum_independent_approvals=target_approvals,
+                require_qualified_owner_approval=_bool(
+                    review_target["require_qualified_owner_approval"],
+                    "review.normative_target.require_qualified_owner_approval",
+                ),
+            ),
+            bootstrap_exception=ReviewBootstrapExceptionPolicy(
+                active=_bool(
+                    review_exception["active"],
+                    "review.bootstrap_exception.active",
+                ),
+                required_approvals=exception_approvals,
+                require_qualified_owner_approval=_bool(
+                    review_exception["require_qualified_owner_approval"],
+                    "review.bootstrap_exception.require_qualified_owner_approval",
+                ),
+                reason=_string(
+                    review_exception["reason"],
+                    "review.bootstrap_exception.reason",
+                ),
+                exit_condition=ReviewBootstrapExitCondition(
+                    signal=_string(
+                        review_exit["signal"],
+                        "review.bootstrap_exception.exit_condition.signal",
+                    ),
+                    operator=_string(
+                        review_exit["operator"],
+                        "review.bootstrap_exception.exit_condition.operator",
+                    ),
+                    value=_positive_int(
+                        review_exit["value"],
+                        "review.bootstrap_exception.exit_condition.value",
+                    ),
+                ),
             ),
             dismiss_stale_on_push=_bool(
                 review["dismiss_stale_on_push"],
                 "review.dismiss_stale_on_push",
-            ),
-            require_code_owner_review=_bool(
-                review["require_code_owner_review"],
-                "review.require_code_owner_review",
             ),
             require_last_push_approval=_bool(
                 review["require_last_push_approval"],

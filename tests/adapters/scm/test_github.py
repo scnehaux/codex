@@ -40,6 +40,29 @@ def test_current_github_projection_matches_provider_neutral_policy():
     assert report.ok
 
 
+def test_active_bootstrap_review_exception_projects_effective_state():
+    policy = load_scm_enforcement_policy(REPOSITORY_ROOT)
+    assert policy.review.normative_target.minimum_independent_approvals >= 1
+    assert policy.review.bootstrap_exception.active is True
+    assert policy.review.effective_required_approvals == 0
+    assert policy.review.effective_require_qualified_owner_approval is False
+
+    ruleset = json.loads(
+        (REPOSITORY_ROOT / "governance/github/main-ruleset.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    pull = next(rule for rule in ruleset["rules"] if rule["type"] == "pull_request")
+    assert (
+        pull["parameters"]["required_approving_review_count"]
+        == policy.review.effective_required_approvals
+    )
+    assert (
+        pull["parameters"]["require_code_owner_review"]
+        is policy.review.effective_require_qualified_owner_approval
+    )
+
+
 def test_ruleset_projection_drift_is_detected(tmp_path):
     root = _copy(tmp_path)
     path = root / "governance/github/main-ruleset.json"

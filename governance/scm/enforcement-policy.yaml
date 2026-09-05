@@ -1,4 +1,4 @@
-contract_version: 1
+contract_version: 2
 kind: scm-enforcement-policy
 provider_neutral: true
 default_branch:
@@ -11,9 +11,19 @@ merge:
   allowed_methods:
   - squash
 review:
-  required_approvals: 0
+  normative_target:
+    minimum_independent_approvals: 1
+    require_qualified_owner_approval: true
+  bootstrap_exception:
+    active: true
+    required_approvals: 0
+    require_qualified_owner_approval: false
+    reason: insufficient-independent-qualified-reviewers
+    exit_condition:
+      signal: independent-qualified-reviewer-count
+      operator: gte
+      value: 2
   dismiss_stale_on_push: true
-  require_code_owner_review: false
   require_last_push_approval: false
   require_thread_resolution: true
 bypass:

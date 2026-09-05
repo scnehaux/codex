@@ -381,6 +381,10 @@ scm_desired_state_semantics:
   - provider-adapters-project-policy-without-redefining-semantics
   - desired-state-validation-is-distinct-from-live-state-observation
   - github-is-reference-adapter-and-gitlab-remains-extension-point
+  - normative-review-target-requires-independent-governed-approval
+  - bootstrap-review-exception-is-explicit-and-provider-neutral
+  - bootstrap-review-exception-has-structured-deterministic-exit-condition
+  - provider-projections-consume-effective-review-state-without-owning-exception-semantics
 
 github_reference_enforcement:
   provider: github

@@ -140,15 +140,15 @@ Hard boundaries:
 
 ## 3.3 Effective Enforcement Ledger
 
-| ID      | Invariant                                                                              | Status    | Current Gap                                                                                    |
-| ------- | -------------------------------------------------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------- |
-| SCM-001 | Trust model rejects candidate-local state as sufficient governance guardrail authority | `ACTIVE`  | trust contract and negative proof qualified; external authority identity/runtime not yet bound |
-| SCM-002 | Provider-neutral enforcement policy is distinct from provider-native configuration     | `DONE`    | authored SCM policy is semantic authority; GitHub configuration is a provider projection       |
-| SCM-003 | Desired provider state is validated semantically rather than by text fragments only    | `DONE`    | structured fail-closed semantic and GitHub projection validation are qualified                 |
-| SCM-004 | Human review bootstrap exception is explicit and temporary                             | `PARTIAL` | normative >=1 approval conflicts with current 0-approval bootstrap desired state               |
-| SCM-005 | Effective provider state is observed independently from desired configuration          | `PLANNED` | no provider-neutral live-state observer/evidence model                                         |
-| SCM-006 | Reference-provider controls are installed and proven                                   | `BLOCKED` | GitHub has no effective ruleset and the external trust boundary is not yet closed              |
-| SCM-007 | Desired/effective enforcement drift is zero                                            | `BLOCKED` | requires observer, provider activation, and negative enforcement evidence                      |
+| ID      | Invariant                                                                              | Status    | Current Gap                                                                                           |
+| ------- | -------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------- |
+| SCM-001 | Trust model rejects candidate-local state as sufficient governance guardrail authority | `ACTIVE`  | trust contract and negative proof qualified; external authority identity/runtime not yet bound        |
+| SCM-002 | Provider-neutral enforcement policy is distinct from provider-native configuration     | `DONE`    | authored SCM policy is semantic authority; GitHub configuration is a provider projection              |
+| SCM-003 | Desired provider state is validated semantically rather than by text fragments only    | `DONE`    | structured fail-closed semantic and GitHub projection validation are qualified                        |
+| SCM-004 | Human review bootstrap exception is explicit and temporary                             | `DONE`    | provider-neutral bootstrap exception, deterministic exit condition, and provider projection qualified |
+| SCM-005 | Effective provider state is observed independently from desired configuration          | `PLANNED` | no provider-neutral live-state observer/evidence model                                                |
+| SCM-006 | Reference-provider controls are installed and proven                                   | `BLOCKED` | GitHub has no effective ruleset and the external trust boundary is not yet closed                     |
+| SCM-007 | Desired/effective enforcement drift is zero                                            | `BLOCKED` | requires observer, provider activation, and negative enforcement evidence                             |
 
 ### Phase 10 Effective Enforcement Exit Evidence
 
@@ -293,7 +293,7 @@ STAB-001..005 Internal Stabilization                         DONE
 → SCM-001 Trust Boundary                                    ACTIVE
 → SCM-002 Provider-Neutral Enforcement Contract             DONE
 → SCM-003 Desired-State Semantic Validation                  DONE
-→ SCM-004 Review Bootstrap Exception                         PARTIAL
+→ SCM-004 Review Bootstrap Exception                         DONE
 → SCM-005 Live-State Observer                               PLANNED
 → SCM-006 Reference-Provider Activation + Negative Evidence BLOCKED
 → SCM-007 Drift Closure                                     BLOCKED

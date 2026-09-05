@@ -212,16 +212,19 @@ This index documents the internal functions and classes of the Fitness Function 
 
 ### `engine/control/governance/scm_policy.py`
 
-| Function                          | Description               |
-| :-------------------------------- | :------------------------ |
-| **\_mapping**                     | _(No docstring provided)_ |
-| **\_keys**                        | _(No docstring provided)_ |
-| **\_string**                      | _(No docstring provided)_ |
-| **\_bool**                        | _(No docstring provided)_ |
-| **\_nonnegative_int**             | _(No docstring provided)_ |
-| **\_string_tuple**                | _(No docstring provided)_ |
-| **load_scm_enforcement_policy**   | _(No docstring provided)_ |
-| **assert_scm_enforcement_policy** | _(No docstring provided)_ |
+| Function                                                    | Description               |
+| :---------------------------------------------------------- | :------------------------ |
+| **ReviewPolicy.effective_required_approvals**               | _(No docstring provided)_ |
+| **ReviewPolicy.effective_require_qualified_owner_approval** | _(No docstring provided)_ |
+| **\_mapping**                                               | _(No docstring provided)_ |
+| **\_keys**                                                  | _(No docstring provided)_ |
+| **\_string**                                                | _(No docstring provided)_ |
+| **\_bool**                                                  | _(No docstring provided)_ |
+| **\_nonnegative_int**                                       | _(No docstring provided)_ |
+| **\_positive_int**                                          | _(No docstring provided)_ |
+| **\_string_tuple**                                          | _(No docstring provided)_ |
+| **load_scm_enforcement_policy**                             | _(No docstring provided)_ |
+| **assert_scm_enforcement_policy**                           | _(No docstring provided)_ |
 
 ### `engine/control/governance/scm_trust.py`
 
