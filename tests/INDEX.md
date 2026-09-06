@@ -24,6 +24,18 @@ This index documents the test suite utilities and fixtures.
 | **test_authority_binding_and_codeowners_projection_drift**          | _(No docstring provided)_ |
 | **test_malformed_provider_state_fails_closed**                      | _(No docstring provided)_ |
 
+### `tests/adapters/scm/test_github_live.py`
+
+| Function                                                       | Description               |
+| :------------------------------------------------------------- | :------------------------ |
+| **\_detail**                                                   | _(No docstring provided)_ |
+| **test_find_ruleset_summary_is_strict**                        | _(No docstring provided)_ |
+| **test_normalized_ruleset_matches_current_effective_policy**   | _(No docstring provided)_ |
+| **test_absent_ruleset_is_observed_not_installed_and_drifted**  | _(No docstring provided)_ |
+| **test_inaccessible_rulesets_are_unknown_not_absent**          | _(No docstring provided)_ |
+| **test_aligned_live_ruleset_has_zero_semantic_drift**          | _(No docstring provided)_ |
+| **test_github_live_fail_closed_and_partial_observation_paths** | _(No docstring provided)_ |
+
 ### `tests/control/auditors/test_dependency_scanner.py`
 
 | Function                                      | Description               |
@@ -357,6 +369,17 @@ This index documents the test suite utilities and fixtures.
 | :---------------------------------------------------- | :------------------------ |
 | **test_repository_declares_canonical_lf_text_policy** | _(No docstring provided)_ |
 | **test_genesis_bootstrap_allows_gitattributes**       | _(No docstring provided)_ |
+
+### `tests/control/governance/test_scm_observer.py`
+
+| Function                                                         | Description               |
+| :--------------------------------------------------------------- | :------------------------ |
+| **test_desired_effective_policy_is_provider_neutral_projection** | _(No docstring provided)_ |
+| **test_compare_effective_policy_reports_only_changed_fields**    | _(No docstring provided)_ |
+| **test_live_evidence_distinguishes_not_installed_from_unknown**  | _(No docstring provided)_ |
+| **test_invalid_installed_evidence_fails_closed**                 | _(No docstring provided)_ |
+| **test_evidence_dict_materializes_drift_state**                  | _(No docstring provided)_ |
+| **test_validation_error_paths_are_covered**                      | _(No docstring provided)_ |
 
 ### `tests/control/governance/test_scm_policy.py`
 
@@ -1075,6 +1098,14 @@ This index documents the test suite utilities and fixtures.
 | **test_genesis_integrity_entrypoint_is_thin_adapter**              | _(No docstring provided)_ |
 | **test_genesis_integrity_entrypoint_returns_nonzero_on_failure**   | _(No docstring provided)_ |
 | **test_genesis_integrity_entrypoint_runs_as_direct_python_script** | _(No docstring provided)_ |
+
+### `tests/scripts/test_github_live_state_observe.py`
+
+| Function                                                            | Description               |
+| :------------------------------------------------------------------ | :------------------------ |
+| **\_load**                                                          | _(No docstring provided)_ |
+| **test_main_reports_observed_drift_without_claiming_effectiveness** | _(No docstring provided)_ |
+| **test_main_json_reports_unknown_state**                            | _(No docstring provided)_ |
 
 ### `tests/scripts/test_github_policy_check.py`
 

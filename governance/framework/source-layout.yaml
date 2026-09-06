@@ -321,6 +321,16 @@ governance_qualification:
       test_evidence:
       - tests/control/governance/test_scm_policy.py
       - tests/scripts/test_scm_policy_check.py
+    scm_live_state_observation:
+      policy_ref: scm_live_state_observation
+      implementation:
+      - engine/control/governance/scm_observer.py
+      - engine/adapters/scm/github_live.py
+      - scripts/github_live_state_observe.py
+      test_evidence:
+      - tests/control/governance/test_scm_observer.py
+      - tests/adapters/scm/test_github_live.py
+      - tests/scripts/test_github_live_state_observe.py
     github_reference_enforcement:
       policy_ref: github_reference_enforcement
       implementation:
@@ -385,6 +395,20 @@ scm_desired_state_semantics:
   - bootstrap-review-exception-is-explicit-and-provider-neutral
   - bootstrap-review-exception-has-structured-deterministic-exit-condition
   - provider-projections-consume-effective-review-state-without-owning-exception-semantics
+
+scm_live_state_observation:
+  authority: engine/control/governance/scm_observer.py
+  provider_neutral: true
+  reference_adapter: engine/adapters/scm/github_live.py
+  invocation: scripts/github_live_state_observe.py
+  contract:
+  - desired-state-and-observed-state-are-distinct
+  - provider-observation-is-read-only
+  - inaccessible-provider-state-is-unknown-not-absent
+  - provider-native-state-is-normalized-before-semantic-comparison
+  - observed-provider-state-records-provider-repository-revision-and-time
+  - drift-is-derived-from-desired-versus-observed-semantics
+  - observed-active-configuration-does-not-prove-negative-enforcement-behavior
 
 github_reference_enforcement:
   provider: github

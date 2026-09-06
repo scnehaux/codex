@@ -17,6 +17,7 @@ REQUIRED_CONTROL_KEYS = frozenset(
         "scm_enforcement_trust_boundary",
         "scm_desired_state_semantics",
         "github_reference_enforcement",
+        "scm_live_state_observation",
     }
 )
 TEMPORARY_PATTERNS = ("phase*.py", "slice5_*.py")
@@ -421,6 +422,13 @@ def audit_governance_readiness(
                 makefile_text,
                 "github-policy-check",
                 "scripts/github_policy_check.py",
+            )
+        )
+        findings.extend(
+            _makefile_target_findings(
+                makefile_text,
+                "github-live-state-observe",
+                "scripts/github_live_state_observe.py",
             )
         )
 

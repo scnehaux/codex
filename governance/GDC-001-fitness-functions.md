@@ -3,7 +3,7 @@ doc_meta:
   id: GDC-001
   title: Architecture Fitness Functions & Compliance Engine
   owner: Architecture Authority
-  version: 0.1.2
+  version: 0.1.3
   status: draft
   classification: public
   governed_by: [GDC-000]
@@ -90,7 +90,8 @@ codex/
 │   ├── engine/                  # (Product runtime)
 │   │   ├── adapters/
 │   │   │   └── scm/
-│   │   │       └── github.py
+│   │   │       ├── github.py
+│   │   │       └── github_live.py
 │   │   ├── control/
 │   │   │   ├── auditors/          # (External environment validators)
 │   │   │   │   ├── dependency_scanner.py
@@ -117,6 +118,7 @@ codex/
 │   │   │   │   ├── mutation.py
 │   │   │   │   ├── readiness.py
 │   │   │   │   ├── relationships.py
+│   │   │   │   ├── scm_observer.py
 │   │   │   │   ├── scm_policy.py
 │   │   │   │   ├── scm_trust.py
 │   │   │   │   ├── severity_enforcement.py
@@ -193,6 +195,7 @@ codex/
 │   │   ├── committed_mutation_integrity.py
 │   │   ├── genesis_commit_qualify.py
 │   │   ├── genesis_integrity.py
+│   │   ├── github_live_state_observe.py
 │   │   ├── github_policy_check.py
 │   │   ├── governance_qualify.py
 │   │   ├── INDEX.md
@@ -205,7 +208,8 @@ codex/
 │   └── tests/                   # (Product test estate)
 │       ├── adapters/
 │       │   └── scm/
-│       │       └── test_github.py
+│       │       ├── test_github.py
+│       │       └── test_github_live.py
 │       ├── control/
 │       │   ├── auditors/         # (External environment validators)
 │       │   │   ├── test_dependency_scanner.py
@@ -231,6 +235,7 @@ codex/
 │       │   │   ├── test_readiness.py
 │       │   │   ├── test_relationships.py
 │       │   │   ├── test_repository_text_policy.py
+│       │   │   ├── test_scm_observer.py
 │       │   │   ├── test_scm_policy.py
 │       │   │   ├── test_scm_trust.py
 │       │   │   ├── test_severity_enforcement.py
@@ -310,6 +315,7 @@ codex/
 │       │   ├── test_committed_mutation_integrity.py
 │       │   ├── test_genesis_commit_qualify.py
 │       │   ├── test_genesis_integrity.py
+│       │   ├── test_github_live_state_observe.py
 │       │   ├── test_github_policy_check.py
 │       │   ├── test_governance_qualify.py
 │       │   ├── test_governance_scripts.py

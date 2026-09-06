@@ -1,4 +1,4 @@
-.PHONY: lint lint-code lint-docs-format lint-sarif format format-code format-docs test install install-hooks generate-docs verify-generated check-waivers all coverage docker-build docker-run clean genesis-check mutation-check governance-qualify genesis-commit-check mutation-ci-check scm-trust-boundary-check scm-policy-check github-policy-check
+.PHONY: lint lint-code lint-docs-format lint-sarif format format-code format-docs test install install-hooks generate-docs verify-generated check-waivers all coverage docker-build docker-run clean genesis-check mutation-check governance-qualify genesis-commit-check mutation-ci-check scm-trust-boundary-check scm-policy-check github-policy-check github-live-state-observe
 
 # Run all processes (setup, generate docs, linting, and testing)
 all: install install-hooks generate-docs lint test
@@ -116,3 +116,7 @@ scm-policy-check:
 # Validate GitHub projection of the provider-neutral SCM policy
 github-policy-check:
 	python scripts/github_policy_check.py
+
+# Observe live GitHub SCM state without mutating provider configuration
+github-live-state-observe:
+	python scripts/github_live_state_observe.py

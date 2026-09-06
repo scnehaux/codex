@@ -210,6 +210,16 @@ This index documents the internal functions and classes of the Fitness Function 
 | **dag_relation_specs_for_source**  | _(No docstring provided)_ |
 | **relationship_contract_findings** | _(No docstring provided)_ |
 
+### `engine/control/governance/scm_observer.py`
+
+| Function                             | Description               |
+| :----------------------------------- | :------------------------ |
+| **SCMLiveStateEvidence.drift_state** | _(No docstring provided)_ |
+| **desired_effective_policy**         | _(No docstring provided)_ |
+| **compare_effective_policy**         | _(No docstring provided)_ |
+| **validate_live_evidence**           | _(No docstring provided)_ |
+| **evidence_dict**                    | _(No docstring provided)_ |
+
 ### `engine/control/governance/scm_policy.py`
 
 | Function                                                    | Description               |

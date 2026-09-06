@@ -106,6 +106,7 @@ def test_current_repository_is_governance_ready():
         "genesis_integrity",
         "version_mutation_integrity",
         "scm_desired_state_semantics",
+        "scm_live_state_observation",
     }
 
 

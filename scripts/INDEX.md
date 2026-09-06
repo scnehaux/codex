@@ -36,6 +36,16 @@ This index documents the internal functions and classes of the CI/CD scripts.
 | :------- | :------------------------ |
 | **main** | _(No docstring provided)_ |
 
+### `scripts/github_live_state_observe.py`
+
+| Function                     | Description               |
+| :--------------------------- | :------------------------ |
+| **\_repository_from_origin** | _(No docstring provided)_ |
+| **\_get_json**               | _(No docstring provided)_ |
+| **\_revision**               | _(No docstring provided)_ |
+| **observe**                  | _(No docstring provided)_ |
+| **main**                     | _(No docstring provided)_ |
+
 ### `scripts/github_policy_check.py`
 
 | Function | Description               |
