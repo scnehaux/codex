@@ -6,6 +6,7 @@ import shutil
 import yaml
 
 from engine.adapters.scm.github import audit_github_projection
+from engine.adapters.scm.github_activation import build_github_activation_plan
 from engine.control.governance.scm_policy import load_scm_enforcement_policy
 from tests.support.repository import REPOSITORY_ROOT
 
@@ -38,6 +39,14 @@ def test_current_github_projection_matches_provider_neutral_policy():
     policy = load_scm_enforcement_policy(REPOSITORY_ROOT)
     report = audit_github_projection(REPOSITORY_ROOT, policy)
     assert report.ok
+
+    plan = build_github_activation_plan(REPOSITORY_ROOT, policy)
+    assert plan.ready is False
+    assert plan.ruleset_payload is None
+    assert {finding.code for finding in plan.blockers} == {
+        "authority-integration-id-unbound",
+        "authority-revision-unbound",
+    }
 
 
 def test_active_bootstrap_review_exception_projects_effective_state():
@@ -115,6 +124,52 @@ def test_authority_binding_and_codeowners_projection_drift(tmp_path):
     binding.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
     assert "authority-binding-projection-mismatch" in _codes(root)
 
+    policy = load_scm_enforcement_policy(root)
+    blocked = build_github_activation_plan(root, policy)
+    assert blocked.ready is False
+    assert "authority-binding-projection-mismatch" in {
+        finding.code for finding in blocked.blockers
+    }
+
+    ready_root = _copy(tmp_path / "ready")
+    ready_binding = ready_root / "governance/github/authority-binding.yaml"
+    ready_data = yaml.safe_load(ready_binding.read_text(encoding="utf-8"))
+    ready_data["authority"]["integration_id"] = 4242
+    ready_data["evaluator"]["authority_revision"] = "a" * 40
+    ready_binding.write_text(
+        yaml.safe_dump(ready_data, sort_keys=False), encoding="utf-8"
+    )
+    ready_policy = load_scm_enforcement_policy(ready_root)
+    plan = build_github_activation_plan(ready_root, ready_policy)
+    assert plan.ready is True
+    assert plan.integration_id == 4242
+    assert plan.authority_revision == "a" * 40
+    status = next(
+        rule
+        for rule in plan.ruleset_payload["rules"]
+        if rule["type"] == "required_status_checks"
+    )
+    assert status["parameters"]["required_status_checks"] == [
+        {"context": "Governance Qualification"},
+        {"context": "Codex Governance Authority", "integration_id": 4242},
+    ]
+
+    invalid_root = _copy(tmp_path / "invalid-activation")
+    invalid_binding = invalid_root / "governance/github/authority-binding.yaml"
+    invalid_data = yaml.safe_load(invalid_binding.read_text(encoding="utf-8"))
+    invalid_data["authority"]["integration_id"] = 4242
+    invalid_data["evaluator"]["authority_revision"] = "b" * 40
+    invalid_data["activation"]["state"] = "active"
+    invalid_binding.write_text(
+        yaml.safe_dump(invalid_data, sort_keys=False), encoding="utf-8"
+    )
+    invalid_policy = load_scm_enforcement_policy(invalid_root)
+    invalid_plan = build_github_activation_plan(invalid_root, invalid_policy)
+    assert invalid_plan.ready is False
+    assert {finding.code for finding in invalid_plan.blockers} == {
+        "activation-state-invalid"
+    }
+
     root = _copy(tmp_path / "owners")
     codeowners = root / ".github/CODEOWNERS"
     codeowners.write_text(
@@ -131,3 +186,8 @@ def test_malformed_provider_state_fails_closed(tmp_path):
     root = _copy(tmp_path)
     (root / "governance/github/main-ruleset.json").write_text("{", encoding="utf-8")
     assert "github-projection-load-failed" in _codes(root)
+
+    policy = load_scm_enforcement_policy(root)
+    plan = build_github_activation_plan(root, policy)
+    assert plan.ready is False
+    assert plan.blockers[0].code == "activation-source-load-failed"
