@@ -65,3 +65,41 @@ jobs:
         run: make mutation-ci-check
       - name: Qualify governance control plane
         run: make governance-qualify
+
+  version-repair:
+    if: github.event_name == 'pull_request'
+    name: One-time GDC Version Repair
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout PR head safely
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Bump governed projection version
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("governance/GDC-001-fitness-functions.md")
+          text = path.read_text(encoding="utf-8")
+          old = "  version: 0.1.3\n"
+          new = "  version: 0.1.4\n"
+          if old not in text:
+              raise SystemExit("expected GDC-001 version 0.1.3 not found")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
+      - name: Commit governed version bump
+        shell: bash
+        env:
+          GH_PUSH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add governance/GDC-001-fitness-functions.md
+          git commit -m "docs(governance): bump GDC-001 for projection update"
+          git remote set-url origin "https://x-access-token:${GH_PUSH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push origin "HEAD:${GITHUB_HEAD_REF}"
