@@ -1,11 +1,17 @@
 .PHONY: lint lint-code lint-docs-format lint-sarif format format-code format-docs test install install-hooks generate-docs verify-generated check-waivers all coverage docker-build docker-run clean genesis-check mutation-check governance-qualify genesis-commit-check mutation-ci-check scm-trust-boundary-check scm-policy-check github-policy-check github-live-state-observe
 
-# Run all processes (setup, generate docs, linting, and testing)
-all: install install-hooks generate-docs lint test
+# Run setup, generation, linting, and testing in order, including under make -j.
+# Separate recursive recipe lines preserve make flags and stop after a failed stage.
+all:
+	$(MAKE) install
+	$(MAKE) install-hooks
+	$(MAKE) generate-docs
+	$(MAKE) lint
+	$(MAKE) test
 
-# Install Python dependencies into the local environment
+# Install through the same Python used by runtime targets, applying repository pins.
 install:
-	pip install -e .[dev]
+	python -m pip install -c constraints.txt -e ".[dev]"
 
 # Install the Git hook script to block dirty/unformatted commits
 install-hooks:
