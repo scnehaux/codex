@@ -27,6 +27,9 @@ class SCMEffectivePolicy:
     candidate_check_required: bool
     candidate_check_context: str
     candidate_check_strict: bool
+    external_authority_check_required: bool
+    external_authority_check_context: str
+    external_authority_source_bound: bool
     bypass_allowed: bool
 
 
@@ -51,6 +54,7 @@ class SCMLiveStateEvidence:
 
 
 def desired_effective_policy(policy: SCMEnforcementPolicy) -> SCMEffectivePolicy:
+    external_required = policy.qualification.external_authority.required
     return SCMEffectivePolicy(
         changes_require_review=policy.default_branch.changes_require_review,
         deletion_allowed=policy.default_branch.deletion_allowed,
@@ -69,6 +73,11 @@ def desired_effective_policy(policy: SCMEnforcementPolicy) -> SCMEffectivePolicy
         candidate_check_strict=(
             policy.qualification.candidate.strict_against_latest_base
         ),
+        external_authority_check_required=external_required,
+        external_authority_check_context=(
+            policy.qualification.external_authority.context if external_required else ""
+        ),
+        external_authority_source_bound=external_required,
         bypass_allowed=policy.bypass.allowed,
     )
 
