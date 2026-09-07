@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+from copy import deepcopy
 import json
 import shutil
 
+import pytest
 import yaml
 
 from engine.adapters.scm.github import audit_github_projection
@@ -83,7 +85,47 @@ def test_ruleset_projection_drift_is_detected(tmp_path):
     assert "force-push-projection-mismatch" in _codes(root)
 
 
-def test_workflow_is_validated_structurally_not_by_comments(tmp_path):
+@pytest.mark.parametrize("helper_first", [False, True])
+@pytest.mark.parametrize(
+    "scenario",
+    [
+        "baseline",
+        "explicit-read",
+        "helper-none",
+        "helper-empty-permissions",
+        "helper-read-all",
+        "explicit-success",
+        "job-write",
+        "helper-write",
+        "helper-write-all",
+        "job-empty-permissions",
+        "job-malformed-permissions",
+        "job-skipped",
+        "job-ignores-failure",
+        "job-depends-on-skipped-helper",
+        "mutation-skipped",
+        "qualification-ignores-failure",
+        "mutation-in-helper",
+        "qualification-in-helper",
+        "checkout-in-helper",
+        "python-in-helper",
+        "node-in-helper",
+        "unsafe-checkout-before-safe",
+        "shallow-checkout-before-safe",
+        "unpinned-checkout-before-safe",
+        "unpinned-python-before-safe",
+        "unpinned-node-before-safe",
+        "unsafe-helper-checkout",
+        "shallow-helper-checkout",
+        "job-malformed-steps",
+        "job-malformed-step",
+        "helper-malformed-job",
+        "conditional-checkout",
+    ],
+)
+def test_workflow_is_validated_structurally_not_by_comments(
+    tmp_path, scenario, helper_first
+):
     root = _copy(tmp_path)
     path = root / ".github/workflows/governance.yml"
     text = path.read_text(encoding="utf-8")
@@ -97,6 +139,174 @@ def test_workflow_is_validated_structurally_not_by_comments(tmp_path):
         encoding="utf-8",
     )
     assert "workflow-pr-trigger-projection-mismatch" in _codes(root)
+
+    workflow = yaml.load(text, Loader=yaml.BaseLoader)
+    job = workflow["jobs"]["qualification"]
+    checkout, python, node = job["steps"][:3]
+    mutation = next(
+        step for step in job["steps"] if step.get("run") == "make mutation-ci-check"
+    )
+    qualification = next(
+        step for step in job["steps"] if step.get("run") == "make governance-qualify"
+    )
+    helper = {
+        "name": "Supplemental check",
+        "runs-on": "ubuntu-24.04",
+        "if": "false",
+        "steps": [deepcopy(checkout)],
+    }
+    jobs = {"qualification": job, "helper": helper}
+    workflow["jobs"] = dict(reversed(tuple(jobs.items()))) if helper_first else jobs
+
+    mutations = {
+        "baseline": (helper, "if", "false", None),
+        "explicit-read": (job, "permissions", {"contents": "read"}, None),
+        "helper-none": (helper, "permissions", {"contents": "none"}, None),
+        "helper-empty-permissions": (helper, "permissions", {}, None),
+        "helper-read-all": (helper, "permissions", "read-all", None),
+        "explicit-success": (job, "if", "${{ success() }}", None),
+        "job-write": (
+            job,
+            "permissions",
+            {"contents": "write"},
+            "job-permission-projection-mismatch",
+        ),
+        "helper-write": (
+            helper,
+            "permissions",
+            {"contents": "write"},
+            "job-permission-projection-mismatch",
+        ),
+        "helper-write-all": (
+            helper,
+            "permissions",
+            "write-all",
+            "job-permission-projection-mismatch",
+        ),
+        "job-empty-permissions": (
+            job,
+            "permissions",
+            {},
+            "candidate-check-permission-mismatch",
+        ),
+        "job-malformed-permissions": (
+            job,
+            "permissions",
+            [],
+            "job-permission-projection-mismatch",
+        ),
+        "job-skipped": (job, "if", "false", "candidate-check-execution-drift"),
+        "job-ignores-failure": (
+            job,
+            "continue-on-error",
+            "true",
+            "candidate-check-execution-drift",
+        ),
+        "job-depends-on-skipped-helper": (
+            job,
+            "needs",
+            "helper",
+            "candidate-check-execution-drift",
+        ),
+        "mutation-skipped": (
+            mutation,
+            "if",
+            "false",
+            "mutation-validation-step-missing",
+        ),
+        "qualification-ignores-failure": (
+            qualification,
+            "continue-on-error",
+            "true",
+            "governance-qualification-step-missing",
+        ),
+        "unsafe-helper-checkout": (
+            helper["steps"][0]["with"],
+            "persist-credentials",
+            "true",
+            "checkout-credential-safety-drift",
+        ),
+        "shallow-helper-checkout": (
+            helper["steps"][0]["with"],
+            "fetch-depth",
+            "1",
+            "checkout-history-safety-drift",
+        ),
+        "job-malformed-steps": (
+            job,
+            "steps",
+            "not-a-list",
+            "workflow-job-structure-invalid",
+        ),
+        "conditional-checkout": (
+            checkout,
+            "if",
+            "false",
+            "pinned-action-projection-mismatch",
+        ),
+    }
+    if scenario in mutations:
+        target, key, value, expected = mutations[scenario]
+        target[key] = value
+    elif scenario.endswith("-in-helper"):
+        moved, expected = {
+            "mutation-in-helper": (mutation, "mutation-validation-step-missing"),
+            "qualification-in-helper": (
+                qualification,
+                "governance-qualification-step-missing",
+            ),
+            "checkout-in-helper": (checkout, "pinned-action-projection-mismatch"),
+            "python-in-helper": (python, "pinned-action-projection-mismatch"),
+            "node-in-helper": (node, "pinned-action-projection-mismatch"),
+        }[scenario]
+        job["steps"].remove(moved)
+        helper["steps"].append(moved)
+    elif scenario.endswith("-before-safe"):
+        if "python" in scenario:
+            original = python
+        elif "node" in scenario:
+            original = node
+        else:
+            original = checkout
+        duplicate = deepcopy(original)
+        job["steps"].insert(0, duplicate)
+        if scenario.startswith("unpinned"):
+            duplicate["uses"] = original["uses"].split("@")[0] + "@v6"
+            expected = "pinned-action-projection-mismatch"
+        elif scenario.startswith("shallow"):
+            duplicate["with"]["fetch-depth"] = "1"
+            expected = "checkout-history-safety-drift"
+        else:
+            duplicate["with"]["persist-credentials"] = "true"
+            expected = "checkout-credential-safety-drift"
+    elif scenario == "job-malformed-step":
+        job["steps"].append("not-a-step")
+        expected = "workflow-job-structure-invalid"
+    else:
+        assert scenario == "helper-malformed-job"
+        workflow["jobs"]["helper"] = "not-a-job"
+        expected = "workflow-job-structure-invalid"
+
+    path.write_text(yaml.safe_dump(workflow, sort_keys=False), encoding="utf-8")
+    # Even a structurally bound activation plan must reject unsafe workflow state.
+    binding_path = root / "governance/github/authority-binding.yaml"
+    binding = yaml.safe_load(binding_path.read_text(encoding="utf-8"))
+    binding["authority"]["integration_id"] = 4242
+    binding["evaluator"]["authority_revision"] = "a" * 40
+    binding_path.write_text(
+        yaml.safe_dump(binding, sort_keys=False), encoding="utf-8"
+    )
+    policy = load_scm_enforcement_policy(root)
+    report = audit_github_projection(root, policy)
+    plan = build_github_activation_plan(root, policy)
+    if expected is None:
+        assert report.ok, report.findings
+        assert plan.ready
+    else:
+        assert expected in {finding.code for finding in report.findings}
+        assert not plan.ready
+        assert plan.ruleset_payload is None
+        assert expected in {finding.code for finding in plan.blockers}
 
 
 def test_candidate_workflow_cannot_emit_external_authority_job(tmp_path):

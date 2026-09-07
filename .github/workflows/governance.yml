@@ -50,11 +50,22 @@ jobs:
       - name: Validate GitHub reference-provider projection
         run: make github-policy-check
       - name: Validate Python quality
+        id: python_quality
         run: make lint-code
+      - name: Explain Python formatting drift
+        if: failure() && steps.python_quality.conclusion == 'failure'
+        run: ruff format --diff engine tests generators scripts conftest.py
       - name: Validate document formatting
         run: make lint-docs-format
       - name: Verify generated projections
+        id: generated_projections
         run: make verify-generated
+      - name: Explain generated projection drift
+        if: failure() && steps.generated_projections.conclusion == 'failure'
+        run: |
+          git status --short
+          git diff --stat
+          git diff --no-ext-diff --no-textconv
       - name: Check waiver expiry
         run: make check-waivers
       - name: Verify immutable Genesis root
