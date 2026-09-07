@@ -55,7 +55,9 @@ def normalize_github_ruleset(
 
     rules = _rule_map(ruleset)
     pull = _mapping(_mapping(rules.get("pull_request")).get("parameters"))
-    status = _mapping(_mapping(rules.get("required_status_checks")).get("parameters"))
+    status = _mapping(
+        _mapping(rules.get("required_status_checks")).get("parameters")
+    )
     checks = status.get("required_status_checks")
     check_records = (
         tuple(item for item in checks if isinstance(item, dict))
@@ -98,7 +100,9 @@ def normalize_github_ruleset(
             status.get("strict_required_status_checks_policy") is True
         ),
         external_authority_check_required=external is not None,
-        external_authority_check_context=(external_context if external is not None else ""),
+        external_authority_check_context=(
+            external_context if external is not None else ""
+        ),
         external_authority_source_bound=(
             type(external_integration_id) is int and external_integration_id > 0
         ),
