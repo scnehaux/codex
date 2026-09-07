@@ -16,7 +16,7 @@ def _split_frontmatter(content: str) -> tuple[str | None, str]:
 
     for index, line in enumerate(lines[1:], start=1):
         if line.rstrip("\r\n") == "---":
-            return "".join(lines[1:index]), "".join(lines[index + 1:])
+            return "".join(lines[1:index]), "".join(lines[index + 1 :])
 
     return None, normalized
 
@@ -61,6 +61,7 @@ def parse_date(
 ) -> Optional[datetime.date]:
     """Parse a governance date using the canonical temporal parser."""
     return parse_canonical_date(date_val)
+
 
 def extract_section_contents(content: str) -> dict[str, str]:
     """

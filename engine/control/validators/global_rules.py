@@ -72,7 +72,7 @@ def _validate_compliance_placement(v: BaseValidator) -> None:
     expected_dir = macro_dir_map.get(doc_type)
     if expected_dir:
         # We check if the expected directory is part of the absolute path.
-        # This is a simple structural enforcement (e.g. /04-system/)
+        # This is a simple structural enforcement (e.g. /systems/)
         if f"/{expected_dir}/" not in file_path:
             v.add_error(
                 "compliance_macro_directory",

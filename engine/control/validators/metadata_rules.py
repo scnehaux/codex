@@ -24,7 +24,6 @@ logger = logging.getLogger(__name__)
 _TECHNOLOGY_HOLD_DOC_TYPES = frozenset({"SAD", "TDD"})
 
 
-
 def validate_lifecycle_age(
     doc_meta: dict,
     doc_type: str,

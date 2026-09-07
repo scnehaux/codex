@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from pathlib import Path
-import copy
 
 import pytest
 import yaml
@@ -15,11 +13,9 @@ from tests.support.repository import REPOSITORY_ROOT
 
 
 MANIFEST = yaml.safe_load(
-    (
-        REPOSITORY_ROOT
-        / "00-governance"
-        / "bootstrap-manifest.yaml"
-    ).read_text(encoding="utf-8")
+    (REPOSITORY_ROOT / "governance" / "bootstrap-manifest.yaml").read_text(
+        encoding="utf-8"
+    )
 )
 
 
@@ -47,7 +43,7 @@ def _runner(mapping):
 
 
 def _repo(tmp_path):
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir(parents=True)
 
     (governance / "bootstrap-manifest.yaml").write_text(
@@ -55,11 +51,9 @@ def _repo(tmp_path):
         encoding="utf-8",
     )
 
-    required = MANIFEST["governance_control_plane"][
-        "required_baseline_ids"
-    ]
+    required = MANIFEST["governance_control_plane"]["required_baseline_ids"]
 
-    staged = ["00-governance/bootstrap-manifest.yaml"]
+    staged = ["governance/bootstrap-manifest.yaml"]
     mapping = {
         ("rev-parse", "--verify", "HEAD"): GitResult(1),
         ("branch", "--show-current"): GitResult(0, "main\n"),
@@ -69,7 +63,7 @@ def _repo(tmp_path):
     }
 
     for doc_id in required:
-        path = f"00-governance/{doc_id}-test.md"
+        path = f"governance/{doc_id}-test.md"
         staged.append(path)
         mapping[("show", f":{path}")] = GitResult(
             0,
@@ -98,7 +92,7 @@ def test_valid_staged_genesis_candidate_passes(tmp_path):
 
 
 def test_manifest_failure_is_fail_closed(tmp_path):
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir()
     (governance / "bootstrap-manifest.yaml").write_text(
         "- invalid\n",
@@ -208,10 +202,7 @@ def test_candidate_failure_modes_are_explicit(
         git_runner=_runner(mapping),
     )
 
-    assert any(
-        finding.code == code
-        for finding in report.findings
-    )
+    assert any(finding.code == code for finding in report.findings)
 
 
 def test_path_outside_allowlist_is_rejected(tmp_path):
@@ -228,8 +219,7 @@ def test_path_outside_allowlist_is_rejected(tmp_path):
     )
 
     assert any(
-        finding.code == "genesis-path-outside-allowlist"
-        for finding in report.findings
+        finding.code == "genesis-path-outside-allowlist" for finding in report.findings
     )
 
 
@@ -238,7 +228,7 @@ def test_forbidden_architecture_path_is_rejected(tmp_path):
     staged = mapping[("ls-files", "--cached")].stdout
     mapping[("ls-files", "--cached")] = GitResult(
         0,
-        staged + "01-enterprise/EAD-001-test.md\n",
+        staged + "enterprise/EAD-001-test.md\n",
     )
 
     report = audit_genesis_commit_candidate(
@@ -247,17 +237,14 @@ def test_forbidden_architecture_path_is_rejected(tmp_path):
     )
 
     assert any(
-        finding.code == "forbidden-architecture-path"
-        for finding in report.findings
+        finding.code == "forbidden-architecture-path" for finding in report.findings
     )
 
 
 def test_required_staged_gdc_read_failure_is_reported(tmp_path):
     root, mapping = _repo(tmp_path)
-    required = MANIFEST["governance_control_plane"][
-        "required_baseline_ids"
-    ]
-    path = f"00-governance/{required[0]}-test.md"
+    required = MANIFEST["governance_control_plane"]["required_baseline_ids"]
+    path = f"governance/{required[0]}-test.md"
     mapping[("show", f":{path}")] = GitResult(1)
 
     report = audit_genesis_commit_candidate(
@@ -294,7 +281,7 @@ def test_default_git_runner_operates_on_real_unborn_index(tmp_path):
         text=True,
     )
 
-    governance = tmp_path / "00-governance"
+    governance = tmp_path / "governance"
     governance.mkdir()
 
     (governance / "bootstrap-manifest.yaml").write_text(
@@ -302,9 +289,7 @@ def test_default_git_runner_operates_on_real_unborn_index(tmp_path):
         encoding="utf-8",
     )
 
-    required = MANIFEST["governance_control_plane"][
-        "required_baseline_ids"
-    ]
+    required = MANIFEST["governance_control_plane"]["required_baseline_ids"]
     for doc_id in required:
         (governance / f"{doc_id}-test.md").write_text(
             _gdc(doc_id),

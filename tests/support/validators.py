@@ -15,7 +15,7 @@ from tests.support.repository import REPOSITORY_ROOT
 def _get_real_config() -> tuple[dict, dict, tuple]:
     from engine.control.config.loader import parse_and_validate_global_config
 
-    schema_path = REPOSITORY_ROOT / "00-governance" / "schemas" / "base.schema.json"
+    schema_path = REPOSITORY_ROOT / "schemas" / "base.schema.json"
     with schema_path.open("r", encoding="utf-8") as handle:
         schema = json.load(handle)
 

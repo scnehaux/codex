@@ -104,10 +104,13 @@ def test_temporal_integrity_rejects_created_after_reviewed():
 
 
 def test_temporal_integrity_does_not_duplicate_schema_date_syntax():
-    assert temporal_integrity_findings(
-        {"created_date": "2026/08/29"},
-        today=datetime.date(2026, 8, 29),
-    ) == []
+    assert (
+        temporal_integrity_findings(
+            {"created_date": "2026/08/29"},
+            today=datetime.date(2026, 8, 29),
+        )
+        == []
+    )
 
 
 def test_temporal_integrity_handles_missing_metadata():

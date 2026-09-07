@@ -69,7 +69,7 @@ def severity_registry_findings(
     severity_levels: dict,
 ) -> tuple[str, ...]:
     root = Path(repo_root).resolve()
-    registry_path = root / "00-governance" / "severity-enforcement-registry.yaml"
+    registry_path = root / "governance" / "severity-enforcement-registry.yaml"
 
     try:
         records = load_severity_enforcement_registry(registry_path)
@@ -83,9 +83,7 @@ def severity_registry_findings(
     registry_ids = set(record_ids)
 
     duplicates = sorted(
-        rule_id
-        for rule_id in registry_ids
-        if record_ids.count(rule_id) > 1
+        rule_id for rule_id in registry_ids if record_ids.count(rule_id) > 1
     )
     for rule_id in duplicates:
         findings.append(f"F09 {rule_id}: duplicate severity enforcement record")

@@ -21,7 +21,14 @@ def _imports(path: Path) -> tuple[str, ...]:
 
 
 def test_intelligence_contracts_do_not_import_control_or_runtime_providers():
-    forbidden = ("engine.control", "engine.adapters", "langchain", "langgraph", "openai", "anthropic")
+    forbidden = (
+        "engine.control",
+        "engine.adapters",
+        "langchain",
+        "langgraph",
+        "openai",
+        "anthropic",
+    )
     for path in (ROOT / "engine" / "intelligence").rglob("*.py"):
         imports = _imports(path)
         assert not [name for name in imports if name.startswith(forbidden)], path
@@ -42,8 +49,7 @@ def test_stable_contract_exports_are_machine_addressable():
 def test_no_agent_or_approval_runtime_is_introduced():
     root = ROOT / "engine" / "intelligence"
     production = "\n".join(
-        path.read_text(encoding="utf-8")
-        for path in root.rglob("*.py")
+        path.read_text(encoding="utf-8") for path in root.rglob("*.py")
     )
     assert "AgentExecutor" not in production
     assert "approve(" not in production
@@ -52,7 +58,7 @@ def test_no_agent_or_approval_runtime_is_introduced():
 
 def test_governance_maps_intelligence_contract_authority():
     layout = yaml.safe_load(
-        (ROOT / "00-governance" / "framework" / "source-layout.yaml").read_text(
+        (ROOT / "governance" / "framework" / "source-layout.yaml").read_text(
             encoding="utf-8"
         )
     )
@@ -68,7 +74,7 @@ def test_governance_maps_intelligence_contract_authority():
     )
 
     framework = yaml.safe_load(
-        (ROOT / "00-governance" / "framework" / "scnehaux-framework.yaml").read_text(
+        (ROOT / "governance" / "framework" / "scnehaux-framework.yaml").read_text(
             encoding="utf-8"
         )
     )

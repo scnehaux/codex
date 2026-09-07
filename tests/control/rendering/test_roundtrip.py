@@ -55,7 +55,9 @@ def test_artifact_document_state_validates_collisions_and_sections():
             "T",
             "draft",
             attributes={"governed_by": "x"},
-            relationships=(ArtifactRelationship("governed_by", ArtifactIdentity("GDC-1")),),
+            relationships=(
+                ArtifactRelationship("governed_by", ArtifactIdentity("GDC-1")),
+            ),
         )
     normalized = ArtifactDocumentState(
         ArtifactIdentity("GDC-1"), "GDC", "T", "draft", sections={" Purpose ": " body "}
@@ -116,7 +118,10 @@ def test_artifact_document_state_covers_nested_freeze_and_invalid_shapes():
     )
     assert tuple(payload.attributes["nested"]["list"])[0] == 1
     assert payload.semantic_state()[0].artifact_id == "GDC-2"
-    assert payload.semantic_state("x.md") == payload.to_artifact_model("x.md").semantic_state()
+    assert (
+        payload.semantic_state("x.md")
+        == payload.to_artifact_model("x.md").semantic_state()
+    )
 
     with pytest.raises(TypeError):
         ArtifactDocumentState("bad", "GDC", "T", "draft")

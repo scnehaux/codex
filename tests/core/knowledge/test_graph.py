@@ -115,9 +115,7 @@ def test_graph_compiler_is_fail_closed():
         GraphCompilationError,
         match="unresolved",
     ):
-        compile_knowledge_graph(
-            [_artifact("SAD-001", relationships=(unresolved,))]
-        )
+        compile_knowledge_graph([_artifact("SAD-001", relationships=(unresolved,))])
 
     duplicate_node = KnowledgeNode(
         key="acme/architecture/SAD-001",
@@ -214,6 +212,7 @@ def test_reference_contracts():
         ObservedRef("x", "", SourceReference("x"))
     with pytest.raises(TypeError, match="provenance"):
         ObservedRef("x", "runtime", "bad")
+
 
 # PHASE-6.6A-BEHAVIORAL-COVERAGE
 
@@ -359,7 +358,7 @@ def test_repository_graph_compiler_requires_canonical_repository_model():
 
     artifact = _artifact("SAD-900")
     repository = RepositoryModel(
-        (RepositoryArtifact(artifact=artifact, source_path="04-system/SAD-900.md"),)
+        (RepositoryArtifact(artifact=artifact, source_path="systems/SAD-900.md"),)
     )
     graph = compile_repository_graph(repository)
     assert tuple(node.key for node in graph.nodes) == (artifact.canonical_key,)

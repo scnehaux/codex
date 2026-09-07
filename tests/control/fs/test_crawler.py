@@ -169,7 +169,7 @@ def test_crawler_handles_exception_during_read():
 def test_gather_markdown_paths_unallowed_directory_in_tree(tmp_path):
     repo = tmp_path / "repo"
     repo.mkdir()
-    allowed = repo / "00-governance"
+    allowed = repo / "governance"
     allowed.mkdir()
     (allowed / "gdc.md").write_text("# GDC")
 
@@ -177,9 +177,9 @@ def test_gather_markdown_paths_unallowed_directory_in_tree(tmp_path):
     unallowed.mkdir()
     (unallowed / "extra.md").write_text("# Extra")
 
-    # Scanning whole repo with allowed_root_dirs set to {"00-governance"}
+    # Scanning whole repo with allowed_root_dirs set to {"governance"}
     files = gather_markdown_paths(
-        str(repo), repo_root=str(repo), allowed_root_dirs={"00-governance"}
+        str(repo), repo_root=str(repo), allowed_root_dirs={"governance"}
     )
     assert any("gdc.md" in f for f in files)
     assert not any("extra.md" in f for f in files)
@@ -187,7 +187,7 @@ def test_gather_markdown_paths_unallowed_directory_in_tree(tmp_path):
 
 def test_directory_scoped_ignore_patterns_match_full_path(tmp_path):
     repo = tmp_path / "repo"
-    governance = repo / "00-governance"
+    governance = repo / "governance"
     templates = governance / "templates"
     scratch = governance / "scratch"
     templates.mkdir(parents=True)
@@ -204,7 +204,7 @@ def test_directory_scoped_ignore_patterns_match_full_path(tmp_path):
     files = gather_markdown_paths(
         str(repo),
         repo_root=str(repo),
-        allowed_root_dirs={"00-governance"},
+        allowed_root_dirs={"governance"},
         ignored_patterns=[
             r"[\\/]templates[\\/]",
             r"[\\/]scratch[\\/]",

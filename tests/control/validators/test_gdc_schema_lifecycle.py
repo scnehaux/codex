@@ -1,13 +1,12 @@
 from tests.support.repository import REPOSITORY_ROOT
 import json
-from pathlib import Path
 
 from jsonschema import Draft7Validator
 from referencing import Registry, Resource
 
 ROOT = REPOSITORY_ROOT
-BASE_PATH = ROOT / "00-governance" / "schemas" / "base.schema.json"
-GDC_PATH = ROOT / "00-governance" / "schemas" / "gdc.schema.json"
+BASE_PATH = ROOT / "schemas" / "base.schema.json"
+GDC_PATH = ROOT / "schemas" / "gdc.schema.json"
 
 
 def _validator():

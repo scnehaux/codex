@@ -38,7 +38,9 @@ class ArchitectureProposal:
     research: ResearchPackage | None = None
 
     def __post_init__(self) -> None:
-        object.__setattr__(self, "proposal_id", _required(self.proposal_id, "proposal_id"))
+        object.__setattr__(
+            self, "proposal_id", _required(self.proposal_id, "proposal_id")
+        )
         if not isinstance(self.intent, IntentSpec):
             raise TypeError("intent must be IntentSpec")
         if not isinstance(self.plan, ArchitecturePlan):
@@ -70,9 +72,7 @@ class ArchitectureProposal:
 
         for claim in claims:
             if not claim.derived_from:
-                raise ValueError(
-                    "proposal claims must declare derived_from lineage"
-                )
+                raise ValueError("proposal claims must declare derived_from lineage")
             unknown = sorted(set(claim.derived_from) - available_lineage)
             if unknown:
                 raise ValueError(
@@ -106,13 +106,17 @@ class ArtifactDraft(Generic[DraftT]):
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "draft_id", _required(self.draft_id, "draft_id"))
-        object.__setattr__(self, "artifact_type", _required(self.artifact_type, "artifact_type"))
+        object.__setattr__(
+            self, "artifact_type", _required(self.artifact_type, "artifact_type")
+        )
         if not isinstance(self.proposal, ArchitectureProposal):
             raise TypeError("proposal must be ArchitectureProposal")
         if not isinstance(self.payload, DraftPayload):
             raise TypeError("payload must implement DraftPayload.semantic_state")
 
-        source_claim_ids = tuple(_required(item, "source_claim_ids") for item in self.source_claim_ids)
+        source_claim_ids = tuple(
+            _required(item, "source_claim_ids") for item in self.source_claim_ids
+        )
         if not source_claim_ids:
             raise ValueError("source_claim_ids must not be empty")
         if len(source_claim_ids) != len(set(source_claim_ids)):

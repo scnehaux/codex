@@ -39,9 +39,13 @@ class RenderedArtifact:
     content_digest: str
 
     def __post_init__(self) -> None:
-        object.__setattr__(self, "source_path", _required(self.source_path, "source_path"))
+        object.__setattr__(
+            self, "source_path", _required(self.source_path, "source_path")
+        )
         object.__setattr__(self, "markdown", _required(self.markdown, "markdown"))
-        object.__setattr__(self, "content_digest", _required(self.content_digest, "content_digest"))
+        object.__setattr__(
+            self, "content_digest", _required(self.content_digest, "content_digest")
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -56,14 +60,17 @@ def _semantic_digest(model: ArtifactModel) -> str:
     return hashlib.sha256(repr(model.semantic_state()).encode("utf-8")).hexdigest()
 
 
-def render_artifact(state: ArtifactDocumentState, *, source_path: str) -> RenderedArtifact:
+def render_artifact(
+    state: ArtifactDocumentState, *, source_path: str
+) -> RenderedArtifact:
     if not isinstance(state, ArtifactDocumentState):
         raise TypeError("state must be ArtifactDocumentState")
     source_path = _required(source_path, "source_path")
 
     allowed_relationship_fields = relationship_fields_for_source(state.artifact_type)
     invalid = sorted(
-        {item.relation_type for item in state.relationships} - set(allowed_relationship_fields)
+        {item.relation_type for item in state.relationships}
+        - set(allowed_relationship_fields)
     )
     if invalid:
         raise ValueError(
@@ -105,11 +112,15 @@ def render_artifact(state: ArtifactDocumentState, *, source_path: str) -> Render
     return RenderedArtifact(source_path, markdown, digest)
 
 
-def verify_round_trip(state: ArtifactDocumentState, *, source_path: str) -> RoundTripReport:
+def verify_round_trip(
+    state: ArtifactDocumentState, *, source_path: str
+) -> RoundTripReport:
     rendered = render_artifact(state, source_path=source_path)
     metadata, error = parse_frontmatter(rendered.markdown)
     if error or metadata is None:
-        raise ValueError(f"rendered artifact cannot be parsed: {error or 'missing metadata'}")
+        raise ValueError(
+            f"rendered artifact cannot be parsed: {error or 'missing metadata'}"
+        )
     parsed = RepositoryAssembler.artifact_from_metadata(
         metadata=metadata,
         source_path=rendered.source_path,

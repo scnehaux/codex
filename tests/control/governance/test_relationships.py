@@ -28,8 +28,12 @@ def test_registry_declares_required_semantics_for_every_relation():
 
 
 def test_governed_by_is_source_specific_not_one_broad_union():
-    assert relationship_spec_for("GDC", "governed_by").target_types == frozenset({"GDC"})
-    assert relationship_spec_for("EAD", "governed_by").target_types == frozenset({"GDC"})
+    assert relationship_spec_for("GDC", "governed_by").target_types == frozenset(
+        {"GDC"}
+    )
+    assert relationship_spec_for("EAD", "governed_by").target_types == frozenset(
+        {"GDC"}
+    )
     assert relationship_spec_for("PAD", "governed_by").target_types == frozenset(
         {"GDC", "EAD", "ADR"}
     )
@@ -89,10 +93,7 @@ def test_relationship_fields_unknown_source_fails_safe_for_reference_scanning():
 
 
 def test_dag_specs_exclude_downward_inverse_relation():
-    fields = {
-        spec.metadata_field
-        for spec in dag_relation_specs_for_source("PAD")
-    }
+    fields = {spec.metadata_field for spec in dag_relation_specs_for_source("PAD")}
     assert "realizes_capability" in fields
     assert "governed_by" in fields
     assert "fulfilled_by" not in fields
@@ -134,8 +135,7 @@ def test_wrong_source_field_is_rejected():
         },
     )
     assert any(
-        f.code == "unsupported_source" and f.field == "parent_pad"
-        for f in findings
+        f.code == "unsupported_source" and f.field == "parent_pad" for f in findings
     )
 
 
@@ -155,8 +155,7 @@ def test_missing_required_relation_is_cardinality_violation():
         {},
     )
     assert any(
-        f.code == "missing_required" and f.field == "parent_sad"
-        for f in findings
+        f.code == "missing_required" and f.field == "parent_sad" for f in findings
     )
 
 

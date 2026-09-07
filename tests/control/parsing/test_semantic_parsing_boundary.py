@@ -1,13 +1,8 @@
 from tests.support.repository import REPOSITORY_ROOT
-from pathlib import Path
 
 ROOT = REPOSITORY_ROOT
-PARSER = (
-    ROOT / 'engine' / "control" / "parsing" / "markdown_ast.py"
-)
-WAIVER = (
-    ROOT / "06-fitness-function" / "scripts" / "waiver-expiry-check.py"
-)
+PARSER = ROOT / "engine" / "control" / "parsing" / "markdown_ast.py"
+WAIVER = ROOT / "scripts" / "waiver-expiry-check.py"
 
 
 def test_semantic_frontmatter_state_has_no_regex_parser():
@@ -44,13 +39,7 @@ def test_frontmatter_supports_yaml_literal_containing_delimiter():
 def test_frontmatter_supports_bom_and_crlf():
     from engine.control.parsing.markdown_ast import parse_frontmatter
 
-    content = (
-        "\ufeff---\r\n"
-        "doc_meta:\r\n"
-        "  id: PAD-001\r\n"
-        "---\r\n"
-        "# Body\r\n"
-    )
+    content = "\ufeff---\r\ndoc_meta:\r\n  id: PAD-001\r\n---\r\n# Body\r\n"
 
     metadata, error = parse_frontmatter(content)
 

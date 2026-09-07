@@ -64,4 +64,6 @@ def test_graph_simulation_policy_and_types_fail_closed():
     with pytest.raises(TypeError):
         simulate_graph(report_id="S", draft_id="D", current=object(), proposed=graph)
     with pytest.raises(TypeError):
-        simulate_graph(report_id="S", draft_id="D", current=graph, proposed=graph, policy=object())
+        simulate_graph(
+            report_id="S", draft_id="D", current=graph, proposed=graph, policy=object()
+        )

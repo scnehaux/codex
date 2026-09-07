@@ -5,7 +5,10 @@ from .domains.ead_validator import EADValidator
 from .domains.std_validator import STDValidator
 from .domains.tdd_validator import TDDValidator
 from .domains.gdc_validator import GDCValidator
-from engine.control.config.constants import SCHEMA_KEY_STRUCTURE_RULES, SCHEMA_KEY_ARTIFACT_DIRS
+from engine.control.config.constants import (
+    SCHEMA_KEY_STRUCTURE_RULES,
+    SCHEMA_KEY_ARTIFACT_DIRS,
+)
 
 VALIDATOR_REGISTRY = {
     "ADR": ADRValidator,

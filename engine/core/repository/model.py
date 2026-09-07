@@ -83,7 +83,9 @@ class RepositoryModel:
         paths = [item.source_path for item in ordered]
         if len(paths) != len(set(paths)):
             duplicates = sorted({path for path in paths if paths.count(path) > 1})
-            raise ValueError("duplicate repository source path: " + ", ".join(duplicates))
+            raise ValueError(
+                "duplicate repository source path: " + ", ".join(duplicates)
+            )
 
         object.__setattr__(self, "artifacts", ordered)
 

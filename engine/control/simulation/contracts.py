@@ -33,7 +33,9 @@ class SimulationFinding:
             _required(self.simulation_type, "simulation_type"),
         )
         object.__setattr__(self, "message", _required(self.message, "message"))
-        impacted = tuple(_required(item, "impacted_keys") for item in self.impacted_keys)
+        impacted = tuple(
+            _required(item, "impacted_keys") for item in self.impacted_keys
+        )
         if not impacted:
             raise ValueError("impacted_keys must not be empty")
         if len(impacted) != len(set(impacted)):
@@ -70,9 +72,13 @@ class SimulationReport:
             "current_graph_digest",
             "proposed_graph_digest",
         ):
-            object.__setattr__(self, field_name, _required(getattr(self, field_name), field_name))
+            object.__setattr__(
+                self, field_name, _required(getattr(self, field_name), field_name)
+            )
         for field_name in ("added_node_keys", "modified_node_keys", "impacted_keys"):
-            values = tuple(_required(item, field_name) for item in getattr(self, field_name))
+            values = tuple(
+                _required(item, field_name) for item in getattr(self, field_name)
+            )
             if len(values) != len(set(values)):
                 raise ValueError(f"{field_name} values must be unique")
             object.__setattr__(self, field_name, tuple(sorted(values)))
@@ -82,7 +88,9 @@ class SimulationReport:
         ids = [item.finding_id for item in findings]
         if len(ids) != len(set(ids)):
             raise ValueError("simulation finding_id values must be unique")
-        object.__setattr__(self, "findings", tuple(sorted(findings, key=lambda item: item.finding_id)))
+        object.__setattr__(
+            self, "findings", tuple(sorted(findings, key=lambda item: item.finding_id))
+        )
 
     @property
     def outcome(self) -> SimulationOutcome:

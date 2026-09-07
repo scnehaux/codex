@@ -4,17 +4,16 @@ Global configuration constants for the Scnehaux Architecture Linter.
 
 import os
 
-# GOVERNANCE_ROOT is strictly 3 levels up from constants.py (config -> engine -> 06-fitness-function -> governance root)
-GOVERNANCE_ROOT = os.path.abspath(
+# Framework-owned resources resolve from the Codex checkout/package, while
+# architecture-owned policy instances resolve from the consumer repository CWD.
+FRAMEWORK_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "..", "..", "..")
 )
-BASE_SCHEMA_PATH = os.path.join(
-    GOVERNANCE_ROOT, "00-governance", "schemas", "base.schema.json"
-)
-TECH_RADAR_YAML_PATH = os.path.join(GOVERNANCE_ROOT, "01-enterprise", "tech-radar.yaml")
+BASE_SCHEMA_PATH = os.path.join(FRAMEWORK_ROOT, "schemas", "base.schema.json")
 TECH_RADAR_SCHEMA_PATH = os.path.join(
-    GOVERNANCE_ROOT, "00-governance", "schemas", "tech-radar.schema.json"
+    FRAMEWORK_ROOT, "schemas", "tech-radar.schema.json"
 )
+TECH_RADAR_YAML_PATH = os.path.join("enterprise", "tech-radar.yaml")
 
 # Global denylist of directories to ignore during filesystem traversal.
 # This prevents the linter from crawling through caches and dependencies,

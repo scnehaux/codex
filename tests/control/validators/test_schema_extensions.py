@@ -41,14 +41,10 @@ def test_validate_prohibited_keywords():
     assert "prohibited governance boilerplate word: 'ADR'" in errs[0].message
     assert errs[0].validator == "prohibited_keywords"
 
-    errs2 = list(
-        _validate_prohibited_keywords(None, ["ADR"], "Here is a Waiver.", {})
-    )
+    errs2 = list(_validate_prohibited_keywords(None, ["ADR"], "Here is a Waiver.", {}))
     assert len(errs2) == 0
 
-    errs3 = list(
-        _validate_prohibited_keywords(None, ["ADR"], {"a": "b"}, {})
-    )
+    errs3 = list(_validate_prohibited_keywords(None, ["ADR"], {"a": "b"}, {}))
     assert len(errs3) == 0
 
 
@@ -59,8 +55,6 @@ def test_custom_keyword_registry_separates_validation_from_annotations():
     }
     assert SCNEHAUX_VALIDATION_KEYWORDS.issubset(ExtendedValidator.VALIDATORS)
 
-    assert {"recommended", "error_message"}.issubset(
-        SCNEHAUX_ANNOTATION_KEYWORDS
-    )
+    assert {"recommended", "error_message"}.issubset(SCNEHAUX_ANNOTATION_KEYWORDS)
     assert "recommended" not in ExtendedValidator.VALIDATORS
     assert "error_message" not in ExtendedValidator.VALIDATORS

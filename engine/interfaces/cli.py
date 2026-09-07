@@ -412,7 +412,9 @@ def main() -> None:
     # Step 4: Repo-level audits (only meaningful across the full registry)
     repo_findings: list[tuple[str, str, str]] = []
     repo_findings.extend(
-        audit_architecture_admission(local_doc_metadata, severity_levels, TARGET_REPO_ROOT)
+        audit_architecture_admission(
+            local_doc_metadata, severity_levels, TARGET_REPO_ROOT
+        )
     )
     repo_findings.extend(audit_duplicate_ids(duplicate_ids, severity_levels))
     repo_findings.extend(audit_hierarchy_tiers(local_doc_metadata, severity_levels))

@@ -5,7 +5,7 @@ import os
 import sys
 from typing import Any, cast
 
-from engine.control.config.constants import GOVERNANCE_ROOT
+from engine.control.config.constants import FRAMEWORK_ROOT
 from engine.control.config.loader import load_json_schema_file
 from engine.control.config.severity import SeverityRule
 from engine.control.governance.lifecycle import RELAXED, validation_profile
@@ -15,6 +15,7 @@ from engine.control.validators.metadata_rules import validate_lifecycle_age
 from engine.control.validators.registry import detect_doc_type, get_validator
 
 logger = logging.getLogger(__name__)
+
 
 def _disable_info(validator: Any) -> dict:
     """
@@ -114,7 +115,6 @@ def lint_file(
     # @flow-lint: CheckExempt -->|Yes| ValidateExemptAge["2.4. <b>metadata_rules.py - validate_lifecycle_age()</b>: Validate exempt duration"]
     # @flow-lint: CheckExempt -->|No| DetectType["2.6. <b>registry.py - detect_doc_type()</b>: Detect document type"]
 
-
     # Step 3: Detect document type before selecting a validation profile.
     # Lifecycle state, validation strictness, and admission authority are separate concerns.
     doc_meta = cast(dict, doc_meta)
@@ -195,7 +195,7 @@ def lint_file(
 
     # Step 6: Load the specific JSON schema for this document type
     domain_schema_path = os.path.join(
-        GOVERNANCE_ROOT, "00-governance", "schemas", f"{doc_type.lower()}.schema.json"
+        FRAMEWORK_ROOT, "schemas", f"{doc_type.lower()}.schema.json"
     )
     # @flow-lint: IsVal -->|Yes| LoadSchemaType["2.10. <b>loader.py - load_json_schema_file()</b>: Load specific domainJSON schema"]
     # @flow-lint: LoadSchemaType --> IsSchema{"2.11. Schema exists?"}

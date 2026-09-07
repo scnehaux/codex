@@ -24,12 +24,16 @@ class ResearchQuestion:
     rationale: str | None = None
 
     def __post_init__(self) -> None:
-        object.__setattr__(self, "question_id", _required(self.question_id, "question_id"))
+        object.__setattr__(
+            self, "question_id", _required(self.question_id, "question_id")
+        )
         object.__setattr__(self, "question", _required(self.question, "question"))
         if not isinstance(self.retrieval_request, RetrievalRequest):
             raise TypeError("retrieval_request must be RetrievalRequest")
         if self.rationale is not None:
-            object.__setattr__(self, "rationale", _required(self.rationale, "rationale"))
+            object.__setattr__(
+                self, "rationale", _required(self.rationale, "rationale")
+            )
 
     def semantic_state(self) -> tuple[Any, ...]:
         return (
@@ -90,7 +94,9 @@ class ResearchFinding:
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "finding_id", _required(self.finding_id, "finding_id"))
-        object.__setattr__(self, "question_id", _required(self.question_id, "question_id"))
+        object.__setattr__(
+            self, "question_id", _required(self.question_id, "question_id")
+        )
         if not isinstance(self.claim, Claim):
             raise TypeError("claim must be Claim")
         if self.claim.knowledge_state is KnowledgeState.PROPOSED:
@@ -130,7 +136,9 @@ class ResearchPackage:
 
         known_questions = set(self.plan.question_ids())
         unknown = sorted(
-            item.question_id for item in findings if item.question_id not in known_questions
+            item.question_id
+            for item in findings
+            if item.question_id not in known_questions
         )
         if unknown:
             raise ValueError(

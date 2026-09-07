@@ -78,22 +78,62 @@ def test_retrieval_request_enforces_hybrid_contract_shape():
     with pytest.raises(TypeError, match="scopes"):
         RetrievalRequest("q", ("global",), budget, (RetrievalMode.EXACT_ID,))
     with pytest.raises(ValueError, match="scopes must be unique"):
-        RetrievalRequest("q", (ContextScope.GLOBAL, ContextScope.GLOBAL), budget, (RetrievalMode.EXACT_ID,))
+        RetrievalRequest(
+            "q",
+            (ContextScope.GLOBAL, ContextScope.GLOBAL),
+            budget,
+            (RetrievalMode.EXACT_ID,),
+        )
     with pytest.raises(ValueError, match="modes"):
         RetrievalRequest("q", (ContextScope.GLOBAL,), budget, ())
     with pytest.raises(TypeError, match="modes"):
         RetrievalRequest("q", (ContextScope.GLOBAL,), budget, ("graph",))
     with pytest.raises(ValueError, match="modes must be unique"):
-        RetrievalRequest("q", (ContextScope.GLOBAL,), budget, (RetrievalMode.GRAPH, RetrievalMode.GRAPH))
+        RetrievalRequest(
+            "q",
+            (ContextScope.GLOBAL,),
+            budget,
+            (RetrievalMode.GRAPH, RetrievalMode.GRAPH),
+        )
     with pytest.raises(ValueError, match="exact-id"):
-        RetrievalRequest("q", (ContextScope.GLOBAL,), budget, (RetrievalMode.GRAPH,), exact_keys=("A",))
+        RetrievalRequest(
+            "q",
+            (ContextScope.GLOBAL,),
+            budget,
+            (RetrievalMode.GRAPH,),
+            exact_keys=("A",),
+        )
     with pytest.raises(ValueError, match="exact_keys"):
-        RetrievalRequest("q", (ContextScope.GLOBAL,), budget, (RetrievalMode.EXACT_ID,), exact_keys=("A", "A"))
+        RetrievalRequest(
+            "q",
+            (ContextScope.GLOBAL,),
+            budget,
+            (RetrievalMode.EXACT_ID,),
+            exact_keys=("A", "A"),
+        )
     with pytest.raises(ValueError, match="allowed_states"):
-        RetrievalRequest("q", (ContextScope.GLOBAL,), budget, (RetrievalMode.GRAPH,), allowed_states=())
+        RetrievalRequest(
+            "q",
+            (ContextScope.GLOBAL,),
+            budget,
+            (RetrievalMode.GRAPH,),
+            allowed_states=(),
+        )
     with pytest.raises(TypeError, match="allowed_states"):
-        RetrievalRequest("q", (ContextScope.GLOBAL,), budget, (RetrievalMode.GRAPH,), allowed_states=("declared",))
+        RetrievalRequest(
+            "q",
+            (ContextScope.GLOBAL,),
+            budget,
+            (RetrievalMode.GRAPH,),
+            allowed_states=("declared",),
+        )
     with pytest.raises(ValueError, match="allowed_states must be unique"):
-        RetrievalRequest("q", (ContextScope.GLOBAL,), budget, (RetrievalMode.GRAPH,), allowed_states=(KnowledgeState.DECLARED, KnowledgeState.DECLARED))
+        RetrievalRequest(
+            "q",
+            (ContextScope.GLOBAL,),
+            budget,
+            (RetrievalMode.GRAPH,),
+            allowed_states=(KnowledgeState.DECLARED, KnowledgeState.DECLARED),
+        )
     with pytest.raises(TypeError, match="budget"):
         RetrievalRequest("q", (ContextScope.GLOBAL,), object(), (RetrievalMode.GRAPH,))

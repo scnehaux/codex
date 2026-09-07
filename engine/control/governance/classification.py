@@ -7,13 +7,11 @@ from pathlib import Path
 
 import yaml
 
-from engine.control.config.constants import GOVERNANCE_ROOT
+from engine.control.config.constants import FRAMEWORK_ROOT
 
 VISIBILITY_ENV = "SCNEHAUX_REPOSITORY_VISIBILITY"
 VALID_REPOSITORY_VISIBILITIES = frozenset({"public", "private", "internal"})
-VALID_CLASSIFICATIONS = frozenset(
-    {"public", "internal", "restricted", "confidential"}
-)
+VALID_CLASSIFICATIONS = frozenset({"public", "internal", "restricted", "confidential"})
 PUBLIC_ALLOWED_CLASSIFICATIONS = frozenset({"public"})
 
 
@@ -26,7 +24,7 @@ class RepositoryVisibilityPolicy:
 
 @lru_cache(maxsize=1)
 def _load_manifest_repository_contract() -> tuple[str, str]:
-    manifest_path = Path(GOVERNANCE_ROOT) / "00-governance" / "bootstrap-manifest.yaml"
+    manifest_path = Path(FRAMEWORK_ROOT) / "governance" / "bootstrap-manifest.yaml"
     try:
         raw = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
     except (OSError, yaml.YAMLError) as exc:
@@ -39,9 +37,7 @@ def _load_manifest_repository_contract() -> tuple[str, str]:
 
     contract = raw.get("repository_contract")
     if not isinstance(contract, dict):
-        raise RuntimeError(
-            "bootstrap-manifest.yaml is missing repository_contract"
-        )
+        raise RuntimeError("bootstrap-manifest.yaml is missing repository_contract")
 
     repository = str(contract.get("repository", "")).strip()
     declared = str(contract.get("declared_visibility", "")).strip().lower()

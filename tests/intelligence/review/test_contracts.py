@@ -34,7 +34,9 @@ def test_review_contract_rejects_invalid_inputs():
         ArchitectureReview("r", "d", "reviewer", "summary", findings=(object(),))
     duplicate = ReviewFinding("f", "c", "x", "y")
     with pytest.raises(ValueError):
-        ArchitectureReview("r", "d", "reviewer", "summary", findings=(duplicate, duplicate))
+        ArchitectureReview(
+            "r", "d", "reviewer", "summary", findings=(duplicate, duplicate)
+        )
 
 
 def test_review_contract_additional_validation_paths():

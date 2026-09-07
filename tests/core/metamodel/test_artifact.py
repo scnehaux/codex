@@ -44,8 +44,7 @@ def test_identity_supports_local_and_namespaced_keys_and_uri():
 
     assert scoped.canonical_key == "acme corp/main architecture/SAD/001"
     assert (
-        scoped.canonical_uri
-        == "scnehaux://acme%20corp/main%20architecture/SAD%2F001"
+        scoped.canonical_uri == "scnehaux://acme%20corp/main%20architecture/SAD%2F001"
     )
 
 
@@ -74,7 +73,7 @@ def test_source_reference_normalizes_and_validates():
 
 def test_relationship_contract():
     target = ArtifactIdentity("PAD-001")
-    source = SourceReference("03-domain/pad.md")
+    source = SourceReference("domains/pad.md")
 
     relation = ArtifactRelationship(
         " realizes ",
@@ -111,7 +110,7 @@ def test_artifact_model_is_immutable_and_semantic():
         "PAD-001",
         ArchitectureNamespace("acme", "architecture"),
     )
-    source = SourceReference("04-system/SAD-001.md", "abc", 1)
+    source = SourceReference("systems/SAD-001.md", "abc", 1)
     relation = ArtifactRelationship("realizes", target)
 
     model = ArtifactModel(
@@ -141,9 +140,7 @@ def test_artifact_model_is_immutable_and_semantic():
         "authentication",
         "sessions",
     )
-    assert model.sections["scope"]["tags"] == frozenset(
-        {"iam", "security"}
-    )
+    assert model.sections["scope"]["tags"] == frozenset({"iam", "security"})
 
     state = model.semantic_state()
     assert state[0] == identity

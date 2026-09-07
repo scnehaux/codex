@@ -22,8 +22,12 @@ class ReviewFinding:
 
     def __post_init__(self) -> None:
         for field_name in ("finding_id", "category", "challenge", "recommendation"):
-            object.__setattr__(self, field_name, _required(getattr(self, field_name), field_name))
-        related = tuple(_required(item, "related_claim_ids") for item in self.related_claim_ids)
+            object.__setattr__(
+                self, field_name, _required(getattr(self, field_name), field_name)
+            )
+        related = tuple(
+            _required(item, "related_claim_ids") for item in self.related_claim_ids
+        )
         if len(related) != len(set(related)):
             raise ValueError("related_claim_ids must be unique")
         object.__setattr__(self, "related_claim_ids", tuple(sorted(related)))
@@ -56,7 +60,9 @@ class ArchitectureReview:
 
     def __post_init__(self) -> None:
         for field_name in ("review_id", "draft_id", "reviewer_id", "summary"):
-            object.__setattr__(self, field_name, _required(getattr(self, field_name), field_name))
+            object.__setattr__(
+                self, field_name, _required(getattr(self, field_name), field_name)
+            )
         for field_name in ("validation_report_id", "simulation_report_id"):
             value = getattr(self, field_name)
             if value is not None:
@@ -67,7 +73,9 @@ class ArchitectureReview:
         ids = [item.finding_id for item in findings]
         if len(ids) != len(set(ids)):
             raise ValueError("review finding_id values must be unique")
-        object.__setattr__(self, "findings", tuple(sorted(findings, key=lambda item: item.finding_id)))
+        object.__setattr__(
+            self, "findings", tuple(sorted(findings, key=lambda item: item.finding_id))
+        )
 
     def semantic_state(self) -> tuple[Any, ...]:
         return (

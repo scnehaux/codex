@@ -48,14 +48,8 @@ def test_audit_orphans():
     assert len(findings) == 5
     assert any("parent_sad" in msg for _, msg, _ in findings)
     assert any("parent_pad" in msg for _, msg, _ in findings)
-    assert any(
-        "SAD-002" in msg and "governed_by" in msg
-        for _, msg, _ in findings
-    )
-    assert any(
-        "PAD-002" in msg and "governed_by" in msg
-        for _, msg, _ in findings
-    )
+    assert any("SAD-002" in msg and "governed_by" in msg for _, msg, _ in findings)
+    assert any("PAD-002" in msg and "governed_by" in msg for _, msg, _ in findings)
     assert any("realizes_capability" in msg for _, msg, _ in findings)
 
 
@@ -104,7 +98,6 @@ def test_audit_hierarchy_and_orphans_non_dict():
     assert audit_orphans(meta, sev) == []
 
 
-
 def test_downward_inverse_relation_does_not_create_false_dag_cycle():
     meta = {
         "PAD-001": {
@@ -148,4 +141,3 @@ def test_build_upward_graph_handles_non_dict_registry_metadata():
     )
     assert graph["BROKEN"] == set()
     assert graph["GDC-000"] == set()
-

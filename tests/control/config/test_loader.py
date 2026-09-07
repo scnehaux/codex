@@ -15,7 +15,7 @@ def test_load_json_schema_file_success():
     assert result == {"type": "object", "properties": {"id": {"type": "string"}}}
 
 
-@patch('engine.control.config.loader.logger.critical')
+@patch("engine.control.config.loader.logger.critical")
 def test_load_json_schema_file_not_found(mock_logger_critical):
     """
     Validates the behavior when a schema file is missing.
@@ -49,6 +49,7 @@ def test_validate_blocking_severities_missing_and_unknown():
     with pytest.raises(RuntimeError) as exc2:
         validate_blocking_severities(["CRITICAL", "ERROR", "UNKNOWN_SEV"])
     assert "Unknown blocking severities" in str(exc2.value)
+
 
 def test_load_json_schema_file_invalid_json(tmp_path):
     import pytest

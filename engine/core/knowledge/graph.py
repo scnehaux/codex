@@ -16,9 +16,7 @@ def _required(value: str, field_name: str) -> str:
 
 def _freeze(value: Any) -> Any:
     if isinstance(value, Mapping):
-        return MappingProxyType(
-            {key: _freeze(item) for key, item in value.items()}
-        )
+        return MappingProxyType({key: _freeze(item) for key, item in value.items()})
     if isinstance(value, list):
         return tuple(_freeze(item) for item in value)
     if isinstance(value, tuple):
@@ -49,9 +47,7 @@ class KnowledgeNode:
             raise TypeError("properties must be a mapping")
 
         provenance = tuple(self.provenance)
-        if not all(
-            isinstance(item, SourceReference) for item in provenance
-        ):
+        if not all(isinstance(item, SourceReference) for item in provenance):
             raise TypeError("provenance must contain SourceReference")
 
         object.__setattr__(self, "properties", _freeze(self.properties))
@@ -85,9 +81,8 @@ class KnowledgeEdge:
         )
         if not isinstance(self.knowledge_state, KnowledgeState):
             raise TypeError("knowledge_state must be KnowledgeState")
-        if (
-            self.provenance is not None
-            and not isinstance(self.provenance, SourceReference)
+        if self.provenance is not None and not isinstance(
+            self.provenance, SourceReference
         ):
             raise TypeError("provenance must be SourceReference or None")
         if not isinstance(self.properties, Mapping):
@@ -144,19 +139,13 @@ class KnowledgeGraph:
 
     @property
     def node_map(self) -> Mapping[str, KnowledgeNode]:
-        return MappingProxyType(
-            {node.key: node for node in self.nodes}
-        )
+        return MappingProxyType({node.key: node for node in self.nodes})
 
     def outgoing(self, source_key: str) -> tuple[KnowledgeEdge, ...]:
-        return tuple(
-            edge for edge in self.edges if edge.source_key == source_key
-        )
+        return tuple(edge for edge in self.edges if edge.source_key == source_key)
 
     def incoming(self, target_key: str) -> tuple[KnowledgeEdge, ...]:
-        return tuple(
-            edge for edge in self.edges if edge.target_key == target_key
-        )
+        return tuple(edge for edge in self.edges if edge.target_key == target_key)
 
     def semantic_state(self) -> tuple[Any, ...]:
         node_state = tuple(

@@ -1,6 +1,3 @@
-from pathlib import Path
-
-
 def test_broken_internal_link_has_distinct_rule_identity(tmp_path):
     from engine.control.validators.structure_rules import _validate_internal_links
 
@@ -29,6 +26,7 @@ def test_required_subsection_maps_to_specific_severity():
 
         def validate_type_specific(self):
             return None
+
     domain_schema = {
         "$id": "https://example.test/required-subsection.schema.json",
         "$schema": "http://json-schema.org/draft-07/schema#",
@@ -85,9 +83,7 @@ def test_nfr_taxonomy_has_distinct_rule_identity():
     _validate_nfr_taxonomy(stub)
 
     assert stub.findings
-    assert {rule_id for rule_id, _ in stub.findings} == {
-        "nfr_taxonomy_violation"
-    }
+    assert {rule_id for rule_id, _ in stub.findings} == {"nfr_taxonomy_violation"}
     assert any("NFR taxonomy violation" in message for _, message in stub.findings)
 
 
@@ -100,7 +96,7 @@ def test_orphan_document_has_distinct_auditor_severity():
     severities[SeverityRule.TRACEABILITY_VIOLATION] = "TRACE"
 
     findings = audit_orphans(
-        {"SAD-TEST-001": {"_filepath": "04-system/test.sad.md"}},
+        {"SAD-TEST-001": {"_filepath": "systems/test.sad.md"}},
         severities,
     )
 
@@ -110,6 +106,7 @@ def test_orphan_document_has_distinct_auditor_severity():
         "requires cardinality" in finding[1] or "Orphan artifact" in finding[1]
         for finding in findings
     )
+
 
 def test_subsection_order_has_distinct_rule_identity():
     from engine.control.validators.domains.gdc_validator import GDCValidator
@@ -130,9 +127,7 @@ def test_subsection_order_has_distinct_rule_identity():
         }
     }
     validator.content = (
-        "## Semantic Definitions\n"
-        "### Taxonomy\n"
-        "### Naming Conventions\n"
+        "## Semantic Definitions\n### Taxonomy\n### Naming Conventions\n"
     )
 
     findings = []

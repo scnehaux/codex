@@ -97,7 +97,7 @@ def gather_markdown_paths(
             for root, dirs, files in os.walk(target):
                 # CASE 1: Full Repository Scan (Default target = ".")
                 # Logic: Because it's at the root, it STERILIZES the directory tree by aggressively pruning
-                # folders like "src" or "node_modules", only entering allowed_root_dirs like "00-governance".
+                # folders like "src" or "node_modules", only entering allowed_root_dirs like "governance".
                 if (
                     allowed_root_dirs
                     and repo_root
