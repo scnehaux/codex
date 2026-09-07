@@ -293,9 +293,7 @@ def test_workflow_is_validated_structurally_not_by_comments(
     binding = yaml.safe_load(binding_path.read_text(encoding="utf-8"))
     binding["authority"]["integration_id"] = 4242
     binding["evaluator"]["authority_revision"] = "a" * 40
-    binding_path.write_text(
-        yaml.safe_dump(binding, sort_keys=False), encoding="utf-8"
-    )
+    binding_path.write_text(yaml.safe_dump(binding, sort_keys=False), encoding="utf-8")
     policy = load_scm_enforcement_policy(root)
     report = audit_github_projection(root, policy)
     plan = build_github_activation_plan(root, policy)
