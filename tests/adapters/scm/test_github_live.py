@@ -133,7 +133,9 @@ def test_github_live_fail_closed_and_partial_observation_paths():
 
     missing_external = _detail()
     status = next(
-        rule for rule in missing_external["rules"] if rule["type"] == "required_status_checks"
+        rule
+        for rule in missing_external["rules"]
+        if rule["type"] == "required_status_checks"
     )
     status["parameters"]["required_status_checks"] = [
         {"context": "Governance Qualification"}
@@ -152,7 +154,9 @@ def test_github_live_fail_closed_and_partial_observation_paths():
 
     unbound_external = _detail()
     status = next(
-        rule for rule in unbound_external["rules"] if rule["type"] == "required_status_checks"
+        rule
+        for rule in unbound_external["rules"]
+        if rule["type"] == "required_status_checks"
     )
     status["parameters"]["required_status_checks"][1].pop("integration_id")
     evidence = observe_github_state(
