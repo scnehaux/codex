@@ -91,6 +91,7 @@ codex/
 │   │   ├── adapters/
 │   │   │   └── scm/
 │   │   │       ├── github.py
+│   │   │       ├── github_activation.py
 │   │   │       └── github_live.py
 │   │   ├── control/
 │   │   │   ├── auditors/          # (External environment validators)
