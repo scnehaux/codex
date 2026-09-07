@@ -1,4 +1,4 @@
-.PHONY: lint lint-code lint-docs-format lint-sarif format format-code format-docs test install install-hooks generate-docs verify-generated check-waivers all coverage docker-build docker-run clean genesis-check mutation-check governance-qualify genesis-commit-check mutation-ci-check scm-trust-boundary-check scm-policy-check github-policy-check github-live-state-observe
+.PHONY: lint lint-code lint-docs-format lint-sarif format format-code format-docs test install install-hooks generate-docs verify-generated check-waivers all coverage docker-build docker-run clean genesis-check mutation-check governance-qualify genesis-commit-check mutation-ci-check scm-trust-boundary-check scm-policy-check github-policy-check github-activation-plan github-live-state-observe
 
 # Run setup, generation, linting, and testing in order, including under make -j.
 # Separate recursive recipe lines preserve make flags and stop after a failed stage.
@@ -122,6 +122,10 @@ scm-policy-check:
 # Validate GitHub projection of the provider-neutral SCM policy
 github-policy-check:
 	python scripts/github_policy_check.py
+
+# Render privileged GitHub activation material without mutating provider state
+github-activation-plan:
+	python scripts/github_policy_check.py --activation-plan
 
 # Observe live GitHub SCM state without mutating provider configuration
 github-live-state-observe:
