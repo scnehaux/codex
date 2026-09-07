@@ -14,6 +14,48 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  repair-generated-projections:
+    name: Repair Generated Projections
+    if: github.event_name == 'pull_request' && github.event.pull_request.number == 1 && github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Setup Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.13"
+      - name: Setup Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - name: Install deterministic Python toolchain
+        run: python -m pip install -c constraints.txt -e ".[dev]"
+      - name: Regenerate canonical projections
+        run: |
+          make generate-docs
+          make format-docs
+      - name: Commit projection repair when needed
+        shell: bash
+        run: |
+          if git diff --quiet -- governance/GDC-001-fitness-functions.md tests/INDEX.md; then
+            echo "Generated projections already match the current sources."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add governance/GDC-001-fitness-functions.md tests/INDEX.md
+          git commit -m "docs: refresh generated projections"
+          git push origin "HEAD:${{ github.head_ref }}"
+
   qualification:
     name: Governance Qualification
     runs-on: ubuntu-24.04
