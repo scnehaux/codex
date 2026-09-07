@@ -32,8 +32,10 @@ generate-docs:
 # The repository may already contain intentional tracked or untracked changes. Capture that state,
 # run generation followed by formatting, then require the resulting state to be identical. This
 # proves generation is deterministic without confusing unrelated working-tree changes with drift.
+# When drift is detected, print the tracked patch and untracked paths so CI exposes the exact
+# generated changes required to restore the committed projection.
 verify-generated:
-	python -c "import hashlib,os,pathlib,subprocess,sys; untracked=lambda: subprocess.check_output(['git','ls-files','--others','--exclude-standard','-z']).split(b'\0'); state=lambda: hashlib.sha256(subprocess.check_output(['git','diff','--binary','HEAD','--','.'],stderr=subprocess.DEVNULL)+b''.join(p+b'\0'+hashlib.sha256(pathlib.Path(os.fsdecode(p)).read_bytes()).digest() for p in untracked() if p)).digest(); before=state(); subprocess.run([sys.argv[1],'generate-docs'],check=True); subprocess.run([sys.argv[1],'format-docs'],check=True); after=state(); print('[PASS] Generated state is reproducible' if before==after else '[FAIL] Generate-then-format changed repository state'); sys.exit(0 if before==after else 1)" "$(MAKE)"
+	python -c "import hashlib,os,pathlib,subprocess,sys; untracked=lambda: subprocess.check_output(['git','ls-files','--others','--exclude-standard','-z']).split(b'\\0'); state=lambda: hashlib.sha256(subprocess.check_output(['git','diff','--binary','HEAD','--','.'],stderr=subprocess.DEVNULL)+b''.join(p+b'\\0'+hashlib.sha256(pathlib.Path(os.fsdecode(p)).read_bytes()).digest() for p in untracked() if p)).digest(); before=state(); subprocess.run([sys.argv[1],'generate-docs'],check=True); subprocess.run([sys.argv[1],'format-docs'],check=True); after=state(); ok=before==after; print('[PASS] Generated state is reproducible' if ok else '[FAIL] Generate-then-format changed repository state'); (print(subprocess.check_output(['git','diff','--binary','HEAD','--','.'],text=True),end='') or print('Untracked generated paths:', subprocess.check_output(['git','ls-files','--others','--exclude-standard'],text=True),end='')) if not ok else None; sys.exit(0 if ok else 1)" "$(MAKE)"
 
 # Run the core architecture linter to validate document compliance (C4, NFRs, etc.)
 lint:
