@@ -45,7 +45,10 @@ def find_ruleset_summary(
     return matches[0] if matches else None
 
 
-def normalize_github_ruleset(detail: object) -> SCMEffectivePolicy:
+def normalize_github_ruleset(
+    detail: object,
+    policy: SCMEnforcementPolicy,
+) -> SCMEffectivePolicy:
     ruleset = _mapping(detail)
     if not ruleset:
         raise ValueError("GitHub ruleset detail must be a mapping")
@@ -54,17 +57,25 @@ def normalize_github_ruleset(detail: object) -> SCMEffectivePolicy:
     pull = _mapping(_mapping(rules.get("pull_request")).get("parameters"))
     status = _mapping(_mapping(rules.get("required_status_checks")).get("parameters"))
     checks = status.get("required_status_checks")
-    check_contexts = (
-        tuple(
-            str(item.get("context"))
-            for item in checks
-            if isinstance(item, dict) and isinstance(item.get("context"), str)
-        )
+    check_records = (
+        tuple(item for item in checks if isinstance(item, dict))
         if isinstance(checks, list)
         else ()
     )
 
-    candidate_context = check_contexts[0] if len(check_contexts) == 1 else ""
+    candidate_context = policy.qualification.candidate.context
+    external_context = policy.qualification.external_authority.context
+    candidate = next(
+        (item for item in check_records if item.get("context") == candidate_context),
+        None,
+    )
+    external = next(
+        (item for item in check_records if item.get("context") == external_context),
+        None,
+    )
+    external_integration_id = (
+        external.get("integration_id") if isinstance(external, dict) else None
+    )
 
     return SCMEffectivePolicy(
         changes_require_review="pull_request" in rules,
@@ -81,10 +92,15 @@ def normalize_github_ruleset(detail: object) -> SCMEffectivePolicy:
         require_thread_resolution=(
             pull.get("required_review_thread_resolution") is True
         ),
-        candidate_check_required=bool(check_contexts),
-        candidate_check_context=candidate_context,
+        candidate_check_required=candidate is not None,
+        candidate_check_context=(candidate_context if candidate is not None else ""),
         candidate_check_strict=(
             status.get("strict_required_status_checks_policy") is True
+        ),
+        external_authority_check_required=external is not None,
+        external_authority_check_context=(external_context if external is not None else ""),
+        external_authority_source_bound=(
+            type(external_integration_id) is int and external_integration_id > 0
         ),
         bypass_allowed=bool(ruleset.get("bypass_actors")),
     )
@@ -157,7 +173,7 @@ def observe_github_state(
             notes=tuple(notes),
         )
 
-    effective = normalize_github_ruleset(ruleset_detail)
+    effective = normalize_github_ruleset(ruleset_detail, policy)
     desired = desired_effective_policy(policy)
     drift = compare_effective_policy(desired, effective)
     enforcement = (
