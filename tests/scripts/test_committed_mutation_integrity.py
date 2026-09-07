@@ -15,7 +15,8 @@ def load():
     return module
 
 
-def test_missing_baseline_returns_2(capsys):
+def test_missing_baseline_returns_2(monkeypatch, capsys):
+    monkeypatch.delenv("SCNEHAUX_MUTATION_BASE_REF", raising=False)
     module = load()
     assert module.main([]) == 2
     assert "baseline is required" in capsys.readouterr().out
