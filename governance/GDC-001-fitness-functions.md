@@ -319,6 +319,7 @@ codex/
 │       │   ├── test_github_policy_check.py
 │       │   ├── test_governance_qualify.py
 │       │   ├── test_governance_scripts.py
+│       │   ├── test_makefile_orchestration.py
 │       │   ├── test_mutation_integrity.py
 │       │   ├── test_prettier_runner.py
 │       │   ├── test_prettier_runner_windows_quoting.py

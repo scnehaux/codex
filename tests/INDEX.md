@@ -1149,6 +1149,21 @@ This index documents the test suite utilities and fixtures.
 | **test_waiver_main_delegates**                                     | _(No docstring provided)_ |
 | **test_install_hook_repository_root_contract**                     | _(No docstring provided)_ |
 
+### `tests/scripts/test_makefile_orchestration.py`
+
+| Function                                                    | Description                                                               |
+| :---------------------------------------------------------- | :------------------------------------------------------------------------ |
+| **make_env**                                                | Do not inherit outer make flags, jobserver descriptors, or test controls. |
+| **gnu_make**                                                | _(No docstring provided)_                                                 |
+| **make_sandbox**                                            | _(No docstring provided)_                                                 |
+| **\_run_make**                                              | _(No docstring provided)_                                                 |
+| **\_events**                                                | _(No docstring provided)_                                                 |
+| **\_completed_events**                                      | _(No docstring provided)_                                                 |
+| **test_all_runs_stages_in_order**                           | _(No docstring provided)_                                                 |
+| **test_all_stops_after_failure_even_with_keep_going**       | _(No docstring provided)_                                                 |
+| **test_default_goal_remains_all**                           | _(No docstring provided)_                                                 |
+| **test_install_uses_python_pip_and_repository_constraints** | _(No docstring provided)_                                                 |
+
 ### `tests/scripts/test_mutation_integrity.py`
 
 | Function                                                 | Description               |
