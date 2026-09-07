@@ -65,15 +65,36 @@ def _has_owner(entries: Mapping[str, tuple[str, ...]], pattern: str) -> bool:
     )
 
 
-def _workflow_steps(workflow: Mapping[str, Any]) -> tuple[Mapping[str, Any], ...]:
-    jobs = _mapping(workflow.get("jobs"))
-    steps: list[Mapping[str, Any]] = []
-    for job in jobs.values():
-        if isinstance(job, dict):
-            raw_steps = job.get("steps")
-            if isinstance(raw_steps, list):
-                steps.extend(item for item in raw_steps if isinstance(item, dict))
-    return tuple(steps)
+def _job_steps(job: Mapping[str, Any]) -> tuple[Mapping[str, Any], ...]:
+    raw_steps = job.get("steps")
+    if not isinstance(raw_steps, list):
+        return ()
+    return tuple(step for step in raw_steps if isinstance(step, dict))
+
+
+def _contents_permission(permissions: object) -> str | None:
+    # Job-level permissions replace the workflow defaults. Omitted scopes are none.
+    if permissions == "read-all":
+        return "read"
+    if permissions == "write-all":
+        return "write"
+    if isinstance(permissions, dict):
+        value = permissions.get("contents", "none")
+        return value if isinstance(value, str) else None
+    return None
+
+
+def _required_execution(item: Mapping[str, Any]) -> bool:
+    # Recognize only unconditional/default-success execution, never evaluate YAML
+    # expressions. Unsupported guards cannot serve as proof of a mandatory check.
+    allowed_guard = item.get("if") in (
+        None,
+        "true",
+        "${{ true }}",
+        "success()",
+        "${{ success() }}",
+    )
+    return allowed_guard and item.get("continue-on-error", "false") == "false"
 
 
 def audit_github_projection(
@@ -280,54 +301,113 @@ def audit_github_projection(
         findings,
     )
 
-    steps = _workflow_steps(workflow)
+    candidates = [
+        job
+        for job in jobs.values()
+        if isinstance(job, dict)
+        and job.get("name") == policy.qualification.candidate.context
+    ]
+    candidate = candidates[0] if len(candidates) == 1 else {}
+    _check(
+        _required_execution(candidate) and "needs" not in candidate,
+        "candidate-check-execution-drift",
+        "candidate qualification must propagate failure and run independently "
+        "with an unconditional/default-success guard",
+        findings,
+    )
+
+    permission_rank = {"none": 0, "read": 1, "write": 2}
+    expected_permission = policy.workflow.repository_contents_permission
+    required_actions = {"checkout", "setup-python", "setup-node"}
+    candidate_actions: set[str] = set()
+    for job_id, raw_job in jobs.items():
+        job = _mapping(raw_job)
+        raw_steps = job.get("steps")
+        _check(
+            isinstance(raw_job, dict)
+            and isinstance(raw_steps, list)
+            and all(isinstance(step, dict) for step in raw_steps),
+            "workflow-job-structure-invalid",
+            f"job {job_id} must define an inspectable list of step mappings",
+            findings,
+        )
+        effective_permission = _contents_permission(
+            job.get("permissions", workflow.get("permissions"))
+        )
+        _check(
+            effective_permission in permission_rank
+            and permission_rank[effective_permission]
+            <= permission_rank.get(expected_permission, -1),
+            "job-permission-projection-mismatch",
+            f"job {job_id} must not exceed authored repository contents permission",
+            findings,
+        )
+        if job is candidate:
+            _check(
+                effective_permission == expected_permission,
+                "candidate-check-permission-mismatch",
+                "candidate qualification must retain authored contents permission",
+                findings,
+            )
+        # Check every occurrence; a safe later action must never hide an unsafe one.
+        for index, step in enumerate(_job_steps(job), start=1):
+            uses = step.get("uses")
+            if not isinstance(uses, str):
+                continue
+            action = uses.split("@", 1)[0].lower()
+            if action not in {f"actions/{name}" for name in required_actions}:
+                continue
+            match = ACTION_RE.fullmatch(uses)
+            _check(
+                match is not None,
+                "pinned-action-projection-mismatch",
+                f"job {job_id} step {index}: {action} must use a full commit SHA",
+                findings,
+            )
+            if match and job is candidate and _required_execution(step):
+                candidate_actions.add(match.group(1))
+            if action == "actions/checkout":
+                checkout = _mapping(step.get("with"))
+                _check(
+                    checkout.get("persist-credentials") == "false",
+                    "checkout-credential-safety-drift",
+                    f"job {job_id} step {index}: checkout must not persist credentials",
+                    findings,
+                )
+                _check(
+                    checkout.get("fetch-depth") == "0",
+                    "checkout-history-safety-drift",
+                    f"job {job_id} step {index}: checkout must fetch complete history",
+                    findings,
+                )
+    _check(
+        candidate_actions == required_actions,
+        "pinned-action-projection-mismatch",
+        "candidate job must execute pinned checkout/setup-python/setup-node steps",
+        findings,
+    )
+
+    # Evidence belongs to the named qualification job, not a sibling (possibly
+    # skipped) job. Ignored failures and conditional steps are not mandatory gates.
     run_commands = {
         str(step.get("run", "")).strip()
-        for step in steps
-        if isinstance(step.get("run"), str)
+        for step in _job_steps(candidate)
+        if isinstance(step.get("run"), str) and _required_execution(step)
     }
     if policy.workflow.committed_mutation_validation_required:
         _check(
             "make mutation-ci-check" in run_commands,
             "mutation-validation-step-missing",
-            "GitHub workflow must execute committed mutation validation",
+            "candidate job must execute blocking committed mutation validation",
             findings,
         )
     if policy.workflow.full_governance_qualification_required:
         _check(
             "make governance-qualify" in run_commands,
             "governance-qualification-step-missing",
-            "GitHub workflow must execute full governance qualification",
+            "candidate job must execute blocking full governance qualification",
             findings,
         )
-
-    actions: dict[str, tuple[str, Mapping[str, Any]]] = {}
-    for step in steps:
-        uses = step.get("uses")
-        if not isinstance(uses, str):
-            continue
-        match = ACTION_RE.fullmatch(uses)
-        if match:
-            actions[match.group(1)] = (match.group(2), _mapping(step.get("with")))
-    _check(
-        set(actions) == {"checkout", "setup-python", "setup-node"},
-        "pinned-action-projection-mismatch",
-        "checkout/setup-python/setup-node must be pinned by full commit SHA",
-        findings,
-    )
-    checkout = actions.get("checkout", ("", {}))[1]
-    _check(
-        checkout.get("persist-credentials") == "false",
-        "checkout-credential-safety-drift",
-        "GitHub checkout must not persist credentials",
-        findings,
-    )
-    _check(
-        checkout.get("fetch-depth") == "0",
-        "checkout-history-safety-drift",
-        "GitHub checkout must fetch complete history",
-        findings,
-    )
 
     authority = _mapping(binding.get("authority"))
     evaluator = _mapping(binding.get("evaluator"))
