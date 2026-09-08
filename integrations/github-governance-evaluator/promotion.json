@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "repository": "scnehaux/codex",
+  "authority_source_revision": "23b05a855419b86b61b0c9266805bb66b143c366",
+  "promotion": {
+    "mode": "privileged-explicit",
+    "state": "source-pinned",
+    "candidate_may_select_effective_revision": false
+  },
+  "runtime": {
+    "execution_location": "external",
+    "exported_copy_required": true,
+    "facts_provenance_verified": false,
+    "publish_enabled": false,
+    "authority_binding_advanced": false,
+    "effective_enforcement_proven": false
+  }
+}
