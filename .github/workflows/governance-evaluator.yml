@@ -1,4 +1,4 @@
-name: Governance Evaluator Decision Engine
+name: Governance Evaluator Source Promotion
 
 on:
   pull_request:
@@ -9,14 +9,15 @@ permissions:
   contents: read
 
 jobs:
-  evaluator-decision-engine:
-    name: Governance Evaluator Decision Engine
+  evaluator-source-promotion:
+    name: Governance Evaluator Source Promotion
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - name: Checkout source without retained credentials
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
+          fetch-depth: 0
           persist-credentials: false
       - name: Setup Python
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
@@ -24,23 +25,59 @@ jobs:
           python-version: '3.13'
       - name: Compile deterministic offline evaluator
         run: python -I -m compileall -q integrations/github-governance-evaluator
-      - name: Run positive and negative evaluator regression tests
+      - name: Run decision and promotion regression tests
         run: python -I -m unittest discover -s integrations/github-governance-evaluator/tests
       - name: Assert evaluator has no network, credential, or process client imports
         shell: bash
         run: |
           if grep -R -nE '^\s*(from|import)\s+(urllib|requests|httpx|jwt|cryptography|socket|subprocess)(\.|\s|$)' integrations/github-governance-evaluator/evaluator.py; then
-            echo 'Stage 3b evaluator must remain offline and credential-free.' >&2
+            echo 'Promoted source must remain offline and credential-free.' >&2
             exit 1
           fi
-      - name: Assert authority binding remains unpromoted and planned
+      - name: Verify pinned source commit exists in reviewed history
+        shell: bash
+        run: |
+          revision=$(python -I -c "import json; print(json.load(open('integrations/github-governance-evaluator/promotion.json', encoding='utf-8'))['authority_source_revision'])")
+          case "$revision" in
+            [0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]) ;;
+            *) echo 'Promotion source revision must be a full lowercase 40-character SHA.' >&2; exit 1 ;;
+          esac
+          test "$revision" != "0000000000000000000000000000000000000000"
+          git cat-file -e "${revision}^{commit}"
+      - name: Assert source pin cannot masquerade as provider activation
         shell: bash
         run: |
           python -I - <<'PY'
+          import json
           from pathlib import Path
-          text = Path('governance/github/authority-binding.yaml').read_text(encoding='utf-8')
-          required = ['authority_revision: null', 'state: planned', 'effective_enforcement_claimed: false']
-          missing = [item for item in required if item not in text]
+
+          contract = json.loads(Path('integrations/github-governance-evaluator/promotion.json').read_text(encoding='utf-8'))
+          if contract['promotion'] != {
+              'mode': 'privileged-explicit',
+              'state': 'source-pinned',
+              'candidate_may_select_effective_revision': False,
+          }:
+              raise SystemExit('Promotion contract drifted')
+          if contract['runtime'] != {
+              'execution_location': 'external',
+              'exported_copy_required': True,
+              'facts_provenance_verified': False,
+              'publish_enabled': False,
+              'authority_binding_advanced': False,
+              'effective_enforcement_proven': False,
+          }:
+              raise SystemExit('Runtime boundary drifted')
+
+          binding = Path('governance/github/authority-binding.yaml').read_text(encoding='utf-8')
+          required = [
+              'authority_revision: null',
+              'candidate_revision_as_authority: false',
+              'auto_deploy_from_candidate: false',
+              'promotion: privileged-explicit',
+              'state: planned',
+              'effective_enforcement_claimed: false',
+          ]
+          missing = [item for item in required if item not in binding]
           if missing:
-              raise SystemExit('Stage 3b must not promote or activate authority: ' + ', '.join(missing))
+              raise SystemExit('Source promotion must not advance provider activation: ' + ', '.join(missing))
           PY

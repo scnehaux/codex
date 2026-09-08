@@ -1,104 +1,97 @@
-# GitHub governance evaluator decision engine
+# GitHub governance evaluator source promotion
 
-This directory is **Stage 3b**: a deterministic, offline decision engine for the
-future external `Codex Governance Authority`. It now produces staging `pass` or
-`fail` decisions, but it still does not authenticate to GitHub, use a private key,
-mint installation tokens, execute candidate code, publish a Check Run, promote an
-authority revision, or prove merge enforcement.
+This directory is **Stage 3c**. Stage 3b established deterministic offline
+`pass`/`fail` semantics. Stage 3c now pins the reviewed evaluator source revision
+that an operator may export into the future independently administered runtime.
+It still does not authenticate to GitHub, use a private key, mint installation
+tokens, execute candidate code, publish a Check Run, advance the provider binding,
+or prove merge enforcement.
 
-The trust boundary remains explicit: candidate state is untrusted data. A second
-bounded `evaluation-facts` input supplies qualification facts to the engine. The
-engine validates exact repository/PR/base/head/authority binding and applies the
-same decision every time for the same validated inputs. **This stage does not
-verify the provenance of that facts file.** A future promoted runtime must collect
-those facts independently before any result is eligible for publication.
+The pinned source is recorded in `promotion.json`. The current pin is the merged
+Stage 3b revision `23b05a855419b86b61b0c9266805bb66b143c366`. That revision is an
+immutable Git commit containing the deterministic decision engine. Pinning it does
+**not** make the repository itself the effective authority and does not prove that
+an external runtime is running that revision.
 
-## Candidate input
+## Promotion contract
 
-`--candidate-manifest` remains schema version 1:
-
-```json
-{
-  "schema_version": 1,
-  "repository": "scnehaux/codex",
-  "pull_request": 8,
-  "base_sha": "<40 lowercase hex>",
-  "head_sha": "<40 lowercase hex>",
-  "changed_files": ["sorted/repository-relative/path"]
-}
-```
-
-Changed paths are bounded, unique, sorted, repository-relative POSIX paths. The
-engine rejects traversal, absolute/Windows paths, control characters, malformed
-SHAs, wrong repository identity, unknown fields, and candidate-as-authority use.
-
-## Evaluation facts input
-
-`--evaluation-facts` is a separate schema version 1 object:
+`promotion.json` is intentionally narrow:
 
 ```json
 {
   "schema_version": 1,
   "repository": "scnehaux/codex",
-  "pull_request": 8,
-  "base_sha": "<same exact base SHA>",
-  "head_sha": "<same exact candidate SHA>",
-  "authority_source_revision": "<same explicit evaluator revision>",
-  "candidate_qualification": "pass",
-  "privileged_validation": "not_required"
+  "authority_source_revision": "23b05a855419b86b61b0c9266805bb66b143c366",
+  "promotion": {
+    "mode": "privileged-explicit",
+    "state": "source-pinned",
+    "candidate_may_select_effective_revision": false
+  },
+  "runtime": {
+    "execution_location": "external",
+    "exported_copy_required": true,
+    "facts_provenance_verified": false,
+    "publish_enabled": false,
+    "authority_binding_advanced": false,
+    "effective_enforcement_proven": false
+  }
 }
 ```
 
-`candidate_qualification` is exactly `pass` or `fail`. `privileged_validation` is
-exactly `pass`, `fail`, or `not_required`. The facts file is data only; merely
-writing `pass` into it is **not** authority evidence. The current offline engine
-sets `facts_provenance_verified: false` in every completed result.
+The contract expresses a reviewed source pin only. The effective evaluator must be
+an exported copy administered outside candidate control. Candidate state may not
+select the effective revision, and no candidate update may auto-deploy itself into
+the credential-holding runtime.
 
-## Deterministic policy
+## Why `authority_revision` is still null
 
-The engine applies these rules in fixed order:
+`governance/github/authority-binding.yaml` remains desired provider state and still
+contains `authority_revision: null`. This is deliberate. The Stage 3b engine still
+accepts a caller-supplied facts file whose provenance is not independently proven.
+Advancing the provider binding now would let a source pin look more authoritative
+than the evidence supports.
 
-1. Repository, PR, base SHA, candidate SHA, and authority revision must bind exactly.
-2. The candidate SHA cannot equal the authority source revision.
-3. Candidate qualification must be `pass`; otherwise the decision is `fail`.
-4. Mutations to protected governance/SCM/workflow/ownership surfaces require
-   `privileged_validation: pass`.
-5. A protected mutation with `fail` or `not_required` fails. An unprotected
-   candidate must use `not_required`; a contradictory privileged claim is blocked
-   as invalid input rather than silently accepted.
+The next slice must create the independently collected facts boundary and prove
+that the exported runtime is actually running the pinned revision. Only after that
+runtime evidence exists should a separate privileged change advance
+`authority_revision` in the provider binding and enable publication of the real
+`Codex Governance Authority` context.
 
-A completed result has `governance_decision: pass` or `fail`. A pass exits `0`, a
-deterministic governance failure exits `2`, and invalid/unbound input exits `1`.
-The output always keeps `publish_enabled: false`, `authority_promoted: false`,
-`candidate_code_executed: false`, `credentials_used: false`, and
-`effective_enforcement_proven: false`.
+## Candidate and facts inputs
 
-## Run locally without credentials
+The decision engine still consumes two bounded JSON inputs. Candidate state is
+untrusted data. `evaluation-facts` binds repository, PR, base SHA, candidate SHA,
+authority source revision, candidate qualification and privileged validation. The
+engine rejects identity mismatches, malformed paths/SHAs, candidate-as-authority
+use and contradictory privileged claims.
 
-Create candidate and facts JSON files matching the contracts, then run:
+A deterministic Stage 3b result remains one of:
 
-```powershell
-py -3.13 -I integrations/github-governance-evaluator/evaluator.py `
-  --candidate-manifest candidate.json `
-  --evaluation-facts facts.json `
-  --authority-source-revision cccccccccccccccccccccccccccccccccccccccc
-```
+- exit `0`: governance decision `pass`;
+- exit `2`: deterministic governance decision `fail`;
+- exit `1`: invalid or unbound input.
 
-Do not interpret a local `pass` as a real GitHub authority result. The caller can
-still fabricate the facts file in this stage. The purpose of Stage 3b is to lock
-down deterministic decision semantics and negative behavior before credentials or
-provider writes are introduced.
+Every completed result still reports `facts_provenance_verified: false`,
+`publish_enabled: false`, `authority_promoted: false`, `candidate_code_executed:
+false`, `credentials_used: false`, and `effective_enforcement_proven: false`.
 
-## Trust and promotion boundary
+## CI and operator boundary
 
-Source living in the candidate repository does not make it the effective authority.
-A later slice must explicitly review and promote an immutable evaluator revision,
-export/run that trusted revision outside candidate control, independently collect
-candidate state and qualification facts, bind them to the exact candidate SHA, and
-only then authenticate as the already-bound GitHub App to publish the real
-`Codex Governance Authority` result.
+The `Governance Evaluator Source Promotion` workflow checks out complete history,
+runs the positive/negative decision tests and promotion tests, rejects network,
+credential and process-client imports in the evaluator, proves that the pinned
+commit exists in repository history, and verifies that provider activation remains
+unadvanced.
 
-`governance/github/authority-binding.yaml` intentionally remains unchanged in this
-slice: `authority_revision` is still null and activation remains planned. The
-already-proven `Codex App Connectivity Probe` remains separate and must never be
-configured as the required authority context.
+CI is still candidate-side evidence. It does not hold the GitHub App private key
+and does not become the external authority merely because these checks pass.
+
+For the next runtime slice, the operator should export exactly the pinned commit
+outside any candidate checkout, independently collect facts for an exact candidate
+SHA, run the deterministic engine from the pinned source, and keep App credentials
+unavailable to candidate code. Only that trusted runtime may later publish the real
+`Codex Governance Authority` check.
+
+The already-proven `Codex App Connectivity Probe` remains separate. It proves App
+Checks API transport only and must never be configured as the required authority
+context.
