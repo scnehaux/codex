@@ -5,6 +5,7 @@ Default: GET-only authentication preflight. --probe-sha alone: offline preview.
 Only --write with matching repository/SHA confirmations can mint a scoped token
 and publish the fixed, non-required connectivity check. No candidate code runs.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -16,7 +17,6 @@ import os
 from pathlib import Path
 import re
 import stat
-import sys
 import time
 from typing import Any, Callable
 from urllib.error import HTTPError, URLError
@@ -60,21 +60,47 @@ class Config:
                 raise ValueError
             data = json.loads(raw)
         except (OSError, ValueError, UnicodeError):
-            raise PreflightError("config-invalid", "Cannot read a valid local config.json.") from None
-        keys = {"config_version", "app_id", "installation_id", "client_id", "repository"}
+            raise PreflightError(
+                "config-invalid", "Cannot read a valid local config.json."
+            ) from None
+        keys = {
+            "config_version",
+            "app_id",
+            "installation_id",
+            "client_id",
+            "repository",
+        }
         if not isinstance(data, dict) or set(data) != keys:
-            raise PreflightError("config-invalid", "Config fields do not match the expected schema.")
+            raise PreflightError(
+                "config-invalid", "Config fields do not match the expected schema."
+            )
         if type(data["config_version"]) is not int or data["config_version"] != 1:
             raise PreflightError("config-version", "Unsupported config version.")
         for name in ("app_id", "installation_id"):
             if type(data[name]) is not int or not 0 < data[name] < 2**63:
-                raise PreflightError("config-id", "App and Installation IDs must be positive integers.")
+                raise PreflightError(
+                    "config-id", "App and Installation IDs must be positive integers."
+                )
         client = data["client_id"]
         repo = data["repository"]
-        if not isinstance(client, str) or re.fullmatch(r"[A-Za-z0-9]{8,128}", client) is None:
-            raise PreflightError("config-client", "Client ID must be the public alphanumeric ID, not a secret.")
-        if not isinstance(repo, str) or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]{0,38}/[A-Za-z0-9_.-]{1,100}", repo) is None:
-            raise PreflightError("config-repository", "Repository must be owner/name, not a URL.")
+        if (
+            not isinstance(client, str)
+            or re.fullmatch(r"[A-Za-z0-9]{8,128}", client) is None
+        ):
+            raise PreflightError(
+                "config-client",
+                "Client ID must be the public alphanumeric ID, not a secret.",
+            )
+        if (
+            not isinstance(repo, str)
+            or re.fullmatch(
+                r"[A-Za-z0-9][A-Za-z0-9-]{0,38}/[A-Za-z0-9_.-]{1,100}", repo
+            )
+            is None
+        ):
+            raise PreflightError(
+                "config-repository", "Repository must be owner/name, not a URL."
+            )
         if repo.split("/")[1] in (".", ".."):
             raise PreflightError("config-repository", "Invalid repository name.")
         return cls(data["app_id"], data["installation_id"], client, repo)
@@ -94,41 +120,70 @@ def make_jwt(key_path: Path, client_id: str) -> str:
         info = original.lstat()
         key = original.resolve(strict=True)
     except OSError:
-        raise PreflightError("key-missing", "Private key file not found. Store it locally, outside the repository.") from None
+        raise PreflightError(
+            "key-missing",
+            "Private key file not found. Store it locally, outside the repository.",
+        ) from None
     if not stat.S_ISREG(info.st_mode):
-        raise PreflightError("key-type", "Private key must be a regular file, not a symlink or directory.")
+        raise PreflightError(
+            "key-type",
+            "Private key must be a regular file, not a symlink or directory.",
+        )
     kit = Path(__file__).resolve().parent
     if key.is_relative_to(kit) or any((p / ".git").exists() for p in key.parents):
-        raise PreflightError("key-location", "Move the private key outside the setup kit and all Git repositories.")
+        raise PreflightError(
+            "key-location",
+            "Move the private key outside the setup kit and all Git repositories.",
+        )
     if os.name != "nt":
         if info.st_uid != os.getuid() or stat.S_IMODE(info.st_mode) & 0o077:
-            raise PreflightError("key-permissions", "Key must belong to your user and have chmod 600 permissions.")
+            raise PreflightError(
+                "key-permissions",
+                "Key must belong to your user and have chmod 600 permissions.",
+            )
     # Windows ACLs are NOT inferred from POSIX mode bits. See README for icacls.
     try:
         with key.open("rb") as handle:
             pem = handle.read(KEY_MAX_BYTES + 1)
     except OSError:
-        raise PreflightError("key-unreadable", "Private key file is not readable by this user.") from None
+        raise PreflightError(
+            "key-unreadable", "Private key file is not readable by this user."
+        ) from None
     if not pem or len(pem) > KEY_MAX_BYTES:
-        raise PreflightError("key-size", "Private key file is empty or exceeds the supported size.")
+        raise PreflightError(
+            "key-size", "Private key file is empty or exceeds the supported size."
+        )
     try:
         import jwt
         from cryptography.hazmat.primitives import serialization
         from cryptography.hazmat.primitives.asymmetric import rsa
     except ImportError:
-        raise PreflightError("dependencies-missing", "Install requirements.txt in the dedicated virtual environment first.") from None
+        raise PreflightError(
+            "dependencies-missing",
+            "Install requirements.txt in the dedicated virtual environment first.",
+        ) from None
     try:
         private_key = serialization.load_pem_private_key(pem, password=None)
-        if not isinstance(private_key, rsa.RSAPrivateKey) or private_key.key_size < 2048:
+        if (
+            not isinstance(private_key, rsa.RSAPrivateKey)
+            or private_key.key_size < 2048
+        ):
             raise ValueError
         now = int(time.time())
-        token = jwt.encode({"iat": now - 60, "exp": now + 300, "iss": client_id}, private_key, algorithm="RS256")
+        token = jwt.encode(
+            {"iat": now - 60, "exp": now + 300, "iss": client_id},
+            private_key,
+            algorithm="RS256",
+        )
         if not isinstance(token, str):
             raise ValueError
         return token
     except Exception:
         # Deliberately do not render library errors, which could include sensitive data.
-        raise PreflightError("key-invalid", "Use an unencrypted RSA PEM private key from this GitHub App (at least 2048 bits).") from None
+        raise PreflightError(
+            "key-invalid",
+            "Use an unencrypted RSA PEM private key from this GitHub App (at least 2048 bits).",
+        ) from None
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -155,12 +210,22 @@ def request_json(
         )
     ) or (method == "DELETE" and path == "/installation/token")
     if method != "GET" and not allowed_write:
-        raise PreflightError("api-method", "Only token issuance/revocation and connectivity checks may be written.")
+        raise PreflightError(
+            "api-method",
+            "Only token issuance/revocation and connectivity checks may be written.",
+        )
     if method != "POST" and body is not None:
         raise PreflightError("api-body", "GET and DELETE requests cannot carry a body.")
     if method == "POST" and path.endswith("/check-runs"):
-        if not isinstance(body, dict) or body.get("name") != PROBE_NAME or body.get("conclusion") != "neutral":
-            raise PreflightError("probe-payload", "Only the fixed neutral connectivity probe is permitted.")
+        if (
+            not isinstance(body, dict)
+            or body.get("name") != PROBE_NAME
+            or body.get("conclusion") != "neutral"
+        ):
+            raise PreflightError(
+                "probe-payload",
+                "Only the fixed neutral connectivity probe is permitted.",
+            )
     request = Request(
         API_ROOT + path,
         headers={
@@ -177,7 +242,9 @@ def request_json(
     try:
         with build_opener(NoRedirect()).open(request, timeout=20) as response:
             if response.status != expected:
-                raise PreflightError("api-status", "Unexpected GitHub API status; verification stopped.")
+                raise PreflightError(
+                    "api-status", "Unexpected GitHub API status; verification stopped."
+                )
             raw = response.read(MAX_RESPONSE_BYTES + 1)
     except HTTPError as exc:
         status = exc.code
@@ -187,19 +254,34 @@ def request_json(
             403: "GitHub denied access. Check installation permissions, restrictions, or API rate limits.",
             404: "GitHub could not find this installation/repository/commit for the authenticated App.",
         }
-        raise PreflightError("github-http-" + str(status), messages.get(status, "GitHub request failed. No redirect or automatic retry was attempted.")) from None
+        raise PreflightError(
+            "github-http-" + str(status),
+            messages.get(
+                status,
+                "GitHub request failed. No redirect or automatic retry was attempted.",
+            ),
+        ) from None
     except (URLError, TimeoutError, OSError, HTTPException):
-        raise PreflightError("network-error", "Secure connection to api.github.com failed. Check internet/proxy/clock; do not disable TLS verification.") from None
+        raise PreflightError(
+            "network-error",
+            "Secure connection to api.github.com failed. Check internet/proxy/clock; do not disable TLS verification.",
+        ) from None
     if len(raw) > MAX_RESPONSE_BYTES:
-        raise PreflightError("api-response-size", "GitHub response exceeded the supported size.")
+        raise PreflightError(
+            "api-response-size", "GitHub response exceeded the supported size."
+        )
     if expected == 204:
         return {}
     try:
         data = json.loads(raw)
     except (ValueError, UnicodeError):
-        raise PreflightError("api-json", "GitHub returned invalid JSON; verification stopped.") from None
+        raise PreflightError(
+            "api-json", "GitHub returned invalid JSON; verification stopped."
+        ) from None
     if not isinstance(data, dict):
-        raise PreflightError("api-shape", "GitHub returned an unexpected response shape.")
+        raise PreflightError(
+            "api-shape", "GitHub returned an unexpected response shape."
+        )
     return data
 
 
@@ -210,34 +292,68 @@ def get_json(path: str, token: str) -> dict[str, Any]:
 
 def verify_permissions(value: object) -> None:
     if not isinstance(value, dict):
-        raise PreflightError("permissions-missing", "Installation permission information is missing.")
+        raise PreflightError(
+            "permissions-missing", "Installation permission information is missing."
+        )
     for name, level in REQUIRED_PERMISSIONS.items():
         if value.get(name) != level:
-            raise PreflightError("permissions-mismatch", "Require Contents: read, Pull requests: read, Checks: write, Metadata: read. Approve pending installation changes.")
-    if any(level != "none" for name, level in value.items() if name not in REQUIRED_PERMISSIONS):
-        raise PreflightError("permissions-excess", "Remove extra App permissions; this dedicated App needs only the four documented permissions.")
+            raise PreflightError(
+                "permissions-mismatch",
+                "Require Contents: read, Pull requests: read, Checks: write, Metadata: read. Approve pending installation changes.",
+            )
+    if any(
+        level != "none"
+        for name, level in value.items()
+        if name not in REQUIRED_PERMISSIONS
+    ):
+        raise PreflightError(
+            "permissions-excess",
+            "Remove extra App permissions; this dedicated App needs only the four documented permissions.",
+        )
 
 
 def verify_installation(data: dict[str, Any], config: Config) -> None:
     if type(data.get("id")) is not int or data["id"] != config.installation_id:
-        raise PreflightError("installation-mismatch", "The installation does not match the configured Installation ID.")
+        raise PreflightError(
+            "installation-mismatch",
+            "The installation does not match the configured Installation ID.",
+        )
     if type(data.get("app_id")) is not int or data["app_id"] != config.app_id:
-        raise PreflightError("installation-app-mismatch", "The installation does not belong to the expected App.")
+        raise PreflightError(
+            "installation-app-mismatch",
+            "The installation does not belong to the expected App.",
+        )
     account = data.get("account")
     login = account.get("login") if isinstance(account, dict) else None
-    if not isinstance(login, str) or login.lower() != config.repository.split("/")[0].lower():
-        raise PreflightError("installation-owner", "The installation account does not match the repository owner.")
+    if (
+        not isinstance(login, str)
+        or login.lower() != config.repository.split("/")[0].lower()
+    ):
+        raise PreflightError(
+            "installation-owner",
+            "The installation account does not match the repository owner.",
+        )
     if data.get("suspended_at", "missing") is not None:
-        raise PreflightError("installation-suspended", "Installation is suspended or its suspension status is unavailable.")
+        raise PreflightError(
+            "installation-suspended",
+            "Installation is suspended or its suspension status is unavailable.",
+        )
     if data.get("repository_selection") != "selected":
-        raise PreflightError("repository-selection", "Limit this dedicated App to selected repositories, not all repositories.")
+        raise PreflightError(
+            "repository-selection",
+            "Limit this dedicated App to selected repositories, not all repositories.",
+        )
     verify_permissions(data.get("permissions"))
 
 
-def preflight(config: Config, token: str, read: Callable[[str, str], dict[str, Any]] = get_json) -> dict[str, Any]:
+def preflight(
+    config: Config, token: str, read: Callable[[str, str], dict[str, Any]] = get_json
+) -> dict[str, Any]:
     app = read("/app", token)
     if type(app.get("id")) is not int or app["id"] != config.app_id:
-        raise PreflightError("app-mismatch", "This private key authenticates as a different App.")
+        raise PreflightError(
+            "app-mismatch", "This private key authenticates as a different App."
+        )
     installation = read(f"/app/installations/{config.installation_id}", token)
     verify_installation(installation, config)
     # Repository lookup verifies inclusion without listing unrelated repositories.
@@ -256,11 +372,17 @@ def preflight(config: Config, token: str, read: Callable[[str, str], dict[str, A
     }
 
 
-
 def probe_plan(config: Config, sha: str) -> dict[str, Any]:
     """Build an offline, credential-free preview; never resolve a floating ref."""
-    if not isinstance(sha, str) or re.fullmatch(r"[0-9a-f]{40}", sha) is None or sha == "0" * 40:
-        raise PreflightError("probe-sha", "Specify an exact nonzero, lowercase 40-character commit SHA; not a branch, tag, or PR number.")
+    if (
+        not isinstance(sha, str)
+        or re.fullmatch(r"[0-9a-f]{40}", sha) is None
+        or sha == "0" * 40
+    ):
+        raise PreflightError(
+            "probe-sha",
+            "Specify an exact nonzero, lowercase 40-character commit SHA; not a branch, tag, or PR number.",
+        )
     return {
         "status": "preview_only",
         "repository": config.repository,
@@ -281,16 +403,21 @@ def verify_check(data: dict[str, Any], config: Config, sha: str) -> int:
     check_id = data.get("id")
     app = data.get("app")
     if (
-        type(check_id) is not int or check_id <= 0
+        type(check_id) is not int
+        or check_id <= 0
         or not isinstance(app, dict)
-        or type(app.get("id")) is not int or app["id"] != config.app_id
+        or type(app.get("id")) is not int
+        or app["id"] != config.app_id
         or data.get("head_sha") != sha
         or data.get("name") != PROBE_NAME
         or data.get("status") != "completed"
         or data.get("conclusion") != "neutral"
         or data.get("external_id") != "codex-connectivity/" + sha
     ):
-        raise PreflightError("check-mismatch", "Returned check does not match the expected App, SHA, name, or probe result.")
+        raise PreflightError(
+            "check-mismatch",
+            "Returned check does not match the expected App, SHA, name, or probe result.",
+        )
     return check_id
 
 
@@ -300,41 +427,69 @@ def run_probe(config: Config, app_token: str, sha: str, request=None) -> dict[st
     request = request or request_json
     preflight(config, app_token, lambda path, token: request(path, token))
     issued = request(
-        f"/app/installations/{config.installation_id}/access_tokens", app_token,
-        method="POST", body={
+        f"/app/installations/{config.installation_id}/access_tokens",
+        app_token,
+        method="POST",
+        body={
             "repositories": [config.repository.split("/", 1)[1]],
             "permissions": {"contents": "read", "checks": "write"},
         },
     )
     token = issued.get("token")
-    if not isinstance(token, str) or not token or not token.isascii() or any(c.isspace() or ord(c) < 32 or ord(c) == 127 for c in token):
-        raise PreflightError("token-invalid", "GitHub returned no usable installation token. No check was requested; token issuance may have occurred.")
+    if (
+        not isinstance(token, str)
+        or not token
+        or not token.isascii()
+        or any(c.isspace() or ord(c) < 32 or ord(c) == 127 for c in token)
+    ):
+        raise PreflightError(
+            "token-invalid",
+            "GitHub returned no usable installation token. No check was requested; token issuance may have occurred.",
+        )
     try:
         if issued.get("permissions") != TOKEN_PERMISSIONS:
-            raise PreflightError("token-permissions", "Issued token permissions do not match the requested restricted scope.")
+            raise PreflightError(
+                "token-permissions",
+                "Issued token permissions do not match the requested restricted scope.",
+            )
         try:
-            expires = datetime.fromisoformat(issued["expires_at"].replace("Z", "+00:00"))
+            expires = datetime.fromisoformat(
+                issued["expires_at"].replace("Z", "+00:00")
+            )
             seconds = (expires - datetime.now(timezone.utc)).total_seconds()
             if not 0 < seconds <= 3660:
                 raise ValueError
         except (KeyError, AttributeError, TypeError, ValueError):
-            raise PreflightError("token-expiry", "Issued token lifetime is missing, expired, or unexpectedly long.") from None
+            raise PreflightError(
+                "token-expiry",
+                "Issued token lifetime is missing, expired, or unexpectedly long.",
+            ) from None
         listing = request("/installation/repositories", token)
         repos = listing.get("repositories")
         if (
-            type(listing.get("total_count")) is not int or listing["total_count"] != 1
-            or not isinstance(repos, list) or len(repos) != 1
+            type(listing.get("total_count")) is not int
+            or listing["total_count"] != 1
+            or not isinstance(repos, list)
+            or len(repos) != 1
             or not isinstance(repos[0], dict)
             or not isinstance(repos[0].get("full_name"), str)
             or repos[0]["full_name"].lower() != config.repository.lower()
         ):
-            raise PreflightError("token-repositories", "Issued token must access exactly the selected target repository.")
+            raise PreflightError(
+                "token-repositories",
+                "Issued token must access exactly the selected target repository.",
+            )
         commit = request(f"/repos/{config.repository}/commits/{sha}", token)
         if commit.get("sha") != sha:
-            raise PreflightError("commit-mismatch", "GitHub did not resolve the exact requested commit in the target repository.")
+            raise PreflightError(
+                "commit-mismatch",
+                "GitHub did not resolve the exact requested commit in the target repository.",
+            )
         payload = {
-            "name": PROBE_NAME, "head_sha": sha,
-            "status": "completed", "conclusion": "neutral",
+            "name": PROBE_NAME,
+            "head_sha": sha,
+            "status": "completed",
+            "conclusion": "neutral",
             "completed_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "external_id": "codex-connectivity/" + sha,
             "output": {
@@ -342,61 +497,123 @@ def run_probe(config: Config, app_token: str, sha: str, request=None) -> dict[st
                 "summary": "Tests App authentication and Checks API transport only. NOT evidence of candidate compliance, evaluator promotion, or merge enforcement. Never configure this probe as a required check.",
             },
         }
-        created = request(f"/repos/{config.repository}/check-runs", token, method="POST", body=payload)
+        created = request(
+            f"/repos/{config.repository}/check-runs", token, method="POST", body=payload
+        )
         check_id = verify_check(created, config, sha)
         observed = request(f"/repos/{config.repository}/check-runs/{check_id}", token)
         if verify_check(observed, config, sha) != check_id:
-            raise PreflightError("check-id-mismatch", "Read-back returned a different Check Run ID.")
+            raise PreflightError(
+                "check-id-mismatch", "Read-back returned a different Check Run ID."
+            )
     finally:
         try:
             request("/installation/token", token, method="DELETE")
         except Exception:
-            raise PreflightError("token-revocation-failed", "Installation token revocation could not be confirmed. A check may already exist. Stop, inspect GitHub, and follow the runbook; do not blindly retry.") from None
+            raise PreflightError(
+                "token-revocation-failed",
+                "Installation token revocation could not be confirmed. A check may already exist. Stop, inspect GitHub, and follow the runbook; do not blindly retry.",
+            ) from None
     return {
-        **plan, "status": "connectivity_verified", "check_run_id": check_id,
+        **plan,
+        "status": "connectivity_verified",
+        "check_run_id": check_id,
         "check_url": f"https://github.com/{config.repository}/runs/{check_id}",
-        "checks_write_tested": True, "installation_token_revoked": True,
+        "checks_write_tested": True,
+        "installation_token_revoked": True,
         "remote_mutations": 3,
     }
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", type=Path, default=Path(__file__).with_name("config.json"))
-    parser.add_argument("--private-key", type=Path, default=default_key_path(), help="Local PEM path only. Never paste PEM contents or a token.")
-    parser.add_argument("--json", action="store_true", help="Print a sanitized JSON result.")
-    parser.add_argument("--probe-sha", help="Preview a connectivity check for this exact commit. No network or key access without --write.")
-    parser.add_argument("--write", action="store_true", help="Actually create the connectivity check; requires both confirmations.")
+    parser.add_argument(
+        "--config", type=Path, default=Path(__file__).with_name("config.json")
+    )
+    parser.add_argument(
+        "--private-key",
+        type=Path,
+        default=default_key_path(),
+        help="Local PEM path only. Never paste PEM contents or a token.",
+    )
+    parser.add_argument(
+        "--json", action="store_true", help="Print a sanitized JSON result."
+    )
+    parser.add_argument(
+        "--probe-sha",
+        help="Preview a connectivity check for this exact commit. No network or key access without --write.",
+    )
+    parser.add_argument(
+        "--write",
+        action="store_true",
+        help="Actually create the connectivity check; requires both confirmations.",
+    )
     parser.add_argument("--confirm-repository")
     parser.add_argument("--confirm-sha")
     args = parser.parse_args(argv)
     try:
         config = Config.load(args.config)
-        if args.write or args.confirm_repository is not None or args.confirm_sha is not None:
-            if not args.write or args.probe_sha is None or args.confirm_repository != config.repository or args.confirm_sha != args.probe_sha:
-                raise PreflightError("write-confirmation", "Write requires --probe-sha plus --write, exact --confirm-repository and matching --confirm-sha. No credentials were read.")
+        if (
+            args.write
+            or args.confirm_repository is not None
+            or args.confirm_sha is not None
+        ):
+            if (
+                not args.write
+                or args.probe_sha is None
+                or args.confirm_repository != config.repository
+                or args.confirm_sha != args.probe_sha
+            ):
+                raise PreflightError(
+                    "write-confirmation",
+                    "Write requires --probe-sha plus --write, exact --confirm-repository and matching --confirm-sha. No credentials were read.",
+                )
         if args.probe_sha is not None:
             plan = probe_plan(config, args.probe_sha)
             if not args.write:
                 print(json.dumps(plan, indent=2, sort_keys=True))
                 return 0
-        if any((parent / ".git").exists() for parent in Path(__file__).resolve().parents):
-            raise PreflightError("runtime-checkout", "Export a reviewed, pinned helper copy outside Git before using credentials. See the runbook.")
+        if any(
+            (parent / ".git").exists() for parent in Path(__file__).resolve().parents
+        ):
+            raise PreflightError(
+                "runtime-checkout",
+                "Export a reviewed, pinned helper copy outside Git before using credentials. See the runbook.",
+            )
         token = make_jwt(args.private_key, config.client_id)
-        report = run_probe(config, token, args.probe_sha) if args.write else preflight(config, token)
+        report = (
+            run_probe(config, token, args.probe_sha)
+            if args.write
+            else preflight(config, token)
+        )
     except PreflightError as exc:
-        error = {"status": "blocked", "code": exc.code, "message": str(exc), "effective_enforcement_proven": False}
+        error = {
+            "status": "blocked",
+            "code": exc.code,
+            "message": str(exc),
+            "effective_enforcement_proven": False,
+        }
         if args.write:
-            error["notice"] = "No automatic retries. Depending on failure stage, token issuance or a check may already exist. Inspect GitHub before repeating a write."
-        print(json.dumps(error) if args.json else "[BLOCKED] " + exc.code + ": " + str(exc))
+            error["notice"] = (
+                "No automatic retries. Depending on failure stage, token issuance or a check may already exist. Inspect GitHub before repeating a write."
+            )
+        print(
+            json.dumps(error)
+            if args.json
+            else "[BLOCKED] " + exc.code + ": " + str(exc)
+        )
         if args.write and not args.json:
             print("[NOTICE] " + error["notice"])
         return 1
     except KeyboardInterrupt:
-        print("[STOPPED] Interrupted. In write mode a check/token may exist; inspect GitHub before retrying.")
+        print(
+            "[STOPPED] Interrupted. In write mode a check/token may exist; inspect GitHub before retrying."
+        )
         return 130
     except Exception:
-        print("[BLOCKED] Unexpected local error; sensitive details suppressed. In write mode inspect GitHub before retrying.")
+        print(
+            "[BLOCKED] Unexpected local error; sensitive details suppressed. In write mode inspect GitHub before retrying."
+        )
         return 1
     if args.json or args.write:
         print(json.dumps(report, indent=2, sort_keys=True))
@@ -406,7 +623,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"[PASS] Repository belongs to this installation: {config.repository}")
         print("[PASS] Installed permissions match the least-privilege setup.")
         print("[NOT RUN] Checks API write test and governance evaluation.")
-        print("[NOT PROVEN] Effective merge enforcement. No checks or rulesets were written.")
+        print(
+            "[NOT PROVEN] Effective merge enforcement. No checks or rulesets were written."
+        )
     return 0
 
 
