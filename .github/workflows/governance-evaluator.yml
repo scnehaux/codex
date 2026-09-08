@@ -1,4 +1,4 @@
-name: Governance Evaluator Skeleton
+name: Governance Evaluator Decision Engine
 
 on:
   pull_request:
@@ -9,8 +9,8 @@ permissions:
   contents: read
 
 jobs:
-  evaluator-skeleton:
-    name: Governance Evaluator Skeleton
+  evaluator-decision-engine:
+    name: Governance Evaluator Decision Engine
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
@@ -22,14 +22,25 @@ jobs:
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: '3.13'
-      - name: Compile plan-only evaluator
+      - name: Compile deterministic offline evaluator
         run: python -I -m compileall -q integrations/github-governance-evaluator
-      - name: Run evaluator offline regression tests
+      - name: Run positive and negative evaluator regression tests
         run: python -I -m unittest discover -s integrations/github-governance-evaluator/tests
-      - name: Assert skeleton has no network or credential client imports
+      - name: Assert evaluator has no network, credential, or process client imports
         shell: bash
         run: |
           if grep -R -nE '^\s*(from|import)\s+(urllib|requests|httpx|jwt|cryptography|socket|subprocess)(\.|\s|$)' integrations/github-governance-evaluator/evaluator.py; then
-            echo 'Evaluator skeleton must remain plan-only and credential-free.' >&2
+            echo 'Stage 3b evaluator must remain offline and credential-free.' >&2
             exit 1
           fi
+      - name: Assert authority binding remains unpromoted and planned
+        shell: bash
+        run: |
+          python -I - <<'PY'
+          from pathlib import Path
+          text = Path('governance/github/authority-binding.yaml').read_text(encoding='utf-8')
+          required = ['authority_revision: null', 'state: planned', 'effective_enforcement_claimed: false']
+          missing = [item for item in required if item not in text]
+          if missing:
+              raise SystemExit('Stage 3b must not promote or activate authority: ' + ', '.join(missing))
+          PY
