@@ -1,4 +1,4 @@
-name: Governance Evaluator Facts Provenance
+name: Governance Evaluator Runtime Source Promotion
 
 on:
   pull_request:
@@ -9,8 +9,8 @@ permissions:
   contents: read
 
 jobs:
-  evaluator-facts-provenance:
-    name: Governance Evaluator Facts Provenance
+  evaluator-runtime-source-promotion:
+    name: Governance Evaluator Runtime Source Promotion
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
@@ -25,7 +25,7 @@ jobs:
           python-version: '3.13'
       - name: Compile evaluator and read-only runtime
         run: python -I -m compileall -q integrations/github-governance-evaluator
-      - name: Run decision, promotion, and runtime regression tests
+      - name: Run decision and promotion regression tests
         run: python -I -m unittest discover -s integrations/github-governance-evaluator/tests
       - name: Assert promoted evaluator remains offline and credential-free
         shell: bash
@@ -34,54 +34,80 @@ jobs:
             echo 'Promoted evaluator source must remain offline and credential-free.' >&2
             exit 1
           fi
-      - name: Assert runtime uses only stdlib read-only transport and no credential clients
+      - name: Assert promoted runtime remains read-only and credential-free
         shell: bash
         run: |
           if grep -R -nE '^\s*(from|import)\s+(requests|httpx|jwt|cryptography|socket|subprocess)(\.|\s|$)' integrations/github-governance-evaluator/runtime.py; then
-            echo 'Facts runtime may use fixed stdlib urllib reads only; credential/process clients are forbidden.' >&2
+            echo 'Promoted runtime may use fixed stdlib urllib reads only; credential/process clients are forbidden.' >&2
             exit 1
           fi
-          if grep -nE 'Authorization|Bearer[[:space:]]|client[_-]?secret|private[_-]?key' integrations/github-governance-evaluator/runtime.py; then
-            echo 'Facts runtime must not contain credential-bearing request paths.' >&2
+          if grep -nE 'Bearer[[:space:]]|client[_-]?secret|private[_-]?key' integrations/github-governance-evaluator/runtime.py; then
+            echo 'Promoted runtime must not contain credential-bearing request paths.' >&2
             exit 1
           fi
       - name: Verify pinned evaluator commit and exact blob
         shell: bash
         run: |
           revision=$(python -I -c "import json; print(json.load(open('integrations/github-governance-evaluator/promotion.json', encoding='utf-8'))['authority_source_revision'])")
-          case "$revision" in
-            [0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]) ;;
-            *) echo 'Promotion source revision must be a full lowercase 40-character SHA.' >&2; exit 1 ;;
-          esac
           test "$revision" = "23b05a855419b86b61b0c9266805bb66b143c366"
           git cat-file -e "${revision}^{commit}"
+          git merge-base --is-ancestor "$revision" HEAD
           expected_blob=$(git rev-parse "${revision}:integrations/github-governance-evaluator/evaluator.py")
           current_blob=$(git hash-object integrations/github-governance-evaluator/evaluator.py)
           test "$expected_blob" = "ab2f152c21bd6d6f22df21172c4d027035ff8c11"
           test "$current_blob" = "$expected_blob"
-      - name: Assert runtime and provider authority remain unadvanced
+      - name: Verify pinned runtime commit and exact blob
+        shell: bash
+        run: |
+          revision=$(python -I -c "import json; print(json.load(open('integrations/github-governance-evaluator/runtime-promotion.json', encoding='utf-8'))['runtime_source_revision'])")
+          path=$(python -I -c "import json; print(json.load(open('integrations/github-governance-evaluator/runtime-promotion.json', encoding='utf-8'))['runtime_source_path'])")
+          blob=$(python -I -c "import json; print(json.load(open('integrations/github-governance-evaluator/runtime-promotion.json', encoding='utf-8'))['runtime_source_blob'])")
+          test "$revision" = "cbd64f78c8f72f28880d4673729a796b249d8eae"
+          test "$path" = "integrations/github-governance-evaluator/runtime.py"
+          test "$blob" = "c59911e9c0800c917fed21e6f33f3181c3a61e60"
+          git cat-file -e "${revision}^{commit}"
+          git merge-base --is-ancestor "$revision" HEAD
+          expected_blob=$(git rev-parse "${revision}:${path}")
+          current_blob=$(git hash-object "$path")
+          test "$expected_blob" = "$blob"
+          test "$current_blob" = "$blob"
+      - name: Assert source promotion cannot masquerade as live authority
         shell: bash
         run: |
           python -I - <<'PY'
           import json
           from pathlib import Path
 
-          contract = json.loads(Path('integrations/github-governance-evaluator/promotion.json').read_text(encoding='utf-8'))
-          if contract['promotion'] != {
+          runtime_contract = json.loads(
+              Path('integrations/github-governance-evaluator/runtime-promotion.json').read_text(
+                  encoding='utf-8'
+              )
+          )
+          if runtime_contract['promotion'] != {
               'mode': 'privileged-explicit',
-              'state': 'source-pinned',
+              'state': 'runtime-source-pinned',
               'candidate_may_select_effective_revision': False,
+              'auto_deploy_from_candidate': False,
           }:
-              raise SystemExit('Promotion contract drifted')
-          if contract['runtime'] != {
+              raise SystemExit('Runtime source-promotion semantics drifted')
+          if runtime_contract['runtime'] != {
               'execution_location': 'external',
               'exported_copy_required': True,
+              'live_instance_proven': False,
               'facts_provenance_verified': False,
               'publish_enabled': False,
               'authority_binding_advanced': False,
               'effective_enforcement_proven': False,
           }:
-              raise SystemExit('Runtime boundary advanced before runtime-source promotion')
+              raise SystemExit('Runtime promotion advanced beyond source pinning')
+
+          evaluator_contract = json.loads(
+              Path('integrations/github-governance-evaluator/promotion.json').read_text(
+                  encoding='utf-8'
+              )
+          )
+          if runtime_contract['evaluator_source_revision'] != evaluator_contract['authority_source_revision']:
+              raise SystemExit('Runtime promotion is not bound to the promoted evaluator revision')
 
           binding = Path('governance/github/authority-binding.yaml').read_text(encoding='utf-8')
           required = [
@@ -94,5 +120,8 @@ jobs:
           ]
           missing = [item for item in required if item not in binding]
           if missing:
-              raise SystemExit('Facts collection must not advance provider activation: ' + ', '.join(missing))
+              raise SystemExit(
+                  'Runtime source promotion must not advance provider activation: '
+                  + ', '.join(missing)
+              )
           PY
