@@ -84,13 +84,11 @@ Organization settings
 
 Recommended registration settings:
 
-| Setting | Value |
-| --- | --- |
-| Homepage URL | `https://github.com/scnehaux/codex` |
-| OAuth user authorization | Disabled/not required |
-| Device Flow | Disabled |
-| Webhook | May remain disabled for local/manual mode |
-| Installation scope | Only on the owning account/organization |
+- Homepage URL: `https://github.com/scnehaux/codex`
+- OAuth user authorization: disabled/not required
+- Device Flow: disabled
+- Webhook: may remain disabled for local/manual mode
+- Installation scope: only on the owning account/organization
 
 A webhook is not required for the current local/manual flow because the workstation initiates outbound requests to GitHub.
 
@@ -100,14 +98,12 @@ A webhook is not required for the current local/manual flow because the workstat
 
 The dedicated App must use the minimum required repository permissions:
 
-| Permission | Access |
-| --- | --- |
-| Contents | Read-only |
-| Pull requests | Read-only |
-| Checks | Read & write |
-| Metadata | Read-only / implicit |
-| Administration | No access |
-| Repository contents write | No access |
+- Contents: read-only
+- Pull requests: read-only
+- Checks: read & write
+- Metadata: read-only / implicit
+- Administration: no access
+- Repository contents write: no access
 
 Additional permissions should remain `No access` unless a separately reviewed design explicitly requires them.
 
@@ -171,7 +167,7 @@ The following are secrets and must not be stored in repository configuration:
 
 - private key (`.pem`);
 - installation access token;
-- App JWT;
+- App JWT; and
 - client secret.
 
 ---
@@ -211,17 +207,15 @@ codex-app-local/
 └── .venv/                 # created locally, not distributed as source
 ```
 
-The purpose of those files is:
+The files have the following roles:
 
-| File | Purpose |
-| --- | --- |
-| `github_app_preflight.py` | Authenticate the App and verify installation/repository/permissions. |
-| `config.json` | Public identifiers and target repository only. Never place PEM/token/secret material here. |
-| `requirements.txt` | Python dependencies for the local helper. |
-| `test_preflight.py` | Offline tests using synthetic keys/mocked GitHub responses. |
-| `TEST_RESULTS.txt` | Evidence from helper tests; not evidence that the real App authenticated. |
-| `SHA256SUMS.txt` | Optional integrity reference for distributed helper files. |
-| `.venv/` | Locally created isolated Python environment. It is not a security sandbox. |
+- `github_app_preflight.py`: authenticates the App and verifies installation, repository inclusion, and permissions.
+- `config.json`: contains public identifiers and the target repository only. Never place PEM/token/secret material here.
+- `requirements.txt`: Python dependencies for the local helper.
+- `test_preflight.py`: offline tests using synthetic keys and mocked GitHub responses.
+- `TEST_RESULTS.txt`: evidence from helper tests; not evidence that the real App authenticated.
+- `SHA256SUMS.txt`: optional integrity reference for distributed helper files.
+- `.venv/`: locally created isolated Python environment. It is not a security sandbox.
 
 Long-term evaluator tooling should be promoted and versioned through the governed repository process. A separately distributed bootstrap helper is not itself an approved evaluator revision.
 
@@ -294,10 +288,10 @@ Recommended path:
 %LOCALAPPDATA%\scnehaux-codex-authority\secrets\github-app.pem
 ```
 
-For example:
+Equivalent per-user path:
 
 ```text
-C:\Users\ATI-User\AppData\Local\scnehaux-codex-authority\secrets\github-app.pem
+C:\Users\<USER>\AppData\Local\scnehaux-codex-authority\secrets\github-app.pem
 ```
 
 ### 10.1 Create the secret directory
@@ -497,21 +491,52 @@ It should never print:
 
 ## 14. Common troubleshooting
 
-| Symptom | Meaning / action |
-| --- | --- |
-| `Test-Path ...` returns `False` | Key is not at the expected location or filename differs. |
-| `key-missing` | Move/rename the PEM to the configured secret path. |
-| `key-invalid` | Confirm it is the RSA private key generated for this GitHub App. |
-| HTTP 401 | Key/App identity mismatch, invalid JWT, or local clock issue. |
-| HTTP 403 | Installation permissions may be pending approval or insufficient. |
-| HTTP 404 | App may not be installed on the expected organization/repository. |
-| Permission mismatch | Correct App permissions; do not broaden permissions merely to silence the test. |
-| Repository selection mismatch | Use `Only select repositories` and include only `scnehaux/codex`. |
-| TLS/network error | Check internet, proxy, DNS, and workstation clock. Do not disable TLS verification. |
+### Private key not found
 
-### Windows-specific check
+If this returns `False`:
 
-To display only the current key ACL:
+```powershell
+$key = Join-Path $env:LOCALAPPDATA "scnehaux-codex-authority\secrets\github-app.pem"
+Test-Path -LiteralPath $key -PathType Leaf
+```
+
+verify the key location and exact filename.
+
+### `key-invalid`
+
+Confirm the file is the RSA private key generated for this GitHub App, not a token, client secret, or public key.
+
+### HTTP 401
+
+Check:
+
+- private key/App identity match;
+- JWT construction; and
+- local workstation clock synchronization.
+
+### HTTP 403
+
+Check whether installation permission changes are pending approval or whether the installed permission set differs from the intended least-privilege contract.
+
+### HTTP 404
+
+Confirm the App is installed on the expected organization and repository.
+
+### Permission mismatch
+
+Correct App permissions. Do not broaden permissions merely to silence the preflight.
+
+### Repository selection mismatch
+
+Use `Only select repositories` and include only `scnehaux/codex`.
+
+### TLS/network error
+
+Check internet access, proxy, DNS, and workstation clock. Do not disable TLS certificate verification.
+
+### Windows ACL check
+
+Display only the current key ACL:
 
 ```powershell
 $key = Join-Path $env:LOCALAPPDATA "scnehaux-codex-authority\secrets\github-app.pem"
@@ -590,7 +615,7 @@ This does not revoke the GitHub App private key.
 
 ### Remove local private-key material
 
-Only after the key is no longer needed or has been revoked/rotated:
+Only after the key is no longer needed or has been revoked/rotated.
 
 Windows:
 
