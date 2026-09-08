@@ -4,7 +4,5 @@
   "pull_request": 7,
   "base_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
   "head_sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-  "changed_files": [
-    "README.md"
-  ]
+  "changed_files": ["README.md"]
 }
