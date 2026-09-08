@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "repository": "scnehaux/codex",
+  "runtime_source_revision": "cbd64f78c8f72f28880d4673729a796b249d8eae",
+  "runtime_source_path": "integrations/github-governance-evaluator/runtime.py",
+  "runtime_source_blob": "c59911e9c0800c917fed21e6f33f3181c3a61e60",
+  "evaluator_source_revision": "23b05a855419b86b61b0c9266805bb66b143c366",
+  "evaluator_source_blob": "ab2f152c21bd6d6f22df21172c4d027035ff8c11",
+  "promotion": {
+    "mode": "privileged-explicit",
+    "state": "runtime-source-pinned",
+    "candidate_may_select_effective_revision": false,
+    "auto_deploy_from_candidate": false
+  },
+  "runtime": {
+    "execution_location": "external",
+    "exported_copy_required": true,
+    "live_instance_proven": false,
+    "facts_provenance_verified": false,
+    "publish_enabled": false,
+    "authority_binding_advanced": false,
+    "effective_enforcement_proven": false
+  }
+}
