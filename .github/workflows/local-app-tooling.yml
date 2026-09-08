@@ -1,0 +1,62 @@
+name: Local App Tooling
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  local-app:
+    name: Local App Tooling (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - name: Checkout source without retained credentials
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - name: Setup Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.13'
+      - name: Install pinned operator-tool dependencies
+        id: dependencies
+        run: python -I -m pip install -r integrations/github-app-local/requirements-dev.txt
+      - name: Lint standalone operator source
+        run: python -I -m ruff check integrations/github-app-local
+      - name: Check Python formatting
+        id: formatting
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: python -I -m ruff format --check integrations/github-app-local
+      - name: Explain Python formatting drift
+        if: failure() && steps.formatting.outcome == 'failure'
+        run: python -I -m ruff format --diff integrations/github-app-local
+      - name: Prepare reviewable formatting suggestion
+        if: failure() && steps.formatting.outcome == 'failure' && runner.os == 'Linux'
+        shell: bash
+        run: |
+          python -I -c "import os,pathlib,shutil; shutil.copytree('integrations/github-app-local', pathlib.Path(os.environ['RUNNER_TEMP']) / 'local-app-format')"
+          python -I -m ruff check --fix --config pyproject.toml "$RUNNER_TEMP/local-app-format"
+          python -I -m ruff format --config pyproject.toml "$RUNNER_TEMP/local-app-format"
+      - name: Upload formatting suggestion (never executed or deployed)
+        if: failure() && steps.formatting.outcome == 'failure' && runner.os == 'Linux'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: local-app-format-suggestion
+          path: ${{ runner.temp }}/local-app-format/**/*.py
+          retention-days: 7
+          if-no-files-found: error
+      - name: Run synthetic-key and mocked-HTTP tests
+        id: tests
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: python -I -m coverage run --source=integrations/github-app-local --omit="*/tests/*" -m unittest discover -s integrations/github-app-local/tests
+      - name: Require at least 95 percent runtime coverage
+        if: ${{ !cancelled() && steps.tests.outcome == 'success' }}
+        run: python -I -m coverage report --fail-under=95 --show-missing

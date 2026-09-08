@@ -1,0 +1,4 @@
+# Direct dependencies pinned from current maintainer-published PyPI releases.
+# This is not a complete transitive hash lock.
+PyJWT==2.13.0
+cryptography==50.0.1
