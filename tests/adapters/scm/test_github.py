@@ -45,8 +45,9 @@ def test_current_github_projection_matches_provider_neutral_policy():
     plan = build_github_activation_plan(REPOSITORY_ROOT, policy)
     assert plan.ready is False
     assert plan.ruleset_payload is None
+    assert plan.integration_id == 4864946
+    assert plan.authority_revision is None
     assert {finding.code for finding in plan.blockers} == {
-        "authority-integration-id-unbound",
         "authority-revision-unbound",
     }
 
@@ -399,3 +400,22 @@ def test_malformed_provider_state_fails_closed(tmp_path):
     plan = build_github_activation_plan(root, policy)
     assert plan.ready is False
     assert plan.blockers[0].code == "activation-source-load-failed"
+
+    # Keep unbound/invalid App identity coverage independent of the live binding.
+    unbound_root = _copy(tmp_path / "unbound")
+    binding_path = unbound_root / "governance/github/authority-binding.yaml"
+    binding = yaml.safe_load(binding_path.read_text(encoding="utf-8"))
+    binding["evaluator"]["authority_revision"] = None
+    unbound_policy = load_scm_enforcement_policy(unbound_root)
+    for invalid_id in (None, True, False, 0, -1, "4864946"):
+        binding["authority"]["integration_id"] = invalid_id
+        binding_path.write_text(
+            yaml.safe_dump(binding, sort_keys=False), encoding="utf-8"
+        )
+        plan = build_github_activation_plan(unbound_root, unbound_policy)
+        assert plan.ready is False
+        assert plan.ruleset_payload is None
+        assert {finding.code for finding in plan.blockers} == {
+            "authority-integration-id-unbound",
+            "authority-revision-unbound",
+        }

@@ -23,7 +23,7 @@ def test_current_repository_projection_passes(monkeypatch, capsys):
 
     assert module.main(["--activation-plan"]) == 2
     blocked = capsys.readouterr().out
-    assert "authority-integration-id-unbound" in blocked
+    assert "authority-integration-id-unbound" not in blocked
     assert "authority-revision-unbound" in blocked
     assert "effective enforcement: NOT CLAIMED" in blocked
 
