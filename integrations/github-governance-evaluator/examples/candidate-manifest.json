@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "repository": "scnehaux/codex",
+  "pull_request": 7,
+  "base_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "head_sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "changed_files": [
+    "README.md"
+  ]
+}
