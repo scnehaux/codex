@@ -25,6 +25,7 @@ def test_current_repository_projection_passes(monkeypatch, capsys):
     blocked = capsys.readouterr().out
     assert "authority-integration-id-unbound" not in blocked
     assert "authority-revision-unbound" in blocked
+    assert "authority-publisher-evidence-unbound" in blocked
     assert "effective enforcement: NOT CLAIMED" in blocked
 
     class ReadyPlan:

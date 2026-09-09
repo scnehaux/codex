@@ -1,0 +1,65 @@
+{
+  "contract_version": 1,
+  "kind": "scm-external-authority-live-provenance-evidence",
+  "provider": "github",
+  "repository": "scnehaux/codex",
+  "evidence_id": "live-provenance-001",
+  "source": {
+    "runtime_source_revision": "cbd64f78c8f72f28880d4673729a796b249d8eae",
+    "runtime_source_path": "integrations/github-governance-evaluator/runtime.py",
+    "runtime_source_blob": "c59911e9c0800c917fed21e6f33f3181c3a61e60",
+    "evaluator_source_revision": "23b05a855419b86b61b0c9266805bb66b143c366",
+    "evaluator_source_blob": "ab2f152c21bd6d6f22df21172c4d027035ff8c11"
+  },
+  "execution": {
+    "location": "external",
+    "exported_copy_required": true,
+    "raw_blob_verification": {
+      "mode": "git-object-raw-bytes",
+      "runtime_verified": true,
+      "evaluator_verified": true
+    },
+    "candidate_code_executed": false,
+    "credentials_used": false
+  },
+  "observation": {
+    "runtime_result_status": "runtime_evaluation_complete",
+    "pull_request": 15,
+    "pull_state": "open",
+    "base_sha": "ed893641a9c96a6cb4c8a590f2757e32116721f6",
+    "head_sha": "968e496ff6de16b223bd9a15122ee81ed4ee1e5a",
+    "changed_files": [".gitignore"],
+    "facts_collected_independently": true,
+    "candidate_qualification": {
+      "context": "Governance Qualification",
+      "result": "pass",
+      "check_run_id": 102414770301,
+      "head_sha": "968e496ff6de16b223bd9a15122ee81ed4ee1e5a",
+      "source": "github-checks-api",
+      "source_app_id": 15368,
+      "source_app_slug": "github-actions",
+      "source_verified": true,
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/scnehaux/codex/actions/runs/34335799922/job/102414770301"
+    },
+    "governance_decision": "pass",
+    "runtime_failure_reasons": [],
+    "runtime_only_protected_mutations": []
+  },
+  "attestation": {
+    "live_instance_proven": true,
+    "facts_provenance_evidenced": true,
+    "publisher_proven": false,
+    "authority_binding_advanced": false,
+    "effective_enforcement_proven": false
+  },
+  "source_runtime_self_report": {
+    "runtime_source_promoted": false,
+    "facts_provenance_verified": false,
+    "publish_enabled": false,
+    "authority_binding_advanced": false,
+    "effective_enforcement_proven": false
+  },
+  "interpretation": "The pinned Stage 3d runtime predates its Stage 3e source-promotion record, so its self-report remains conservative. This governed evidence records the later external observation without rewriting or upgrading the raw runtime result. Publishing and provider enforcement remain unproven."
+}

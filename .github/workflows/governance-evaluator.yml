@@ -25,7 +25,7 @@ jobs:
           python-version: '3.13'
       - name: Compile evaluator and read-only runtime
         run: python -I -m compileall -q integrations/github-governance-evaluator
-      - name: Run decision and promotion regression tests
+      - name: Run decision, promotion, runtime, and evidence regression tests
         run: python -I -m unittest discover -s integrations/github-governance-evaluator/tests
       - name: Assert promoted evaluator remains offline and credential-free
         shell: bash
@@ -71,7 +71,7 @@ jobs:
           current_blob=$(git hash-object "$path")
           test "$expected_blob" = "$blob"
           test "$current_blob" = "$blob"
-      - name: Assert source promotion cannot masquerade as live authority
+      - name: Assert live proof cannot masquerade as publisher authority
         shell: bash
         run: |
           python -I - <<'PY'
@@ -109,6 +109,36 @@ jobs:
           if runtime_contract['evaluator_source_revision'] != evaluator_contract['authority_source_revision']:
               raise SystemExit('Runtime promotion is not bound to the promoted evaluator revision')
 
+          evidence = json.loads(
+              Path('governance/github/evidence/live-provenance-001.json').read_text(
+                  encoding='utf-8'
+              )
+          )
+          if evidence['source'] != {
+              'runtime_source_revision': runtime_contract['runtime_source_revision'],
+              'runtime_source_path': runtime_contract['runtime_source_path'],
+              'runtime_source_blob': runtime_contract['runtime_source_blob'],
+              'evaluator_source_revision': runtime_contract['evaluator_source_revision'],
+              'evaluator_source_blob': runtime_contract['evaluator_source_blob'],
+          }:
+              raise SystemExit('Live evidence is not bound to the promoted source identities')
+          if evidence['attestation'] != {
+              'live_instance_proven': True,
+              'facts_provenance_evidenced': True,
+              'publisher_proven': False,
+              'authority_binding_advanced': False,
+              'effective_enforcement_proven': False,
+          }:
+              raise SystemExit('Live evidence advanced beyond observed read-only provenance')
+          if evidence['source_runtime_self_report'] != {
+              'runtime_source_promoted': False,
+              'facts_provenance_verified': False,
+              'publish_enabled': False,
+              'authority_binding_advanced': False,
+              'effective_enforcement_proven': False,
+          }:
+              raise SystemExit('Governed evidence must retain the pinned runtime self-report verbatim')
+
           binding = Path('governance/github/authority-binding.yaml').read_text(encoding='utf-8')
           required = [
               'authority_revision: null',
@@ -116,12 +146,14 @@ jobs:
               'auto_deploy_from_candidate: false',
               'promotion: privileged-explicit',
               'state: planned',
+              'live_provenance_evidence: governance/github/evidence/live-provenance-001.json',
+              'publisher_evidence: null',
               'effective_enforcement_claimed: false',
           ]
           missing = [item for item in required if item not in binding]
           if missing:
               raise SystemExit(
-                  'Runtime source promotion must not advance provider activation: '
+                  'Live proof must not advance publisher/provider activation: '
                   + ', '.join(missing)
               )
           PY
