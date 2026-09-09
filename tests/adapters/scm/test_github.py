@@ -13,10 +13,16 @@ from engine.control.governance.scm_policy import load_scm_enforcement_policy
 from tests.support.repository import REPOSITORY_ROOT
 
 
+LIVE_EVALUATOR_REVISION = "23b05a855419b86b61b0c9266805bb66b143c366"
+PUBLISHER_EVIDENCE = "governance/github/evidence/publisher-test.json"
+
 ESTATE = (
     "governance/scm/enforcement-policy.yaml",
     "governance/github/main-ruleset.json",
     "governance/github/authority-binding.yaml",
+    "governance/github/evidence/live-provenance-001.json",
+    "integrations/github-governance-evaluator/promotion.json",
+    "integrations/github-governance-evaluator/runtime-promotion.json",
     ".github/workflows/governance.yml",
     ".github/CODEOWNERS",
     ".github/pull_request_template.md",
@@ -37,6 +43,47 @@ def _codes(root):
     return {finding.code for finding in audit_github_projection(root, policy).findings}
 
 
+def _configure_activation_ready(root, integration_id=4242):
+    binding_path = root / "governance/github/authority-binding.yaml"
+    binding = yaml.safe_load(binding_path.read_text(encoding="utf-8"))
+    binding["authority"]["integration_id"] = integration_id
+    binding["evaluator"]["authority_revision"] = LIVE_EVALUATOR_REVISION
+    binding["activation"]["publisher_evidence"] = PUBLISHER_EVIDENCE
+    binding_path.write_text(yaml.safe_dump(binding, sort_keys=False), encoding="utf-8")
+
+    evidence_path = root / PUBLISHER_EVIDENCE
+    evidence_path.parent.mkdir(parents=True, exist_ok=True)
+    evidence_path.write_text(
+        json.dumps(
+            {
+                "contract_version": 1,
+                "kind": "scm-external-authority-publisher-evidence",
+                "provider": "github",
+                "repository": "scnehaux/codex",
+                "authority": {
+                    "integration_id": integration_id,
+                    "check_context": "Codex Governance Authority",
+                    "expected_source_binding": "integration_id",
+                },
+                "publisher": {
+                    "execution_location": "external",
+                    "check_run_published": True,
+                    "source_verified": True,
+                    "exact_candidate_binding": True,
+                    "credentials_isolated": True,
+                    "candidate_code_executed": False,
+                    "check_run_id": 123456,
+                    "candidate_sha": "c" * 40,
+                    "conclusion": "success",
+                },
+                "claims": {"effective_enforcement_proven": False},
+            }
+        ),
+        encoding="utf-8",
+    )
+    return binding_path, evidence_path
+
+
 def test_current_github_projection_matches_provider_neutral_policy():
     policy = load_scm_enforcement_policy(REPOSITORY_ROOT)
     report = audit_github_projection(REPOSITORY_ROOT, policy)
@@ -49,6 +96,7 @@ def test_current_github_projection_matches_provider_neutral_policy():
     assert plan.authority_revision is None
     assert {finding.code for finding in plan.blockers} == {
         "authority-revision-unbound",
+        "authority-publisher-evidence-unbound",
     }
 
 
@@ -290,11 +338,7 @@ def test_workflow_is_validated_structurally_not_by_comments(
 
     path.write_text(yaml.safe_dump(workflow, sort_keys=False), encoding="utf-8")
     # Even a structurally bound activation plan must reject unsafe workflow state.
-    binding_path = root / "governance/github/authority-binding.yaml"
-    binding = yaml.safe_load(binding_path.read_text(encoding="utf-8"))
-    binding["authority"]["integration_id"] = 4242
-    binding["evaluator"]["authority_revision"] = "a" * 40
-    binding_path.write_text(yaml.safe_dump(binding, sort_keys=False), encoding="utf-8")
+    _configure_activation_ready(root)
     policy = load_scm_enforcement_policy(root)
     report = audit_github_projection(root, policy)
     plan = build_github_activation_plan(root, policy)
@@ -341,18 +385,12 @@ def test_authority_binding_and_codeowners_projection_drift(tmp_path):
     }
 
     ready_root = _copy(tmp_path / "ready")
-    ready_binding = ready_root / "governance/github/authority-binding.yaml"
-    ready_data = yaml.safe_load(ready_binding.read_text(encoding="utf-8"))
-    ready_data["authority"]["integration_id"] = 4242
-    ready_data["evaluator"]["authority_revision"] = "a" * 40
-    ready_binding.write_text(
-        yaml.safe_dump(ready_data, sort_keys=False), encoding="utf-8"
-    )
+    _configure_activation_ready(ready_root)
     ready_policy = load_scm_enforcement_policy(ready_root)
     plan = build_github_activation_plan(ready_root, ready_policy)
     assert plan.ready is True
     assert plan.integration_id == 4242
-    assert plan.authority_revision == "a" * 40
+    assert plan.authority_revision == LIVE_EVALUATOR_REVISION
     status = next(
         rule
         for rule in plan.ruleset_payload["rules"]
@@ -364,10 +402,8 @@ def test_authority_binding_and_codeowners_projection_drift(tmp_path):
     ]
 
     invalid_root = _copy(tmp_path / "invalid-activation")
-    invalid_binding = invalid_root / "governance/github/authority-binding.yaml"
+    invalid_binding, _ = _configure_activation_ready(invalid_root)
     invalid_data = yaml.safe_load(invalid_binding.read_text(encoding="utf-8"))
-    invalid_data["authority"]["integration_id"] = 4242
-    invalid_data["evaluator"]["authority_revision"] = "b" * 40
     invalid_data["activation"]["state"] = "active"
     invalid_binding.write_text(
         yaml.safe_dump(invalid_data, sort_keys=False), encoding="utf-8"
@@ -389,6 +425,47 @@ def test_authority_binding_and_codeowners_projection_drift(tmp_path):
         encoding="utf-8",
     )
     assert "governance-owner-projection-mismatch" in _codes(root)
+
+
+def test_activation_rejects_live_evidence_drift_and_revision_mismatch(tmp_path):
+    root = _copy(tmp_path / "live-drift")
+    _configure_activation_ready(root)
+    evidence_path = root / "governance/github/evidence/live-provenance-001.json"
+    evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
+    evidence["source"]["runtime_source_blob"] = "d" * 40
+    evidence_path.write_text(json.dumps(evidence), encoding="utf-8")
+    policy = load_scm_enforcement_policy(root)
+    plan = build_github_activation_plan(root, policy)
+    assert not plan.ready
+    assert "authority-live-provenance-evidence-invalid" in {
+        finding.code for finding in plan.blockers
+    }
+
+    root = _copy(tmp_path / "revision-drift")
+    binding_path, _ = _configure_activation_ready(root)
+    binding = yaml.safe_load(binding_path.read_text(encoding="utf-8"))
+    binding["evaluator"]["authority_revision"] = "a" * 40
+    binding_path.write_text(yaml.safe_dump(binding, sort_keys=False), encoding="utf-8")
+    policy = load_scm_enforcement_policy(root)
+    plan = build_github_activation_plan(root, policy)
+    assert not plan.ready
+    assert "authority-revision-evidence-mismatch" in {
+        finding.code for finding in plan.blockers
+    }
+
+
+def test_activation_rejects_invalid_publisher_evidence(tmp_path):
+    root = _copy(tmp_path)
+    _, publisher_path = _configure_activation_ready(root)
+    evidence = json.loads(publisher_path.read_text(encoding="utf-8"))
+    evidence["publisher"]["source_verified"] = False
+    publisher_path.write_text(json.dumps(evidence), encoding="utf-8")
+    policy = load_scm_enforcement_policy(root)
+    plan = build_github_activation_plan(root, policy)
+    assert not plan.ready
+    assert "authority-publisher-evidence-invalid" in {
+        finding.code for finding in plan.blockers
+    }
 
 
 def test_malformed_provider_state_fails_closed(tmp_path):
@@ -418,4 +495,5 @@ def test_malformed_provider_state_fails_closed(tmp_path):
         assert {finding.code for finding in plan.blockers} == {
             "authority-integration-id-unbound",
             "authority-revision-unbound",
+            "authority-publisher-evidence-unbound",
         }
