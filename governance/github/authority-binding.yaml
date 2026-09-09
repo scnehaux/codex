@@ -18,5 +18,7 @@ evaluator:
   promotion: privileged-explicit
 activation:
   state: planned
+  live_provenance_evidence: governance/github/evidence/live-provenance-001.json
+  publisher_evidence: null
   effective_enforcement_claimed: false
   activation_slice: "10.10"
