@@ -88,8 +88,14 @@ def _validate_live_provenance_evidence(
     observation = evidence.get("observation")
     attestation = evidence.get("attestation")
     self_report = evidence.get("source_runtime_self_report")
-    qualification = observation.get("candidate_qualification") if isinstance(observation, dict) else None
-    raw_verification = execution.get("raw_blob_verification") if isinstance(execution, dict) else None
+    qualification = (
+        observation.get("candidate_qualification")
+        if isinstance(observation, dict)
+        else None
+    )
+    raw_verification = (
+        execution.get("raw_blob_verification") if isinstance(execution, dict) else None
+    )
 
     expected_source = {
         "runtime_source_revision": runtime_contract.get("runtime_source_revision"),
@@ -131,7 +137,10 @@ def _validate_live_provenance_evidence(
         and observation.get("base_sha") != observation.get("head_sha")
         and isinstance(observation.get("changed_files"), list)
         and bool(observation.get("changed_files"))
-        and all(isinstance(item, str) and bool(item) for item in observation["changed_files"])
+        and all(
+            isinstance(item, str) and bool(item)
+            for item in observation["changed_files"]
+        )
         and observation.get("facts_collected_independently") is True
         and observation.get("governance_decision") == "pass"
         and observation.get("runtime_failure_reasons") == []
@@ -198,7 +207,8 @@ def _validate_publisher_evidence(
         and evidence.get("repository") == repository
         and isinstance(authority, dict)
         and authority.get("integration_id") == integration_id
-        and authority.get("check_context") == policy.qualification.external_authority.context
+        and authority.get("check_context")
+        == policy.qualification.external_authority.context
         and authority.get("expected_source_binding") == "integration_id"
         and isinstance(publisher, dict)
         and publisher.get("execution_location") == "external"
