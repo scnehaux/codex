@@ -1,64 +1,117 @@
-# GitHub governance evaluator runtime source promotion
+# GitHub governance evaluator live-proof attestation
 
-This directory is now **Stage 3e**. Stage 3b established deterministic offline
-`pass`/`fail` semantics, Stage 3c pinned the reviewed evaluator source, and Stage 3d
+This directory is now **Stage 3f**. Stage 3b established deterministic offline
+`pass`/`fail` semantics, Stage 3c pinned the reviewed evaluator source, Stage 3d
 added a read-only runtime that independently observes candidate identity, touched
-paths, and `Governance Qualification` from GitHub. Stage 3e pins that reviewed
-runtime source to an immutable commit and exact Git blob.
+paths, and `Governance Qualification`, and Stage 3e pinned that reviewed runtime
+source to an immutable commit and exact Git blob. Stage 3f records the first
+successful external live observation and hardens provider activation so source
+pinning alone can never make the GitHub ruleset ready.
 
-The promoted runtime source is the merged Stage 3d revision
-`cbd64f78c8f72f28880d4673729a796b249d8eae`. Its exact `runtime.py` Git blob is
-`c59911e9c0800c917fed21e6f33f3181c3a61e60`.
-
-This slice still does **not** authenticate as the governance GitHub App, read a
-private key, mint an installation token, publish a Check Run, advance the provider
-binding, or prove merge enforcement.
-
-## Promotion contracts
-
-`promotion.json` continues to pin the deterministic evaluator source:
+The source identities remain unchanged:
 
 ```text
 evaluator revision: 23b05a855419b86b61b0c9266805bb66b143c366
 evaluator blob:     ab2f152c21bd6d6f22df21172c4d027035ff8c11
+runtime revision:   cbd64f78c8f72f28880d4673729a796b249d8eae
+runtime blob:       c59911e9c0800c917fed21e6f33f3181c3a61e60
 ```
 
-`runtime-promotion.json` now pins the reviewed runtime source:
+`runtime.py` and `evaluator.py` are intentionally unchanged in this slice.
+
+## First live provenance evidence
+
+`governance/github/evidence/live-provenance-001.json` records the controlled live
+execution against PR `#15` while that PR was still open. The exported runtime read
+GitHub directly and observed:
 
 ```text
-runtime revision:   cbd64f78c8f72f28880d4673729a796b249d8eae
-runtime path:       integrations/github-governance-evaluator/runtime.py
-runtime blob:       c59911e9c0800c917fed21e6f33f3181c3a61e60
-promotion mode:     privileged-explicit
-promotion state:    runtime-source-pinned
+repository:             scnehaux/codex
+pull request:           15
+base SHA:               ed893641a9c96a6cb4c8a590f2757e32116721f6
+candidate SHA:          968e496ff6de16b223bd9a15122ee81ed4ee1e5a
+changed path:           .gitignore
+candidate qualification: pass
+qualification check id: 102414770301
+governance decision:    pass
 ```
 
-The contract explicitly keeps candidate selection and candidate auto-deployment
-forbidden. The effective runtime must be an exported copy administered outside
-candidate control.
+The live runtime also established that candidate identity and changed files were
+read independently from GitHub, the exact `Governance Qualification` check was
+bound to the candidate SHA and GitHub Actions source, candidate code was not
+executed, credentials were not used, and no runtime failure reason or protected
+mutation was present.
 
-## Why `runtime.py` is intentionally unchanged in this slice
+The evidence record deliberately distinguishes **observed external evidence** from
+the immutable Stage 3d runtime's own conservative self-report. The pinned runtime
+still emits:
 
-The source pin points to the already-reviewed Stage 3d runtime. This PR therefore
-does not modify `runtime.py`. Changing the runtime while simultaneously claiming
-that the previous blob is promoted would invalidate the pin.
+```text
+runtime_source_promoted: false
+facts_provenance_verified: false
+publish_enabled: false
+authority_binding_advanced: false
+effective_enforcement_proven: false
+```
 
-The runtime also does not embed its own commit SHA. A Git commit SHA includes the
-file content, so requiring the file to contain the SHA of the commit that contains
-that same file would create a self-referential identity problem. Instead, the
-promotion record binds the immutable commit and exact Git blob externally, and CI
-verifies both against repository history.
+Those fields are retained verbatim in the governed evidence. Stage 3f does not
+rewrite them. Instead, the higher-level attestation records:
 
-For live use, the operator exports exactly the pinned runtime revision and verifies
-the exported `runtime.py` blob before execution. This preserves a clean separation
-between source identity and runtime behavior.
+```text
+live_instance_proven: true
+facts_provenance_evidenced: true
+publisher_proven: false
+authority_binding_advanced: false
+effective_enforcement_proven: false
+```
+
+This is evidence that the promoted read-only design works in a real external
+execution. It is **not** evidence that the GitHub App publisher or merge enforcement
+is operational.
+
+## Activation gate is now evidence-aware
+
+`governance/github/authority-binding.yaml` now points to the governed live proof and
+keeps publisher evidence unbound:
+
+```text
+live_provenance_evidence: governance/github/evidence/live-provenance-001.json
+publisher_evidence: null
+authority_revision: null
+state: planned
+effective_enforcement_claimed: false
+```
+
+`engine/adapters/scm/github_activation.py` fails closed unless all provider
+activation prerequisites are satisfied. A future ready plan must have:
+
+- a positive configured GitHub App `integration_id`;
+- an immutable `authority_revision`;
+- valid governed live-provenance evidence under `governance/github/evidence/`;
+- `authority_revision` equal to the evaluator revision bound by that live evidence;
+- valid governed publisher evidence proving the configured App emitted the exact
+  `Codex Governance Authority` check for a candidate SHA;
+- activation state still `planned`; and
+- `effective_enforcement_claimed: false` until provider-side negative proof exists.
+
+Consequently, merely filling `authority_revision` can no longer make the activation
+plan ready. The current expected blockers are still at least:
+
+```text
+authority-revision-unbound
+authority-publisher-evidence-unbound
+```
+
+The publisher evidence schema is intentionally validated before activation even
+though no real publisher evidence exists yet. The next slice must produce that
+evidence from the external GitHub App publisher rather than weakening this gate.
 
 ## Runtime behavior remains read-only
 
-The executable entrypoint remains `runtime.py`, with only:
+The executable entrypoint remains:
 
 ```text
---pull-request <positive integer>
+runtime.py --pull-request <positive integer>
 ```
 
 There is no token option, endpoint override, repository override, check-name
@@ -90,83 +143,45 @@ All GitHub requests remain fixed-host HTTPS `GET` requests. Redirects are refuse
 responses and pagination are bounded, error bodies are suppressed, and no
 `Authorization` header is sent.
 
-## What is promoted now
+## Correct raw-byte export and verification on Windows
 
-After this PR is merged, the repository has an explicit reviewed source pin for
-both layers:
+The first live proof exposed an important operator detail. With the repository's
+text normalization, a normal archive/extraction path on Windows can materialize
+CRLF bytes even though a plain `git hash-object` may normalize them back to the
+expected Git object identity. The runtime correctly rejected that materialization
+because it hashes the **raw bytes it actually executes**.
 
-- deterministic evaluator source is pinned;
-- read-only runtime source is pinned;
-- candidate state cannot choose either effective revision; and
-- candidate changes cannot auto-deploy themselves into the future authority
-  runtime.
-
-That is still source promotion, not live runtime proof.
-
-A completed Stage 3d runtime result still reports:
-
-```text
-runtime_source_promoted: false
-facts_provenance_verified: false
-publish_enabled: false
-authority_binding_advanced: false
-effective_enforcement_proven: false
-```
-
-Those fields are intentionally unchanged in the pinned Stage 3d runtime blob. A
-source file cannot retroactively prove that an operator actually exported and ran
-it. The next stage supplies that external execution evidence.
-
-## Live proof still required
-
-The next stage should create a controlled pull request and run an exported copy of
-exactly the pinned runtime against that PR. The operator must verify the exported
-runtime blob before execution and retain the resulting evidence bound to the exact
-PR/base/head SHA.
-
-Only after that live instance proof exists can a later privileged change consider:
-
-```text
-facts_provenance_verified: true
-authority_revision: <eligible promoted authority revision>
-publish_enabled: true
-```
-
-Even then, provider activation and merge enforcement remain separate operations and
-must not be inferred from a successful runtime evaluation.
-
-## Windows export procedure for the next stage
-
-From a clean local repository, use the immutable runtime revision rather than
-moving `main`:
+Therefore verification must use raw-object semantics:
 
 ```powershell
-$revision = "cbd64f78c8f72f28880d4673729a796b249d8eae"
 $runtime = "$env:USERPROFILE\codex-governance-runtime-cbd64f78c8f7"
 
-git archive --format=zip "--output=$runtime.zip" "${revision}:integrations/github-governance-evaluator"
-Expand-Archive -Path "$runtime.zip" -DestinationPath $runtime -Force
-
-git hash-object "$runtime\runtime.py"
+git hash-object --no-filters "$runtime\runtime.py"
+git hash-object --no-filters "$runtime\evaluator.py"
 ```
 
-The final command must print:
+Expected values are:
 
 ```text
-c59911e9c0800c917fed21e6f33f3181c3a61e60
+runtime.py   c59911e9c0800c917fed21e6f33f3181c3a61e60
+evaluator.py ab2f152c21bd6d6f22df21172c4d027035ff8c11
 ```
 
-Do not execute the runtime if that value differs. The exported directory must stay
-outside every Git checkout because `runtime.py` fails closed when executed beneath a
-`.git` directory.
-
-The actual live command in the next stage is:
+If either value differs, do not execute that copy. Re-materialize the exact raw Git
+objects without working-tree filters:
 
 ```powershell
-py -3.13 -I "$runtime\runtime.py" --pull-request <CONTROLLED_PR_NUMBER>
+py -3.13 -c "import subprocess,pathlib; pathlib.Path(r'$runtime\runtime.py').write_bytes(subprocess.check_output(['git','cat-file','blob','c59911e9c0800c917fed21e6f33f3181c3a61e60']))"
+py -3.13 -c "import subprocess,pathlib; pathlib.Path(r'$runtime\evaluator.py').write_bytes(subprocess.check_output(['git','cat-file','blob','ab2f152c21bd6d6f22df21172c4d027035ff8c11']))"
 ```
 
-No GitHub App private key is needed for this read-only proof stage.
+Then repeat `git hash-object --no-filters`. This verifies the actual bytes that the
+isolated Python process will load, not a filtered Git interpretation.
+
+The exported directory must remain outside every Git checkout because `runtime.py`
+fails closed when executed beneath a `.git` directory. Local branch and current
+working directory are otherwise irrelevant because the runtime uses its explicit
+external path and reads candidate facts from GitHub.
 
 ## Protected mutations remain fail-closed
 
@@ -186,28 +201,39 @@ integrations/github-governance-evaluator/
 scripts/
 ```
 
-A controlled live proof PR should therefore touch only a deliberately unprotected
-fixture/document path. A later privileged-validation slice can address protected
-mutation evidence separately.
+Stage 3f itself changes protected authority material and therefore does not claim
+that the Stage 3d runtime has solved privileged validation. That remains a separate
+trust concern.
+
+## What remains before provider enforcement
+
+The next operational slice is the external publisher. It must take a trusted
+runtime decision and use the already-bound GitHub App identity to create an exact
+`Codex Governance Authority` Check Run on the candidate SHA. Publisher credentials
+must remain outside candidate control, and the publisher must not execute candidate
+code.
+
+Only after a controlled publisher proof exists should a later privileged change:
+
+1. record governed publisher evidence;
+2. bind `authority_revision` to the evaluator revision already proven by live
+   evidence;
+3. produce an activation plan with no evidence blockers;
+4. apply the provider ruleset; and
+5. perform negative enforcement tests that demonstrate GitHub actually blocks
+   prohibited merges, force-pushes, deletion, and missing authority checks.
+
+Until step 5 completes, `effective_enforcement_proven` remains false.
 
 ## CI boundary
 
-The `Governance Evaluator Runtime Source Promotion` workflow:
+The `Governance Evaluator Runtime Source Promotion` workflow now also validates the
+Stage 3f evidence boundary. It still verifies immutable evaluator/runtime revisions
+and blobs, runs all evaluator/runtime/evidence regression tests, preserves the
+runtime promotion contract's conservative false claims, checks that the live proof
+is exactly bound to those source identities, and asserts that publisher/provider
+activation remains unadvanced.
 
-- checks out complete history without retained credentials;
-- compiles the evaluator/runtime package and runs all regression tests;
-- keeps the evaluator credential-free and the runtime read-only;
-- verifies the evaluator source revision and exact blob;
-- verifies the runtime source revision exists in reviewed history;
-- verifies the runtime blob at that revision equals
-  `c59911e9c0800c917fed21e6f33f3181c3a61e60`;
-- verifies the current `runtime.py` remains exactly that promoted blob; and
-- confirms `authority_revision` remains null, activation remains planned, and
-  effective enforcement remains unclaimed.
-
-CI validates the promotion record. It does not prove that an external operator has
-executed the exported runtime. That live proof is intentionally the next stage.
-
-The already-proven `Codex App Connectivity Probe` remains separate. It proves App
+The already-proven `Codex App Connectivity Probe` remains separate. It proved App
 Checks API transport only and must never be configured as the required authority
 context.
