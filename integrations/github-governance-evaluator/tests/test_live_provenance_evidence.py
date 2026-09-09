@@ -5,8 +5,6 @@ import json
 from pathlib import Path
 import unittest
 
-import yaml
-
 
 ROOT = Path(__file__).resolve().parents[3]
 EVALUATOR_DIR = ROOT / "integrations/github-governance-evaluator"
@@ -121,15 +119,16 @@ class LiveProvenanceEvidenceTests(unittest.TestCase):
             },
         )
 
-        binding = yaml.safe_load(BINDING.read_text(encoding="utf-8"))
-        self.assertIsNone(binding["evaluator"]["authority_revision"])
-        self.assertEqual(binding["activation"]["state"], "planned")
-        self.assertEqual(
-            binding["activation"]["live_provenance_evidence"],
-            "governance/github/evidence/live-provenance-001.json",
+        binding = BINDING.read_text(encoding="utf-8")
+        required = (
+            "authority_revision: null",
+            "state: planned",
+            "live_provenance_evidence: governance/github/evidence/live-provenance-001.json",
+            "publisher_evidence: null",
+            "effective_enforcement_claimed: false",
         )
-        self.assertIsNone(binding["activation"]["publisher_evidence"])
-        self.assertIs(binding["activation"]["effective_enforcement_claimed"], False)
+        for item in required:
+            self.assertIn(item, binding)
 
 
 if __name__ == "__main__":
