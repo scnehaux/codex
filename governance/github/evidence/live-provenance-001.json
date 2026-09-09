@@ -28,9 +28,7 @@
     "pull_state": "open",
     "base_sha": "ed893641a9c96a6cb4c8a590f2757e32116721f6",
     "head_sha": "968e496ff6de16b223bd9a15122ee81ed4ee1e5a",
-    "changed_files": [
-      ".gitignore"
-    ],
+    "changed_files": [".gitignore"],
     "facts_collected_independently": true,
     "candidate_qualification": {
       "context": "Governance Qualification",
