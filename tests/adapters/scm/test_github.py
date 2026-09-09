@@ -448,13 +448,9 @@ def test_authority_binding_and_codeowners_projection_drift(tmp_path):
     publisher_root = tmp_path / "publisher-drift"
     shutil.copytree(ready_root, publisher_root)
     invalid_publisher_path = publisher_root / PUBLISHER_EVIDENCE
-    publisher_evidence = json.loads(
-        invalid_publisher_path.read_text(encoding="utf-8")
-    )
+    publisher_evidence = json.loads(invalid_publisher_path.read_text(encoding="utf-8"))
     publisher_evidence["publisher"]["source_verified"] = False
-    invalid_publisher_path.write_text(
-        json.dumps(publisher_evidence), encoding="utf-8"
-    )
+    invalid_publisher_path.write_text(json.dumps(publisher_evidence), encoding="utf-8")
     publisher_policy = load_scm_enforcement_policy(publisher_root)
     publisher_plan = build_github_activation_plan(publisher_root, publisher_policy)
     assert not publisher_plan.ready
