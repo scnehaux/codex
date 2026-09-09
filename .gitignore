@@ -21,5 +21,3 @@ break-glass-audit.log
 .env
 *.egg-info/
 htmlcov/
-
-# Controlled runtime provenance proof marker (test PR only; do not merge)
