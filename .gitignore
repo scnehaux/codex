@@ -21,5 +21,3 @@ break-glass-audit.log
 .env
 *.egg-info/
 htmlcov/
-
-# Controlled live provenance proof target; close without merge after evidence capture
