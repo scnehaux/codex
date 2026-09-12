@@ -7,18 +7,18 @@ authority:
   type: github-app
   check_context: Codex Governance Authority
   expected_source_binding: integration_id
-  # Operator-supplied App ID for scnehaux-codex-authority, not Installation ID.
-  # Desired identity only; authenticated runtime activation is not yet proven.
+  # Privileged operator-bound App ID for scnehaux-codex-authority, not Installation ID.
   integration_id: 4864946
 evaluator:
   execution_location: external
-  authority_revision: null
+  # Privileged promotion binds the independently reviewed evaluator revision proven by live evidence.
+  authority_revision: 23b05a855419b86b61b0c9266805bb66b143c366
   candidate_revision_as_authority: false
   auto_deploy_from_candidate: false
   promotion: privileged-explicit
 activation:
   state: planned
   live_provenance_evidence: governance/github/evidence/live-provenance-001.json
-  publisher_evidence: null
+  publisher_evidence: governance/github/evidence/publisher-live-001.json
   effective_enforcement_claimed: false
   activation_slice: "10.10"

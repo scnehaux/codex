@@ -71,7 +71,7 @@ jobs:
           current_blob=$(git hash-object "$path")
           test "$expected_blob" = "$blob"
           test "$current_blob" = "$blob"
-      - name: Assert live proof cannot masquerade as publisher authority
+      - name: Assert live provenance stays conservative and activation is evidence-bound
         shell: bash
         run: |
           python -I - <<'PY'
@@ -129,7 +129,7 @@ jobs:
               'authority_binding_advanced': False,
               'effective_enforcement_proven': False,
           }:
-              raise SystemExit('Live evidence advanced beyond observed read-only provenance')
+              raise SystemExit('Live provenance evidence must remain a conservative historical record')
           if evidence['source_runtime_self_report'] != {
               'runtime_source_promoted': False,
               'facts_provenance_verified': False,
@@ -139,21 +139,43 @@ jobs:
           }:
               raise SystemExit('Governed evidence must retain the pinned runtime self-report verbatim')
 
+          publisher = json.loads(
+              Path('governance/github/evidence/publisher-live-001.json').read_text(
+                  encoding='utf-8'
+              )
+          )
+          if not (
+              publisher.get('contract_version') == 1
+              and publisher.get('kind') == 'scm-external-authority-publisher-evidence'
+              and publisher.get('provider') == 'github'
+              and publisher.get('repository') == 'scnehaux/codex'
+              and publisher.get('authority', {}).get('integration_id') == 4864946
+              and publisher.get('authority', {}).get('check_context') == 'Codex Governance Authority'
+              and publisher.get('publisher', {}).get('check_run_id') == 103547296485
+              and publisher.get('publisher', {}).get('candidate_sha') == 'a6ed1def64503ca57c647ce45937f887873aac6f'
+              and publisher.get('publisher', {}).get('conclusion') == 'success'
+              and publisher.get('publisher', {}).get('source_verified') is True
+              and publisher.get('publisher', {}).get('exact_candidate_binding') is True
+              and publisher.get('publisher', {}).get('credentials_isolated') is True
+              and publisher.get('publisher', {}).get('candidate_code_executed') is False
+              and publisher.get('claims', {}).get('effective_enforcement_proven') is False
+          ):
+              raise SystemExit('Publisher evidence is not bound to the proven GitHub App check')
+
           binding = Path('governance/github/authority-binding.yaml').read_text(encoding='utf-8')
           required = [
-              'authority_revision: null',
+              'authority_revision: 23b05a855419b86b61b0c9266805bb66b143c366',
               'candidate_revision_as_authority: false',
               'auto_deploy_from_candidate: false',
               'promotion: privileged-explicit',
               'state: planned',
               'live_provenance_evidence: governance/github/evidence/live-provenance-001.json',
-              'publisher_evidence: null',
+              'publisher_evidence: governance/github/evidence/publisher-live-001.json',
               'effective_enforcement_claimed: false',
           ]
           missing = [item for item in required if item not in binding]
           if missing:
               raise SystemExit(
-                  'Live proof must not advance publisher/provider activation: '
-                  + ', '.join(missing)
+                  'Evidence-bound authority activation drifted: ' + ', '.join(missing)
               )
           PY

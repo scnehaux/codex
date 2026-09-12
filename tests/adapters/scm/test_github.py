@@ -21,6 +21,7 @@ ESTATE = (
     "governance/github/main-ruleset.json",
     "governance/github/authority-binding.yaml",
     "governance/github/evidence/live-provenance-001.json",
+    "governance/github/evidence/publisher-live-001.json",
     "integrations/github-governance-evaluator/promotion.json",
     "integrations/github-governance-evaluator/runtime-promotion.json",
     ".github/workflows/governance.yml",
@@ -49,14 +50,20 @@ def test_current_github_projection_matches_provider_neutral_policy():
     assert report.ok
 
     plan = build_github_activation_plan(REPOSITORY_ROOT, policy)
-    assert plan.ready is False
-    assert plan.ruleset_payload is None
+    assert plan.ready is True
+    assert plan.ruleset_payload is not None
     assert plan.integration_id == 4864946
-    assert plan.authority_revision is None
-    assert {finding.code for finding in plan.blockers} == {
-        "authority-revision-unbound",
-        "authority-publisher-evidence-unbound",
-    }
+    assert plan.authority_revision == LIVE_EVALUATOR_REVISION
+    assert plan.blockers == ()
+    status = next(
+        rule
+        for rule in plan.ruleset_payload["rules"]
+        if rule["type"] == "required_status_checks"
+    )
+    assert status["parameters"]["required_status_checks"] == [
+        {"context": "Governance Qualification"},
+        {"context": "Codex Governance Authority", "integration_id": 4864946},
+    ]
 
 
 def test_active_bootstrap_review_exception_projects_effective_state():
@@ -301,11 +308,9 @@ def test_workflow_is_validated_structurally_not_by_comments(
     plan = build_github_activation_plan(root, policy)
     if expected is None:
         assert report.ok, report.findings
-        assert not plan.ready
-        assert {finding.code for finding in plan.blockers} == {
-            "authority-revision-unbound",
-            "authority-publisher-evidence-unbound",
-        }
+        assert plan.ready
+        assert plan.ruleset_payload is not None
+        assert plan.blockers == ()
     else:
         assert expected in {finding.code for finding in report.findings}
         assert not plan.ready
@@ -484,6 +489,7 @@ def test_malformed_provider_state_fails_closed(tmp_path):
     binding_path = unbound_root / "governance/github/authority-binding.yaml"
     binding = yaml.safe_load(binding_path.read_text(encoding="utf-8"))
     binding["evaluator"]["authority_revision"] = None
+    binding["activation"]["publisher_evidence"] = None
     unbound_policy = load_scm_enforcement_policy(unbound_root)
     for invalid_id in (None, True, False, 0, -1, "4864946"):
         binding["authority"]["integration_id"] = invalid_id

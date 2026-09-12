@@ -1,0 +1,46 @@
+{
+  "contract_version": 1,
+  "kind": "scm-external-authority-publisher-evidence",
+  "provider": "github",
+  "repository": "scnehaux/codex",
+  "evidence_id": "publisher-live-001",
+  "authority": {
+    "integration_id": 4864946,
+    "check_context": "Codex Governance Authority",
+    "expected_source_binding": "integration_id",
+    "app_slug": "scnehaux-codex-authority",
+    "app_owner": "scnehaux"
+  },
+  "publisher": {
+    "execution_location": "external",
+    "check_run_published": true,
+    "source_verified": true,
+    "exact_candidate_binding": true,
+    "credentials_isolated": true,
+    "candidate_code_executed": false,
+    "check_run_id": 103547296485,
+    "candidate_sha": "a6ed1def64503ca57c647ce45937f887873aac6f",
+    "conclusion": "success",
+    "permit_digest": "fa79155ddb243f3d03227205b0e5c8e93e154590acffce499475c1d8019cb3d7",
+    "authority_service_source_revision": "6b89e95b63fa000482a1c5cac82f22864a81eeeb",
+    "publisher_source_revision": "6b89e95b63fa000482a1c5cac82f22864a81eeeb",
+    "publisher_source_blobs": {
+      "github_app_publisher.py": "4ee2e9937b17bb157b702bcc8f6d10a33ca71e6c",
+      "publisher_contract.py": "4b2ab8d9a5da6bda794586b43255688d7dc961fe",
+      "publisher_transport.py": "03d54b7ea54296e17688eaa40a5ff0de9bbb61ca"
+    },
+    "token_revoked": true
+  },
+  "provider_observation": {
+    "pull_request": 17,
+    "base_sha": "b79f8c07d088820722b3644a396c89bf42fcd370",
+    "check_status": "completed",
+    "check_started_at": "2026-09-12T11:35:35Z",
+    "check_completed_at": "2026-09-12T11:35:35Z",
+    "candidate_closed_at": "2026-09-12T11:38:20Z",
+    "candidate_closed_without_merge": true
+  },
+  "claims": {
+    "effective_enforcement_proven": false
+  }
+}

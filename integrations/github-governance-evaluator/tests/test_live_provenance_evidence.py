@@ -96,7 +96,7 @@ class LiveProvenanceEvidenceTests(unittest.TestCase):
         self.assertEqual(qualification["status"], "completed")
         self.assertEqual(qualification["conclusion"], "success")
 
-    def test_attestation_advances_only_live_proof_not_publisher_or_enforcement(self):
+    def test_attestation_stays_historical_while_binding_uses_separate_proof(self):
         evidence = _json(EVIDENCE)
         self.assertEqual(
             evidence["attestation"],
@@ -121,10 +121,13 @@ class LiveProvenanceEvidenceTests(unittest.TestCase):
 
         binding = BINDING.read_text(encoding="utf-8")
         required = (
-            "authority_revision: null",
+            "authority_revision: 23b05a855419b86b61b0c9266805bb66b143c366",
+            "candidate_revision_as_authority: false",
+            "auto_deploy_from_candidate: false",
+            "promotion: privileged-explicit",
             "state: planned",
             "live_provenance_evidence: governance/github/evidence/live-provenance-001.json",
-            "publisher_evidence: null",
+            "publisher_evidence: governance/github/evidence/publisher-live-001.json",
             "effective_enforcement_claimed: false",
         )
         for item in required:
