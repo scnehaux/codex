@@ -47,13 +47,22 @@ class PromotionContractTests(unittest.TestCase):
             },
         )
 
-    def test_provider_binding_remains_unadvanced_until_runtime_proven(self):
+    def test_provider_binding_is_privileged_and_still_not_effective_enforcement(self):
         binding = (REPOSITORY_ROOT / "governance/github/authority-binding.yaml").read_text(
             encoding="utf-8"
         )
-        self.assertIn("authority_revision: null", binding)
+        self.assertIn(
+            "authority_revision: 23b05a855419b86b61b0c9266805bb66b143c366",
+            binding,
+        )
+        self.assertIn("candidate_revision_as_authority: false", binding)
+        self.assertIn("auto_deploy_from_candidate: false", binding)
         self.assertIn("promotion: privileged-explicit", binding)
         self.assertIn("state: planned", binding)
+        self.assertIn(
+            "publisher_evidence: governance/github/evidence/publisher-live-001.json",
+            binding,
+        )
         self.assertIn("effective_enforcement_claimed: false", binding)
 
 
