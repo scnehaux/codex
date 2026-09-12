@@ -24,10 +24,7 @@ def test_current_repository_projection_passes(monkeypatch, capsys):
     assert module.main(["--activation-plan"]) == 0
     current = capsys.readouterr().out
     assert '"integration_id": 4864946' in current
-    assert (
-        '"authority_revision": "23b05a855419b86b61b0c9266805bb66b143c366"'
-        in current
-    )
+    assert '"authority_revision": "23b05a855419b86b61b0c9266805bb66b143c366"' in current
     assert '"context": "Governance Qualification"' in current
     assert '"context": "Codex Governance Authority"' in current
     assert '"ruleset_payload"' in current
