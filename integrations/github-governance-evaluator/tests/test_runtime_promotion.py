@@ -101,15 +101,22 @@ class RuntimePromotionContractTests(unittest.TestCase):
             evaluator_contract["authority_source_revision"],
         )
 
-    def test_provider_binding_remains_unadvanced_until_live_runtime_proof(self):
+    def test_provider_binding_uses_proven_evaluator_but_stays_planned(self):
         binding = (
             REPOSITORY_ROOT / "governance/github/authority-binding.yaml"
         ).read_text(encoding="utf-8")
-        self.assertIn("authority_revision: null", binding)
+        self.assertIn(
+            "authority_revision: 23b05a855419b86b61b0c9266805bb66b143c366",
+            binding,
+        )
         self.assertIn("candidate_revision_as_authority: false", binding)
         self.assertIn("auto_deploy_from_candidate: false", binding)
         self.assertIn("promotion: privileged-explicit", binding)
         self.assertIn("state: planned", binding)
+        self.assertIn(
+            "publisher_evidence: governance/github/evidence/publisher-live-001.json",
+            binding,
+        )
         self.assertIn("effective_enforcement_claimed: false", binding)
 
 
