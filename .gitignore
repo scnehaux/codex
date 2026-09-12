@@ -23,3 +23,4 @@ break-glass-audit.log
 htmlcov/
 
 # Controlled live provenance proof target; close without merge after evidence capture
+# Provider enforcement negative proof target; close without merge after observation
