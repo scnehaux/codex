@@ -21,12 +21,16 @@ def test_current_repository_projection_passes(monkeypatch, capsys):
     assert module.main() == 0
     capsys.readouterr()
 
-    assert module.main(["--activation-plan"]) == 2
-    blocked = capsys.readouterr().out
-    assert "authority-integration-id-unbound" not in blocked
-    assert "authority-revision-unbound" in blocked
-    assert "authority-publisher-evidence-unbound" in blocked
-    assert "effective enforcement: NOT CLAIMED" in blocked
+    assert module.main(["--activation-plan"]) == 0
+    current = capsys.readouterr().out
+    assert '"integration_id": 4864946' in current
+    assert (
+        '"authority_revision": "23b05a855419b86b61b0c9266805bb66b143c366"'
+        in current
+    )
+    assert '"context": "Governance Qualification"' in current
+    assert '"context": "Codex Governance Authority"' in current
+    assert '"ruleset_payload"' in current
 
     class ReadyPlan:
         ready = True
