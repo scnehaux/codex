@@ -28,3 +28,4 @@ protected_concerns:
 evidence:
   proves_effective_enforcement: false
   activation_slice: "10.10"
+# Post-disarm maintenance-path proof candidate; semantic policy intentionally unchanged.
