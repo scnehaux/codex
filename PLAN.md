@@ -446,6 +446,25 @@ Required evidence against the activated reference provider:
 
 Configuration text alone is not evidence.
 
+### Observed activation status — 2026-09-18
+
+The reference-provider ruleset is active on GitHub with no bypass actors and the
+external `Codex Governance Authority` check source-bound to App integration
+`4864946`. Missing-authority and wrong-source checks are provider-blocked; a real
+direct Contents API write to `main` was rejected with repository-rule violations;
+PR #22 completed the bootstrap installation through the required App check; and
+PR #23 subsequently proved protected maintenance through the promoted permanent
+reader with bootstrap disabled.
+
+The live observer reports the desired ruleset as installed, provider enforcement
+`ACTIVE`, and desired/effective drift `ALIGNED` at main
+`362d5c072fe407c915e2307bc455720739b20154`.
+
+Phase 10 remains active. Force-push/default-branch-deletion proof and the remaining
+review/merge negative-evidence matrix must be completed in safe disposable scope
+or otherwise proven without risking the production default branch. Do not infer
+those outcomes merely from ruleset configuration.
+
 ### Phase 10 Exit
 
 - clean-checkout internal qualification green
