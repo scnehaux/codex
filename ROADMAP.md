@@ -140,15 +140,15 @@ Hard boundaries:
 
 ## 3.3 Effective Enforcement Ledger
 
-| ID      | Invariant                                                                              | Status    | Current Gap                                                                                                        |
-| ------- | -------------------------------------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
-| SCM-001 | Trust model rejects candidate-local state as sufficient governance guardrail authority | `ACTIVE`  | trust contract and negative proof qualified; external authority identity/runtime not yet bound                     |
-| SCM-002 | Provider-neutral enforcement policy is distinct from provider-native configuration     | `DONE`    | authored SCM policy is semantic authority; GitHub configuration is a provider projection                           |
-| SCM-003 | Desired provider state is validated semantically rather than by text fragments only    | `DONE`    | structured fail-closed semantic and GitHub projection validation are qualified                                     |
-| SCM-004 | Human review bootstrap exception is explicit and temporary                             | `DONE`    | provider-neutral bootstrap exception, deterministic exit condition, and provider projection qualified              |
-| SCM-005 | Effective provider state is observed independently from desired configuration          | `DONE`    | provider-neutral live-state observer and evidence model qualified; reference-provider state observed independently |
-| SCM-006 | Reference-provider controls are installed and proven                                   | `BLOCKED` | GitHub has no effective ruleset and the external trust boundary is not yet closed                                  |
-| SCM-007 | Desired/effective enforcement drift is zero                                            | `BLOCKED` | requires observer, provider activation, and negative enforcement evidence                                          |
+| ID      | Invariant                                                                              | Status   | Current Gap                                                                                                                                                                |
+| ------- | -------------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SCM-001 | Trust model rejects candidate-local state as sufficient governance guardrail authority | `DONE`   | dedicated App source binding, independently promoted runtime, bootstrap disarm, and post-disarm maintenance path are proven                                                |
+| SCM-002 | Provider-neutral enforcement policy is distinct from provider-native configuration     | `DONE`   | authored SCM policy is semantic authority; GitHub configuration is a provider projection                                                                                   |
+| SCM-003 | Desired provider state is validated semantically rather than by text fragments only    | `DONE`   | structured fail-closed semantic and GitHub projection validation are qualified                                                                                             |
+| SCM-004 | Human review bootstrap exception is explicit and temporary                             | `DONE`   | provider-neutral bootstrap exception, deterministic exit condition, and provider projection qualified                                                                      |
+| SCM-005 | Effective provider state is observed independently from desired configuration          | `DONE`   | provider-neutral live-state observer and evidence model qualified; reference-provider state observed independently                                                         |
+| SCM-006 | Reference-provider controls are installed and proven                                   | `ACTIVE` | live ruleset, source-bound authority, direct-push denial, missing/wrong-source denial, and governed merges are proven; remaining provider-negative cases are tracked below |
+| SCM-007 | Desired/effective enforcement drift is zero                                            | `DONE`   | live observer reports ruleset installed, enforcement ACTIVE, and desired/effective state ALIGNED at main `362d5c0...`                                                      |
 
 ### Phase 10 Effective Enforcement Exit Evidence
 
