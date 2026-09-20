@@ -106,6 +106,8 @@ make governance-qualify
 
 # 3. PHASE 10 — SCM ENFORCEMENT AND STABILIZATION
 
+**Status: DONE - scoped GitHub reference-provider acceptance under REC-D-018.**
+
 Phase 10 closes the active branch before any new architecture-semantic refactor begins.
 
 GitHub is the first reference SCM provider. The core enforcement architecture MUST remain provider-neutral so GitHub, GitLab, or a future SCM provider can be supported through adapters without redefining governance semantics.
@@ -452,7 +454,7 @@ Required evidence against the activated reference provider:
 
 Configuration text alone is not evidence.
 
-### Observed activation status — 2026-09-18
+### Historical activation observation - 2026-09-18
 
 The reference-provider ruleset is active on GitHub with no bypass actors and the
 external `Codex Governance Authority` check source-bound to App integration
@@ -470,7 +472,7 @@ At that historical checkpoint Phase 10 remained active. The later observations,
 owner method decision and final preflight below close the scoped reference-provider
 acceptance without rewriting those earlier evidence records.
 
-### Scoped acceptance and governed status closure ? 2026-09-21
+### Scoped acceptance and governed status closure - 2026-09-21
 
 The owner accepted REC-D-018: compose actual production qualification/Authority
 paths, causally controlled disposable mechanisms, and current production state,

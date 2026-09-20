@@ -73,7 +73,7 @@ No item becomes `DONE` from prose or desired configuration alone
 
 # 3. PHASE 10 — SCM ENFORCEMENT AND STABILIZATION
 
-**Status: DONE ? scoped GitHub reference-provider acceptance under REC-D-018.**
+**Status: DONE - scoped GitHub reference-provider acceptance under REC-D-018.**
 
 Goal:
 
