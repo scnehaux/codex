@@ -41,15 +41,16 @@ ROADMAP MUST NOT duplicate every normative control or independently redefine sem
 Canonical repository               : scnehaux/codex
 Canonical branch                   : main
 Genesis root commit                : 35ba5f427b8fcda41e8bb3a989cdf21cdf8e31cc
-Active branch                      : phase10/github-enforcement
-Observed branch HEAD               : ff32d981d1e4b302c6d6ac4ae3de606ec1a47a54
-Architecture admission             : CLOSED
-Governance baseline                : draft / 0.x
-Live GitHub rulesets               : NONE
-Active branch protected            : NO
-Open PR for active branch          : NONE
-GitHub Actions runs for branch     : NONE
-Governance 1.0                     : NOT READY
+Observed pre-closure baseline       : 107f0dc53e873ef6d24a9f12cd28da7348f79331
+Authority acceptance revision       : 360d9729310bf2903f4456f5b4464aaac17f873a
+Architecture admission              : CLOSED
+Governance baseline                 : draft / 0.x
+Live GitHub ruleset                  : INSTALLED / ACTIVE (23193929)
+Default branch protected by ruleset : YES / no bypass actors
+Desired/effective drift             : ALIGNED at acceptance preflight
+Phase 10                            : DONE in scoped reference-provider acceptance
+Next planned slice                  : 11.1 Declarative Framework Contract
+Governance 1.0                       : NOT READY
 ```
 
 The Genesis event already exists and MUST NOT be described as pending
@@ -72,7 +73,7 @@ No item becomes `DONE` from prose or desired configuration alone
 
 # 3. PHASE 10 — SCM ENFORCEMENT AND STABILIZATION
 
-**Status: ACTIVE**
+**Status: DONE - scoped GitHub reference-provider acceptance under REC-D-018.**
 
 Goal:
 
@@ -140,15 +141,15 @@ Hard boundaries:
 
 ## 3.3 Effective Enforcement Ledger
 
-| ID      | Invariant                                                                              | Status   | Current Gap                                                                                                                                                                |
-| ------- | -------------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| SCM-001 | Trust model rejects candidate-local state as sufficient governance guardrail authority | `DONE`   | dedicated App source binding, independently promoted runtime, bootstrap disarm, and post-disarm maintenance path are proven                                                |
-| SCM-002 | Provider-neutral enforcement policy is distinct from provider-native configuration     | `DONE`   | authored SCM policy is semantic authority; GitHub configuration is a provider projection                                                                                   |
-| SCM-003 | Desired provider state is validated semantically rather than by text fragments only    | `DONE`   | structured fail-closed semantic and GitHub projection validation are qualified                                                                                             |
-| SCM-004 | Human review bootstrap exception is explicit and temporary                             | `DONE`   | provider-neutral bootstrap exception, deterministic exit condition, and provider projection qualified                                                                      |
-| SCM-005 | Effective provider state is observed independently from desired configuration          | `DONE`   | provider-neutral live-state observer and evidence model qualified; reference-provider state observed independently                                                         |
-| SCM-006 | Reference-provider controls are installed and proven                                   | `ACTIVE` | live ruleset, source-bound authority, direct-push denial, missing/wrong-source denial, and governed merges are proven; remaining provider-negative cases are tracked below |
-| SCM-007 | Desired/effective enforcement drift is zero                                            | `DONE`   | live observer reports ruleset installed, enforcement ACTIVE, and desired/effective state ALIGNED at main `362d5c0...`                                                      |
+| ID      | Invariant                                                                              | Status | Current Gap                                                                                                                 |
+| ------- | -------------------------------------------------------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------- |
+| SCM-001 | Trust model rejects candidate-local state as sufficient governance guardrail authority | `DONE` | dedicated App source binding, independently promoted runtime, bootstrap disarm, and post-disarm maintenance path are proven |
+| SCM-002 | Provider-neutral enforcement policy is distinct from provider-native configuration     | `DONE` | authored SCM policy is semantic authority; GitHub configuration is a provider projection                                    |
+| SCM-003 | Desired provider state is validated semantically rather than by text fragments only    | `DONE` | structured fail-closed semantic and GitHub projection validation are qualified                                              |
+| SCM-004 | Human review bootstrap exception is explicit and temporary                             | `DONE` | provider-neutral bootstrap exception, deterministic exit condition, and provider projection qualified                       |
+| SCM-005 | Effective provider state is observed independently from desired configuration          | `DONE` | provider-neutral live-state observer and evidence model qualified; reference-provider state observed independently          |
+| SCM-006 | Reference-provider controls are installed and proven                                   | `DONE` | all ten obligations accepted under REC-D-018; immutable evidence and current preflight recorded in Authority PR #31         |
+| SCM-007 | Desired/effective enforcement drift is zero                                            | `DONE` | fresh observer ALIGNED at acceptance baseline `107f0dc...`; effective/inherited/legacy checks agree                         |
 
 ### Phase 10 Effective Enforcement Exit Evidence
 
@@ -166,6 +167,21 @@ Required negative proof against the activated reference provider:
 10. provider-native configuration cannot redefine provider-neutral governance semantics
 
 Phase 10 is `DONE` only when both stabilization and effective reference-provider enforcement are proven through the provider-neutral contract.
+
+That exit is accepted for the current GitHub reference-provider scope, with the
+owner's explicit REC-D-018 evidence-method decision and
+[Authority acceptance record](https://github.com/scnehaux/codex-authority/blob/360d9729310bf2903f4456f5b4464aaac17f873a/governance/evidence/phase10-acceptance-001.json).
+This status transition must itself merge through the ordinary qualification,
+promoted runtime, evidence/permit and App-bound check path. Its operational merge
+and publication disarm are recorded separately, not guessed in advance.
+
+The full-mirror fixture remains BLOCKED; composed evidence does not imply all
+interactions were exercised in one identical deployment. No independent human
+review or native-Git default-deletion result is invented. The review exception
+remains active, while privileged bootstrap and standing publication remain disabled.
+Historical false component flags are not overwritten. Relevant provider/policy,
+App/runtime or review-exception changes require reassessment. Phase 11 and later
+phases remain unimplemented; Governance 1.0 is not declared ready.
 
 ---
 

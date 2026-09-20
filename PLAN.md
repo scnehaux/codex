@@ -22,21 +22,27 @@ Current execution authority:
 
 This plan is the current execution contract for `scnehaux/codex`
 
-Observed repository state:
+Observed reference-provider acceptance baseline (before this status-closure PR):
 
 ```text
 Canonical branch                  : main
 Genesis root commit               : CREATED
 Genesis SHA                       : 35ba5f427b8fcda41e8bb3a989cdf21cdf8e31cc
-Active implementation branch      : phase10/github-enforcement
-Plan baseline commit                : 2c971fe8167a598c6996b1f74bbb4413012fb7e1
+Observed Codex baseline            : 107f0dc53e873ef6d24a9f12cd28da7348f79331
+Authority acceptance revision      : 360d9729310bf2903f4456f5b4464aaac17f873a
 Architecture admission            : CLOSED
 Governance lifecycle              : draft / 0.x
-Live GitHub repository ruleset    : NOT INSTALLED
-Open PR for active branch         : NONE
-GitHub Actions evidence           : NONE
-Governance 1.0 readiness          : NOT READY
+Live GitHub repository ruleset     : INSTALLED / ACTIVE (23193929)
+Desired/effective drift            : ALIGNED at acceptance preflight
+Phase 10 acceptance                : accepted scoped reference-provider evidence
+Review bootstrap                   : active / 0 mandatory approvals
+Privileged maintenance bootstrap   : disabled / permanent reader promoted
+Governance 1.0 readiness            : NOT READY (later phases remain)
 ```
+
+This snapshot is source-bound evidence, not an automatically refreshed current-state
+feed. Phase 10 closure is recorded by this status change only through the ordinary
+qualified, dedicated-App-authorized PR merge. It grants no standing publication.
 
 Git history is the historical ledger
 
@@ -99,6 +105,8 @@ make governance-qualify
 ---
 
 # 3. PHASE 10 — SCM ENFORCEMENT AND STABILIZATION
+
+**Status: DONE - scoped GitHub reference-provider acceptance under REC-D-018.**
 
 Phase 10 closes the active branch before any new architecture-semantic refactor begins.
 
@@ -446,7 +454,7 @@ Required evidence against the activated reference provider:
 
 Configuration text alone is not evidence.
 
-### Observed activation status — 2026-09-18
+### Historical activation observation - 2026-09-18
 
 The reference-provider ruleset is active on GitHub with no bypass actors and the
 external `Codex Governance Authority` check source-bound to App integration
@@ -460,10 +468,39 @@ The live observer reports the desired ruleset as installed, provider enforcement
 `ACTIVE`, and desired/effective drift `ALIGNED` at main
 `362d5c072fe407c915e2307bc455720739b20154`.
 
-Phase 10 remains active. Force-push/default-branch-deletion proof and the remaining
-review/merge negative-evidence matrix must be completed in safe disposable scope
-or otherwise proven without risking the production default branch. Do not infer
-those outcomes merely from ruleset configuration.
+At that historical checkpoint Phase 10 remained active. The later observations,
+owner method decision and final preflight below close the scoped reference-provider
+acceptance without rewriting those earlier evidence records.
+
+### Scoped acceptance and governed status closure - 2026-09-21
+
+The owner accepted REC-D-018: compose actual production qualification/Authority
+paths, causally controlled disposable mechanisms, and current production state,
+without widening the dedicated App installation. Authority PR #31 recorded the
+assessment at `360d9729310bf2903f4456f5b4464aaac17f873a`:
+
+- [Ten-row acceptance and scope limits](https://github.com/scnehaux/codex-authority/blob/360d9729310bf2903f4456f5b4464aaac17f873a/governance/evidence/phase10-acceptance-001.json).
+- [Fresh effective/inherited/legacy preflight](https://github.com/scnehaux/codex-authority/blob/360d9729310bf2903f4456f5b4464aaac17f873a/governance/evidence/phase10-final-preflight-001.json).
+- [Decision and claim ownership](https://github.com/scnehaux/codex-authority/blob/360d9729310bf2903f4456f5b4464aaac17f873a/docs/implementation-notes/0019-phase10-scoped-acceptance.md).
+
+All ten obligations are accepted for the declared GitHub reference-provider scope.
+The active named and effective rules match the tested controls; inherited rules add
+no extra ruleset. An authorized admin read confirms no legacy protection layer.
+The public observer reports installed / active / aligned. Fixtures remain archived
+with zero open PRs and temporary reviewer access restored to Read.
+
+This is not a successful full-mirror installation, independent human approval,
+new native-Git default-deletion proof, or a guarantee of future provider state.
+UNKNOWN and unsent operations retain zero proof credit. The visible zero-approval
+review exception remains active; the separate privileged bootstrap is disabled.
+Historical runtime and component false self-reports remain local to their original
+scope. The new Authority acceptance record owns the system-level scoped assessment.
+
+The status-closure PR must independently pass the current clean-checkout gates,
+promoted runtime, durable permit boundary and dedicated-App source-bound check.
+Its normal merge completes this status transition; the operational completion
+record must retain that merge and subsequent publication disarm. Phase 11.1 is the
+next planned slice, not implemented by closing this phase.
 
 ### Phase 10 Exit
 
