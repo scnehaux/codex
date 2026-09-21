@@ -139,6 +139,35 @@ This index documents the test suite utilities and fixtures.
 | **test_compatibility_finding_contract**                              | _(No docstring provided)_ |
 | **test_compatibility_auditor_accepts_clean_minimal_fixture**         | _(No docstring provided)_ |
 
+### `tests/control/framework/test_declarative_contracts.py`
+
+| Function                                                         | Description               |
+| :--------------------------------------------------------------- | :------------------------ |
+| **\_fixture**                                                    | _(No docstring provided)_ |
+| **\_yaml**                                                       | _(No docstring provided)_ |
+| **\_write**                                                      | _(No docstring provided)_ |
+| **test_current_contract_set_is_deterministic_and_equivalent**    | _(No docstring provided)_ |
+| **test_loaded_contract_is_immutable**                            | _(No docstring provided)_ |
+| **test_duplicate_yaml_key_is_rejected**                          | _(No docstring provided)_ |
+| **test_unknown_manifest_field_is_rejected**                      | _(No docstring provided)_ |
+| **test_family_path_traversal_is_rejected**                       | _(No docstring provided)_ |
+| **test_duplicate_family_path_is_rejected**                       | _(No docstring provided)_ |
+| **test_conflicting_semantic_ownership_is_rejected**              | _(No docstring provided)_ |
+| **test_ownership_map_must_be_complete_and_exact**                | _(No docstring provided)_ |
+| **test_contract_version_is_strict_integer_one**                  | _(No docstring provided)_ |
+| **test_framework_semver_is_fail_closed**                         | _(No docstring provided)_ |
+| **test_runtime_activation_remains_explicitly_staged**            | _(No docstring provided)_ |
+| **test_contract_hash_changes_when_authored_data_changes**        | _(No docstring provided)_ |
+| **test_current_artifact_type_contract_is_lossless**              | _(No docstring provided)_ |
+| **test_all_required_semantic_owners_are_unique**                 | _(No docstring provided)_ |
+| **\_equivalence_fixture**                                        | _(No docstring provided)_ |
+| **\_mutate_family**                                              | _(No docstring provided)_ |
+| **test_equivalence_reports_each_semantic_family_drift**          | _(No docstring provided)_ |
+| **test_equivalence_reports_missing_schema_and_policy_reference** | _(No docstring provided)_ |
+| **test_equivalence_reports_contract_load_error**                 | _(No docstring provided)_ |
+| **test_assert_equivalence_raises_on_drift**                      | _(No docstring provided)_ |
+| **test_validator_registry_ast_failures_are_explicit**            | _(No docstring provided)_ |
+
 ### `tests/control/fs/test_crawler.py`
 
 | Function                                                      | Description                                                                                                                                                                                                                                |
@@ -1082,6 +1111,13 @@ This index documents the test suite utilities and fixtures.
 | **test_missing_baseline_returns_2** | _(No docstring provided)_ |
 | **test_success_and_failure**        | _(No docstring provided)_ |
 
+### `tests/scripts/test_framework_contract_check.py`
+
+| Function                                                    | Description               |
+| :---------------------------------------------------------- | :------------------------ |
+| **test_framework_contract_check_passes_current_repository** | _(No docstring provided)_ |
+| **test_framework_contract_check_fails_closed**              | _(No docstring provided)_ |
+
 ### `tests/scripts/test_genesis_commit_qualify.py`
 
 | Function                                       | Description               |
@@ -1148,6 +1184,12 @@ This index documents the test suite utilities and fixtures.
 | **test_waiver_expiry_malformed_frontmatter_is_skipped**            | _(No docstring provided)_ |
 | **test_waiver_main_delegates**                                     | _(No docstring provided)_ |
 | **test_install_hook_repository_root_contract**                     | _(No docstring provided)_ |
+
+### `tests/scripts/test_makefile_generated_state.py`
+
+| Function                                                           | Description               |
+| :----------------------------------------------------------------- | :------------------------ |
+| **test_verify_generated_uses_real_nul_delimiter_for_git_z_output** | _(No docstring provided)_ |
 
 ### `tests/scripts/test_makefile_orchestration.py`
 

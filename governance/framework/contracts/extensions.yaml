@@ -1,0 +1,23 @@
+contract_version: 1
+kind: scnehaux-extension-declarations
+owns:
+- extension-declarations
+- compatibility-metadata
+data:
+  extension_points:
+  - artifact-type
+  - schema
+  - renderer
+  - validator
+  - relationship-type
+  - context-provider
+  - retriever
+  - observed-source
+  - graph-store
+  - semantic-index
+  - model-provider
+  - scm-provider
+  company_pack_must_not_require_core_fork: true
+  profile_id: scnehaux-codex-default
+  profile_version: 2
+  profile_core_fork_required: false

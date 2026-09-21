@@ -90,6 +90,7 @@ The active branch is not merge-ready until the following sequence is green from 
 ```bash
 make scm-trust-boundary-check
 make github-policy-check
+make framework-contract-check
 make lint-code
 make lint-docs-format
 make verify-generated
@@ -552,6 +553,28 @@ Required contract families:
 - contract loading is deterministic and fail-closed
 - duplicate or conflicting semantic ownership is rejected
 - existing runtime semantics can be represented without loss
+
+### Slice 11.1 implementation evidence
+
+Status: **DONE on governed merge of this slice.**
+
+The authored entrypoint is `governance/framework/contract-set.yaml`, with nine
+versioned family contracts under `governance/framework/contracts/`. The strict
+loader rejects ambiguous YAML, unsafe family paths, conflicting ownership and
+unsupported versions. `scripts/framework_contract_check.py` proves a lossless
+mirror against the current artifact vocabulary, repository layout, lifecycle,
+relationship, schema, validator, governance-reference and extension semantics.
+
+Runtime authority intentionally remains with the legacy Python registries until
+Slices 11.2 and 11.3 migrate those families. The equivalence gate is part of
+canonical governance qualification, so the staged declarative mirror and runtime
+cannot drift independently. This avoids both a flag-day cutover and a permanent
+dual-authority model.
+
+Implementation recommendations and trade-offs are recorded in
+`governance/framework/README.md` as REC-11-001 through REC-11-003. Slice 11.4
+remains the compiler/immutable `ExecutableFramework` boundary; Slice 11.1 does
+not claim provenance-bound loading or runtime activation.
 
 ## Slice 11.2 — Artifact Type / Layout / Lifecycle Contracts
 

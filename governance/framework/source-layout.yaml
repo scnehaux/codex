@@ -263,6 +263,19 @@ version_mutation_integrity:
   - committed-mutation-baseline-is-explicit-and-fail-closed
   committed_mutation_authority: engine/control/governance/committed_mutation.py
   ci_invocation: scripts/committed_mutation_integrity.py
+declarative_framework_contract:
+  authority: governance/framework/contract-set.yaml
+  loader: engine/control/framework/contracts.py
+  equivalence_gate: engine/control/framework/equivalence.py
+  invocation: scripts/framework_contract_check.py
+  runtime_activation: staged-mirror-only
+  contract:
+  - contract-set-and-family-versions-are-explicit
+  - duplicate-yaml-keys-and-conflicting-semantic-owners-fail-closed
+  - family-paths-are-repository-local-and-symlink-free
+  - authored-contract-loading-is-deterministic-and-immutable
+  - current-runtime-semantics-are-losslessly-mirrored-before-ownership-migration
+  - runtime-semantic-ownership-remains-legacy-until-slices-11-2-and-11-3
 governance_qualification:
   authority: engine/control/governance/readiness.py
   invocation: scripts/governance_qualify.py
@@ -331,6 +344,25 @@ governance_qualification:
       - tests/control/governance/test_scm_observer.py
       - tests/adapters/scm/test_github_live.py
       - tests/scripts/test_github_live_state_observe.py
+    declarative_framework_contract:
+      policy_ref: declarative_framework_contract
+      implementation:
+      - governance/framework/contract-set.yaml
+      - governance/framework/contracts/identity.yaml
+      - governance/framework/contracts/artifact-types.yaml
+      - governance/framework/contracts/repository-layout.yaml
+      - governance/framework/contracts/lifecycle.yaml
+      - governance/framework/contracts/relationships.yaml
+      - governance/framework/contracts/schema-bindings.yaml
+      - governance/framework/contracts/validator-bindings.yaml
+      - governance/framework/contracts/governance-policy.yaml
+      - governance/framework/contracts/extensions.yaml
+      - engine/control/framework/contracts.py
+      - engine/control/framework/equivalence.py
+      - scripts/framework_contract_check.py
+      test_evidence:
+      - tests/control/framework/test_declarative_contracts.py
+      - tests/scripts/test_framework_contract_check.py
     github_reference_enforcement:
       policy_ref: github_reference_enforcement
       implementation:

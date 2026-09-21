@@ -1,0 +1,11 @@
+contract_version: 1
+kind: scnehaux-framework-identity
+owns:
+- framework-identity
+- framework-version
+data:
+  framework_id: scnehaux-codex
+  framework_version: 0.1.0
+  product_name: Scnehaux Codex
+  profile_id: scnehaux-codex-default
+  profile_version: 2

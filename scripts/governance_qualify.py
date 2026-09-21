@@ -11,6 +11,7 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
+from engine.control.framework.equivalence import assert_framework_contract_equivalence
 from engine.control.governance.genesis import assert_genesis_integrity
 from engine.control.governance.mutation import (
     assert_version_mutation_integrity,
@@ -40,6 +41,7 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         readiness = assert_governance_readiness(root)
+        framework_contract = assert_framework_contract_equivalence(root)
         assert_scm_trust_boundary(root)
         assert_scm_enforcement_policy(root)
         genesis = assert_genesis_integrity(root)
@@ -50,6 +52,10 @@ def main(argv: list[str] | None = None) -> int:
 
     print("[PASS] Governance control qualification")
     print(f"  controls: {len(readiness.checked_controls)}")
+    print(
+        f"  framework contract: {framework_contract.framework_id} {framework_contract.framework_version}"
+    )
+    print(f"  framework contract sha256: {framework_contract.canonical_sha256}")
     print("  SCM trust boundary: DECLARED (effective enforcement separate)")
     print("  SCM desired-state semantics: QUALIFIED")
     print(f"  Genesis mode: {genesis.mode}")

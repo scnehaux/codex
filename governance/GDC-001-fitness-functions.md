@@ -3,7 +3,7 @@ doc_meta:
   id: GDC-001
   title: Architecture Fitness Functions & Compliance Engine
   owner: Architecture Authority
-  version: 0.1.4
+  version: 0.1.5
   status: draft
   classification: public
   governed_by: [GDC-000]
@@ -106,7 +106,9 @@ codex/
 │   │   │   │   ├── loader.py
 │   │   │   │   └── severity.py
 │   │   │   ├── framework/
-│   │   │   │   └── compatibility.py
+│   │   │   │   ├── compatibility.py
+│   │   │   │   ├── contracts.py
+│   │   │   │   └── equivalence.py
 │   │   │   ├── fs/                # (File system utilities & workspace traversal)
 │   │   │   │   └── crawler.py
 │   │   │   ├── governance/
@@ -194,6 +196,7 @@ codex/
 │   ├── scripts/                 # (Git hooks and manual CI/CD utilities)
 │   │   ├── codeowners-validator.py
 │   │   ├── committed_mutation_integrity.py
+│   │   ├── framework_contract_check.py
 │   │   ├── genesis_commit_qualify.py
 │   │   ├── genesis_integrity.py
 │   │   ├── github_live_state_observe.py
@@ -222,7 +225,8 @@ codex/
 │       │   ├── config/           # (Engine configuration & environment variables)
 │       │   │   └── test_loader.py
 │       │   ├── framework/
-│       │   │   └── test_ai_native_compatibility.py
+│       │   │   ├── test_ai_native_compatibility.py
+│       │   │   └── test_declarative_contracts.py
 │       │   ├── fs/               # (File system utilities & workspace traversal)
 │       │   │   └── test_crawler.py
 │       │   ├── governance/
@@ -314,12 +318,14 @@ codex/
 │       │   └── test_cli_extra.py
 │       ├── scripts/             # (Git hooks and manual CI/CD utilities)
 │       │   ├── test_committed_mutation_integrity.py
+│       │   ├── test_framework_contract_check.py
 │       │   ├── test_genesis_commit_qualify.py
 │       │   ├── test_genesis_integrity.py
 │       │   ├── test_github_live_state_observe.py
 │       │   ├── test_github_policy_check.py
 │       │   ├── test_governance_qualify.py
 │       │   ├── test_governance_scripts.py
+│       │   ├── test_makefile_generated_state.py
 │       │   ├── test_makefile_orchestration.py
 │       │   ├── test_mutation_integrity.py
 │       │   ├── test_prettier_runner.py

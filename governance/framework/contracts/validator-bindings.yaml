@@ -1,0 +1,27 @@
+contract_version: 1
+kind: scnehaux-validator-bindings
+owns:
+- validator-bindings
+data:
+  validators:
+    GDC:
+      module: engine.control.validators.domains.gdc_validator
+      class: GDCValidator
+    EAD:
+      module: engine.control.validators.domains.ead_validator
+      class: EADValidator
+    STD:
+      module: engine.control.validators.domains.std_validator
+      class: STDValidator
+    PAD:
+      module: engine.control.validators.domains.pad_validator
+      class: PADValidator
+    SAD:
+      module: engine.control.validators.domains.sad_validator
+      class: SADValidator
+    ADR:
+      module: engine.control.validators.domains.adr_validator
+      class: ADRValidator
+    TDD:
+      module: engine.control.validators.domains.tdd_validator
+      class: TDDValidator

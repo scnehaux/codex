@@ -1,0 +1,53 @@
+contract_version: 1
+kind: scnehaux-framework-contract-set
+framework:
+  id: scnehaux-codex
+  version: 0.1.0
+  status: draft
+families:
+  identity:
+    path: governance/framework/contracts/identity.yaml
+    kind: scnehaux-framework-identity
+  artifact-types:
+    path: governance/framework/contracts/artifact-types.yaml
+    kind: scnehaux-artifact-type-declarations
+  repository-layout:
+    path: governance/framework/contracts/repository-layout.yaml
+    kind: scnehaux-repository-layout-policy
+  lifecycle:
+    path: governance/framework/contracts/lifecycle.yaml
+    kind: scnehaux-lifecycle-policy
+  relationships:
+    path: governance/framework/contracts/relationships.yaml
+    kind: scnehaux-relationship-ontology
+  schema-bindings:
+    path: governance/framework/contracts/schema-bindings.yaml
+    kind: scnehaux-schema-bindings
+  validator-bindings:
+    path: governance/framework/contracts/validator-bindings.yaml
+    kind: scnehaux-validator-bindings
+  governance-policy:
+    path: governance/framework/contracts/governance-policy.yaml
+    kind: scnehaux-governance-policy-references
+  extensions:
+    path: governance/framework/contracts/extensions.yaml
+    kind: scnehaux-extension-declarations
+ownership:
+  framework-identity: identity
+  framework-version: identity
+  artifact-type-declarations: artifact-types
+  repository-layout-policy: repository-layout
+  lifecycle-policy: lifecycle
+  relationship-ontology: relationships
+  schema-bindings: schema-bindings
+  validator-bindings: validator-bindings
+  governance-policy-references: governance-policy
+  severity-policy-references: governance-policy
+  extension-declarations: extensions
+  compatibility-metadata: extensions
+activation:
+  runtime_authority: legacy-python-until-slice-11.2-11.3
+  migration_slices:
+  - '11.2'
+  - '11.3'
+  - '11.4'
