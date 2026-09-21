@@ -6,15 +6,15 @@ from engine.control.framework.artifacts import artifact_type_from_id
 from engine.control.framework.relationships import (
     APPROVED_PARENT_FOR_ACTIVE_SAD,
     RelationshipSpec,
-    relationship_runtime,
 )
+from engine.control.framework.executable import executable_framework
 
 
 # Compatibility projections only; ontology semantics are authored in relationships.yaml.
 RELATIONSHIP_REGISTRY: tuple[RelationshipSpec, ...] = (
-    relationship_runtime().relationships
+    executable_framework().relationship_ontology
 )
-ALL_RELATION_FIELDS = relationship_runtime().all_fields
+ALL_RELATION_FIELDS = executable_framework().relationships.all_fields
 
 
 @dataclass(frozen=True)
@@ -36,7 +36,7 @@ def relationship_specs_for_source(
     source_type: str | None,
 ) -> tuple[RelationshipSpec, ...]:
     normalized = str(source_type or "").upper()
-    return relationship_runtime().by_source.get(normalized, ())
+    return executable_framework().relationships.by_source.get(normalized, ())
 
 
 def relationship_spec_for(

@@ -7,20 +7,17 @@ from typing import Any
 
 import yaml
 
-from engine.control.framework.artifacts import (
-    ArtifactRuntimeView,
-    compile_artifact_runtime,
-)
+from engine.control.framework.artifacts import ArtifactRuntimeView
 from engine.control.framework.contracts import (
     FrameworkContractError,
     FrameworkContractSet,
     load_framework_contract_set,
 )
-from engine.control.framework.relationships import compile_relationship_runtime
+from engine.control.framework.executable import compile_framework
 
 
 FRAMEWORK_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT_ORDER = compile_artifact_runtime(FRAMEWORK_ROOT).artifact_types
+ARTIFACT_ORDER = compile_framework(FRAMEWORK_ROOT).artifact_types
 
 
 def _plain(value: Any) -> Any:
@@ -82,8 +79,8 @@ def framework_contract_findings(repo_root: str | Path) -> tuple[str, ...]:
     root = Path(repo_root).resolve()
     try:
         contract = load_framework_contract_set(root)
-        runtime = compile_artifact_runtime(root)
-        compile_relationship_runtime(root)
+        framework_runtime = compile_framework(root)
+        runtime = framework_runtime.artifacts
     except FrameworkContractError as exc:
         return (f"contract-load:{exc}",)
     findings: list[str] = []

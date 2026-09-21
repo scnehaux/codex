@@ -1,4 +1,5 @@
-from engine.control.framework.artifacts import artifact_runtime, validator_registry
+from engine.control.framework.artifacts import validator_registry
+from engine.control.framework.executable import executable_framework
 
 
 # Compatibility projection: values are compiled from validator-bindings.yaml, not authored here.
@@ -13,7 +14,7 @@ def detect_doc_type(
     if not meta_id:
         return None
     doc_type = meta_id.split("-", 1)[0].upper()
-    return doc_type if doc_type in artifact_runtime().artifact_types else None
+    return doc_type if doc_type in executable_framework().artifact_types else None
 
 
 def get_validator(doc_type: str):

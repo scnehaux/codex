@@ -4,7 +4,7 @@ import yaml
 import datetime
 from typing import Optional, Union, Any
 from markdown_it import MarkdownIt
-from engine.control.framework.artifacts import artifact_runtime
+from engine.control.framework.executable import executable_framework
 from engine.control.governance.temporal import parse_canonical_date
 
 
@@ -277,7 +277,8 @@ def strip_code_fences(content: str) -> str:
 @lru_cache(maxsize=1)
 def _doc_id_reference_pattern() -> re.Pattern[str]:
     artifact_types = "|".join(
-        re.escape(artifact_type) for artifact_type in artifact_runtime().artifact_types
+        re.escape(artifact_type)
+        for artifact_type in executable_framework().artifact_types
     )
     return re.compile(rf"\b(?:{artifact_types})-[A-Z0-9]+(?:-[A-Z0-9]+)*\b")
 

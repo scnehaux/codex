@@ -164,35 +164,55 @@ This index documents the test suite utilities and fixtures.
 
 ### `tests/control/framework/test_declarative_contracts.py`
 
-| Function                                                         | Description               |
-| :--------------------------------------------------------------- | :------------------------ |
-| **\_fixture**                                                    | _(No docstring provided)_ |
-| **\_yaml**                                                       | _(No docstring provided)_ |
-| **\_write**                                                      | _(No docstring provided)_ |
-| **test_current_contract_set_is_deterministic_and_equivalent**    | _(No docstring provided)_ |
-| **test_loaded_contract_is_immutable**                            | _(No docstring provided)_ |
-| **test_duplicate_yaml_key_is_rejected**                          | _(No docstring provided)_ |
-| **test_unknown_manifest_field_is_rejected**                      | _(No docstring provided)_ |
-| **test_family_path_traversal_is_rejected**                       | _(No docstring provided)_ |
-| **test_duplicate_family_path_is_rejected**                       | _(No docstring provided)_ |
-| **test_conflicting_semantic_ownership_is_rejected**              | _(No docstring provided)_ |
-| **test_ownership_map_must_be_complete_and_exact**                | _(No docstring provided)_ |
-| **test_contract_version_is_strict_integer_one**                  | _(No docstring provided)_ |
-| **test_framework_semver_is_fail_closed**                         | _(No docstring provided)_ |
-| **test_runtime_activation_remains_explicitly_staged**            | _(No docstring provided)_ |
-| **test_contract_hash_changes_when_authored_data_changes**        | _(No docstring provided)_ |
-| **test_current_artifact_type_contract_is_lossless**              | _(No docstring provided)_ |
-| **test_all_required_semantic_owners_are_unique**                 | _(No docstring provided)_ |
-| **\_equivalence_fixture**                                        | _(No docstring provided)_ |
-| **\_mutate_family**                                              | _(No docstring provided)_ |
-| **test_equivalence_reports_each_semantic_family_drift**          | _(No docstring provided)_ |
-| **test_equivalence_reports_missing_schema_and_policy_reference** | _(No docstring provided)_ |
-| **test_equivalence_reports_contract_load_error**                 | _(No docstring provided)_ |
-| **test_assert_equivalence_raises_on_drift**                      | _(No docstring provided)_ |
-| **test_validator_binding_reports_missing_class**                 | _(No docstring provided)_ |
-| **test_validator_binding_reports_doc_type_mismatch**             | _(No docstring provided)_ |
-| **test_validator_binding_reports_missing_source**                | _(No docstring provided)_ |
-| **test_validator_binding_reports_unreadable_source**             | _(No docstring provided)_ |
+| Function                                                                        | Description               |
+| :------------------------------------------------------------------------------ | :------------------------ |
+| **\_fixture**                                                                   | _(No docstring provided)_ |
+| **\_yaml**                                                                      | _(No docstring provided)_ |
+| **\_write**                                                                     | _(No docstring provided)_ |
+| **test_current_contract_set_is_deterministic_and_equivalent**                   | _(No docstring provided)_ |
+| **test_loaded_contract_is_immutable**                                           | _(No docstring provided)_ |
+| **test_duplicate_yaml_key_is_rejected**                                         | _(No docstring provided)_ |
+| **test_unknown_manifest_field_is_rejected**                                     | _(No docstring provided)_ |
+| **test_family_path_traversal_is_rejected**                                      | _(No docstring provided)_ |
+| **test_duplicate_family_path_is_rejected**                                      | _(No docstring provided)_ |
+| **test_conflicting_semantic_ownership_is_rejected**                             | _(No docstring provided)_ |
+| **test_ownership_map_must_be_complete_and_exact**                               | _(No docstring provided)_ |
+| **test_contract_version_is_strict_integer_one**                                 | _(No docstring provided)_ |
+| **test_framework_semver_is_fail_closed**                                        | _(No docstring provided)_ |
+| **test_runtime_activation_remains_explicitly_staged**                           | _(No docstring provided)_ |
+| **test_contract_hash_changes_when_authored_data_changes**                       | _(No docstring provided)_ |
+| **test_current_artifact_type_contract_is_lossless**                             | _(No docstring provided)_ |
+| **test_all_required_semantic_owners_are_unique**                                | _(No docstring provided)_ |
+| **\_equivalence_fixture**                                                       | _(No docstring provided)_ |
+| **\_mutate_family**                                                             | _(No docstring provided)_ |
+| **test_equivalence_reports_each_semantic_family_drift**                         | _(No docstring provided)_ |
+| **test_equivalence_reports_missing_schema_and_policy_reference**                | _(No docstring provided)_ |
+| **test_equivalence_reports_contract_load_error**                                | _(No docstring provided)_ |
+| **test_assert_equivalence_raises_on_drift**                                     | _(No docstring provided)_ |
+| **test_validator_binding_reports_missing_class**                                | _(No docstring provided)_ |
+| **test_validator_binding_reports_doc_type_mismatch**                            | _(No docstring provided)_ |
+| **test_validator_binding_reports_missing_source**                               | _(No docstring provided)_ |
+| **test_validator_binding_reports_unreadable_source**                            | _(No docstring provided)_ |
+| **test_equivalence_covers_plain_validator_assignment**                          | _(No docstring provided)_ |
+| **test_projection_checks_remain_observable_when_full_compiler_is_prevalidated** | _(No docstring provided)_ |
+
+### `tests/control/framework/test_executable_framework.py`
+
+| Function                                                                      | Description               |
+| :---------------------------------------------------------------------------- | :------------------------ |
+| **\_fixture**                                                                 | _(No docstring provided)_ |
+| **\_yaml**                                                                    | _(No docstring provided)_ |
+| **\_write**                                                                   | _(No docstring provided)_ |
+| **test_current_executable_framework_is_deterministic_and_complete**           | _(No docstring provided)_ |
+| **test_legacy_runtime_accessors_delegate_to_single_executable_framework**     | _(No docstring provided)_ |
+| **test_executable_framework_state_is_immutable**                              | _(No docstring provided)_ |
+| **test_reordering_semantically_unordered_declarations_keeps_semantic_digest** | _(No docstring provided)_ |
+| **test_semantic_change_changes_executable_digest**                            | _(No docstring provided)_ |
+| **test_missing_governance_reference_fails_compilation**                       | _(No docstring provided)_ |
+| **test_blocking_severity_contract_cannot_drift_from_runtime_policy**          | _(No docstring provided)_ |
+| **test_identity_and_extension_profile_must_match**                            | _(No docstring provided)_ |
+| **test_invalid_global_config_is_fail_closed**                                 | _(No docstring provided)_ |
+| **test_fragment_contract_identity_must_match_full_contract**                  | _(No docstring provided)_ |
 
 ### `tests/control/framework/test_relationship_runtime.py`
 

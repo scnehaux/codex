@@ -668,7 +668,7 @@ declarative ontology without moving semantic authority into JSON Schema.
 The pre-cutover relationship meaning is locked by ontology semantic digest
 `7fa6c8a1114986f6a3d2095933b0f3cd8536f3012bedeb751438bf4ed4189e07`
 and existing behavioral regression tests. REC-11-005 records why this dedicated
-typed projection is temporary and must be subsumed by the full compiler in 11.4.
+typed projection was temporary; Slice 11.4 now subsumes it into `ExecutableFramework`.
 
 ## Slice 11.4 — FrameworkCompiler + ExecutableFramework
 
@@ -700,6 +700,28 @@ ExecutableFramework
 - ambiguous, incomplete, or conflicting contracts fail compilation
 - runtime consumers receive `ExecutableFramework` rather than loading semantic fragments independently
 - compiled semantic state has a deterministic digest or equivalent identity
+
+### Slice 11.4 implementation evidence
+
+Status: **DONE on governed merge of this slice.**
+
+`engine/control/framework/executable.py` is the composition root for all nine
+framework contract families. `FrameworkCompiler` produces one frozen
+`ExecutableFramework` exposing artifact vocabulary/families/layout/lifecycle,
+schema and validator bindings, relationship ontology, governance/severity policy,
+extension declarations, contract identity, and deterministic semantic identity.
+
+Runtime artifact and relationship accessors now delegate to the singleton
+`ExecutableFramework`; production lifecycle, relationship, parser, repository,
+validator and generator consumers resolve migrated semantics through that root.
+Fragment compilers remain internal migration/building blocks and test seams, not
+independent runtime authorities.
+
+The compiled semantic SHA-256 is
+`6f7e79c82aea1342d7f8eed9d2181383bb52b349f30af3cdf7ea3c609cf14980`.
+It normalizes semantically unordered relation/extension declarations, so equivalent
+representations compile to the same identity while semantic changes change the
+digest. REC-11-006 records the compiler composition and digest boundary.
 
 ## Slice 11.5 — Schema Boundary & Validation Pipeline
 

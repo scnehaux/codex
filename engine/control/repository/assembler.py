@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from engine.control.fs.crawler import gather_markdown_paths
-from engine.control.framework.artifacts import artifact_runtime
+from engine.control.framework.executable import executable_framework
 from engine.control.governance.relationships import (
     ALL_RELATION_FIELDS,
     artifact_type_from_id,
@@ -214,7 +214,7 @@ class RepositoryAssembler:
         patterns.extend(ignored_patterns or [])
 
         corpus_roots = tuple(
-            dict.fromkeys(artifact_runtime().artifact_directories.values())
+            dict.fromkeys(executable_framework().repository_layout.values())
         )
         targets = [str(root / relative_root) for relative_root in corpus_roots]
         return RepositoryAssembler.load(

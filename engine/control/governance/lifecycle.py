@@ -9,8 +9,8 @@ from engine.control.framework.artifacts import (
     TERMINAL_NON_BASELINE,
     AgePolicy,
     LifecyclePolicy,
-    artifact_runtime,
 )
+from engine.control.framework.executable import executable_framework
 
 
 __all__ = [
@@ -32,8 +32,8 @@ __all__ = [
 
 def lifecycle_policy(doc_type: str, status: str) -> LifecyclePolicy | None:
     return (
-        artifact_runtime()
-        .lifecycle.get(str(doc_type).upper(), {})
+        executable_framework()
+        .artifacts.lifecycle.get(str(doc_type).upper(), {})
         .get(str(status).strip().lower())
     )
 
