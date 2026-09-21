@@ -85,7 +85,7 @@ def test_python_governance_facade_no_longer_authors_relationship_specs():
         encoding="utf-8"
     )
     assert "RelationshipSpec(" not in source
-    assert "relationship_runtime().relationships" in source
+    assert "executable_framework().relationship_ontology" in source
 
 
 @pytest.mark.parametrize(

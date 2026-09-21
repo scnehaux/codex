@@ -8,7 +8,7 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
-from engine.control.framework.artifacts import artifact_runtime
+from engine.control.framework.executable import executable_framework
 from engine.control.governance.controls import (
     load_control_registry,
     registry_structure_errors,
@@ -18,7 +18,7 @@ from engine.control.repository import RepositoryAssembler, RepositoryModelError
 
 CONTROL_REGISTRY = Path("governance/normative-control-registry.yaml")
 MATURITY_FILE = Path("MATURITY.md")
-ARTIFACT_TYPES = artifact_runtime().artifact_types
+ARTIFACT_TYPES = executable_framework().artifact_types
 
 
 def _artifact_inventory(snapshot) -> dict[str, int]:

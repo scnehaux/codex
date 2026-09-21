@@ -46,6 +46,5 @@ ownership:
   extension-declarations: extensions
   compatibility-metadata: extensions
 activation:
-  runtime_authority: declarative-artifact-lifecycle-relationships-until-11.4
-  migration_slices:
-  - '11.4'
+  runtime_authority: executable-framework
+  migration_slices: []

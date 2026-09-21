@@ -268,12 +268,12 @@ def _mutate_family(root: Path, filename: str, mutator) -> None:
         ),
         (
             "governance-policy.yaml",
-            "governance-policy-reference-drift",
+            "contract-load:executable-framework-blocking-severities",
             lambda data: data.__setitem__("blocking_severities", ["ERROR"]),
         ),
         (
             "extensions.yaml",
-            "extension-contract-drift",
+            "contract-load:executable-framework-profile-drift",
             lambda data: data.__setitem__("profile_version", 999),
         ),
     ],
@@ -295,9 +295,8 @@ def test_equivalence_reports_missing_schema_and_policy_reference(tmp_path):
 
     root = _equivalence_fixture(tmp_path / "second")
     (root / "governance/normative-control-registry.yaml").unlink()
-    assert (
-        "governance-policy-reference-missing:governance/normative-control-registry.yaml"
-        in framework_contract_findings(root)
+    assert framework_contract_findings(root) == (
+        "contract-load:executable-framework-normative_control_registry-missing",
     )
 
 
@@ -351,3 +350,50 @@ def test_validator_binding_reports_unreadable_source(tmp_path):
     path = root / "engine/control/validators/domains/adr_validator.py"
     path.write_text("class :", encoding="utf-8")
     assert "validator-binding-unreadable:ADR" in framework_contract_findings(root)
+
+
+def test_equivalence_covers_plain_validator_assignment(tmp_path):
+    root = _equivalence_fixture(tmp_path)
+    path = root / "engine/control/validators/domains/adr_validator.py"
+    text = path.read_text(encoding="utf-8")
+    text = text.replace('doc_type_name: str = "ADR"', 'doc_type_name = "ADR"')
+    path.write_text(text, encoding="utf-8")
+    assert framework_contract_findings(root) == ()
+
+
+def test_projection_checks_remain_observable_when_full_compiler_is_prevalidated(
+    tmp_path, monkeypatch
+):
+    import engine.control.framework.equivalence as module
+    from engine.control.framework.executable import compile_framework
+
+    baseline = compile_framework(ROOT)
+    monkeypatch.setattr(module, "compile_framework", lambda _root: baseline)
+
+    root = _equivalence_fixture(tmp_path / "schema")
+    (root / "schemas/adr.schema.json").unlink()
+    assert (
+        "schema-binding-missing:schemas/adr.schema.json"
+        in framework_contract_findings(root)
+    )
+
+    root = _equivalence_fixture(tmp_path / "policy")
+    base = _yaml(root / "schemas/base.schema.json")
+    base["x-global-config"]["blocking_severities"] = ["ERROR"]
+    (root / "schemas/base.schema.json").write_text(
+        __import__("json").dumps(base, indent=2) + "\n", encoding="utf-8"
+    )
+    assert "governance-policy-reference-drift" in framework_contract_findings(root)
+
+    root = _equivalence_fixture(tmp_path / "missing-policy")
+    (root / "governance/normative-control-registry.yaml").unlink()
+    assert (
+        "governance-policy-reference-missing:governance/normative-control-registry.yaml"
+        in framework_contract_findings(root)
+    )
+
+    root = _equivalence_fixture(tmp_path / "extension")
+    profile = _yaml(root / "governance/framework/profiles/scnehaux-codex-default.yaml")
+    profile["profile_version"] = 999
+    _write(root / "governance/framework/profiles/scnehaux-codex-default.yaml", profile)
+    assert "extension-contract-drift" in framework_contract_findings(root)

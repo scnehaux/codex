@@ -119,6 +119,31 @@ This index documents the internal functions and classes of the Fitness Function 
 | **framework_contract_findings**           | _(No docstring provided)_ |
 | **assert_framework_contract_equivalence** | _(No docstring provided)_ |
 
+### `engine/control/framework/executable.py`
+
+| Function                                      | Description               |
+| :-------------------------------------------- | :------------------------ |
+| **ExecutableFramework.artifact_types**        | _(No docstring provided)_ |
+| **ExecutableFramework.repository_layout**     | _(No docstring provided)_ |
+| **ExecutableFramework.lifecycle**             | _(No docstring provided)_ |
+| **ExecutableFramework.schema_bindings**       | _(No docstring provided)_ |
+| **ExecutableFramework.validator_bindings**    | _(No docstring provided)_ |
+| **ExecutableFramework.relationship_ontology** | _(No docstring provided)_ |
+| **ExecutableFramework.blocking_severities**   | _(No docstring provided)_ |
+| **\_require**                                 | _(No docstring provided)_ |
+| **\_plain_family**                            | _(No docstring provided)_ |
+| **\_relative_regular_file**                   | _(No docstring provided)_ |
+| **\_compile_identity**                        | _(No docstring provided)_ |
+| **\_compile_governance**                      | _(No docstring provided)_ |
+| **\_compile_extensions**                      | _(No docstring provided)_ |
+| **\_lifecycle_state**                         | _(No docstring provided)_ |
+| **\_relationship_state**                      | _(No docstring provided)_ |
+| **\_semantic_state**                          | _(No docstring provided)_ |
+| **\_semantic_digest**                         | _(No docstring provided)_ |
+| **FrameworkCompiler.compile**                 | _(No docstring provided)_ |
+| **compile_framework**                         | _(No docstring provided)_ |
+| **executable_framework**                      | _(No docstring provided)_ |
+
 ### `engine/control/framework/relationships.py`
 
 | Function                         | Description               |

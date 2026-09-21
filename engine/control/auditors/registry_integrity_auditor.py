@@ -8,7 +8,7 @@ from typing import Iterable
 
 import jsonschema
 
-from engine.control.framework.artifacts import artifact_runtime
+from engine.control.framework.executable import executable_framework
 from engine.control.governance.controls import (
     load_control_registry,
     registry_structure_errors,
@@ -177,7 +177,7 @@ def _artifact_schema_map(
 ) -> dict[str, tuple[Path, dict]]:
     result: dict[str, tuple[Path, dict]] = {}
     for path, data in schemas.items():
-        for doc_type in artifact_runtime().artifact_types:
+        for doc_type in executable_framework().artifact_types:
             if path.name.lower() == f"{doc_type.lower()}.schema.json":
                 result[doc_type] = (path, data)
     return result
@@ -207,7 +207,7 @@ def _duplicate_validator_keys(registry_path: Path) -> list[str]:
 
 def _validator_findings(repo_root: Path, artifact_schemas: dict) -> list[str]:
     findings: list[str] = []
-    expected = set(artifact_runtime().artifact_types)
+    expected = set(executable_framework().artifact_types)
     schema_types = set(artifact_schemas)
     validator_types = set(VALIDATOR_REGISTRY)
 

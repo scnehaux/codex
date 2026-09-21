@@ -208,7 +208,9 @@ def compile_artifact_runtime(repo_root: str | Path) -> ArtifactRuntimeView:
 
 @lru_cache(maxsize=1)
 def artifact_runtime() -> ArtifactRuntimeView:
-    return compile_artifact_runtime(ROOT)
+    from engine.control.framework.executable import executable_framework
+
+    return executable_framework().artifacts
 
 
 def artifact_type_from_id(doc_id: object) -> str | None:

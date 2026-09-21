@@ -10,12 +10,14 @@ if str(ROOT) not in sys.path:
 from engine.control.framework.equivalence import (  # noqa: E402
     assert_framework_contract_equivalence,
 )
+from engine.control.framework.executable import compile_framework  # noqa: E402
 
 
 def main() -> int:
     try:
         contract = assert_framework_contract_equivalence(ROOT)
-    except RuntimeError as exc:
+        framework = compile_framework(ROOT)
+    except (RuntimeError, ValueError) as exc:
         print(f"[FAIL] {exc}")
         return 1
 
@@ -24,6 +26,7 @@ def main() -> int:
     print(f"  families: {len(contract.families)}")
     print(f"  ownership claims: {len(contract.ownership)}")
     print(f"  canonical sha256: {contract.canonical_sha256}")
+    print(f"  semantic sha256: {framework.semantic_sha256}")
     print(f"  runtime authority: {contract.runtime_authority}")
     return 0
 

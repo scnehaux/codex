@@ -273,4 +273,6 @@ def compile_relationship_runtime(repo_root: str | Path) -> RelationshipRuntimeVi
 
 @lru_cache(maxsize=1)
 def relationship_runtime() -> RelationshipRuntimeView:
-    return compile_relationship_runtime(ROOT)
+    from engine.control.framework.executable import executable_framework
+
+    return executable_framework().relationships
