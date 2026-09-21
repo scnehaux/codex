@@ -4,10 +4,11 @@ Slice 11.1 introduces the governed authored contract boundary for Scnehaux Codex
 The canonical entrypoint is `governance/framework/contract-set.yaml`; its family
 files live under `governance/framework/contracts/`.
 
-The contract set is **staged as an exact semantic mirror**. Existing Python
-registries still own runtime execution until Slices 11.2 and 11.3 migrate their
-families. Slice 11.4 then compiles declarative inputs into `ExecutableFramework`.
-A staged contract therefore cannot silently change runtime behavior.
+The contract set began as an **exact semantic mirror** in Slice 11.1. Slices 11.2
+and 11.3 have now cut artifact/layout/lifecycle/binding and relationship semantics
+over to immutable typed projections derived from those contracts. Python facades
+may execute behavior but cannot independently author those semantics. Slice 11.4
+will subsume the temporary typed projections into one `ExecutableFramework`.
 
 ## Contract families
 
@@ -69,8 +70,9 @@ slice and must not be inferred from this hash.
 
 ## REC-11-003 - Migrate authority family by family
 
-**Status: selected; artifact/layout/lifecycle cutover implemented in Slice 11.2.
-Relationship and full compiler cutovers remain Slices 11.3-11.4.**
+**Status: selected; artifact/layout/lifecycle cutover implemented in Slice 11.2,
+relationship ontology cutover implemented in Slice 11.3. Full compiler cutover
+remains Slice 11.4.**
 
 Cut over artifact/layout/lifecycle semantics in Slice 11.2, relationship ontology
 in Slice 11.3, then introduce the deterministic compiler and immutable
@@ -102,15 +104,36 @@ projection that will be subsumed by the Slice 11.4 compiler. It must stay small,
 deterministic, dependency-light, and contain no independent defaults.
 
 JSON Schema remains a checked structural/configuration projection rather than the
-source of artifact topology. Relationship rules remain Python-owned only until
-Slice 11.3. Revisit this decision if the subset starts acquiring unrelated semantic
-families or behavior that belongs in `ExecutableFramework`; that is a stop signal,
-not permission to grow another permanent runtime registry.
+source of artifact topology. Slice 11.3 extends the same principle to relationship
+ontology: Python retains compatibility and behavioral execution only, not authored
+relationship meaning. Revisit this decision if either typed subset starts acquiring
+unrelated semantic families or behavior that belongs in `ExecutableFramework`; that
+is a stop signal, not permission to grow another permanent runtime registry.
+
+## REC-11-005 - Compile relationship ontology before the full framework compiler
+
+**Status: selected and implemented in Slice 11.3.**
+
+Compile the governed relationship family into one immutable typed ontology view
+before the full `ExecutableFramework` exists. The compiler validates relation
+identity, source/target vocabulary, cardinality, direction, DAG participation,
+inverse consistency, authority requirements, and lifecycle/status constraints.
+
+This keeps semantic authority in declarative contracts while preserving existing
+behavior functions and minimizing migration blast radius. The trade-off is a second
+small transitional typed projection alongside the Slice 11.2 artifact runtime view.
+Both projections are explicitly temporary and must be subsumed by Slice 11.4.
+
+A golden ontology semantic digest locks the pre-cutover meaning for this migration;
+it is regression evidence, not an independent runtime authority. Revisit this
+choice if relationship behavior needs semantics that cannot be represented by the
+current contract family; that requires a separately governed ontology change rather
+than hidden Python branching.
 
 ## Verification
 
 `python scripts/framework_contract_check.py` validates the complete authored set,
-the compiled Slice 11.2 artifact runtime view, checked schema/policy projections,
-and exact legacy relationship equivalence until Slice 11.3. The same assertion is
-part of `scripts/governance_qualify.py`, so a green qualification cannot ignore
-contract or migration-boundary drift.
+the compiled Slice 11.2 artifact runtime view, the compiled Slice 11.3 relationship
+ontology, and checked schema/policy projections. The same assertion is part of
+`scripts/governance_qualify.py`, so a green qualification cannot ignore contract or
+migration-boundary drift.

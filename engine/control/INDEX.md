@@ -116,9 +116,21 @@ This index documents the internal functions and classes of the Fitness Function 
 | **\_plain**                               | _(No docstring provided)_ |
 | **\_family**                              | _(No docstring provided)_ |
 | **\_validator_binding_findings**          | _(No docstring provided)_ |
-| **\_relationships**                       | _(No docstring provided)_ |
 | **framework_contract_findings**           | _(No docstring provided)_ |
 | **assert_framework_contract_equivalence** | _(No docstring provided)_ |
+
+### `engine/control/framework/relationships.py`
+
+| Function                         | Description               |
+| :------------------------------- | :------------------------ |
+| **RelationshipSpec.cardinality** | _(No docstring provided)_ |
+| **\_require**                    | _(No docstring provided)_ |
+| **\_text**                       | _(No docstring provided)_ |
+| **\_types**                      | _(No docstring provided)_ |
+| **\_statuses**                   | _(No docstring provided)_ |
+| **\_canonical**                  | _(No docstring provided)_ |
+| **compile_relationship_runtime** | _(No docstring provided)_ |
+| **relationship_runtime**         | _(No docstring provided)_ |
 
 ### `engine/control/fs/crawler.py`
 
@@ -235,7 +247,6 @@ This index documents the internal functions and classes of the Fitness Function 
 
 | Function                           | Description               |
 | :--------------------------------- | :------------------------ |
-| **RelationshipSpec.cardinality**   | _(No docstring provided)_ |
 | **normalize_relation_values**      | _(No docstring provided)_ |
 | **relationship_specs_for_source**  | _(No docstring provided)_ |
 | **relationship_spec_for**          | _(No docstring provided)_ |

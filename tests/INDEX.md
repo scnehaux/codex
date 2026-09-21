@@ -194,6 +194,24 @@ This index documents the test suite utilities and fixtures.
 | **test_validator_binding_reports_missing_source**                | _(No docstring provided)_ |
 | **test_validator_binding_reports_unreadable_source**             | _(No docstring provided)_ |
 
+### `tests/control/framework/test_relationship_runtime.py`
+
+| Function                                                               | Description               |
+| :--------------------------------------------------------------------- | :------------------------ |
+| **\_plain**                                                            | _(No docstring provided)_ |
+| **\_freeze**                                                           | _(No docstring provided)_ |
+| **\_fake**                                                             | _(No docstring provided)_ |
+| **\_relation**                                                         | _(No docstring provided)_ |
+| **test_current_relationship_runtime_preserves_pre_cutover_semantics**  | _(No docstring provided)_ |
+| **test_python_governance_facade_no_longer_authors_relationship_specs** | _(No docstring provided)_ |
+| **test_compiler_rejects_invalid_ontology_and_identity**                | _(No docstring provided)_ |
+| **test_compiler_rejects_invalid_type_surfaces**                        | _(No docstring provided)_ |
+| **test_compiler_rejects_invalid_relation_policy**                      | _(No docstring provided)_ |
+| **test_compiler_rejects_invalid_lifecycle_constraints**                | _(No docstring provided)_ |
+| **test_compiler_rejects_missing_inverse**                              | _(No docstring provided)_ |
+| **test_compiler_rejects_inconsistent_inverse**                         | _(No docstring provided)_ |
+| **test_runtime_grouping_is_source_specific_and_immutable**             | _(No docstring provided)_ |
+
 ### `tests/control/fs/test_crawler.py`
 
 | Function                                                      | Description                                                                                                                                                                                                                                |

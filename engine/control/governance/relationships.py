@@ -1,38 +1,20 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from engine.control.framework.artifacts import artifact_runtime, artifact_type_from_id
 
-# Compatibility projection only. Relationship semantics stay Python-owned until Slice 11.3.
-ARTIFACT_TYPES = frozenset(artifact_runtime().artifact_types)
-
-UP = "up"
-DOWN = "down"
-
-TARGET_EXISTS = "target-exists"
-APPROVED_PARENT_FOR_ACTIVE_SAD = "approved-parent-for-active-sad"
+from engine.control.framework.artifacts import artifact_type_from_id
+from engine.control.framework.relationships import (
+    APPROVED_PARENT_FOR_ACTIVE_SAD,
+    RelationshipSpec,
+    relationship_runtime,
+)
 
 
-@dataclass(frozen=True)
-class RelationshipSpec:
-    name: str
-    metadata_field: str
-    source_types: frozenset[str]
-    target_types: frozenset[str]
-    min_targets: int
-    max_targets: int | None
-    direction: str
-    dag_participation: bool
-    authority_requirement: str
-    inverse_relation: str | None = None
-    allow_self_reference: bool = False
-    source_statuses_requiring_authority: frozenset[str] = frozenset()
-    allowed_target_statuses: frozenset[str] = frozenset()
-
-    @property
-    def cardinality(self) -> str:
-        maximum = "*" if self.max_targets is None else str(self.max_targets)
-        return f"{self.min_targets}..{maximum}"
+# Compatibility projections only; ontology semantics are authored in relationships.yaml.
+RELATIONSHIP_REGISTRY: tuple[RelationshipSpec, ...] = (
+    relationship_runtime().relationships
+)
+ALL_RELATION_FIELDS = relationship_runtime().all_fields
 
 
 @dataclass(frozen=True)
@@ -40,127 +22,6 @@ class RelationshipFinding:
     code: str
     field: str
     message: str
-
-
-RELATIONSHIP_REGISTRY: tuple[RelationshipSpec, ...] = (
-    RelationshipSpec(
-        name="gdc-governed-by",
-        metadata_field="governed_by",
-        source_types=frozenset({"GDC"}),
-        target_types=frozenset({"GDC"}),
-        min_targets=1,
-        max_targets=None,
-        direction=UP,
-        dag_participation=True,
-        authority_requirement=TARGET_EXISTS,
-        allow_self_reference=True,
-    ),
-    RelationshipSpec(
-        name="ead-governed-by",
-        metadata_field="governed_by",
-        source_types=frozenset({"EAD"}),
-        target_types=frozenset({"GDC"}),
-        min_targets=1,
-        max_targets=None,
-        direction=UP,
-        dag_participation=True,
-        authority_requirement=TARGET_EXISTS,
-    ),
-    RelationshipSpec(
-        name="std-governed-by",
-        metadata_field="governed_by",
-        source_types=frozenset({"STD"}),
-        target_types=frozenset({"GDC", "EAD", "PAD"}),
-        min_targets=1,
-        max_targets=None,
-        direction=UP,
-        dag_participation=True,
-        authority_requirement=TARGET_EXISTS,
-    ),
-    RelationshipSpec(
-        name="pad-governed-by",
-        metadata_field="governed_by",
-        source_types=frozenset({"PAD"}),
-        target_types=frozenset({"GDC", "EAD", "ADR"}),
-        min_targets=1,
-        max_targets=None,
-        direction=UP,
-        dag_participation=True,
-        authority_requirement=TARGET_EXISTS,
-    ),
-    RelationshipSpec(
-        name="sad-governed-by",
-        metadata_field="governed_by",
-        source_types=frozenset({"SAD"}),
-        target_types=frozenset({"GDC", "EAD", "STD", "ADR"}),
-        min_targets=1,
-        max_targets=None,
-        direction=UP,
-        dag_participation=True,
-        authority_requirement=TARGET_EXISTS,
-    ),
-    RelationshipSpec(
-        name="adr-governed-by",
-        metadata_field="governed_by",
-        source_types=frozenset({"ADR"}),
-        target_types=frozenset({"GDC", "EAD", "PAD", "SAD"}),
-        min_targets=1,
-        max_targets=None,
-        direction=UP,
-        dag_participation=True,
-        authority_requirement=TARGET_EXISTS,
-    ),
-    RelationshipSpec(
-        name="pad-realizes-capability",
-        metadata_field="realizes_capability",
-        source_types=frozenset({"PAD"}),
-        target_types=frozenset({"EAD"}),
-        min_targets=1,
-        max_targets=None,
-        direction=UP,
-        dag_participation=True,
-        authority_requirement=TARGET_EXISTS,
-    ),
-    RelationshipSpec(
-        name="sad-parent-pad",
-        metadata_field="parent_pad",
-        source_types=frozenset({"SAD"}),
-        target_types=frozenset({"PAD"}),
-        min_targets=1,
-        max_targets=1,
-        direction=UP,
-        dag_participation=True,
-        authority_requirement=APPROVED_PARENT_FOR_ACTIVE_SAD,
-        inverse_relation="fulfilled_by",
-        source_statuses_requiring_authority=frozenset({"draft", "approved"}),
-        allowed_target_statuses=frozenset({"approved"}),
-    ),
-    RelationshipSpec(
-        name="tdd-parent-sad",
-        metadata_field="parent_sad",
-        source_types=frozenset({"TDD"}),
-        target_types=frozenset({"SAD"}),
-        min_targets=1,
-        max_targets=None,
-        direction=UP,
-        dag_participation=True,
-        authority_requirement=TARGET_EXISTS,
-    ),
-    RelationshipSpec(
-        name="pad-fulfilled-by",
-        metadata_field="fulfilled_by",
-        source_types=frozenset({"PAD"}),
-        target_types=frozenset({"SAD"}),
-        min_targets=0,
-        max_targets=None,
-        direction=DOWN,
-        dag_participation=False,
-        authority_requirement=TARGET_EXISTS,
-        inverse_relation="parent_pad",
-    ),
-)
-
-ALL_RELATION_FIELDS = frozenset(spec.metadata_field for spec in RELATIONSHIP_REGISTRY)
 
 
 def normalize_relation_values(value):
@@ -175,9 +36,7 @@ def relationship_specs_for_source(
     source_type: str | None,
 ) -> tuple[RelationshipSpec, ...]:
     normalized = str(source_type or "").upper()
-    return tuple(
-        spec for spec in RELATIONSHIP_REGISTRY if normalized in spec.source_types
-    )
+    return relationship_runtime().by_source.get(normalized, ())
 
 
 def relationship_spec_for(

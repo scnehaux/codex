@@ -267,17 +267,19 @@ declarative_framework_contract:
   authority: governance/framework/contract-set.yaml
   loader: engine/control/framework/contracts.py
   artifact_runtime_projection: engine/control/framework/artifacts.py
+  relationship_runtime_projection: engine/control/framework/relationships.py
   equivalence_gate: engine/control/framework/equivalence.py
   invocation: scripts/framework_contract_check.py
-  runtime_activation: artifact-layout-lifecycle-declarative-relationships-legacy-until-11-3
+  runtime_activation: artifact-layout-lifecycle-relationships-declarative-full-compiler-pending-11-4
   contract:
   - contract-set-and-family-versions-are-explicit
   - duplicate-yaml-keys-and-conflicting-semantic-owners-fail-closed
   - family-paths-are-repository-local-and-symlink-free
   - authored-contract-loading-is-deterministic-and-immutable
   - artifact-type-layout-lifecycle-schema-and-validator-bindings-drive-runtime-view
+  - relationship-ontology-drives-runtime-relationship-semantics
   - json-schema-layout-is-a-checked-projection-not-semantic-authority
-  - relationship-ontology-remains-python-owned-only-until-slice-11-3
+  - python-relationship-module-is-compatibility-and-behavior-only
   - full-executable-framework-compilation-remains-slice-11-4
 governance_qualification:
   authority: engine/control/governance/readiness.py
@@ -362,11 +364,14 @@ governance_qualification:
       - governance/framework/contracts/extensions.yaml
       - engine/control/framework/contracts.py
       - engine/control/framework/artifacts.py
+      - engine/control/framework/relationships.py
       - engine/control/framework/equivalence.py
       - scripts/framework_contract_check.py
       test_evidence:
       - tests/control/framework/test_declarative_contracts.py
       - tests/control/framework/test_artifact_runtime.py
+      - tests/control/framework/test_relationship_runtime.py
+      - tests/control/governance/test_relationships.py
       - tests/scripts/test_framework_contract_check.py
     github_reference_enforcement:
       policy_ref: github_reference_enforcement
