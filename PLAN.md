@@ -649,6 +649,27 @@ The ontology MUST define:
 - schema validation does not become the semantic relationship authority
 - current Scnehaux relationship meaning is preserved unless changed by a separately governed decision
 
+### Slice 11.3 implementation evidence
+
+Status: **DONE on governed merge of this slice.**
+
+`engine/control/framework/relationships.py` compiles the governed relationship
+ontology into immutable typed specs and rejects ambiguous source/field pairs,
+unknown artifact types, invalid cardinalities/directions, inconsistent inverse
+relations, and lifecycle/status constraints that are not valid for their source
+or target artifact types.
+
+`engine/control/governance/relationships.py` is now a compatibility/behavior
+facade. Its `RELATIONSHIP_REGISTRY` is only a projection of compiled ontology;
+the file no longer authors `RelationshipSpec(...)` declarations. Graph auditing,
+repository assembly, rendering and metadata validation therefore consume the
+declarative ontology without moving semantic authority into JSON Schema.
+
+The pre-cutover relationship meaning is locked by ontology semantic digest
+`7fa6c8a1114986f6a3d2095933b0f3cd8536f3012bedeb751438bf4ed4189e07`
+and existing behavioral regression tests. REC-11-005 records why this dedicated
+typed projection is temporary and must be subsumed by the full compiler in 11.4.
+
 ## Slice 11.4 — FrameworkCompiler + ExecutableFramework
 
 ### Target

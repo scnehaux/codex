@@ -16,7 +16,7 @@ from engine.control.framework.contracts import (
     FrameworkContractSet,
     load_framework_contract_set,
 )
-from engine.control.governance.relationships import RELATIONSHIP_REGISTRY
+from engine.control.framework.relationships import compile_relationship_runtime
 
 
 FRAMEWORK_ROOT = Path(__file__).resolve().parents[3]
@@ -78,36 +78,12 @@ def _validator_binding_findings(runtime: ArtifactRuntimeView, root: Path) -> lis
     return findings
 
 
-def _relationships() -> list[dict[str, Any]]:
-    result = []
-    for spec in RELATIONSHIP_REGISTRY:
-        result.append(
-            {
-                "name": spec.name,
-                "metadata_field": spec.metadata_field,
-                "source_types": sorted(spec.source_types),
-                "target_types": sorted(spec.target_types),
-                "min_targets": spec.min_targets,
-                "max_targets": spec.max_targets,
-                "direction": spec.direction,
-                "dag_participation": spec.dag_participation,
-                "authority_requirement": spec.authority_requirement,
-                "inverse_relation": spec.inverse_relation,
-                "allow_self_reference": spec.allow_self_reference,
-                "source_statuses_requiring_authority": sorted(
-                    spec.source_statuses_requiring_authority
-                ),
-                "allowed_target_statuses": sorted(spec.allowed_target_statuses),
-            }
-        )
-    return result
-
-
 def framework_contract_findings(repo_root: str | Path) -> tuple[str, ...]:
     root = Path(repo_root).resolve()
     try:
         contract = load_framework_contract_set(root)
         runtime = compile_artifact_runtime(root)
+        compile_relationship_runtime(root)
     except FrameworkContractError as exc:
         return (f"contract-load:{exc}",)
     findings: list[str] = []
@@ -138,8 +114,6 @@ def framework_contract_findings(repo_root: str | Path) -> tuple[str, ...]:
     if layout != base["x-global-config"]["structure_rules"]["artifact_directories"]:
         findings.append("repository-layout-schema-projection-drift")
 
-    if _family(contract, "relationships")["relationships"] != _relationships():
-        findings.append("relationship-drift")
     schemas = _family(contract, "schema-bindings")
     expected_schemas = {
         "base_schema": "schemas/base.schema.json",

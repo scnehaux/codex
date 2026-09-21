@@ -253,8 +253,8 @@ def _mutate_family(root: Path, filename: str, mutator) -> None:
         ),
         (
             "relationships.yaml",
-            "relationship-drift",
-            lambda data: data["relationships"][0].__setitem__("name", "other"),
+            "contract-load:relationship-runtime-direction",
+            lambda data: data["relationships"][0].__setitem__("direction", "sideways"),
         ),
         (
             "schema-bindings.yaml",
