@@ -46,8 +46,7 @@ ownership:
   extension-declarations: extensions
   compatibility-metadata: extensions
 activation:
-  runtime_authority: legacy-python-until-slice-11.2-11.3
+  runtime_authority: declarative-artifact-lifecycle-python-relationships-until-11.3
   migration_slices:
-  - '11.2'
   - '11.3'
   - '11.4'

@@ -1,87 +1,40 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-
-PRE_BASELINE = "pre-baseline"
-BASELINE_BEARING = "baseline-bearing"
-RETIRED = "retired"
-TERMINAL_NON_BASELINE = "terminal-nonbaseline"
-
-FULL = "full"
-RELAXED = "relaxed"
-
-
-@dataclass(frozen=True)
-class AgePolicy:
-    depend_on: str
-    max_age_days: int
-    error_message: str
-
-
-@dataclass(frozen=True)
-class LifecyclePolicy:
-    semantic_class: str
-    validation_profile: str
-    age_policy: AgePolicy | None = None
-
-
-DRAFT_WIP_AGE = AgePolicy(
-    depend_on="created_date",
-    max_age_days=30,
-    error_message=(
-        "Document with status '{doc_status}' has an age of {age_days} days "
-        "(since {depend_on}), exceeding limit of {limit} days. "
-        "Must be reviewed, finalized, or deleted."
-    ),
+from engine.control.framework.artifacts import (
+    BASELINE_BEARING,
+    FULL,
+    PRE_BASELINE,
+    RELAXED,
+    RETIRED,
+    TERMINAL_NON_BASELINE,
+    AgePolicy,
+    LifecyclePolicy,
+    artifact_runtime,
 )
 
 
-LIFECYCLE_REGISTRY: dict[str, dict[str, LifecyclePolicy]] = {
-    "GDC": {
-        "draft": LifecyclePolicy(PRE_BASELINE, FULL),
-        "approved": LifecyclePolicy(BASELINE_BEARING, FULL),
-        "deprecated": LifecyclePolicy(RETIRED, FULL),
-    },
-    "EAD": {
-        "draft": LifecyclePolicy(PRE_BASELINE, RELAXED, DRAFT_WIP_AGE),
-        "approved": LifecyclePolicy(BASELINE_BEARING, FULL),
-        "deprecated": LifecyclePolicy(RETIRED, FULL),
-    },
-    "STD": {
-        "draft": LifecyclePolicy(PRE_BASELINE, RELAXED, DRAFT_WIP_AGE),
-        "approved": LifecyclePolicy(BASELINE_BEARING, FULL),
-        "deprecated": LifecyclePolicy(RETIRED, FULL),
-    },
-    "PAD": {
-        "chartered": LifecyclePolicy(PRE_BASELINE, FULL),
-        "draft": LifecyclePolicy(PRE_BASELINE, RELAXED, DRAFT_WIP_AGE),
-        "approved": LifecyclePolicy(BASELINE_BEARING, FULL),
-        "deprecated": LifecyclePolicy(RETIRED, FULL),
-    },
-    "SAD": {
-        "chartered": LifecyclePolicy(PRE_BASELINE, FULL),
-        "draft": LifecyclePolicy(PRE_BASELINE, RELAXED, DRAFT_WIP_AGE),
-        "approved": LifecyclePolicy(BASELINE_BEARING, FULL),
-        "deprecated": LifecyclePolicy(RETIRED, FULL),
-    },
-    "TDD": {
-        "draft": LifecyclePolicy(PRE_BASELINE, RELAXED, DRAFT_WIP_AGE),
-        "approved": LifecyclePolicy(BASELINE_BEARING, FULL),
-        "deprecated": LifecyclePolicy(RETIRED, FULL),
-    },
-    "ADR": {
-        "proposed": LifecyclePolicy(PRE_BASELINE, FULL),
-        "accepted": LifecyclePolicy(BASELINE_BEARING, FULL),
-        "rejected": LifecyclePolicy(TERMINAL_NON_BASELINE, FULL),
-        "superseded": LifecyclePolicy(RETIRED, FULL),
-        "deprecated": LifecyclePolicy(RETIRED, FULL),
-    },
-}
+__all__ = [
+    "PRE_BASELINE",
+    "BASELINE_BEARING",
+    "RETIRED",
+    "TERMINAL_NON_BASELINE",
+    "FULL",
+    "RELAXED",
+    "AgePolicy",
+    "LifecyclePolicy",
+    "lifecycle_policy",
+    "semantic_lifecycle",
+    "validation_profile",
+    "lifecycle_age_policy",
+    "is_baseline_bearing",
+]
 
 
 def lifecycle_policy(doc_type: str, status: str) -> LifecyclePolicy | None:
-    return LIFECYCLE_REGISTRY.get(str(doc_type).upper(), {}).get(
-        str(status).strip().lower()
+    return (
+        artifact_runtime()
+        .lifecycle.get(str(doc_type).upper(), {})
+        .get(str(status).strip().lower())
     )
 
 

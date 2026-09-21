@@ -79,6 +79,16 @@ This index documents the internal functions and classes of the Fitness Function 
 | **validate_blocking_severities**     | Validates that the provided schema blocking severities comprehensively map<br>every BlockingSeverity defined in the system. Ensures no configuration drift.<br><br><pre>Args:<br>&nbsp;&nbsp;&nbsp;&nbsp;- schema_blocking (list): List of blocking severity strings from base.schema.json.<br><br>Returns:<br>&nbsp;&nbsp;&nbsp;&nbsp;None<br><br>Raises:<br>&nbsp;&nbsp;&nbsp;&nbsp;RuntimeError: If a severity is missing or unrecognized.<br></pre>                                                                                                                                                                                 |
 | **parse_and_validate_global_config** | Extracts and strictly validates the global configuration from the raw JSON schema.<br>This centralized DRY function ensures both production (cli.py) and testing (conftest.py)<br>follow identical parsing and validation paths for global governance rules.<br><br><pre>Args:<br>&nbsp;&nbsp;&nbsp;&nbsp;- base_schema (dict): The raw, unparsed JSON schema loaded from base.schema.json.<br><br>Returns:<br>&nbsp;&nbsp;&nbsp;&nbsp;tuple: (global_rules, flattened_severity_levels, blocking_severities)<br><br>Raises:<br>&nbsp;&nbsp;&nbsp;&nbsp;RuntimeError: If the configuration is missing or structurally invalid.<br></pre> |
 
+### `engine/control/framework/artifacts.py`
+
+| Function                     | Description                                                                      |
+| :--------------------------- | :------------------------------------------------------------------------------- |
+| **\_plain_family**           | _(No docstring provided)_                                                        |
+| **compile_artifact_runtime** | Compile the Slice 11.2 artifact/layout/lifecycle subset from authored contracts. |
+| **artifact_runtime**         | _(No docstring provided)_                                                        |
+| **artifact_type_from_id**    | _(No docstring provided)_                                                        |
+| **validator_registry**       | _(No docstring provided)_                                                        |
+
 ### `engine/control/framework/compatibility.py`
 
 | Function                          | Description               |
@@ -105,8 +115,7 @@ This index documents the internal functions and classes of the Fitness Function 
 | :---------------------------------------- | :------------------------ |
 | **\_plain**                               | _(No docstring provided)_ |
 | **\_family**                              | _(No docstring provided)_ |
-| **\_validator_bindings**                  | _(No docstring provided)_ |
-| **\_lifecycle**                           | _(No docstring provided)_ |
+| **\_validator_binding_findings**          | _(No docstring provided)_ |
 | **\_relationships**                       | _(No docstring provided)_ |
 | **framework_contract_findings**           | _(No docstring provided)_ |
 | **assert_framework_contract_equivalence** | _(No docstring provided)_ |
@@ -227,7 +236,6 @@ This index documents the internal functions and classes of the Fitness Function 
 | Function                           | Description               |
 | :--------------------------------- | :------------------------ |
 | **RelationshipSpec.cardinality**   | _(No docstring provided)_ |
-| **artifact_type_from_id**          | _(No docstring provided)_ |
 | **normalize_relation_values**      | _(No docstring provided)_ |
 | **relationship_specs_for_source**  | _(No docstring provided)_ |
 | **relationship_spec_for**          | _(No docstring provided)_ |
@@ -306,6 +314,7 @@ This index documents the internal functions and classes of the Fitness Function 
 | **normalize_section**           | Normalize section name for comparison by stripping numbering.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | **extract_sections_normalized** | Return {section_title: section_content} for H2 sections, with any leading<br>numbering stripped and the ORIGINAL case preserved<br>(e.g. '## 1. Context & Scope' -> key 'Context & Scope').<br><br>This is the canonical source of section identity for JSON-Schema validation:<br>schemas declare required/recommended sections by their Title-Case, unnumbered<br>name, and `content_rules` run `pattern` checks against the section's text.<br>(`extract_section_contents` lowercases the key and keeps the numeric prefix, so<br>it can neither satisfy a `required` match nor feed content patterns.) |
 | **strip_code_fences**           | Remove fenced and indented code blocks safely using AST parsing.<br>This replaces the blocks with an equivalent number of newlines to preserve line numbering,<br>avoiding regex false positives with nested backticks, indented blocks, or unclosed fences.<br><br>Args:<br>&nbsp;&nbsp;&nbsp;&nbsp;content (str): The raw Markdown text to be processed.<br><br>Returns:<br>&nbsp;&nbsp;&nbsp;&nbsp;str: The Markdown text with all code blocks replaced by blank lines.                                                                                                                                 |
+| **\_doc_id_reference_pattern**  | _(No docstring provided)_                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | **extract_doc_id_references**   | Extract architecture document IDs referenced in prose (e.g. '(**ADR-018**)').<br>Code fences and frontmatter are excluded via clean_content_for_length.<br>Returns a de-duplicated, order-preserving list.                                                                                                                                                                                                                                                                                                                                                                                                 |
 
 ### `engine/control/rendering/artifact.py`
@@ -440,10 +449,10 @@ This index documents the internal functions and classes of the Fitness Function 
 
 ### `engine/control/validators/registry.py`
 
-| Function            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| :------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **detect_doc_type** | Determine the architecture document type based on the explicit `id` field from the document's YAML frontmatter.<br>Example: 'SAD-001' -> 'SAD'<br><br><pre>Args:<br>&nbsp;&nbsp;&nbsp;&nbsp;- meta_id (str \| None): The metadata ID parsed from the document's YAML frontmatter.<br>&nbsp;&nbsp;&nbsp;&nbsp;- global_rules (dict): The global rules dictionary parsed from base.schema.json.<br><br>Returns:<br>&nbsp;&nbsp;&nbsp;&nbsp;str \| None: The document type prefix (e.g. 'SAD', 'PAD') or None if unknown/invalid.<br></pre> |
-| **get_validator**   | Return the corresponding Validator subclass for the detected document type.<br><br>Maps strings like 'SAD' to `SADValidator`, 'PAD' to `PADValidator`, etc.<br><br><pre>Args:<br>&nbsp;&nbsp;&nbsp;&nbsp;- doc_type (str): The document type prefix (e.g. 'SAD', 'PAD').<br><br>Returns:<br>&nbsp;&nbsp;&nbsp;&nbsp;type[BaseValidator] \| None: The specific validator class or None if not supported.<br></pre>                                                                                                                        |
+| Function            | Description                                                                           |
+| :------------------ | :------------------------------------------------------------------------------------ |
+| **detect_doc_type** | Detect type from declarative artifact vocabulary; global_rules is compatibility-only. |
+| **get_validator**   | _(No docstring provided)_                                                             |
 
 ### `engine/control/validators/schema_extensions.py`
 

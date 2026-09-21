@@ -139,6 +139,29 @@ This index documents the test suite utilities and fixtures.
 | **test_compatibility_finding_contract**                              | _(No docstring provided)_ |
 | **test_compatibility_auditor_accepts_clean_minimal_fixture**         | _(No docstring provided)_ |
 
+### `tests/control/framework/test_artifact_runtime.py`
+
+| Function                                                           | Description               |
+| :----------------------------------------------------------------- | :------------------------ |
+| **\_fixture**                                                      | _(No docstring provided)_ |
+| **\_yaml**                                                         | _(No docstring provided)_ |
+| **\_write**                                                        | _(No docstring provided)_ |
+| **test_current_artifact_runtime_is_declarative_and_immutable**     | _(No docstring provided)_ |
+| **test_schema_projection_cannot_redefine_runtime_layout**          | _(No docstring provided)_ |
+| **test_declarative_lifecycle_change_drives_compiled_view**         | _(No docstring provided)_ |
+| **test_artifact_type_and_layout_must_cover_each_other**            | _(No docstring provided)_ |
+| **test_tdd_topology_is_explicit_and_unique**                       | _(No docstring provided)_ |
+| **test_invalid_lifecycle_semantics_fail_closed**                   | _(No docstring provided)_ |
+| **test_schema_and_validator_bindings_cover_exact_vocabulary**      | _(No docstring provided)_ |
+| **test_family_reclassification_requires_separate_governed_change** | _(No docstring provided)_ |
+| **\_plain**                                                        | _(No docstring provided)_ |
+| **\_fake_contract**                                                | _(No docstring provided)_ |
+| **test_compiler_rejects_invalid_type_and_family_shapes**           | _(No docstring provided)_ |
+| **test_compiler_rejects_invalid_layout_and_lifecycle_shapes**      | _(No docstring provided)_ |
+| **test_compiler_rejects_invalid_age_schema_and_validator_shapes**  | _(No docstring provided)_ |
+| **test_artifact_type_from_id_rejects_non_string_and_unknown**      | _(No docstring provided)_ |
+| **test_validator_registry_fails_closed_on_import_and_type_drift**  | _(No docstring provided)_ |
+
 ### `tests/control/framework/test_declarative_contracts.py`
 
 | Function                                                         | Description               |
@@ -166,7 +189,10 @@ This index documents the test suite utilities and fixtures.
 | **test_equivalence_reports_missing_schema_and_policy_reference** | _(No docstring provided)_ |
 | **test_equivalence_reports_contract_load_error**                 | _(No docstring provided)_ |
 | **test_assert_equivalence_raises_on_drift**                      | _(No docstring provided)_ |
-| **test_validator_registry_ast_failures_are_explicit**            | _(No docstring provided)_ |
+| **test_validator_binding_reports_missing_class**                 | _(No docstring provided)_ |
+| **test_validator_binding_reports_doc_type_mismatch**             | _(No docstring provided)_ |
+| **test_validator_binding_reports_missing_source**                | _(No docstring provided)_ |
+| **test_validator_binding_reports_unreadable_source**             | _(No docstring provided)_ |
 
 ### `tests/control/fs/test_crawler.py`
 
@@ -739,10 +765,11 @@ This index documents the test suite utilities and fixtures.
 
 ### `tests/control/validators/test_registry.py`
 
-| Function                 | Description               |
-| :----------------------- | :------------------------ |
-| **test_detect_doc_type** | _(No docstring provided)_ |
-| **test_get_validator**   | _(No docstring provided)_ |
+| Function                                                                   | Description               |
+| :------------------------------------------------------------------------- | :------------------------ |
+| **test_detect_doc_type_uses_declarative_vocabulary_not_schema_projection** | _(No docstring provided)_ |
+| **test_detect_doc_type_keeps_compatibility_argument_optional**             | _(No docstring provided)_ |
+| **test_get_validator_is_declarative_binding_projection**                   | _(No docstring provided)_ |
 
 ### `tests/control/validators/test_schema_extensions.py`
 

@@ -266,16 +266,19 @@ version_mutation_integrity:
 declarative_framework_contract:
   authority: governance/framework/contract-set.yaml
   loader: engine/control/framework/contracts.py
+  artifact_runtime_projection: engine/control/framework/artifacts.py
   equivalence_gate: engine/control/framework/equivalence.py
   invocation: scripts/framework_contract_check.py
-  runtime_activation: staged-mirror-only
+  runtime_activation: artifact-layout-lifecycle-declarative-relationships-legacy-until-11-3
   contract:
   - contract-set-and-family-versions-are-explicit
   - duplicate-yaml-keys-and-conflicting-semantic-owners-fail-closed
   - family-paths-are-repository-local-and-symlink-free
   - authored-contract-loading-is-deterministic-and-immutable
-  - current-runtime-semantics-are-losslessly-mirrored-before-ownership-migration
-  - runtime-semantic-ownership-remains-legacy-until-slices-11-2-and-11-3
+  - artifact-type-layout-lifecycle-schema-and-validator-bindings-drive-runtime-view
+  - json-schema-layout-is-a-checked-projection-not-semantic-authority
+  - relationship-ontology-remains-python-owned-only-until-slice-11-3
+  - full-executable-framework-compilation-remains-slice-11-4
 governance_qualification:
   authority: engine/control/governance/readiness.py
   invocation: scripts/governance_qualify.py
@@ -358,10 +361,12 @@ governance_qualification:
       - governance/framework/contracts/governance-policy.yaml
       - governance/framework/contracts/extensions.yaml
       - engine/control/framework/contracts.py
+      - engine/control/framework/artifacts.py
       - engine/control/framework/equivalence.py
       - scripts/framework_contract_check.py
       test_evidence:
       - tests/control/framework/test_declarative_contracts.py
+      - tests/control/framework/test_artifact_runtime.py
       - tests/scripts/test_framework_contract_check.py
     github_reference_enforcement:
       policy_ref: github_reference_enforcement

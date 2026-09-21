@@ -215,23 +215,26 @@ Canonical Knowledge
 
 ## 4.2 Phase 11 Ledger
 
-| Slice | Capability                                   | Status  | Exit Evidence                                                                |
-| ----- | -------------------------------------------- | ------- | ---------------------------------------------------------------------------- |
-| 11.1  | Declarative Framework Contract               | DONE    | Versioned nine-family contract set, strict loader, lossless equivalence gate |
-| 11.2  | Artifact Type / Layout / Lifecycle Contracts | PLANNED | Runtime type/layout/lifecycle semantics derive from declarative contracts    |
-| 11.3  | Relationship Ontology                        | PLANNED | Relationship semantics are machine-readable and no longer authored in Python |
-| 11.4  | FrameworkCompiler + ExecutableFramework      | PLANNED | Deterministic immutable compiled runtime authority exists                    |
-| 11.5  | Schema Boundary & Validation Pipeline        | PLANNED | JSON Schema is structural-only and invalid candidates cannot be promoted     |
-| 11.6  | Provenance-Bound Repository Ingestion        | PLANNED | Canonical Git ingestion is repository/namespace/revision/path/digest bound   |
-| 11.7  | ValidatedRepositorySnapshot                  | PLANNED | Only validated revision-bound snapshots can feed canonical knowledge         |
-| 11.8  | Framework Extension / Company Pack Model     | PLANNED | Company semantics extend core without Python/core fork                       |
-| 11.9  | Compatibility & Versioning                   | PLANNED | Framework/ontology/extensions have enforceable compatibility contracts       |
+| Slice | Capability                                   | Status  | Exit Evidence                                                                       |
+| ----- | -------------------------------------------- | ------- | ----------------------------------------------------------------------------------- |
+| 11.1  | Declarative Framework Contract               | DONE    | Versioned nine-family contract set, strict loader, lossless equivalence gate        |
+| 11.2  | Artifact Type / Layout / Lifecycle Contracts | DONE    | Immutable runtime view derives type/family/layout/lifecycle/bindings from contracts |
+| 11.3  | Relationship Ontology                        | PLANNED | Relationship semantics are machine-readable and no longer authored in Python        |
+| 11.4  | FrameworkCompiler + ExecutableFramework      | PLANNED | Deterministic immutable compiled runtime authority exists                           |
+| 11.5  | Schema Boundary & Validation Pipeline        | PLANNED | JSON Schema is structural-only and invalid candidates cannot be promoted            |
+| 11.6  | Provenance-Bound Repository Ingestion        | PLANNED | Canonical Git ingestion is repository/namespace/revision/path/digest bound          |
+| 11.7  | ValidatedRepositorySnapshot                  | PLANNED | Only validated revision-bound snapshots can feed canonical knowledge                |
+| 11.8  | Framework Extension / Company Pack Model     | PLANNED | Company semantics extend core without Python/core fork                              |
+| 11.9  | Compatibility & Versioning                   | PLANNED | Framework/ontology/extensions have enforceable compatibility contracts              |
 
-Slice 11.1 uses a staged mirror rather than an immediate authority cutover. Runtime
-ownership remains in the existing Python registries until 11.2/11.3 migrate those
-families, while the canonical qualification gate rejects any declarative/runtime
-drift. REC-11-001 through REC-11-003 in `governance/framework/README.md` record
-the migration rationale, limits, and compiler sequencing.
+Slice 11.1 began as a staged mirror. Slice 11.2 now makes the declarative
+artifact vocabulary, lossless family identity, canonical roots, lifecycle, schema
+bindings and validator bindings authoritative through an immutable typed runtime
+view. JSON Schema layout is a checked projection, not semantic authority. Python
+relationship rules remain transitional through Slice 11.3; Slice 11.4 replaces the
+subset projection with the full deterministic `ExecutableFramework`. REC-11-001
+through REC-11-004 in `governance/framework/README.md` record the migration
+rationale, limits, and sequencing.
 
 ## 4.3 Phase 11 Hard Invariants
 

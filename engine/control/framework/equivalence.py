@@ -7,19 +7,20 @@ from typing import Any
 
 import yaml
 
+from engine.control.framework.artifacts import (
+    ArtifactRuntimeView,
+    compile_artifact_runtime,
+)
 from engine.control.framework.contracts import (
     FrameworkContractError,
     FrameworkContractSet,
     load_framework_contract_set,
 )
-from engine.control.governance.lifecycle import LIFECYCLE_REGISTRY
-from engine.control.governance.relationships import (
-    ARTIFACT_TYPES,
-    RELATIONSHIP_REGISTRY,
-)
+from engine.control.governance.relationships import RELATIONSHIP_REGISTRY
 
 
-ARTIFACT_ORDER = ("GDC", "EAD", "STD", "PAD", "SAD", "ADR", "TDD")
+FRAMEWORK_ROOT = Path(__file__).resolve().parents[3]
+ARTIFACT_ORDER = compile_artifact_runtime(FRAMEWORK_ROOT).artifact_types
 
 
 def _plain(value: Any) -> Any:
@@ -34,68 +35,47 @@ def _family(contract: FrameworkContractSet, name: str) -> dict[str, Any]:
     return _plain(contract.families[name]["data"])
 
 
-def _validator_bindings(root: Path) -> dict[str, dict[str, str]]:
-    path = root / "engine/control/validators/registry.py"
-    tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
-    imports: dict[str, tuple[str, str]] = {}
-    registry: ast.Dict | None = None
-    for node in tree.body:
-        if isinstance(node, ast.ImportFrom) and isinstance(node.module, str):
-            module = node.module
-            if node.level:
-                package = ["engine", "control", "validators"]
-                keep = len(package) - (node.level - 1)
-                if keep <= 0:
-                    raise FrameworkContractError(
-                        "framework-equivalence-validator-import"
-                    )
-                module = ".".join([*package[:keep], module])
-            for alias in node.names:
-                imports[alias.asname or alias.name] = (module, alias.name)
-        if isinstance(node, ast.Assign) and any(
-            isinstance(target, ast.Name) and target.id == "VALIDATOR_REGISTRY"
-            for target in node.targets
-        ):
-            if isinstance(node.value, ast.Dict):
-                registry = node.value
-
-    if registry is None:
-        raise FrameworkContractError("framework-equivalence-validator-registry")
-
-    result: dict[str, dict[str, str]] = {}
-    for key_node, value_node in zip(registry.keys, registry.values, strict=True):
-        if not (
-            isinstance(key_node, ast.Constant)
-            and isinstance(key_node.value, str)
-            and isinstance(value_node, ast.Name)
-            and value_node.id in imports
-        ):
-            raise FrameworkContractError("framework-equivalence-validator-shape")
-        module, class_name = imports[value_node.id]
-        if key_node.value in result:
-            raise FrameworkContractError("framework-equivalence-validator-duplicate")
-        result[key_node.value] = {"module": module, "class": class_name}
-    return result
-
-
-def _lifecycle() -> dict[str, Any]:
-    result: dict[str, Any] = {}
-    for doc_type in ARTIFACT_ORDER:
-        statuses: dict[str, Any] = {}
-        for status, policy in LIFECYCLE_REGISTRY[doc_type].items():
-            item = {
-                "semantic_class": policy.semantic_class,
-                "validation_profile": policy.validation_profile,
-            }
-            if policy.age_policy is not None:
-                item["age_policy"] = {
-                    "depend_on": policy.age_policy.depend_on,
-                    "max_age_days": policy.age_policy.max_age_days,
-                    "error_message": policy.age_policy.error_message,
-                }
-            statuses[status] = item
-        result[doc_type] = statuses
-    return result
+def _validator_binding_findings(runtime: ArtifactRuntimeView, root: Path) -> list[str]:
+    findings: list[str] = []
+    for artifact_type, binding in runtime.validator_bindings.items():
+        relative = Path(*binding.module.split(".")).with_suffix(".py")
+        source = root / relative
+        if not source.is_file() or source.is_symlink():
+            findings.append(f"validator-binding-unresolvable:{artifact_type}")
+            continue
+        try:
+            tree = ast.parse(source.read_text(encoding="utf-8"), filename=str(source))
+        except (OSError, UnicodeError, SyntaxError):
+            findings.append(f"validator-binding-unreadable:{artifact_type}")
+            continue
+        class_node = next(
+            (
+                node
+                for node in tree.body
+                if isinstance(node, ast.ClassDef) and node.name == binding.class_name
+            ),
+            None,
+        )
+        if class_node is None:
+            findings.append(f"validator-binding-unresolvable:{artifact_type}")
+            continue
+        declared_type = None
+        for node in class_node.body:
+            target = None
+            value = None
+            if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+                target, value = node.target.id, node.value
+            elif (
+                isinstance(node, ast.Assign)
+                and len(node.targets) == 1
+                and isinstance(node.targets[0], ast.Name)
+            ):
+                target, value = node.targets[0].id, node.value
+            if target == "doc_type_name" and isinstance(value, ast.Constant):
+                declared_type = value.value
+        if declared_type != artifact_type:
+            findings.append(f"validator-binding-type-drift:{artifact_type}")
+    return findings
 
 
 def _relationships() -> list[dict[str, Any]]:
@@ -127,6 +107,7 @@ def framework_contract_findings(repo_root: str | Path) -> tuple[str, ...]:
     root = Path(repo_root).resolve()
     try:
         contract = load_framework_contract_set(root)
+        runtime = compile_artifact_runtime(root)
     except FrameworkContractError as exc:
         return (f"contract-load:{exc}",)
     findings: list[str] = []
@@ -153,18 +134,9 @@ def framework_contract_findings(repo_root: str | Path) -> tuple[str, ...]:
     if identity != expected_identity:
         findings.append("identity-drift")
 
-    declared_types = _family(contract, "artifact-types")["artifact_types"]
-    if set(declared_types) != set(ARTIFACT_TYPES) or declared_types != list(
-        ARTIFACT_ORDER
-    ):
-        findings.append("artifact-type-drift")
-
     layout = _family(contract, "repository-layout")["artifact_directories"]
     if layout != base["x-global-config"]["structure_rules"]["artifact_directories"]:
-        findings.append("repository-layout-drift")
-
-    if _family(contract, "lifecycle")["artifact_lifecycle"] != _lifecycle():
-        findings.append("lifecycle-drift")
+        findings.append("repository-layout-schema-projection-drift")
 
     if _family(contract, "relationships")["relationships"] != _relationships():
         findings.append("relationship-drift")
@@ -183,10 +155,7 @@ def framework_contract_findings(repo_root: str | Path) -> tuple[str, ...]:
             if not (root / relative).is_file():
                 findings.append(f"schema-binding-missing:{relative}")
 
-    if _family(contract, "validator-bindings")["validators"] != _validator_bindings(
-        root
-    ):
-        findings.append("validator-binding-drift")
+    findings.extend(_validator_binding_findings(runtime, root))
 
     policy = _family(contract, "governance-policy")
     expected_policy = {

@@ -8,6 +8,7 @@ from typing import Iterable
 
 import jsonschema
 
+from engine.control.framework.artifacts import artifact_runtime
 from engine.control.governance.controls import (
     load_control_registry,
     registry_structure_errors,
@@ -176,7 +177,7 @@ def _artifact_schema_map(
 ) -> dict[str, tuple[Path, dict]]:
     result: dict[str, tuple[Path, dict]] = {}
     for path, data in schemas.items():
-        for doc_type in ARTIFACT_GUIDELINES:
+        for doc_type in artifact_runtime().artifact_types:
             if path.name.lower() == f"{doc_type.lower()}.schema.json":
                 result[doc_type] = (path, data)
     return result
@@ -206,7 +207,7 @@ def _duplicate_validator_keys(registry_path: Path) -> list[str]:
 
 def _validator_findings(repo_root: Path, artifact_schemas: dict) -> list[str]:
     findings: list[str] = []
-    expected = set(ARTIFACT_GUIDELINES)
+    expected = set(artifact_runtime().artifact_types)
     schema_types = set(artifact_schemas)
     validator_types = set(VALIDATOR_REGISTRY)
 
@@ -251,8 +252,8 @@ def _target_doc_findings(
             findings.append(f"F07 {path.name}: target_doc does not exist: {target}")
             continue
 
-        expected_prefix = ARTIFACT_GUIDELINES[doc_type]
-        if not target_path.name.startswith(expected_prefix):
+        expected_prefix = ARTIFACT_GUIDELINES.get(doc_type)
+        if expected_prefix and not target_path.name.startswith(expected_prefix):
             findings.append(
                 f"F07 {path.name}: target_doc {target_path.name} must map to "
                 f"{expected_prefix}*"

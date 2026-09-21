@@ -600,6 +600,29 @@ The declarative model MUST define:
 - artifact discovery and type detection derive from compiled framework state
 - semantic layout is not inferred from numbered directory names
 
+### Slice 11.2 implementation evidence
+
+Status: **DONE on governed merge of this slice.**
+
+`engine/control/framework/artifacts.py` compiles the governed artifact vocabulary,
+lossless family identity, canonical roots, lifecycle policies, schema bindings and
+validator bindings into one immutable runtime view. Repository discovery, metadata
+type detection, lifecycle helpers, validator lookup, relationship artifact-type
+recognition and maturity inventory now consume that view rather than independently
+authored Python/schema lists.
+
+`LIFECYCLE_REGISTRY` and hard-coded governed corpus roots are removed. JSON
+Schema's artifact-directory mapping remains a checked projection for compatibility;
+it cannot redefine runtime topology. TDD is explicitly and fail-closed bound to
+`designs`. Because no prior cross-type family taxonomy existed, the Slice 11.2
+contract records a lossless one-type/one-family identity and rejects reclassification
+until a separately governed semantic decision exists.
+
+Relationship rules themselves remain Python-authored only until Slice 11.3; the
+full compiler and immutable `ExecutableFramework` remain Slice 11.4. REC-11-004
+records why this bounded typed subset view is preferable to prematurely creating a
+second full runtime registry.
+
 ## Slice 11.3 — Relationship Ontology
 
 ### Target

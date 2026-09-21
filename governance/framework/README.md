@@ -69,7 +69,8 @@ slice and must not be inferred from this hash.
 
 ## REC-11-003 - Migrate authority family by family
 
-**Status: selected migration plan; execution belongs to Slices 11.2-11.4.**
+**Status: selected; artifact/layout/lifecycle cutover implemented in Slice 11.2.
+Relationship and full compiler cutovers remain Slices 11.3-11.4.**
 
 Cut over artifact/layout/lifecycle semantics in Slice 11.2, relationship ontology
 in Slice 11.3, then introduce the deterministic compiler and immutable
@@ -86,9 +87,30 @@ Revisit this sequence only if evidence shows a family cannot be migrated without
 different dependency order. Such a change requires an explicit recorded decision,
 not an ad-hoc import from one legacy registry into another.
 
+## REC-11-004 - Use a typed subset runtime view before the full compiler
+
+**Status: selected and implemented in Slice 11.2.**
+
+Project the artifact vocabulary, family identity, canonical roots, lifecycle,
+schema bindings, and validator bindings into one immutable typed runtime view
+directly from the governed contracts. Existing call sites may retain compatibility
+facades, but those facades must delegate to the view and cannot author values.
+
+This avoids prematurely introducing the full `ExecutableFramework` before
+relationship semantics are declarative. The trade-off is one transitional subset
+projection that will be subsumed by the Slice 11.4 compiler. It must stay small,
+deterministic, dependency-light, and contain no independent defaults.
+
+JSON Schema remains a checked structural/configuration projection rather than the
+source of artifact topology. Relationship rules remain Python-owned only until
+Slice 11.3. Revisit this decision if the subset starts acquiring unrelated semantic
+families or behavior that belongs in `ExecutableFramework`; that is a stop signal,
+not permission to grow another permanent runtime registry.
+
 ## Verification
 
-`python scripts/framework_contract_check.py` validates the complete authored set and
-its exact equivalence to the current runtime representation. The same assertion is
+`python scripts/framework_contract_check.py` validates the complete authored set,
+the compiled Slice 11.2 artifact runtime view, checked schema/policy projections,
+and exact legacy relationship equivalence until Slice 11.3. The same assertion is
 part of `scripts/governance_qualify.py`, so a green qualification cannot ignore
-contract drift.
+contract or migration-boundary drift.
