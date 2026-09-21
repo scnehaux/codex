@@ -146,8 +146,7 @@ def _fake_contract(monkeypatch, mutator):
 
     real = module.load_framework_contract_set(ROOT)
     families = {
-        name: {"data": _plain(family["data"])}
-        for name, family in real.families.items()
+        name: {"data": _plain(family["data"])} for name, family in real.families.items()
     }
     mutator(families)
     families["artifact-types"]["data"]["artifact_types"] = tuple(
@@ -160,10 +159,28 @@ def _fake_contract(monkeypatch, mutator):
 @pytest.mark.parametrize(
     ("mutator", "error"),
     [
-        (lambda f: f["artifact-types"]["data"].__setitem__("artifact_types", []), "types"),
-        (lambda f: f["artifact-types"]["data"].__setitem__("artifact_types", ["GDC", ""]), "type"),
-        (lambda f: f["artifact-types"]["data"].__setitem__("artifact_types", ["GDC", "GDC"]), "type-duplicate"),
-        (lambda f: f["artifact-types"]["data"].__setitem__("artifact_families", None), "families"),
+        (
+            lambda f: f["artifact-types"]["data"].__setitem__("artifact_types", []),
+            "types",
+        ),
+        (
+            lambda f: f["artifact-types"]["data"].__setitem__(
+                "artifact_types", ["GDC", ""]
+            ),
+            "type",
+        ),
+        (
+            lambda f: f["artifact-types"]["data"].__setitem__(
+                "artifact_types", ["GDC", "GDC"]
+            ),
+            "type-duplicate",
+        ),
+        (
+            lambda f: f["artifact-types"]["data"].__setitem__(
+                "artifact_families", None
+            ),
+            "families",
+        ),
     ],
 )
 def test_compiler_rejects_invalid_type_and_family_shapes(monkeypatch, mutator, error):
@@ -171,38 +188,106 @@ def test_compiler_rejects_invalid_type_and_family_shapes(monkeypatch, mutator, e
     with pytest.raises(FrameworkContractError, match=f"artifact-runtime-{error}$"):
         compile_artifact_runtime(ROOT)
 
-@pytest.mark.parametrize(
-    ("mutator", "error"),
-    [
-        (lambda f: f["repository-layout"]["data"].__setitem__("artifact_directories", None), "layout"),
-        (lambda f: f["repository-layout"]["data"]["artifact_directories"].__setitem__("GDC", "../bad"), "layout-root"),
-        (lambda f: f["lifecycle"]["data"].__setitem__("artifact_lifecycle", {}), "lifecycle-types"),
-        (lambda f: f["lifecycle"]["data"]["artifact_lifecycle"].__setitem__("GDC", {}), "lifecycle-statuses"),
-        (lambda f: f["lifecycle"]["data"]["artifact_lifecycle"]["GDC"].__setitem__("", {}), "lifecycle-status"),
-        (lambda f: f["lifecycle"]["data"]["artifact_lifecycle"]["GDC"]["draft"].__setitem__("validation_profile", "other"), "validation-profile"),
-        (lambda f: f["lifecycle"]["data"]["artifact_lifecycle"]["GDC"]["draft"].__setitem__("extra", True), "lifecycle-fields"),
-    ],
-)
-def test_compiler_rejects_invalid_layout_and_lifecycle_shapes(monkeypatch, mutator, error):
-    _fake_contract(monkeypatch, mutator)
-    with pytest.raises(FrameworkContractError, match=f"artifact-runtime-{error}$"):
-        compile_artifact_runtime(ROOT)
 
 @pytest.mark.parametrize(
     ("mutator", "error"),
     [
-        (lambda f: f["lifecycle"]["data"]["artifact_lifecycle"]["EAD"]["draft"].__setitem__("age_policy", {}), "age-policy"),
-        (lambda f: f["lifecycle"]["data"]["artifact_lifecycle"]["EAD"]["draft"]["age_policy"].__setitem__("max_age_days", 0), "age-policy-value"),
-        (lambda f: f["schema-bindings"]["data"]["artifact_schemas"].__setitem__("GDC", "other/gdc.json"), "schema-path"),
-        (lambda f: f["validator-bindings"]["data"].__setitem__("validators", {}), "validator-bindings"),
-        (lambda f: f["validator-bindings"]["data"]["validators"].__setitem__("GDC", {}), "validator-binding"),
-        (lambda f: f["validator-bindings"]["data"]["validators"]["GDC"].__setitem__("module", "other.module"), "validator-module"),
+        (
+            lambda f: f["repository-layout"]["data"].__setitem__(
+                "artifact_directories", None
+            ),
+            "layout",
+        ),
+        (
+            lambda f: f["repository-layout"]["data"][
+                "artifact_directories"
+            ].__setitem__("GDC", "../bad"),
+            "layout-root",
+        ),
+        (
+            lambda f: f["lifecycle"]["data"].__setitem__("artifact_lifecycle", {}),
+            "lifecycle-types",
+        ),
+        (
+            lambda f: f["lifecycle"]["data"]["artifact_lifecycle"].__setitem__(
+                "GDC", {}
+            ),
+            "lifecycle-statuses",
+        ),
+        (
+            lambda f: f["lifecycle"]["data"]["artifact_lifecycle"]["GDC"].__setitem__(
+                "", {}
+            ),
+            "lifecycle-status",
+        ),
+        (
+            lambda f: f["lifecycle"]["data"]["artifact_lifecycle"]["GDC"][
+                "draft"
+            ].__setitem__("validation_profile", "other"),
+            "validation-profile",
+        ),
+        (
+            lambda f: f["lifecycle"]["data"]["artifact_lifecycle"]["GDC"][
+                "draft"
+            ].__setitem__("extra", True),
+            "lifecycle-fields",
+        ),
     ],
 )
-def test_compiler_rejects_invalid_age_schema_and_validator_shapes(monkeypatch, mutator, error):
+def test_compiler_rejects_invalid_layout_and_lifecycle_shapes(
+    monkeypatch, mutator, error
+):
     _fake_contract(monkeypatch, mutator)
     with pytest.raises(FrameworkContractError, match=f"artifact-runtime-{error}$"):
         compile_artifact_runtime(ROOT)
+
+
+@pytest.mark.parametrize(
+    ("mutator", "error"),
+    [
+        (
+            lambda f: f["lifecycle"]["data"]["artifact_lifecycle"]["EAD"][
+                "draft"
+            ].__setitem__("age_policy", {}),
+            "age-policy",
+        ),
+        (
+            lambda f: f["lifecycle"]["data"]["artifact_lifecycle"]["EAD"]["draft"][
+                "age_policy"
+            ].__setitem__("max_age_days", 0),
+            "age-policy-value",
+        ),
+        (
+            lambda f: f["schema-bindings"]["data"]["artifact_schemas"].__setitem__(
+                "GDC", "other/gdc.json"
+            ),
+            "schema-path",
+        ),
+        (
+            lambda f: f["validator-bindings"]["data"].__setitem__("validators", {}),
+            "validator-bindings",
+        ),
+        (
+            lambda f: f["validator-bindings"]["data"]["validators"].__setitem__(
+                "GDC", {}
+            ),
+            "validator-binding",
+        ),
+        (
+            lambda f: f["validator-bindings"]["data"]["validators"]["GDC"].__setitem__(
+                "module", "other.module"
+            ),
+            "validator-module",
+        ),
+    ],
+)
+def test_compiler_rejects_invalid_age_schema_and_validator_shapes(
+    monkeypatch, mutator, error
+):
+    _fake_contract(monkeypatch, mutator)
+    with pytest.raises(FrameworkContractError, match=f"artifact-runtime-{error}$"):
+        compile_artifact_runtime(ROOT)
+
 
 def test_artifact_type_from_id_rejects_non_string_and_unknown():
     from engine.control.framework.artifacts import artifact_type_from_id
@@ -228,7 +313,11 @@ def test_validator_registry_fails_closed_on_import_and_type_drift(monkeypatch):
         doc_type_name = "WRONG"
 
     fake_module = type("Module", (), {"GDCValidator": Wrong})()
-    one = type("Runtime", (), {"validator_bindings": {"GDC": runtime.validator_bindings["GDC"]}})()
+    one = type(
+        "Runtime",
+        (),
+        {"validator_bindings": {"GDC": runtime.validator_bindings["GDC"]}},
+    )()
     monkeypatch.setattr(module, "artifact_runtime", lambda: one)
     monkeypatch.setattr(module.importlib, "import_module", lambda _name: fake_module)
     with pytest.raises(FrameworkContractError, match="validator-type"):
