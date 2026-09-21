@@ -86,6 +86,31 @@ This index documents the internal functions and classes of the Fitness Function 
 | **\_python_files**                | _(No docstring provided)_ |
 | **audit_ai_native_compatibility** | _(No docstring provided)_ |
 
+### `engine/control/framework/contracts.py`
+
+| Function                        | Description               |
+| :------------------------------ | :------------------------ |
+| **\_unique_mapping**            | _(No docstring provided)_ |
+| **\_require**                   | _(No docstring provided)_ |
+| **\_exact_fields**              | _(No docstring provided)_ |
+| **\_load_yaml**                 | _(No docstring provided)_ |
+| **\_relative_file**             | _(No docstring provided)_ |
+| **\_freeze**                    | _(No docstring provided)_ |
+| **\_canonical**                 | _(No docstring provided)_ |
+| **load_framework_contract_set** | _(No docstring provided)_ |
+
+### `engine/control/framework/equivalence.py`
+
+| Function                                  | Description               |
+| :---------------------------------------- | :------------------------ |
+| **\_plain**                               | _(No docstring provided)_ |
+| **\_family**                              | _(No docstring provided)_ |
+| **\_validator_bindings**                  | _(No docstring provided)_ |
+| **\_lifecycle**                           | _(No docstring provided)_ |
+| **\_relationships**                       | _(No docstring provided)_ |
+| **framework_contract_findings**           | _(No docstring provided)_ |
+| **assert_framework_contract_equivalence** | _(No docstring provided)_ |
+
 ### `engine/control/fs/crawler.py`
 
 | Function                    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |

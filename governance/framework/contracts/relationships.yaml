@@ -1,0 +1,169 @@
+contract_version: 1
+kind: scnehaux-relationship-ontology
+owns:
+- relationship-ontology
+data:
+  relationships:
+  - name: gdc-governed-by
+    metadata_field: governed_by
+    source_types:
+    - GDC
+    target_types:
+    - GDC
+    min_targets: 1
+    max_targets: null
+    direction: up
+    dag_participation: true
+    authority_requirement: target-exists
+    inverse_relation: null
+    allow_self_reference: true
+    source_statuses_requiring_authority: []
+    allowed_target_statuses: []
+  - name: ead-governed-by
+    metadata_field: governed_by
+    source_types:
+    - EAD
+    target_types:
+    - GDC
+    min_targets: 1
+    max_targets: null
+    direction: up
+    dag_participation: true
+    authority_requirement: target-exists
+    inverse_relation: null
+    allow_self_reference: false
+    source_statuses_requiring_authority: []
+    allowed_target_statuses: []
+  - name: std-governed-by
+    metadata_field: governed_by
+    source_types:
+    - STD
+    target_types:
+    - EAD
+    - GDC
+    - PAD
+    min_targets: 1
+    max_targets: null
+    direction: up
+    dag_participation: true
+    authority_requirement: target-exists
+    inverse_relation: null
+    allow_self_reference: false
+    source_statuses_requiring_authority: []
+    allowed_target_statuses: []
+  - name: pad-governed-by
+    metadata_field: governed_by
+    source_types:
+    - PAD
+    target_types:
+    - ADR
+    - EAD
+    - GDC
+    min_targets: 1
+    max_targets: null
+    direction: up
+    dag_participation: true
+    authority_requirement: target-exists
+    inverse_relation: null
+    allow_self_reference: false
+    source_statuses_requiring_authority: []
+    allowed_target_statuses: []
+  - name: sad-governed-by
+    metadata_field: governed_by
+    source_types:
+    - SAD
+    target_types:
+    - ADR
+    - EAD
+    - GDC
+    - STD
+    min_targets: 1
+    max_targets: null
+    direction: up
+    dag_participation: true
+    authority_requirement: target-exists
+    inverse_relation: null
+    allow_self_reference: false
+    source_statuses_requiring_authority: []
+    allowed_target_statuses: []
+  - name: adr-governed-by
+    metadata_field: governed_by
+    source_types:
+    - ADR
+    target_types:
+    - EAD
+    - GDC
+    - PAD
+    - SAD
+    min_targets: 1
+    max_targets: null
+    direction: up
+    dag_participation: true
+    authority_requirement: target-exists
+    inverse_relation: null
+    allow_self_reference: false
+    source_statuses_requiring_authority: []
+    allowed_target_statuses: []
+  - name: pad-realizes-capability
+    metadata_field: realizes_capability
+    source_types:
+    - PAD
+    target_types:
+    - EAD
+    min_targets: 1
+    max_targets: null
+    direction: up
+    dag_participation: true
+    authority_requirement: target-exists
+    inverse_relation: null
+    allow_self_reference: false
+    source_statuses_requiring_authority: []
+    allowed_target_statuses: []
+  - name: sad-parent-pad
+    metadata_field: parent_pad
+    source_types:
+    - SAD
+    target_types:
+    - PAD
+    min_targets: 1
+    max_targets: 1
+    direction: up
+    dag_participation: true
+    authority_requirement: approved-parent-for-active-sad
+    inverse_relation: fulfilled_by
+    allow_self_reference: false
+    source_statuses_requiring_authority:
+    - approved
+    - draft
+    allowed_target_statuses:
+    - approved
+  - name: tdd-parent-sad
+    metadata_field: parent_sad
+    source_types:
+    - TDD
+    target_types:
+    - SAD
+    min_targets: 1
+    max_targets: null
+    direction: up
+    dag_participation: true
+    authority_requirement: target-exists
+    inverse_relation: null
+    allow_self_reference: false
+    source_statuses_requiring_authority: []
+    allowed_target_statuses: []
+  - name: pad-fulfilled-by
+    metadata_field: fulfilled_by
+    source_types:
+    - PAD
+    target_types:
+    - SAD
+    min_targets: 0
+    max_targets: null
+    direction: down
+    dag_participation: false
+    authority_requirement: target-exists
+    inverse_relation: parent_pad
+    allow_self_reference: false
+    source_statuses_requiring_authority: []
+    allowed_target_statuses: []

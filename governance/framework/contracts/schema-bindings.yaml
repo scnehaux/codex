@@ -1,0 +1,14 @@
+contract_version: 1
+kind: scnehaux-schema-bindings
+owns:
+- schema-bindings
+data:
+  base_schema: schemas/base.schema.json
+  artifact_schemas:
+    GDC: schemas/gdc.schema.json
+    EAD: schemas/ead.schema.json
+    STD: schemas/std.schema.json
+    PAD: schemas/pad.schema.json
+    SAD: schemas/sad.schema.json
+    ADR: schemas/adr.schema.json
+    TDD: schemas/tdd.schema.json

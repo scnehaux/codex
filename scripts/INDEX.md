@@ -24,6 +24,12 @@ This index documents the internal functions and classes of the CI/CD scripts.
 | :------- | :------------------------ |
 | **main** | _(No docstring provided)_ |
 
+### `scripts/framework_contract_check.py`
+
+| Function | Description               |
+| :------- | :------------------------ |
+| **main** | _(No docstring provided)_ |
+
 ### `scripts/genesis_commit_qualify.py`
 
 | Function | Description               |

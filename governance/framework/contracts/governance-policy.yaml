@@ -1,0 +1,13 @@
+contract_version: 1
+kind: scnehaux-governance-policy-references
+owns:
+- governance-policy-references
+- severity-policy-references
+data:
+  global_config: schemas/base.schema.json#x-global-config
+  normative_control_registry: governance/normative-control-registry.yaml
+  severity_evidence_registry: governance/severity-enforcement-registry.yaml
+  scm_enforcement_policy: governance/scm/enforcement-policy.yaml
+  blocking_severities:
+  - CRITICAL
+  - ERROR

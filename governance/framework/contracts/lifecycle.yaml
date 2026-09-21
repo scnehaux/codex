@@ -1,0 +1,118 @@
+contract_version: 1
+kind: scnehaux-lifecycle-policy
+owns:
+- lifecycle-policy
+data:
+  artifact_lifecycle:
+    GDC:
+      draft:
+        semantic_class: pre-baseline
+        validation_profile: full
+      approved:
+        semantic_class: baseline-bearing
+        validation_profile: full
+      deprecated:
+        semantic_class: retired
+        validation_profile: full
+    EAD:
+      draft:
+        semantic_class: pre-baseline
+        validation_profile: relaxed
+        age_policy:
+          depend_on: created_date
+          max_age_days: 30
+          error_message: Document with status '{doc_status}' has an age of {age_days}
+            days (since {depend_on}), exceeding limit of {limit} days. Must be reviewed,
+            finalized, or deleted.
+      approved:
+        semantic_class: baseline-bearing
+        validation_profile: full
+      deprecated:
+        semantic_class: retired
+        validation_profile: full
+    STD:
+      draft:
+        semantic_class: pre-baseline
+        validation_profile: relaxed
+        age_policy:
+          depend_on: created_date
+          max_age_days: 30
+          error_message: Document with status '{doc_status}' has an age of {age_days}
+            days (since {depend_on}), exceeding limit of {limit} days. Must be reviewed,
+            finalized, or deleted.
+      approved:
+        semantic_class: baseline-bearing
+        validation_profile: full
+      deprecated:
+        semantic_class: retired
+        validation_profile: full
+    PAD:
+      chartered:
+        semantic_class: pre-baseline
+        validation_profile: full
+      draft:
+        semantic_class: pre-baseline
+        validation_profile: relaxed
+        age_policy:
+          depend_on: created_date
+          max_age_days: 30
+          error_message: Document with status '{doc_status}' has an age of {age_days}
+            days (since {depend_on}), exceeding limit of {limit} days. Must be reviewed,
+            finalized, or deleted.
+      approved:
+        semantic_class: baseline-bearing
+        validation_profile: full
+      deprecated:
+        semantic_class: retired
+        validation_profile: full
+    SAD:
+      chartered:
+        semantic_class: pre-baseline
+        validation_profile: full
+      draft:
+        semantic_class: pre-baseline
+        validation_profile: relaxed
+        age_policy:
+          depend_on: created_date
+          max_age_days: 30
+          error_message: Document with status '{doc_status}' has an age of {age_days}
+            days (since {depend_on}), exceeding limit of {limit} days. Must be reviewed,
+            finalized, or deleted.
+      approved:
+        semantic_class: baseline-bearing
+        validation_profile: full
+      deprecated:
+        semantic_class: retired
+        validation_profile: full
+    ADR:
+      proposed:
+        semantic_class: pre-baseline
+        validation_profile: full
+      accepted:
+        semantic_class: baseline-bearing
+        validation_profile: full
+      rejected:
+        semantic_class: terminal-nonbaseline
+        validation_profile: full
+      superseded:
+        semantic_class: retired
+        validation_profile: full
+      deprecated:
+        semantic_class: retired
+        validation_profile: full
+    TDD:
+      draft:
+        semantic_class: pre-baseline
+        validation_profile: relaxed
+        age_policy:
+          depend_on: created_date
+          max_age_days: 30
+          error_message: Document with status '{doc_status}' has an age of {age_days}
+            days (since {depend_on}), exceeding limit of {limit} days. Must be reviewed,
+            finalized, or deleted.
+      approved:
+        semantic_class: baseline-bearing
+        validation_profile: full
+      deprecated:
+        semantic_class: retired
+        validation_profile: full

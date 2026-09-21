@@ -1,0 +1,13 @@
+contract_version: 1
+kind: scnehaux-artifact-type-declarations
+owns:
+- artifact-type-declarations
+data:
+  artifact_types:
+  - GDC
+  - EAD
+  - STD
+  - PAD
+  - SAD
+  - ADR
+  - TDD

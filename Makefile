@@ -1,4 +1,4 @@
-.PHONY: lint lint-code lint-docs-format lint-sarif format format-code format-docs test install install-hooks generate-docs verify-generated check-waivers all coverage docker-build docker-run clean genesis-check mutation-check governance-qualify genesis-commit-check mutation-ci-check scm-trust-boundary-check scm-policy-check github-policy-check github-activation-plan github-live-state-observe
+.PHONY: lint lint-code lint-docs-format lint-sarif format format-code format-docs test install install-hooks generate-docs verify-generated check-waivers all coverage docker-build docker-run clean genesis-check mutation-check framework-contract-check governance-qualify genesis-commit-check mutation-ci-check scm-trust-boundary-check scm-policy-check github-policy-check github-activation-plan github-live-state-observe
 
 # Run setup, generation, linting, and testing in order, including under make -j.
 # Separate recursive recipe lines preserve make flags and stop after a failed stage.
@@ -33,7 +33,7 @@ generate-docs:
 # run generation followed by formatting, then require the resulting state to be identical. This
 # proves generation is deterministic without confusing unrelated working-tree changes with drift.
 verify-generated:
-	python -c "import hashlib,os,pathlib,subprocess,sys; untracked=lambda: subprocess.check_output(['git','ls-files','--others','--exclude-standard','-z']).split(b'\\0'); state=lambda: hashlib.sha256(subprocess.check_output(['git','diff','--binary','HEAD','--','.'],stderr=subprocess.DEVNULL)+b''.join(p+b'\\0'+hashlib.sha256(pathlib.Path(os.fsdecode(p)).read_bytes()).digest() for p in untracked() if p)).digest(); before=state(); subprocess.run([sys.argv[1],'generate-docs'],check=True); subprocess.run([sys.argv[1],'format-docs'],check=True); after=state(); print('[PASS] Generated state is reproducible' if before==after else '[FAIL] Generate-then-format changed repository state'); sys.exit(0 if before==after else 1)" "$(MAKE)"
+	python -c "import hashlib,os,pathlib,subprocess,sys; untracked=lambda: subprocess.check_output(['git','ls-files','--others','--exclude-standard','-z']).split(b'\0'); state=lambda: hashlib.sha256(subprocess.check_output(['git','diff','--binary','HEAD','--','.'],stderr=subprocess.DEVNULL)+b''.join(p+b'\0'+hashlib.sha256(pathlib.Path(os.fsdecode(p)).read_bytes()).digest() for p in untracked() if p)).digest(); before=state(); subprocess.run([sys.argv[1],'generate-docs'],check=True); subprocess.run([sys.argv[1],'format-docs'],check=True); after=state(); print('[PASS] Generated state is reproducible' if before==after else '[FAIL] Generate-then-format changed repository state'); sys.exit(0 if before==after else 1)" "$(MAKE)"
 
 # Run the core architecture linter to validate document compliance (C4, NFRs, etc.)
 lint:
@@ -104,6 +104,9 @@ genesis-check:
 # Verify governed document version and mutation integrity
 mutation-check:
 	python scripts/mutation_integrity.py
+# Verify the governed declarative framework contract mirror
+framework-contract-check:
+	python scripts/framework_contract_check.py
 # Qualify the complete local governance control plane
 governance-qualify:
 	python scripts/governance_qualify.py

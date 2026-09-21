@@ -18,6 +18,7 @@ REQUIRED_CONTROL_KEYS = frozenset(
         "scm_desired_state_semantics",
         "github_reference_enforcement",
         "scm_live_state_observation",
+        "declarative_framework_contract",
     }
 )
 TEMPORARY_PATTERNS = ("phase*.py", "slice5_*.py")

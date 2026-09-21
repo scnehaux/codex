@@ -1,0 +1,13 @@
+contract_version: 1
+kind: scnehaux-repository-layout-policy
+owns:
+- repository-layout-policy
+data:
+  artifact_directories:
+    GDC: governance
+    EAD: enterprise
+    STD: standards
+    PAD: domains
+    SAD: systems
+    ADR: decisions
+    TDD: designs

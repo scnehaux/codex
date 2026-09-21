@@ -187,6 +187,8 @@ phases remain unimplemented; Governance 1.0 is not declared ready.
 
 # 4. PHASE 11 — EXECUTABLE FRAMEWORK & DECLARATIVE SEMANTIC AUTHORITY
 
+**Status: ACTIVE**
+
 Goal: compile governed declarative framework semantics into one immutable runtime authority and prevent unvalidated or revision-unbound repository state from entering canonical knowledge.
 
 ## 4.1 Phase 11 Dependency Chain
@@ -215,7 +217,7 @@ Canonical Knowledge
 
 | Slice | Capability                                   | Status  | Exit Evidence                                                                |
 | ----- | -------------------------------------------- | ------- | ---------------------------------------------------------------------------- |
-| 11.1  | Declarative Framework Contract               | PLANNED | Governed, versioned contract model exists and fails closed                   |
+| 11.1  | Declarative Framework Contract               | DONE    | Versioned nine-family contract set, strict loader, lossless equivalence gate |
 | 11.2  | Artifact Type / Layout / Lifecycle Contracts | PLANNED | Runtime type/layout/lifecycle semantics derive from declarative contracts    |
 | 11.3  | Relationship Ontology                        | PLANNED | Relationship semantics are machine-readable and no longer authored in Python |
 | 11.4  | FrameworkCompiler + ExecutableFramework      | PLANNED | Deterministic immutable compiled runtime authority exists                    |
@@ -224,6 +226,12 @@ Canonical Knowledge
 | 11.7  | ValidatedRepositorySnapshot                  | PLANNED | Only validated revision-bound snapshots can feed canonical knowledge         |
 | 11.8  | Framework Extension / Company Pack Model     | PLANNED | Company semantics extend core without Python/core fork                       |
 | 11.9  | Compatibility & Versioning                   | PLANNED | Framework/ontology/extensions have enforceable compatibility contracts       |
+
+Slice 11.1 uses a staged mirror rather than an immediate authority cutover. Runtime
+ownership remains in the existing Python registries until 11.2/11.3 migrate those
+families, while the canonical qualification gate rejects any declarative/runtime
+drift. REC-11-001 through REC-11-003 in `governance/framework/README.md` record
+the migration rationale, limits, and compiler sequencing.
 
 ## 4.3 Phase 11 Hard Invariants
 
