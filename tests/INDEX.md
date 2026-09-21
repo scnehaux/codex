@@ -154,6 +154,13 @@ This index documents the test suite utilities and fixtures.
 | **test_invalid_lifecycle_semantics_fail_closed**                   | _(No docstring provided)_ |
 | **test_schema_and_validator_bindings_cover_exact_vocabulary**      | _(No docstring provided)_ |
 | **test_family_reclassification_requires_separate_governed_change** | _(No docstring provided)_ |
+| **\_plain**                                                        | _(No docstring provided)_ |
+| **\_fake_contract**                                                | _(No docstring provided)_ |
+| **test_compiler_rejects_invalid_type_and_family_shapes**           | _(No docstring provided)_ |
+| **test_compiler_rejects_invalid_layout_and_lifecycle_shapes**      | _(No docstring provided)_ |
+| **test_compiler_rejects_invalid_age_schema_and_validator_shapes**  | _(No docstring provided)_ |
+| **test_artifact_type_from_id_rejects_non_string_and_unknown**      | _(No docstring provided)_ |
+| **test_validator_registry_fails_closed_on_import_and_type_drift**  | _(No docstring provided)_ |
 
 ### `tests/control/framework/test_declarative_contracts.py`
 
@@ -184,6 +191,8 @@ This index documents the test suite utilities and fixtures.
 | **test_assert_equivalence_raises_on_drift**                      | _(No docstring provided)_ |
 | **test_validator_binding_reports_missing_class**                 | _(No docstring provided)_ |
 | **test_validator_binding_reports_doc_type_mismatch**             | _(No docstring provided)_ |
+| **test_validator_binding_reports_missing_source**                | _(No docstring provided)_ |
+| **test_validator_binding_reports_unreadable_source**             | _(No docstring provided)_ |
 
 ### `tests/control/fs/test_crawler.py`
 
