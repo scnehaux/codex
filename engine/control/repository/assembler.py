@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from engine.control.fs.crawler import gather_markdown_paths
+from engine.control.framework.artifacts import artifact_runtime
 from engine.control.governance.relationships import (
     ALL_RELATION_FIELDS,
     artifact_type_from_id,
@@ -23,16 +24,6 @@ from engine.core.metamodel import (
     SourceReference,
 )
 from engine.core.repository import RepositoryArtifact, RepositoryModel
-
-GOVERNED_CORPUS_ROOTS = (
-    "governance",
-    "enterprise",
-    "standards",
-    "domains",
-    "systems",
-    "designs",
-    "decisions",
-)
 
 DERIVED_MARKDOWN_FILES = frozenset({"index.md", "readme.md", "traceability.md"})
 
@@ -222,11 +213,14 @@ class RepositoryAssembler:
         patterns = list(GOVERNED_CORPUS_SUPPORT_PATTERNS)
         patterns.extend(ignored_patterns or [])
 
-        targets = [str(root / relative_root) for relative_root in GOVERNED_CORPUS_ROOTS]
+        corpus_roots = tuple(
+            dict.fromkeys(artifact_runtime().artifact_directories.values())
+        )
+        targets = [str(root / relative_root) for relative_root in corpus_roots]
         return RepositoryAssembler.load(
             targets,
             repo_root=root,
-            allowed_root_dirs=set(GOVERNED_CORPUS_ROOTS),
+            allowed_root_dirs=set(corpus_roots),
             ignored_files_lower=sorted(ignored),
             ignored_patterns=patterns,
             namespace=namespace,

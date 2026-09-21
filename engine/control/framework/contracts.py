@@ -182,11 +182,12 @@ def load_framework_contract_set(repo_root: str | Path) -> FrameworkContractSet:
         "framework-contract-activation",
     )
     _require(
-        activation["runtime_authority"] == "legacy-python-until-slice-11.2-11.3",
+        activation["runtime_authority"]
+        == "declarative-artifact-lifecycle-python-relationships-until-11.3",
         "framework-contract-runtime-authority",
     )
     _require(
-        activation["migration_slices"] == ["11.2", "11.3", "11.4"],
+        activation["migration_slices"] == ["11.3", "11.4"],
         "framework-contract-migration-slices",
     )
 

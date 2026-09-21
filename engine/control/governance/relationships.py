@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from engine.control.framework.artifacts import artifact_runtime, artifact_type_from_id
 
-ARTIFACT_TYPES = frozenset({"GDC", "EAD", "STD", "PAD", "SAD", "ADR", "TDD"})
+# Compatibility projection only. Relationship semantics stay Python-owned until Slice 11.3.
+ARTIFACT_TYPES = frozenset(artifact_runtime().artifact_types)
 
 UP = "up"
 DOWN = "down"
@@ -160,13 +161,6 @@ RELATIONSHIP_REGISTRY: tuple[RelationshipSpec, ...] = (
 )
 
 ALL_RELATION_FIELDS = frozenset(spec.metadata_field for spec in RELATIONSHIP_REGISTRY)
-
-
-def artifact_type_from_id(doc_id: Any) -> str | None:
-    if not isinstance(doc_id, str):
-        return None
-    prefix = doc_id.strip().split("-", 1)[0].upper()
-    return prefix if prefix in ARTIFACT_TYPES else None
 
 
 def normalize_relation_values(value):

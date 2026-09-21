@@ -6,7 +6,6 @@ import shutil
 import pytest
 import yaml
 
-import engine.control.framework.equivalence as equivalence
 from engine.control.framework.contracts import (
     FAMILY_NAMES,
     FrameworkContractError,
@@ -201,6 +200,13 @@ def _equivalence_fixture(tmp_path: Path) -> Path:
         "governance/framework/scnehaux-framework.yaml",
         "governance/framework/profiles/scnehaux-codex-default.yaml",
         "engine/control/validators/registry.py",
+        "engine/control/validators/domains/adr_validator.py",
+        "engine/control/validators/domains/ead_validator.py",
+        "engine/control/validators/domains/gdc_validator.py",
+        "engine/control/validators/domains/pad_validator.py",
+        "engine/control/validators/domains/sad_validator.py",
+        "engine/control/validators/domains/std_validator.py",
+        "engine/control/validators/domains/tdd_validator.py",
         "governance/normative-control-registry.yaml",
         "governance/severity-enforcement-registry.yaml",
         "governance/scm/enforcement-policy.yaml",
@@ -230,17 +236,17 @@ def _mutate_family(root: Path, filename: str, mutator) -> None:
         ),
         (
             "artifact-types.yaml",
-            "artifact-type-drift",
+            "contract-load:artifact-runtime-family-types",
             lambda data: data["artifact_types"].append("UNKNOWN"),
         ),
         (
             "repository-layout.yaml",
-            "repository-layout-drift",
+            "repository-layout-schema-projection-drift",
             lambda data: data["artifact_directories"].__setitem__("GDC", "other"),
         ),
         (
             "lifecycle.yaml",
-            "lifecycle-drift",
+            "contract-load:artifact-runtime-semantic-class",
             lambda data: data["artifact_lifecycle"]["GDC"]["draft"].__setitem__(
                 "semantic_class", "other"
             ),
@@ -257,7 +263,7 @@ def _mutate_family(root: Path, filename: str, mutator) -> None:
         ),
         (
             "validator-bindings.yaml",
-            "validator-binding-drift",
+            "contract-load:artifact-runtime-validator-class",
             lambda data: data["validators"]["ADR"].__setitem__("class", "Other"),
         ),
         (
@@ -283,8 +289,8 @@ def test_equivalence_reports_each_semantic_family_drift(
 def test_equivalence_reports_missing_schema_and_policy_reference(tmp_path):
     root = _equivalence_fixture(tmp_path)
     (root / "schemas/adr.schema.json").unlink()
-    assert "schema-binding-missing:schemas/adr.schema.json" in (
-        framework_contract_findings(root)
+    assert framework_contract_findings(root) == (
+        "contract-load:artifact-runtime-schema-missing",
     )
 
     root = _equivalence_fixture(tmp_path / "second")
@@ -312,30 +318,36 @@ def test_assert_equivalence_raises_on_drift(tmp_path):
         assert_framework_contract_equivalence(root)
 
 
-@pytest.mark.parametrize(
-    ("source", "error"),
-    [
-        ("x = 1\n", "validator-registry"),
-        (
-            "from .domains.adr_validator import ADRValidator\n"
-            "VALIDATOR_REGISTRY = {'ADR': 'not-a-name'}\n",
-            "validator-shape",
-        ),
-        (
-            "from .domains.adr_validator import ADRValidator\n"
-            "VALIDATOR_REGISTRY = {'ADR': ADRValidator, 'ADR': ADRValidator}\n",
-            "validator-duplicate",
-        ),
-        (
-            "from ....outside import A\nVALIDATOR_REGISTRY = {'ADR': A}\n",
-            "validator-import",
-        ),
-    ],
-)
-def test_validator_registry_ast_failures_are_explicit(tmp_path, source, error):
-    root = tmp_path / "repo"
-    path = root / "engine/control/validators/registry.py"
-    path.parent.mkdir(parents=True)
-    path.write_text(source, encoding="utf-8")
-    with pytest.raises(FrameworkContractError, match=error):
-        equivalence._validator_bindings(root)
+def test_validator_binding_reports_missing_class(tmp_path):
+    root = _equivalence_fixture(tmp_path)
+    _mutate_family(
+        root,
+        "validator-bindings.yaml",
+        lambda data: data["validators"]["ADR"].__setitem__("class", "MissingValidator"),
+    )
+    assert "validator-binding-unresolvable:ADR" in framework_contract_findings(root)
+
+
+def test_validator_binding_reports_doc_type_mismatch(tmp_path):
+    root = _equivalence_fixture(tmp_path)
+    path = root / CONTRACTS / "validator-bindings.yaml"
+    value = _yaml(path)
+    value["data"]["validators"]["ADR"] = {
+        "module": "engine.control.validators.domains.ead_validator",
+        "class": "EADValidator",
+    }
+    _write(path, value)
+    assert "validator-binding-type-drift:ADR" in framework_contract_findings(root)
+
+
+def test_validator_binding_reports_missing_source(tmp_path):
+    root = _equivalence_fixture(tmp_path)
+    (root / "engine/control/validators/domains/adr_validator.py").unlink()
+    assert "validator-binding-unresolvable:ADR" in framework_contract_findings(root)
+
+
+def test_validator_binding_reports_unreadable_source(tmp_path):
+    root = _equivalence_fixture(tmp_path)
+    path = root / "engine/control/validators/domains/adr_validator.py"
+    path.write_text("class :", encoding="utf-8")
+    assert "validator-binding-unreadable:ADR" in framework_contract_findings(root)

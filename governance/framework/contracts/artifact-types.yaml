@@ -11,3 +11,11 @@ data:
   - SAD
   - ADR
   - TDD
+  artifact_families:
+    GDC: GDC
+    EAD: EAD
+    STD: STD
+    PAD: PAD
+    SAD: SAD
+    ADR: ADR
+    TDD: TDD
