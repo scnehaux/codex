@@ -221,7 +221,7 @@ Canonical Knowledge
 | 11.2  | Artifact Type / Layout / Lifecycle Contracts | DONE    | Immutable runtime view derives type/family/layout/lifecycle/bindings from contracts  |
 | 11.3  | Relationship Ontology                        | DONE    | Typed ontology runtime derives all relationship semantics from declarative contracts |
 | 11.4  | FrameworkCompiler + ExecutableFramework      | DONE    | One deterministic immutable compiled runtime authority and semantic digest exist     |
-| 11.5  | Schema Boundary & Validation Pipeline        | PLANNED | JSON Schema is structural-only and invalid candidates cannot be promoted             |
+| 11.5  | Schema Boundary & Validation Pipeline        | DONE    | Schema is structural-only; deterministic reports gate candidate promotion            |
 | 11.6  | Provenance-Bound Repository Ingestion        | PLANNED | Canonical Git ingestion is repository/namespace/revision/path/digest bound           |
 | 11.7  | ValidatedRepositorySnapshot                  | PLANNED | Only validated revision-bound snapshots can feed canonical knowledge                 |
 | 11.8  | Framework Extension / Company Pack Model     | PLANNED | Company semantics extend core without Python/core fork                               |
@@ -230,12 +230,13 @@ Canonical Knowledge
 Slice 11.1 began as a staged mirror. Slice 11.2 made artifact vocabulary,
 lossless family identity, canonical roots, lifecycle, schema bindings and validator
 bindings declarative runtime authority. Slice 11.3 made relationship ontology
-declarative. Slice 11.4 now composes those semantics plus governance/severity and
-extension declarations into one immutable `ExecutableFramework` with deterministic
-semantic identity. JSON Schema remains a checked structural/configuration projection
-until Slice 11.5 removes non-structural runtime configuration from it.
-REC-11-001 through REC-11-006 in `governance/framework/README.md` record the
-migration rationale, limits, and sequencing.
+declarative. Slice 11.4 composed those semantics plus governance/severity and
+extension declarations into one immutable `ExecutableFramework`. Slice 11.5 now
+restores JSON Schema to structural shape only, moves runtime governance policy into
+the executable framework contract, and gates repository promotion behind
+deterministic validation reports. Revision-bound provenance and the canonical
+repository snapshot remain Slices 11.6-11.7. REC-11-001 through REC-11-007 in
+`governance/framework/README.md` record the migration rationale and boundaries.
 
 ## 4.3 Phase 11 Hard Invariants
 

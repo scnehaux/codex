@@ -59,37 +59,3 @@ def test_load_json_schema_file_invalid_json(tmp_path):
     bad.write_text("{not-json", encoding="utf-8")
     with pytest.raises(ValueError, match="invalid JSON"):
         load_json_schema_file(str(bad))
-
-
-def test_validate_global_config_structure_missing_top_level():
-    import pytest
-    from engine.control.config.loader import validate_global_config_structure
-
-    with pytest.raises(RuntimeError, match="Missing top-level configuration"):
-        validate_global_config_structure({})
-
-
-def test_validate_global_config_structure_missing_subkey():
-    import pytest
-    from engine.control.config.loader import validate_global_config_structure
-    from engine.control.config.constants import (
-        SCHEMA_KEY_STRUCTURE_RULES,
-        SCHEMA_KEY_CONTENT_RULES,
-        SCHEMA_KEY_ARTIFACT_DIRS,
-        SCHEMA_KEY_IGNORED_FILES,
-        SCHEMA_KEY_MIN_CONTENT_LENGTH,
-        SCHEMA_KEY_MAX_REVIEW_AGE,
-    )
-
-    cfg = {
-        SCHEMA_KEY_STRUCTURE_RULES: {
-            SCHEMA_KEY_ARTIFACT_DIRS: {},
-            SCHEMA_KEY_IGNORED_FILES: {},
-        },
-        SCHEMA_KEY_CONTENT_RULES: {
-            SCHEMA_KEY_MIN_CONTENT_LENGTH: {},
-            SCHEMA_KEY_MAX_REVIEW_AGE: {},
-        },
-    }
-    with pytest.raises(RuntimeError, match="Missing required configuration"):
-        validate_global_config_structure(cfg)

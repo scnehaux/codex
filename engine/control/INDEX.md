@@ -71,13 +71,11 @@ This index documents the internal functions and classes of the Fitness Function 
 
 ### `engine/control/config/loader.py`
 
-| Function                             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| :----------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **load_json_schema_file**            | Loads and parses a JSON schema file for the validation engine.<br>Enforces a hard crash (exit code 1) if the mandatory schema file is missing.<br><br><pre>Args:<br>&nbsp;&nbsp;&nbsp;&nbsp;- schema_path (str): File path to the JSON schema.<br><br>Returns:<br>&nbsp;&nbsp;&nbsp;&nbsp;dict: Parsed JSON schema.<br><br>Raises:<br>&nbsp;&nbsp;&nbsp;&nbsp;FileNotFoundError: If the schema file is not found.<br></pre>                                                                                                                                                                                                             |
-| **validate_global_config_structure** | Validates that the global governance rules configuration contains all required nested keys.<br>Prevents silent failures when schema keys are accidentally deleted.<br><br><pre>Args:<br>&nbsp;&nbsp;&nbsp;&nbsp;- global_rules (dict): The x-global-config dictionary from base.schema.json.<br><br>Returns:<br>&nbsp;&nbsp;&nbsp;&nbsp;None<br><br>Raises:<br>&nbsp;&nbsp;&nbsp;&nbsp;RuntimeError: If a required top-level or sub-level configuration key is missing.<br></pre>                                                                                                                                                       |
-| **validate_severity_schema**         | Validates that the provided schema severity levels comprehensively map<br>every SeverityRule defined in the system. Ensures no configuration drift.<br><br><pre>Args:<br>&nbsp;&nbsp;&nbsp;&nbsp;- schema_levels (dict): Dictionary mapping rule strings to severity strings.<br><br>Returns:<br>&nbsp;&nbsp;&nbsp;&nbsp;None<br><br>Raises:<br>&nbsp;&nbsp;&nbsp;&nbsp;RuntimeError: If a rule is missing or unrecognized.<br></pre>                                                                                                                                                                                                   |
-| **validate_blocking_severities**     | Validates that the provided schema blocking severities comprehensively map<br>every BlockingSeverity defined in the system. Ensures no configuration drift.<br><br><pre>Args:<br>&nbsp;&nbsp;&nbsp;&nbsp;- schema_blocking (list): List of blocking severity strings from base.schema.json.<br><br>Returns:<br>&nbsp;&nbsp;&nbsp;&nbsp;None<br><br>Raises:<br>&nbsp;&nbsp;&nbsp;&nbsp;RuntimeError: If a severity is missing or unrecognized.<br></pre>                                                                                                                                                                                 |
-| **parse_and_validate_global_config** | Extracts and strictly validates the global configuration from the raw JSON schema.<br>This centralized DRY function ensures both production (cli.py) and testing (conftest.py)<br>follow identical parsing and validation paths for global governance rules.<br><br><pre>Args:<br>&nbsp;&nbsp;&nbsp;&nbsp;- base_schema (dict): The raw, unparsed JSON schema loaded from base.schema.json.<br><br>Returns:<br>&nbsp;&nbsp;&nbsp;&nbsp;tuple: (global_rules, flattened_severity_levels, blocking_severities)<br><br>Raises:<br>&nbsp;&nbsp;&nbsp;&nbsp;RuntimeError: If the configuration is missing or structurally invalid.<br></pre> |
+| Function                         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| :------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **load_json_schema_file**        | Loads and parses a JSON schema file for the validation engine.<br>Enforces a hard crash (exit code 1) if the mandatory schema file is missing.<br><br><pre>Args:<br>&nbsp;&nbsp;&nbsp;&nbsp;- schema_path (str): File path to the JSON schema.<br><br>Returns:<br>&nbsp;&nbsp;&nbsp;&nbsp;dict: Parsed JSON schema.<br><br>Raises:<br>&nbsp;&nbsp;&nbsp;&nbsp;FileNotFoundError: If the schema file is not found.<br></pre>                             |
+| **validate_severity_schema**     | Validates that the provided schema severity levels comprehensively map<br>every SeverityRule defined in the system. Ensures no configuration drift.<br><br><pre>Args:<br>&nbsp;&nbsp;&nbsp;&nbsp;- schema_levels (dict): Dictionary mapping rule strings to severity strings.<br><br>Returns:<br>&nbsp;&nbsp;&nbsp;&nbsp;None<br><br>Raises:<br>&nbsp;&nbsp;&nbsp;&nbsp;RuntimeError: If a rule is missing or unrecognized.<br></pre>                   |
+| **validate_blocking_severities** | Validates that the provided schema blocking severities comprehensively map<br>every BlockingSeverity defined in the system. Ensures no configuration drift.<br><br><pre>Args:<br>&nbsp;&nbsp;&nbsp;&nbsp;- schema_blocking (list): List of blocking severity strings from base.schema.json.<br><br>Returns:<br>&nbsp;&nbsp;&nbsp;&nbsp;None<br><br>Raises:<br>&nbsp;&nbsp;&nbsp;&nbsp;RuntimeError: If a severity is missing or unrecognized.<br></pre> |
 
 ### `engine/control/framework/artifacts.py`
 
@@ -130,10 +128,12 @@ This index documents the internal functions and classes of the Fitness Function 
 | **ExecutableFramework.validator_bindings**    | _(No docstring provided)_ |
 | **ExecutableFramework.relationship_ontology** | _(No docstring provided)_ |
 | **ExecutableFramework.blocking_severities**   | _(No docstring provided)_ |
+| **ExecutableFramework.validation_rules**      | _(No docstring provided)_ |
 | **\_require**                                 | _(No docstring provided)_ |
 | **\_plain_family**                            | _(No docstring provided)_ |
 | **\_relative_regular_file**                   | _(No docstring provided)_ |
 | **\_compile_identity**                        | _(No docstring provided)_ |
+| **\_freeze_mapping**                          | _(No docstring provided)_ |
 | **\_compile_governance**                      | _(No docstring provided)_ |
 | **\_compile_extensions**                      | _(No docstring provided)_ |
 | **\_lifecycle_state**                         | _(No docstring provided)_ |
@@ -408,6 +408,24 @@ This index documents the internal functions and classes of the Fitness Function 
 | **ValidationReport.outcome**         | _(No docstring provided)_ |
 | **ValidationReport.semantic_state**  | _(No docstring provided)_ |
 
+### `engine/control/validation/pipeline.py`
+
+| Function                           | Description               |
+| :--------------------------------- | :------------------------ |
+| **\_source_path**                  | _(No docstring provided)_ |
+| **\_freeze**                       | _(No docstring provided)_ |
+| **\_thaw**                         | _(No docstring provided)_ |
+| **SourceDocument.content_sha256**  | _(No docstring provided)_ |
+| **SourceDocument.source_id**       | _(No docstring provided)_ |
+| **ArtifactCandidate.candidate_id** | _(No docstring provided)_ |
+| **parse_source_document**          | _(No docstring provided)_ |
+| **build_artifact_candidate**       | _(No docstring provided)_ |
+| **\_finding**                      | _(No docstring provided)_ |
+| **\_report_id**                    | _(No docstring provided)_ |
+| **validate_candidate**             | _(No docstring provided)_ |
+| **promote_candidate**              | _(No docstring provided)_ |
+| **promote_candidates**             | _(No docstring provided)_ |
+
 ### `engine/control/validators/base.py`
 
 | Function                                     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
@@ -526,11 +544,6 @@ This index documents the internal functions and classes of the Fitness Function 
 %%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#e6e6fa', 'primaryTextColor': '#333', 'primaryBorderColor': '#7a67ee', 'lineColor': '#888', 'edgeLabelBackground': '#f4f4f4'}}}%%
 graph TD
     Main(("1. Start CLI<br><b>cli.py - main()</b>")) --> ParseArgs[1.1. Parse CLI arguments]
-    ParseArgs --> LoadGlobal["1.2. <b>loader.py - load_json_schema_file()</b>: Load base schema (global rules)"]
-    LoadGlobal --> CheckGlobalRules{"Valid global rules?"}
-    CheckGlobalRules -->|No| ExitFailGlobal((sys.exit 1))
-    CheckGlobalRules -->|Yes| IsConfigValid{"Valid Global Config & Severity? </br> <b>loader.py - (validate_global_config_structure, validate_severity_schema, validate_blocking_severities)</b>"}
-    IsConfigValid -->|No| ExitFailConfig((sys.exit 1))
     IsConfigValid -->|Yes| CheckCwd["1.3. <b>_validate_execution_root()</b>: Valid CWD?"]
     CheckCwd -->|No| ExitFailCwd((sys.exit 1))
     CheckCwd -->|Yes| PreScan[["1.4. <b>crawler.py - build_metadata_registry()</b>: Collect Document Metadata from all files & validate unique IDs"]]

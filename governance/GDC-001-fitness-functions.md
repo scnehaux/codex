@@ -3,7 +3,7 @@ doc_meta:
   id: GDC-001
   title: Architecture Fitness Functions & Compliance Engine
   owner: Architecture Authority
-  version: 0.1.8
+  version: 0.1.9
   status: draft
   classification: public
   governed_by: [GDC-000]
@@ -144,7 +144,8 @@ codex/
 │   │   │   │   ├── contracts.py
 │   │   │   │   └── graph.py
 │   │   │   ├── validation/
-│   │   │   │   └── contracts.py
+│   │   │   │   ├── contracts.py
+│   │   │   │   └── pipeline.py
 │   │   │   └── validators/        # (The core policy sandbox)
 │   │   │       ├── base.py
 │   │   │       ├── domains/       # (Federated domain-specific triad scripts)
@@ -266,7 +267,8 @@ codex/
 │       │   │   ├── test_contracts.py
 │       │   │   └── test_graph.py
 │       │   ├── validation/
-│       │   │   └── test_contracts.py
+│       │   │   ├── test_contracts.py
+│       │   │   └── test_pipeline.py
 │       │   └── validators/       # (The core policy sandbox)
 │       │       ├── domains/      # (Federated domain-specific triad scripts)
 │       │       │   ├── test_adr_validator.py
@@ -383,93 +385,102 @@ The global baseline applies universally to all architecture documents across the
 <!-- lint_disable_start: prohibited_words (reason: governance engine documentation) -->
 <!-- AUTO-GENERATED-RULES:START -->
 
-| Rule Category       | Parameter                                                  | Enforcement / Value                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| :------------------ | :--------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Structure Rules** | Artifact Directories                                       | **Gdc**: `governance`<br>**Ead**: `enterprise`<br>**Std**: `standards`<br>**Pad**: `domains`<br>**Sad**: `systems`<br>**Adr**: `decisions`<br>**Tdd**: `designs`                                                                                                                                                                                                                                                                                                                                                                         |
-| **Structure Rules** | Ignored Files                                              | **Exact Matches**: <ul><li>`readme.md`</li><li>`index.md`</li><li>`contributing.md`</li><li>`changelog.md`</li><li>`maturity.md`</li><li>`traceability.md`</li></ul><br>**Patterns**: <ul><li>`[\\/]templates[\\/]`</li><li>`[\\/]scratch[\\/]`</li></ul>                                                                                                                                                                                                                                                                                |
-| **Structure Rules** | Max Directory Depth                                        | `3`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| **Content Rules**   | Max Review Age Days                                        | **Value**: `365`<br>**Error Message**: `Document review age of {age_days} days exceeds limit of {limit} days.`                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| **Content Rules**   | Min Content Length Chars                                   | **Value**: `50`<br>**Error Message**: `Section '{section_name}' content length ({length} chars) is below minimum of {min_length} chars.`                                                                                                                                                                                                                                                                                                                                                                                                 |
-| **Content Rules**   | Prohibited Words                                           | **Patterns**: <ul><li>`\bmaybe\b`</li><li>`\bprobably\b`</li><li>`\bshould consider\b`</li><li>`\bTBD\b`</li><li>`\bcoming soon\b`</li><li>`\band so on\b`</li><li>`\bseamless(?:ly)?\b`</li><li>`\bobviously\b`</li><li>`\bblazingly\b`</li><li>`\btrivially\b`</li></ul><br>**Error Message**: `Prohibited boilerplate or hesitant word detected. Use definitive, professional language.`                                                                                                                                              |
-| **Content Rules**   | Ambiguity Rules                                            | **Patterns**: <ul><li>`\b(highly\|very\|extremely\|super\|incredibly)\s+(scalable\|fast\|secure\|reliable\|available\|performant\|robust\|efficient)\b`</li></ul><br>**Error Message**: `Vague claim detected. Must be quantified with metrics.`                                                                                                                                                                                                                                                                                         |
-| **Severity Levels** | 0. Engine Execution Domain (System Fatality)               | **Unreadable Artifact**: `CRITICAL`<br>**Corrupt Frontmatter**: `CRITICAL`<br>**Unknown Document Type**: `CRITICAL`<br>**Missing Validator**: `CRITICAL`<br>**Invalid Lint Disable**: `ERROR`                                                                                                                                                                                                                                                                                                                                            |
-| **Severity Levels** | 1. Topology & Identity Domain (Graph & Lineage)            | **Circular Dependency**: `CRITICAL`<br>**Cross Reference Missing**: `ERROR`<br>**Duplicate Id**: `CRITICAL`<br>**Inline Reference Missing**: `WARNING`<br>**Orphan Document**: `ERROR`<br>**Traceability Violation**: `ERROR`<br>**Broken Internal Link**: `ERROR`                                                                                                                                                                                                                                                                       |
-| **Severity Levels** | 2. Structural Compliance Domain (Shape & Completeness)     | **Missing Metadata**: `ERROR`<br>**Missing Required Subsection**: `ERROR`<br>**Missing Section**: `ERROR`<br>**Missing Section Keyword**: `ERROR`<br>**Schema Validation Failed**: `CRITICAL`<br>**Subsection Order Violation**: `WARNING`                                                                                                                                                                                                                                                                                               |
-| **Severity Levels** | 3. Semantic & Quality Domain (Meaning & Language)          | **Ambiguity Rules**: `WARNING`<br>**Nfr Taxonomy Violation**: `ERROR`<br>**Prohibited Words**: `ERROR`<br>**Structural Integrity Violation**: `CRITICAL`<br>**Stylistic Deviation**: `WARNING`                                                                                                                                                                                                                                                                                                                                           |
-| **Severity Levels** | 4. Lifecycle & Environment Domain (Time, Space, & State)   | **Approved Version Not Stable**: `ERROR`<br>**Compliance Filename Match**: `ERROR`<br>**Compliance Macro Directory**: `ERROR`<br>**Exception Expired**: `ERROR`<br>**Review Age Violation**: `WARNING`<br>**Version Bump Required**: `ERROR`<br>**Architecture Admission Violation**: `CRITICAL`<br>**Lifecycle Age Violation**: `ERROR`<br>**Relaxed Validation Applied**: `INFO`<br>**Temporal Integrity Violation**: `ERROR`<br>**Repository Classification Violation**: `CRITICAL`<br>**Repository Visibility Mismatch**: `CRITICAL` |
-| **Severity Levels** | 5. Architecture Constraints Domain (Hard Technical Limits) | **Operational Stability Violation**: `ERROR`<br>**Technology Hold Violation**: `CRITICAL`<br>**Unapproved Technology**: `ERROR`<br>**Technology Policy Unavailable**: `CRITICAL`                                                                                                                                                                                                                                                                                                                                                         |
-| **Governance**      | Blocking Severities                                        | `['CRITICAL', 'ERROR']`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| Rule Category       | Parameter                           | Enforcement / Value                                                                                                                                                                                                                                                                                                                                                                         |
+| :------------------ | :---------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Structure Rules** | Artifact Directories                | **Adr**: `decisions`<br>**Ead**: `enterprise`<br>**Gdc**: `governance`<br>**Pad**: `domains`<br>**Sad**: `systems`<br>**Std**: `standards`<br>**Tdd**: `designs`                                                                                                                                                                                                                            |
+| **Structure Rules** | Ignored Files                       | **Exact Matches**: <ul><li>`readme.md`</li><li>`index.md`</li><li>`contributing.md`</li><li>`changelog.md`</li><li>`maturity.md`</li><li>`traceability.md`</li></ul><br>**Patterns**: <ul><li>`[\\/]templates[\\/]`</li><li>`[\\/]scratch[\\/]`</li></ul>                                                                                                                                   |
+| **Structure Rules** | Max Directory Depth                 | `3`                                                                                                                                                                                                                                                                                                                                                                                         |
+| **Content Rules**   | Ambiguity Rules                     | **Error Message**: `Vague claim detected. Must be quantified with metrics.`<br>**Patterns**: <ul><li>`\b(highly\|very\|extremely\|super\|incredibly)\s+(scalable\|fast\|secure\|reliable\|available\|performant\|robust\|efficient)\b`</li></ul>                                                                                                                                            |
+| **Content Rules**   | Max Review Age Days                 | **Error Message**: `Document review age of {age_days} days exceeds limit of {limit} days.`<br>**Value**: `365`                                                                                                                                                                                                                                                                              |
+| **Content Rules**   | Min Content Length Chars            | **Error Message**: `Section '{section_name}' content length ({length} chars) is below minimum of {min_length} chars.`<br>**Value**: `50`                                                                                                                                                                                                                                                    |
+| **Content Rules**   | Nfr Taxonomy                        | **Pillars**: <ul><li>`Operational Excellence`</li><li>`Security`</li><li>`Reliability`</li><li>`Performance Efficiency`</li><li>`Cost Optimization`</li><li>`Sustainability`</li></ul>                                                                                                                                                                                                      |
+| **Content Rules**   | Prohibited Words                    | **Error Message**: `Prohibited boilerplate or hesitant word detected. Use definitive, professional language.`<br>**Patterns**: <ul><li>`\bmaybe\b`</li><li>`\bprobably\b`</li><li>`\bshould consider\b`</li><li>`\bTBD\b`</li><li>`\bcoming soon\b`</li><li>`\band so on\b`</li><li>`\bseamless(?:ly)?\b`</li><li>`\bobviously\b`</li><li>`\bblazingly\b`</li><li>`\btrivially\b`</li></ul> |
+| **Severity Levels** | Ambiguity Rules                     | `WARNING`                                                                                                                                                                                                                                                                                                                                                                                   |
+| **Severity Levels** | Approved Version Not Stable         | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Architecture Admission Violation    | `CRITICAL`                                                                                                                                                                                                                                                                                                                                                                                  |
+| **Severity Levels** | Broken Internal Link                | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Circular Dependency                 | `CRITICAL`                                                                                                                                                                                                                                                                                                                                                                                  |
+| **Severity Levels** | Compliance Filename Match           | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Compliance Macro Directory          | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Corrupt Frontmatter                 | `CRITICAL`                                                                                                                                                                                                                                                                                                                                                                                  |
+| **Severity Levels** | Cross Reference Missing             | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Duplicate Id                        | `CRITICAL`                                                                                                                                                                                                                                                                                                                                                                                  |
+| **Severity Levels** | Exception Expired                   | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Inline Reference Missing            | `WARNING`                                                                                                                                                                                                                                                                                                                                                                                   |
+| **Severity Levels** | Invalid Lint Disable                | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Lifecycle Age Violation             | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Missing Metadata                    | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Missing Required Subsection         | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Missing Section                     | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Missing Section Keyword             | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Missing Validator                   | `CRITICAL`                                                                                                                                                                                                                                                                                                                                                                                  |
+| **Severity Levels** | Nfr Taxonomy Violation              | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Operational Stability Violation     | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Orphan Document                     | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Prohibited Words                    | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Relaxed Validation Applied          | `INFO`                                                                                                                                                                                                                                                                                                                                                                                      |
+| **Severity Levels** | Repository Classification Violation | `CRITICAL`                                                                                                                                                                                                                                                                                                                                                                                  |
+| **Severity Levels** | Repository Visibility Mismatch      | `CRITICAL`                                                                                                                                                                                                                                                                                                                                                                                  |
+| **Severity Levels** | Review Age Violation                | `WARNING`                                                                                                                                                                                                                                                                                                                                                                                   |
+| **Severity Levels** | Schema Validation Failed            | `CRITICAL`                                                                                                                                                                                                                                                                                                                                                                                  |
+| **Severity Levels** | Structural Integrity Violation      | `CRITICAL`                                                                                                                                                                                                                                                                                                                                                                                  |
+| **Severity Levels** | Stylistic Deviation                 | `WARNING`                                                                                                                                                                                                                                                                                                                                                                                   |
+| **Severity Levels** | Subsection Order Violation          | `WARNING`                                                                                                                                                                                                                                                                                                                                                                                   |
+| **Severity Levels** | Technology Hold Violation           | `CRITICAL`                                                                                                                                                                                                                                                                                                                                                                                  |
+| **Severity Levels** | Technology Policy Unavailable       | `CRITICAL`                                                                                                                                                                                                                                                                                                                                                                                  |
+| **Severity Levels** | Temporal Integrity Violation        | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Traceability Violation              | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Unapproved Technology               | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Severity Levels** | Unknown Document Type               | `CRITICAL`                                                                                                                                                                                                                                                                                                                                                                                  |
+| **Severity Levels** | Unreadable Artifact                 | `CRITICAL`                                                                                                                                                                                                                                                                                                                                                                                  |
+| **Severity Levels** | Version Bump Required               | `ERROR`                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Governance**      | Blocking Severities                 | `['CRITICAL', 'ERROR']`                                                                                                                                                                                                                                                                                                                                                                     |
 
 ### Severity Levels
 
-#### 0. Engine Execution Domain (System Fatality)
-
-| Error Code              | Severity (CI Action) |
-| :---------------------- | :------------------- |
-| `unreadable_artifact`   | **CRITICAL**         |
-| `corrupt_frontmatter`   | **CRITICAL**         |
-| `unknown_document_type` | **CRITICAL**         |
-| `missing_validator`     | **CRITICAL**         |
-| `invalid_lint_disable`  | **ERROR**            |
-
-#### 1. Topology & Identity Domain (Graph & Lineage)
-
-| Error Code                 | Severity (CI Action) |
-| :------------------------- | :------------------- |
-| `circular_dependency`      | **CRITICAL**         |
-| `cross_reference_missing`  | **ERROR**            |
-| `duplicate_id`             | **CRITICAL**         |
-| `inline_reference_missing` | **WARNING**          |
-| `orphan_document`          | **ERROR**            |
-| `traceability_violation`   | **ERROR**            |
-| `broken_internal_link`     | **ERROR**            |
-
-#### 2. Structural Compliance Domain (Shape & Completeness)
-
-| Error Code                    | Severity (CI Action) |
-| :---------------------------- | :------------------- |
-| `missing_metadata`            | **ERROR**            |
-| `missing_required_subsection` | **ERROR**            |
-| `missing_section`             | **ERROR**            |
-| `missing_section_keyword`     | **ERROR**            |
-| `schema_validation_failed`    | **CRITICAL**         |
-| `subsection_order_violation`  | **WARNING**          |
-
-#### 3. Semantic & Quality Domain (Meaning & Language)
-
-| Error Code                       | Severity (CI Action) |
-| :------------------------------- | :------------------- |
-| `ambiguity_rules`                | **WARNING**          |
-| `nfr_taxonomy_violation`         | **ERROR**            |
-| `prohibited_words`               | **ERROR**            |
-| `structural_integrity_violation` | **CRITICAL**         |
-| `stylistic_deviation`            | **WARNING**          |
-
-#### 4. Lifecycle & Environment Domain (Time, Space, & State)
+#### Runtime Policy
 
 | Error Code                            | Severity (CI Action) |
 | :------------------------------------ | :------------------- |
+| `ambiguity_rules`                     | **WARNING**          |
 | `approved_version_not_stable`         | **ERROR**            |
+| `architecture_admission_violation`    | **CRITICAL**         |
+| `broken_internal_link`                | **ERROR**            |
+| `circular_dependency`                 | **CRITICAL**         |
 | `compliance_filename_match`           | **ERROR**            |
 | `compliance_macro_directory`          | **ERROR**            |
+| `corrupt_frontmatter`                 | **CRITICAL**         |
+| `cross_reference_missing`             | **ERROR**            |
+| `duplicate_id`                        | **CRITICAL**         |
 | `exception_expired`                   | **ERROR**            |
-| `review_age_violation`                | **WARNING**          |
-| `version_bump_required`               | **ERROR**            |
-| `architecture_admission_violation`    | **CRITICAL**         |
+| `inline_reference_missing`            | **WARNING**          |
+| `invalid_lint_disable`                | **ERROR**            |
 | `lifecycle_age_violation`             | **ERROR**            |
+| `missing_metadata`                    | **ERROR**            |
+| `missing_required_subsection`         | **ERROR**            |
+| `missing_section`                     | **ERROR**            |
+| `missing_section_keyword`             | **ERROR**            |
+| `missing_validator`                   | **CRITICAL**         |
+| `nfr_taxonomy_violation`              | **ERROR**            |
+| `operational_stability_violation`     | **ERROR**            |
+| `orphan_document`                     | **ERROR**            |
+| `prohibited_words`                    | **ERROR**            |
 | `relaxed_validation_applied`          | **INFO**             |
-| `temporal_integrity_violation`        | **ERROR**            |
 | `repository_classification_violation` | **CRITICAL**         |
 | `repository_visibility_mismatch`      | **CRITICAL**         |
-
-#### 5. Architecture Constraints Domain (Hard Technical Limits)
-
-| Error Code                        | Severity (CI Action) |
-| :-------------------------------- | :------------------- |
-| `operational_stability_violation` | **ERROR**            |
-| `technology_hold_violation`       | **CRITICAL**         |
-| `unapproved_technology`           | **ERROR**            |
-| `technology_policy_unavailable`   | **CRITICAL**         |
+| `review_age_violation`                | **WARNING**          |
+| `schema_validation_failed`            | **CRITICAL**         |
+| `structural_integrity_violation`      | **CRITICAL**         |
+| `stylistic_deviation`                 | **WARNING**          |
+| `subsection_order_violation`          | **WARNING**          |
+| `technology_hold_violation`           | **CRITICAL**         |
+| `technology_policy_unavailable`       | **CRITICAL**         |
+| `temporal_integrity_violation`        | **ERROR**            |
+| `traceability_violation`              | **ERROR**            |
+| `unapproved_technology`               | **ERROR**            |
+| `unknown_document_type`               | **CRITICAL**         |
+| `unreadable_artifact`                 | **CRITICAL**         |
+| `version_bump_required`               | **ERROR**            |
 
 | Rule Category              | Parameter              | Enforcement / Value                                                                                        |
 | :------------------------- | :--------------------- | :--------------------------------------------------------------------------------------------------------- |

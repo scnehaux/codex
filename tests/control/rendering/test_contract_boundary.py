@@ -43,7 +43,14 @@ def test_phase69_contract_locations_and_stable_contracts():
         )
     )
     phase = layout["phase6_9_contracts"]
-    assert phase["validation"]["contract"] == "ValidationReport"
+    assert phase["validation"]["pipeline"] == "engine/control/validation/pipeline.py"
+    assert {
+        "SourceDocument",
+        "ParsedArtifact",
+        "ArtifactCandidate",
+        "ValidationReport",
+    } <= set(phase["validation"]["contracts"])
+    assert phase["validation"]["promotion_gate"] == "pass-validation-report-required"
     assert phase["simulation"]["contract"] == "SimulationReport"
     assert phase["review"]["contract"] == "ArchitectureReview"
     assert phase["approval"]["contract"] == "ApprovalPackage"

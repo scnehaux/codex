@@ -1,16 +1,13 @@
 from tests.support.validators import make_validator
 import os
-import json
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", ".."))
 
 
 def _global_rules():
-    with open(
-        os.path.join(ROOT, "schemas", "base.schema.json"),
-        encoding="utf-8",
-    ) as f:
-        return json.load(f).get("x-global-config", {})
+    from tests.support.validators import runtime_rules
+
+    return runtime_rules()
 
 
 from engine.control.validators.domains.std_validator import STDValidator

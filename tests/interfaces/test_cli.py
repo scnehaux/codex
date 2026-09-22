@@ -1,11 +1,8 @@
 import datetime
 import pytest
-import os
 import sys
-from engine.control.config.severity import SeverityRule
 import importlib.util
 from engine.interfaces.cli import print_errors, lint_file, build_sarif
-from engine.control.config.constants import FRAMEWORK_ROOT
 from tests.support.repository import REPOSITORY_ROOT
 
 
@@ -32,16 +29,9 @@ def _write_md(
 
 
 def _global_rules():
-    from engine.interfaces.cli import load_json_schema_file
+    from tests.support.validators import runtime_rules
 
-    path = os.path.join(FRAMEWORK_ROOT, "schemas", "base.schema.json")
-    rules = load_json_schema_file(path).get("x-global-config", {})
-    if "severity_levels" in rules:
-        flat_sev = {}
-        for group, items in rules["severity_levels"].items():
-            flat_sev.update(items)
-        rules["severity_levels"] = flat_sev
-    return rules
+    return runtime_rules()
 
 
 def test_print_errors():
@@ -259,7 +249,7 @@ def test_lint_file_json_format(tmp_path):
 
 
 def test_load_json_schema_file_not_found():
-    from engine.interfaces.cli import load_json_schema_file
+    from engine.control.config.loader import load_json_schema_file
 
     with pytest.raises(FileNotFoundError):
         load_json_schema_file("non_existent.json")
@@ -553,233 +543,110 @@ def test_lint_file_with_disables_and_warnings(tmp_path):
 
 
 def test_tech_radar_failure(tmp_path, monkeypatch):
-    import sys
-    from engine.interfaces.cli import main
+    import engine.interfaces.cli as linter
 
-    fm = "doc_meta:\n  id: SAD-TEST-001"
-    _write_md(tmp_path, "SAD-TEST-001.sad.md", fm)
+    (tmp_path / ".git").mkdir(exist_ok=True)
+    radar = tmp_path / "tech-radar.yaml"
+    schema = tmp_path / "tech-radar.schema.json"
+    radar.write_text("invalid_radar: true", encoding="utf-8")
+    schema.write_text('{"type": "object", "required": ["version"]}', encoding="utf-8")
 
-    # Create invalid tech-radar.yaml inside mocked directories
-    (tmp_path / "enterprise").mkdir()
-    (tmp_path / "schemas").mkdir(parents=True)
-
-    radar = tmp_path / "enterprise" / "tech-radar.yaml"
-    radar.write_text("invalid_radar: true")
-
-    # We need a valid schema so it attempts to validate and fails
-    schema = tmp_path / "schemas" / "tech-radar.schema.json"
-    schema.write_text('{"type": "object", "required": ["version"]}')
-
-    # Mock schemas to force failure
+    monkeypatch.setattr(linter, "TECH_RADAR_YAML_PATH", str(radar))
+    monkeypatch.setattr(linter, "TECH_RADAR_SCHEMA_PATH", str(schema))
     monkeypatch.setattr(sys, "argv", ["cli.py", "--target", str(tmp_path)])
-    monkeypatch.setattr("engine.control.linting.facade.FRAMEWORK_ROOT", str(tmp_path))
-    monkeypatch.setattr(
-        "engine.interfaces.cli.BASE_SCHEMA_PATH", "fake"
-    )  # Just so it doesn't crash on base schema loading
 
-    def mock_load_json(path):
-        return {
-            "x-global-config": {
-                "severity_levels": {
-                    "mock_group": {r.value: "ERROR" for r in SeverityRule}
-                },
-                "blocking_severities": ["CRITICAL", "ERROR"],
-                "structure_rules": {
-                    "artifact_directories": {},
-                    "max_directory_depth": 3,
-                    "ignored_files": {},
-                },
-                "content_rules": {
-                    "lifecycle_age_rules": [],
-                    "min_content_length_chars": {"value": 50},
-                    "max_review_age_days": {"value": 365},
-                },
-            }
-        }
-
-    monkeypatch.setattr("engine.interfaces.cli.load_json_schema_file", mock_load_json)
-
-    with pytest.raises(SystemExit) as e:
-        main()
-
-    assert e.value.code == 1
+    with pytest.raises(SystemExit) as exc:
+        linter.main()
+    assert exc.value.code == 1
 
 
 def test_tech_radar_yaml_parse_error(tmp_path, monkeypatch):
-    """Test tech radar parsing exception."""
-    import sys
-    from engine.interfaces.cli import main
+    import engine.interfaces.cli as linter
 
-    _write_md(tmp_path, "SAD-TEST-001.sad.md", "doc_meta:\n  id: SAD-TEST-001")
-    (tmp_path / "enterprise").mkdir()
-    radar = tmp_path / "enterprise" / "tech-radar.yaml"
-    radar.write_text("invalid\n  yaml: : :")
-    schema = tmp_path / "enterprise" / "schema.json"
-    schema.write_text("{}")
+    (tmp_path / ".git").mkdir(exist_ok=True)
+    radar = tmp_path / "tech-radar.yaml"
+    schema = tmp_path / "tech-radar.schema.json"
+    radar.write_text("invalid\n  yaml: : :", encoding="utf-8")
+    schema.write_text("{}", encoding="utf-8")
 
+    monkeypatch.setattr(linter, "TECH_RADAR_YAML_PATH", str(radar))
+    monkeypatch.setattr(linter, "TECH_RADAR_SCHEMA_PATH", str(schema))
     monkeypatch.setattr(sys, "argv", ["cli.py", "--target", str(tmp_path)])
-    monkeypatch.setattr("engine.interfaces.cli.TECH_RADAR_YAML_PATH", str(radar))
-    monkeypatch.setattr("engine.interfaces.cli.TECH_RADAR_SCHEMA_PATH", str(schema))
-    monkeypatch.setattr("engine.interfaces.cli.BASE_SCHEMA_PATH", "fake")
-    monkeypatch.setattr(
-        "engine.interfaces.cli.load_json_schema_file",
-        lambda p: {
-            "x-global-config": {
-                "severity_levels": {
-                    "mock_group": {r.value: "ERROR" for r in SeverityRule}
-                },
-                "blocking_severities": ["CRITICAL", "ERROR"],
-                "structure_rules": {
-                    "artifact_directories": {},
-                    "max_directory_depth": 3,
-                    "ignored_files": {},
-                },
-                "content_rules": {
-                    "lifecycle_age_rules": [],
-                    "min_content_length_chars": {"value": 50},
-                    "max_review_age_days": {"value": 365},
-                },
-            }
-        },
-    )
 
-    with pytest.raises(SystemExit) as e:
-        main()
-    assert e.value.code == 1
+    with pytest.raises(SystemExit) as exc:
+        linter.main()
+    assert exc.value.code == 1
 
 
 def test_tech_radar_validation_error_json(tmp_path, monkeypatch):
-    """Test tech radar jsonschema error in JSON mode."""
-    import sys
-    from engine.interfaces.cli import main
+    import engine.interfaces.cli as linter
 
-    _write_md(tmp_path, "SAD-TEST-001.sad.md", "doc_meta:\n  id: SAD-TEST-001")
-    (tmp_path / "enterprise").mkdir()
-    radar = tmp_path / "enterprise" / "tech-radar.yaml"
-    radar.write_text(
-        "version: 1"
-    )  # valid yaml, invalid schema (assuming missing required fields)
-    schema = tmp_path / "enterprise" / "schema.json"
-    schema.write_text('{"type": "object", "required": ["missing_field"]}')
+    (tmp_path / ".git").mkdir(exist_ok=True)
+    radar = tmp_path / "tech-radar.yaml"
+    schema = tmp_path / "tech-radar.schema.json"
+    radar.write_text("version: 1", encoding="utf-8")
+    schema.write_text(
+        '{"type": "object", "required": ["missing_field"]}',
+        encoding="utf-8",
+    )
 
+    monkeypatch.setattr(linter, "TECH_RADAR_YAML_PATH", str(radar))
+    monkeypatch.setattr(linter, "TECH_RADAR_SCHEMA_PATH", str(schema))
     monkeypatch.setattr(
         sys, "argv", ["cli.py", "--target", str(tmp_path), "--format", "json"]
     )
-    monkeypatch.setattr("engine.interfaces.cli.TECH_RADAR_YAML_PATH", str(radar))
-    monkeypatch.setattr("engine.interfaces.cli.TECH_RADAR_SCHEMA_PATH", str(schema))
-    monkeypatch.setattr("engine.interfaces.cli.BASE_SCHEMA_PATH", "fake")
-    monkeypatch.setattr(
-        "engine.interfaces.cli.load_json_schema_file",
-        lambda p: {
-            "x-global-config": {
-                "severity_levels": {
-                    "mock_group": {r.value: "ERROR" for r in SeverityRule}
-                },
-                "blocking_severities": ["CRITICAL", "ERROR"],
-                "structure_rules": {
-                    "artifact_directories": {},
-                    "max_directory_depth": 3,
-                    "ignored_files": {},
-                },
-                "content_rules": {
-                    "lifecycle_age_rules": [],
-                    "min_content_length_chars": {"value": 50},
-                    "max_review_age_days": {"value": 365},
-                },
-            }
-        },
-    )
 
-    with pytest.raises(SystemExit) as e:
-        main()
-    assert e.value.code == 1
+    with pytest.raises(SystemExit) as exc:
+        linter.main()
+    assert exc.value.code == 1
 
 
 def test_main_filters(tmp_path, monkeypatch):
-    """Test Filter 2 (README) and Filter 3 (.copy.md)."""
-    import sys
-    from engine.interfaces.cli import main
+    from dataclasses import replace
+    import engine.interfaces.cli as linter
 
-    (tmp_path / "README.md").write_text("# Readme")
-    (tmp_path / "test.copy.md").write_text("# Copy")
+    (tmp_path / ".git").mkdir(exist_ok=True)
+    systems = tmp_path / "systems"
+    systems.mkdir()
+    (systems / "README.md").write_text("# Readme", encoding="utf-8")
+    (systems / "test.copy.md").write_text("# Copy", encoding="utf-8")
 
-    monkeypatch.setattr(sys, "argv", ["cli.py", "--target", str(tmp_path)])
-    monkeypatch.setattr("engine.control.linting.facade.FRAMEWORK_ROOT", str(tmp_path))
-    monkeypatch.setattr("engine.interfaces.cli.TECH_RADAR_YAML_PATH", "fake")
-    monkeypatch.setattr("engine.interfaces.cli.BASE_SCHEMA_PATH", "fake")
-    monkeypatch.setattr(
-        "engine.interfaces.cli.load_json_schema_file",
-        lambda p: {
-            "x-global-config": {
-                "severity_levels": {
-                    "mock_group": {r.value: "ERROR" for r in SeverityRule}
-                },
-                "blocking_severities": ["CRITICAL", "ERROR"],
-                "structure_rules": {
-                    "artifact_directories": {},
-                    "max_directory_depth": 3,
-                    "ignored_files": {
-                        "exact_matches": ["readme.md"],
-                        "patterns": [r".*\.copy\.md$"],
-                    },
-                },
-                "content_rules": {
-                    "lifecycle_age_rules": [],
-                    "min_content_length_chars": {"value": 50},
-                    "max_review_age_days": {"value": 365},
-                },
-            }
-        },
+    framework = linter.executable_framework()
+    repository = replace(
+        framework.governance.repository,
+        ignored_files=("readme.md",),
+        ignored_patterns=(r".*\.copy\.md$",),
     )
+    runtime = replace(
+        framework,
+        governance=replace(framework.governance, repository=repository),
+    )
+    monkeypatch.setattr(linter, "executable_framework", lambda: runtime)
+    monkeypatch.setattr(linter, "TECH_RADAR_YAML_PATH", "missing")
+    monkeypatch.setattr(sys, "argv", ["cli.py", "--target", str(systems)])
 
-    with pytest.raises(SystemExit) as e:
-        main()
-    assert e.value.code == 0
+    with pytest.raises(SystemExit) as exc:
+        linter.main()
+    assert exc.value.code == 0
 
 
 def test_main_global_auditors_json(tmp_path, monkeypatch):
-    """Test global auditor errors appending to JSON format output."""
-    import sys
     import engine.interfaces.cli as linter
 
-    _write_md(tmp_path, "SAD-TEST-001.sad.md", "doc_meta:\n  id: SAD-TEST-001")
-
+    (tmp_path / ".git").mkdir(exist_ok=True)
     monkeypatch.setattr(
         sys, "argv", ["cli.py", "--target", str(tmp_path), "--format", "json"]
     )
-    monkeypatch.setattr(linter, "TECH_RADAR_YAML_PATH", "fake")
-    monkeypatch.setattr(linter, "BASE_SCHEMA_PATH", "fake")
+    monkeypatch.setattr(linter, "TECH_RADAR_YAML_PATH", "missing")
     monkeypatch.setattr(
-        linter,
-        "load_json_schema_file",
-        lambda p: {
-            "x-global-config": {
-                "severity_levels": {
-                    "mock_group": {r.value: "ERROR" for r in SeverityRule}
-                },
-                "blocking_severities": ["CRITICAL", "ERROR"],
-                "structure_rules": {
-                    "artifact_directories": {},
-                    "max_directory_depth": 3,
-                    "ignored_files": {},
-                },
-                "content_rules": {
-                    "lifecycle_age_rules": [],
-                    "min_content_length_chars": {"value": 50},
-                    "max_review_age_days": {"value": 365},
-                },
-            }
-        },
+        linter, "build_metadata_registry", lambda *a, **k: (set(), {}, {})
     )
-
-    # Mock lint_file to pass cleanly so global auditors run
+    monkeypatch.setattr(linter, "gather_markdown_paths", lambda *a, **k: [])
     monkeypatch.setattr(
         linter,
         "lint_file",
-        lambda *args, **kwargs: ([], True, False, {"disabled": {}, "rejected": set()}),
+        lambda *a, **k: ([], True, False, {"disabled": {}, "rejected": set()}),
     )
-
-    # Mock auditors to return fake errors
     monkeypatch.setattr(
         linter,
         "audit_circular_dependencies",
@@ -814,98 +681,47 @@ def test_main_global_auditors_json(tmp_path, monkeypatch):
         lambda m, s: [("ERROR", "Hierarchy error", "file.md")],
     )
 
-    with pytest.raises(SystemExit) as e:
+    with pytest.raises(SystemExit) as exc:
         linter.main()
-    assert e.value.code == 1
+    assert exc.value.code == 1
 
 
 def test_main_directory_depth_violation(tmp_path, monkeypatch):
-    """Test max directory depth violation (CRITICAL-11) in cli.py."""
-    import sys
     import engine.interfaces.cli as linter
 
-    monkeypatch.chdir(tmp_path)
-
-    # Create a deep directory structure (4 levels deep)
+    (tmp_path / ".git").mkdir(exist_ok=True)
     deep_dir = tmp_path / "lvl1" / "lvl2" / "lvl3" / "lvl4"
     deep_dir.mkdir(parents=True)
     fpath = deep_dir / "SAD-TEST-001.sad.md"
-    fpath.write_text("doc_meta:\n  id: SAD-TEST-001")
+    fpath.write_text("doc_meta:\n  id: SAD-TEST-001", encoding="utf-8")
 
-    # We must mock os.path.relpath so that it treats tmp_path as '.' to get 4 levels deep
-    import os
-
-    original_relpath = os.path.relpath
-
-    def mock_relpath(path, start=None):
-        if path == str(fpath):
-            return "lvl1/lvl2/lvl3/lvl4/SAD-TEST-001.sad.md".replace("/", os.sep)
-        return original_relpath(path, start)
-
-    monkeypatch.setattr(os.path, "relpath", mock_relpath)
     monkeypatch.setattr(
         sys, "argv", ["cli.py", "--target", str(deep_dir), "--format", "json"]
     )
-    monkeypatch.setattr(linter, "TECH_RADAR_YAML_PATH", "fake")
-    monkeypatch.setattr(linter, "BASE_SCHEMA_PATH", "fake")
+    monkeypatch.setattr(linter, "TECH_RADAR_YAML_PATH", "missing")
     monkeypatch.setattr(
-        linter,
-        "load_json_schema_file",
-        lambda p: {
-            "x-global-config": {
-                "severity_levels": {
-                    "mock_group": {r.value: "ERROR" for r in SeverityRule}
-                },
-                "blocking_severities": ["CRITICAL", "ERROR"],
-                "structure_rules": {
-                    "artifact_directories": {},
-                    "max_directory_depth": 3,
-                    "ignored_files": {},
-                },
-                "content_rules": {
-                    "lifecycle_age_rules": [],
-                    "min_content_length_chars": {"value": 50},
-                    "max_review_age_days": {"value": 365},
-                },
-            }
-        },
+        linter, "build_metadata_registry", lambda *a, **k: (set(), {}, {})
     )
-    monkeypatch.setattr(
-        linter, "build_metadata_registry", lambda *args, **kwargs: (set(), {}, {})
-    )
+    monkeypatch.setattr(linter, "gather_markdown_paths", lambda *a, **k: [str(fpath)])
 
-    with pytest.raises(SystemExit) as e:
+    with pytest.raises(SystemExit) as exc:
         linter.main()
-    assert e.value.code == 1
+    assert exc.value.code == 1
 
 
 def test_main_skipped_target_json(tmp_path, monkeypatch):
-    """Test skipped target warning in JSON format."""
-    import sys
-    from engine.interfaces.cli import main
+    import engine.interfaces.cli as linter
 
+    (tmp_path / ".git").mkdir(exist_ok=True)
     invalid_dir = tmp_path / "invalid_dir"
     invalid_dir.mkdir()
-    (tmp_path / ".git").mkdir()
-    fpath = invalid_dir / "target.md"
-    fpath.write_text("content")
+    (invalid_dir / "target.md").write_text("content", encoding="utf-8")
 
-    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(linter, "TECH_RADAR_YAML_PATH", "missing")
     monkeypatch.setattr(
         sys, "argv", ["cli.py", "--target", str(invalid_dir), "--format", "json"]
     )
-    monkeypatch.setattr("engine.control.linting.facade.FRAMEWORK_ROOT", str(tmp_path))
-    monkeypatch.setattr("engine.interfaces.cli.BASE_SCHEMA_PATH", "fake")
 
-    def mock_load_json(path):
-        return {
-            "x-global-config": {
-                "structure_rules": {"artifact_directories": {"01": "allowed_dir"}}
-            }
-        }
-
-    monkeypatch.setattr("engine.interfaces.cli.load_json_schema_file", mock_load_json)
-
-    with pytest.raises(SystemExit) as e:
-        main()
-    assert e.value.code == 1
+    with pytest.raises(SystemExit) as exc:
+        linter.main()
+    assert exc.value.code == 1

@@ -96,6 +96,7 @@ class BaseValidator:
         self.severity_levels = severity_levels
         self.blocking_severities = blocking_severities
         self.errors: list[tuple[str, str]] = []
+        self.finding_records: list[tuple[str, str, str]] = []
         # Cross-drive paths are already blocked by crawler.py, so relpath is guaranteed to succeed.
         self.rel_path = os.path.relpath(file_path, ".").replace("\\", "/")
         self.filename = os.path.basename(file_path)
@@ -293,6 +294,7 @@ class BaseValidator:
             else:
                 return
 
+        self.finding_records.append((rule_id, severity, message))
         self.errors.append((severity, message))
 
     def validate(self) -> list[tuple[str, str]]:

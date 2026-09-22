@@ -4,10 +4,96 @@ owns:
 - governance-policy-references
 - severity-policy-references
 data:
-  global_config: schemas/base.schema.json#x-global-config
   normative_control_registry: governance/normative-control-registry.yaml
   severity_evidence_registry: governance/severity-enforcement-registry.yaml
   scm_enforcement_policy: governance/scm/enforcement-policy.yaml
   blocking_severities:
   - CRITICAL
   - ERROR
+  repository_policy:
+    ignored_files:
+    - readme.md
+    - index.md
+    - contributing.md
+    - changelog.md
+    - maturity.md
+    - traceability.md
+    ignored_patterns:
+    - '[\\/]templates[\\/]'
+    - '[\\/]scratch[\\/]'
+    max_directory_depth: 3
+  content_rules:
+    max_review_age_days:
+      value: 365
+      error_message: Document review age of {age_days} days exceeds limit of {limit}
+        days.
+    min_content_length_chars:
+      value: 50
+      error_message: Section '{section_name}' content length ({length} chars) is below
+        minimum of {min_length} chars.
+    prohibited_words:
+      patterns:
+      - \bmaybe\b
+      - \bprobably\b
+      - \bshould consider\b
+      - \bTBD\b
+      - \bcoming soon\b
+      - \band so on\b
+      - \bseamless(?:ly)?\b
+      - \bobviously\b
+      - \bblazingly\b
+      - \btrivially\b
+      error_message: Prohibited boilerplate or hesitant word detected. Use definitive,
+        professional language.
+    ambiguity_rules:
+      patterns:
+      - \b(highly|very|extremely|super|incredibly)\s+(scalable|fast|secure|reliable|available|performant|robust|efficient)\b
+      error_message: Vague claim detected. Must be quantified with metrics.
+    nfr_taxonomy:
+      pillars:
+      - Operational Excellence
+      - Security
+      - Reliability
+      - Performance Efficiency
+      - Cost Optimization
+      - Sustainability
+  severity_levels:
+    ambiguity_rules: WARNING
+    approved_version_not_stable: ERROR
+    architecture_admission_violation: CRITICAL
+    broken_internal_link: ERROR
+    circular_dependency: CRITICAL
+    compliance_filename_match: ERROR
+    compliance_macro_directory: ERROR
+    corrupt_frontmatter: CRITICAL
+    cross_reference_missing: ERROR
+    duplicate_id: CRITICAL
+    exception_expired: ERROR
+    inline_reference_missing: WARNING
+    invalid_lint_disable: ERROR
+    lifecycle_age_violation: ERROR
+    missing_metadata: ERROR
+    missing_required_subsection: ERROR
+    missing_section: ERROR
+    missing_section_keyword: ERROR
+    missing_validator: CRITICAL
+    nfr_taxonomy_violation: ERROR
+    operational_stability_violation: ERROR
+    orphan_document: ERROR
+    prohibited_words: ERROR
+    relaxed_validation_applied: INFO
+    repository_classification_violation: CRITICAL
+    repository_visibility_mismatch: CRITICAL
+    review_age_violation: WARNING
+    schema_validation_failed: CRITICAL
+    structural_integrity_violation: CRITICAL
+    stylistic_deviation: WARNING
+    subsection_order_violation: WARNING
+    technology_hold_violation: CRITICAL
+    technology_policy_unavailable: CRITICAL
+    temporal_integrity_violation: ERROR
+    traceability_violation: ERROR
+    unapproved_technology: ERROR
+    unknown_document_type: CRITICAL
+    unreadable_artifact: CRITICAL
+    version_bump_required: ERROR

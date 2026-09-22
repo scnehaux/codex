@@ -766,6 +766,27 @@ ValidationReport
 - full structural, lifecycle, relationship, and governance validation occurs before canonical promotion
 - invalid candidates remain available for diagnostics but cannot become canonical repository knowledge
 
+### Slice 11.5 implementation evidence
+
+Status: **DONE on governed merge of this slice.**
+
+`base.schema.json` is structural-only. Repository discovery policy, content rules,
+severity mapping, blocking severities and the previously hard-coded NFR taxonomy are
+owned by `governance/framework/contracts/governance-policy.yaml` and exposed through
+`ExecutableFramework`. The CLI, validators, test support and generated governance
+documentation consume that compiled policy rather than `x-global-config`.
+
+`engine/control/validation/pipeline.py` establishes immutable `SourceDocument`,
+`ParsedArtifact` and `ArtifactCandidate` states, deterministic `ValidationReport`
+production and a fail-closed promotion boundary. Existing structural/domain
+validators are reused rather than reimplemented. Malformed or invalid candidates
+remain inspectable with deterministic findings but cannot be promoted; candidate
+sets additionally fail promotion when relationship DAG validation fails.
+
+This slice deliberately does not claim revision-bound provenance or a canonical
+repository snapshot. Those trust boundaries remain Slices 11.6 and 11.7.
+REC-11-007 records the schema/config authority and promotion-boundary decision.
+
 ## Slice 11.6 — Provenance-Bound Repository Ingestion
 
 ### Target

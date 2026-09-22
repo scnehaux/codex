@@ -60,12 +60,8 @@ def format_enum(prop_def):
     return ""
 
 
-def generate_from_x_global_config(data):
-    """
-    Generate a markdown table from the custom `global_rules` block used in
-    the global schema (base.schema.json). This outlines fundamental repository rules.
-    """
-    x_config = data.get("x-global-config", {})
+def generate_from_runtime_policy(x_config):
+    """Generate a markdown table from compiled runtime governance policy."""
     rules = x_config
     severity = x_config.get("severity_levels", {})
 
@@ -128,7 +124,12 @@ def generate_from_x_global_config(data):
         if rules:
             lines.extend(["", "### Severity Levels", ""])
 
-        for group_name, group_codes in severity_levels.items():
+        if all(isinstance(level, str) for level in severity_levels.values()):
+            severity_groups = {"Runtime Policy": severity_levels}
+        else:
+            severity_groups = severity_levels
+
+        for group_name, group_codes in severity_groups.items():
             lines.extend(
                 [
                     f"#### {group_name}",
@@ -141,6 +142,19 @@ def generate_from_x_global_config(data):
             lines.append("")
 
     return "\n".join(lines)
+
+
+def generate_from_x_global_config(data):
+    """Compatibility wrapper; schema is no longer runtime-policy authority."""
+    return generate_from_runtime_policy(data.get("x-global-config", {}))
+
+
+def _plain_runtime(value):
+    if hasattr(value, "items"):
+        return {key: _plain_runtime(item) for key, item in value.items()}
+    if isinstance(value, tuple):
+        return [_plain_runtime(item) for item in value]
+    return value
 
 
 def generate_from_json_schema(data):
@@ -447,7 +461,18 @@ def process(check=False):
                 continue
 
             md_path = os.path.join(DOCS_DIR, md_file)
-            table_str = generate_markdown_table(json_data)
+            if schema_file == "base.schema.json":
+                from engine.control.framework.executable import executable_framework
+
+                runtime_table = generate_from_runtime_policy(
+                    _plain_runtime(executable_framework().validation_rules)
+                )
+                structural_table = generate_from_json_schema(json_data)
+                table_str = "\n\n".join(
+                    part for part in (runtime_table, structural_table) if part
+                )
+            else:
+                table_str = generate_markdown_table(json_data)
             if not table_str:
                 print(f"[SKIP] {schema_file} generated an empty table.")
                 continue
@@ -476,7 +501,7 @@ def process(check=False):
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(
-        description="Generate/verify AUTO-GENERATED rule tables in GDC docs from the JSON Schema SSOT."
+        description="Generate/verify AUTO-GENERATED rule tables from governed framework/schema sources."
     )
     parser.add_argument(
         "--check",

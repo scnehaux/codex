@@ -182,9 +182,15 @@ intelligence_contracts:
   - contracts-remain-provider-independent
 phase6_9_contracts:
   validation:
-    location: engine/control/validation/contracts.py
-    contract: ValidationReport
-    authority: deterministic-machine-verifiable-facts
+    location: engine/control/validation
+    pipeline: engine/control/validation/pipeline.py
+    contracts:
+    - SourceDocument
+    - ParsedArtifact
+    - ArtifactCandidate
+    - ValidationReport
+    authority: deterministic-machine-verifiable-facts-before-promotion
+    promotion_gate: pass-validation-report-required
   simulation:
     location: engine/control/simulation
     contract: SimulationReport
@@ -283,7 +289,8 @@ declarative_framework_contract:
   - executable-framework-is-the-single-runtime-composition-root
   - compiled-semantic-state-has-a-deterministic-normalized-digest
   - governance-and-severity-policy-are-exposed-through-executable-framework
-  - json-schema-layout-is-a-checked-projection-not-semantic-authority
+  - json-schema-is-structural-shape-only
+  - repository-and-governance-runtime-policy-comes-from-executable-framework
   - fragment-runtime-views-are-compatibility-projections-not-independent-authorities
 governance_qualification:
   authority: engine/control/governance/readiness.py
@@ -371,12 +378,14 @@ governance_qualification:
       - engine/control/framework/relationships.py
       - engine/control/framework/executable.py
       - engine/control/framework/equivalence.py
+      - engine/control/validation/pipeline.py
       - scripts/framework_contract_check.py
       test_evidence:
       - tests/control/framework/test_declarative_contracts.py
       - tests/control/framework/test_artifact_runtime.py
       - tests/control/framework/test_relationship_runtime.py
       - tests/control/framework/test_executable_framework.py
+      - tests/control/validation/test_pipeline.py
       - tests/control/governance/test_relationships.py
       - tests/scripts/test_framework_contract_check.py
     github_reference_enforcement:

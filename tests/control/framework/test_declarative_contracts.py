@@ -240,11 +240,6 @@ def _mutate_family(root: Path, filename: str, mutator) -> None:
             lambda data: data["artifact_types"].append("UNKNOWN"),
         ),
         (
-            "repository-layout.yaml",
-            "repository-layout-schema-projection-drift",
-            lambda data: data["artifact_directories"].__setitem__("GDC", "other"),
-        ),
-        (
             "lifecycle.yaml",
             "contract-load:artifact-runtime-semantic-class",
             lambda data: data["artifact_lifecycle"]["GDC"]["draft"].__setitem__(
@@ -374,21 +369,6 @@ def test_projection_checks_remain_observable_when_full_compiler_is_prevalidated(
     (root / "schemas/adr.schema.json").unlink()
     assert (
         "schema-binding-missing:schemas/adr.schema.json"
-        in framework_contract_findings(root)
-    )
-
-    root = _equivalence_fixture(tmp_path / "policy")
-    base = _yaml(root / "schemas/base.schema.json")
-    base["x-global-config"]["blocking_severities"] = ["ERROR"]
-    (root / "schemas/base.schema.json").write_text(
-        __import__("json").dumps(base, indent=2) + "\n", encoding="utf-8"
-    )
-    assert "governance-policy-reference-drift" in framework_contract_findings(root)
-
-    root = _equivalence_fixture(tmp_path / "missing-policy")
-    (root / "governance/normative-control-registry.yaml").unlink()
-    assert (
-        "governance-policy-reference-missing:governance/normative-control-registry.yaml"
         in framework_contract_findings(root)
     )
 

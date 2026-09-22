@@ -115,15 +115,13 @@ This index documents the test suite utilities and fixtures.
 
 ### `tests/control/config/test_loader.py`
 
-| Function                                                    | Description                                                                                                                                    |
-| :---------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------- |
-| **test_load_json_schema_file_success**                      | Validates that a valid JSON schema file is successfully parsed.<br>Mocks the file system read operation to return a predefined JSON structure. |
-| **test_load_json_schema_file_not_found**                    | Validates the behavior when a schema file is missing.<br>Ensures that a FileNotFoundError is properly raised.                                  |
-| **test_validate_severity_schema_unknown_rule**              | _(No docstring provided)_                                                                                                                      |
-| **test_validate_blocking_severities_missing_and_unknown**   | _(No docstring provided)_                                                                                                                      |
-| **test_load_json_schema_file_invalid_json**                 | _(No docstring provided)_                                                                                                                      |
-| **test_validate_global_config_structure_missing_top_level** | _(No docstring provided)_                                                                                                                      |
-| **test_validate_global_config_structure_missing_subkey**    | _(No docstring provided)_                                                                                                                      |
+| Function                                                  | Description                                                                                                                                    |
+| :-------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------- |
+| **test_load_json_schema_file_success**                    | Validates that a valid JSON schema file is successfully parsed.<br>Mocks the file system read operation to return a predefined JSON structure. |
+| **test_load_json_schema_file_not_found**                  | Validates the behavior when a schema file is missing.<br>Ensures that a FileNotFoundError is properly raised.                                  |
+| **test_validate_severity_schema_unknown_rule**            | _(No docstring provided)_                                                                                                                      |
+| **test_validate_blocking_severities_missing_and_unknown** | _(No docstring provided)_                                                                                                                      |
+| **test_load_json_schema_file_invalid_json**               | _(No docstring provided)_                                                                                                                      |
 
 ### `tests/control/framework/test_ai_native_compatibility.py`
 
@@ -211,7 +209,8 @@ This index documents the test suite utilities and fixtures.
 | **test_missing_governance_reference_fails_compilation**                       | _(No docstring provided)_ |
 | **test_blocking_severity_contract_cannot_drift_from_runtime_policy**          | _(No docstring provided)_ |
 | **test_identity_and_extension_profile_must_match**                            | _(No docstring provided)_ |
-| **test_invalid_global_config_is_fail_closed**                                 | _(No docstring provided)_ |
+| **test_invalid_governance_policy_is_fail_closed**                             | _(No docstring provided)_ |
+| **test_base_schema_is_structural_only**                                       | _(No docstring provided)_ |
 | **test_fragment_contract_identity_must_match_full_contract**                  | _(No docstring provided)_ |
 
 ### `tests/control/framework/test_relationship_runtime.py`
@@ -653,6 +652,29 @@ This index documents the test suite utilities and fixtures.
 | **test_validation_report_outcome_and_deterministic_order** | _(No docstring provided)_ |
 | **test_validation_report_passes_without_blockers**         | _(No docstring provided)_ |
 | **test_validation_contract_rejects_bad_values**            | _(No docstring provided)_ |
+
+### `tests/control/validation/test_pipeline.py`
+
+| Function                                                                     | Description               |
+| :--------------------------------------------------------------------------- | :------------------------ |
+| **\_registry**                                                               | _(No docstring provided)_ |
+| **\_real_candidate**                                                         | _(No docstring provided)_ |
+| **test_source_identity_is_deterministic_and_path_bound**                     | _(No docstring provided)_ |
+| **test_malformed_source_remains_diagnostic_but_cannot_promote**              | _(No docstring provided)_ |
+| **test_unknown_artifact_identity_is_candidate_failure**                      | _(No docstring provided)_ |
+| **test_real_governed_artifact_validates_before_promotion**                   | _(No docstring provided)_ |
+| **test_report_is_deterministic_for_same_candidate_and_context**              | _(No docstring provided)_ |
+| **test_promotion_rejects_report_bound_to_other_candidate**                   | _(No docstring provided)_ |
+| **test_blocking_report_cannot_promote_even_when_artifact_exists**            | _(No docstring provided)_ |
+| **test_promote_candidates_constructs_repository_only_from_pass_reports**     | _(No docstring provided)_ |
+| **test_candidate_set_promotion_rejects_relationship_cycle**                  | _(No docstring provided)_ |
+| **test_pipeline_value_objects_fail_closed_on_invalid_shapes**                | _(No docstring provided)_ |
+| **test_artifact_candidate_value_object_guards_types_and_blank_errors**       | _(No docstring provided)_ |
+| **test_validate_candidate_rejects_wrong_candidate_type**                     | _(No docstring provided)_ |
+| **test_validate_candidate_reports_missing_validator**                        | _(No docstring provided)_ |
+| **test_validate_candidate_reports_schema_load_failure**                      | _(No docstring provided)_ |
+| **test_validate_candidate_surfaces_validator_age_and_relationship_findings** | _(No docstring provided)_ |
+| **test_promotion_type_and_empty_artifact_guards**                            | _(No docstring provided)_ |
 
 ### `tests/control/validators/domains/test_adr_validator.py`
 
@@ -1142,12 +1164,12 @@ This index documents the test suite utilities and fixtures.
 | **test_main_with_file_target**                    | _(No docstring provided)_                                                            |
 | **test_lint_file_with_disables_and_warnings**     | _(No docstring provided)_                                                            |
 | **test_tech_radar_failure**                       | _(No docstring provided)_                                                            |
-| **test_tech_radar_yaml_parse_error**              | Test tech radar parsing exception.                                                   |
-| **test_tech_radar_validation_error_json**         | Test tech radar jsonschema error in JSON mode.                                       |
-| **test_main_filters**                             | Test Filter 2 (README) and Filter 3 (.copy.md).                                      |
-| **test_main_global_auditors_json**                | Test global auditor errors appending to JSON format output.                          |
-| **test_main_directory_depth_violation**           | Test max directory depth violation (CRITICAL-11) in cli.py.                          |
-| **test_main_skipped_target_json**                 | Test skipped target warning in JSON format.                                          |
+| **test_tech_radar_yaml_parse_error**              | _(No docstring provided)_                                                            |
+| **test_tech_radar_validation_error_json**         | _(No docstring provided)_                                                            |
+| **test_main_filters**                             | _(No docstring provided)_                                                            |
+| **test_main_global_auditors_json**                | _(No docstring provided)_                                                            |
+| **test_main_directory_depth_violation**           | _(No docstring provided)_                                                            |
+| **test_main_skipped_target_json**                 | _(No docstring provided)_                                                            |
 
 ### `tests/interfaces/test_cli_extra.py`
 
@@ -1156,9 +1178,7 @@ This index documents the test suite utilities and fixtures.
 | **test_merge_reference_registry_resolves_cross_repo_ids_and_duplicates** | _(No docstring provided)_ |
 | **test_validate_execution_root_fails_without_git**                       | _(No docstring provided)_ |
 | **test_validate_execution_root_passes_with_git**                         | _(No docstring provided)_ |
-| **test_main_missing_global_config**                                      | _(No docstring provided)_ |
-| **test_main_missing_blocking_severities**                                | _(No docstring provided)_ |
-| **test_main_invalid_severity_schema**                                    | _(No docstring provided)_ |
+| **test_main_framework_policy_failure_is_fatal**                          | _(No docstring provided)_ |
 | **test_main_break_glass**                                                | _(No docstring provided)_ |
 | **test_main_json_and_sarif_format**                                      | _(No docstring provided)_ |
 | **test_main_reference_root_path**                                        | _(No docstring provided)_ |
@@ -1343,7 +1363,9 @@ This index documents the test suite utilities and fixtures.
 
 | Function              | Description                                                          |
 | :-------------------- | :------------------------------------------------------------------- |
+| **\_thaw**            | _(No docstring provided)_                                            |
 | **\_get_real_config** | _(No docstring provided)_                                            |
+| **runtime_rules**     | Return a mutable test projection of the compiled runtime policy.     |
 | **make_validator**    | Construct a validator using real validated repository configuration. |
 
 <!-- AUTO-GENERATED-FUNCTIONS:END -->

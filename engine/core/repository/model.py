@@ -20,7 +20,7 @@ def _source_path(value: str) -> str:
 
 @dataclass(frozen=True, slots=True)
 class RepositoryArtifact:
-    """One canonical ArtifactModel plus its repository-relative source projection."""
+    """One parsed ArtifactModel plus its repository-relative source projection."""
 
     artifact: ArtifactModel
     source_path: str
@@ -63,7 +63,7 @@ class RepositoryArtifact:
 
 @dataclass(frozen=True, slots=True)
 class RepositoryModel:
-    """Pure, immutable repository authority over canonical ArtifactModel state."""
+    """Pure immutable repository model; validation/promotion authority lives in control."""
 
     artifacts: tuple[RepositoryArtifact, ...] = ()
 

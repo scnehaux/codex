@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from functools import lru_cache
-import json
 
 from engine.control.config.loader import (
     validate_blocking_severities,
@@ -11,15 +10,30 @@ from engine.control.validators.base import BaseValidator
 from tests.support.repository import REPOSITORY_ROOT
 
 
+def _thaw(value):
+    if hasattr(value, "items"):
+        return {key: _thaw(item) for key, item in value.items()}
+    if isinstance(value, tuple):
+        return [_thaw(item) for item in value]
+    return value
+
+
 @lru_cache(maxsize=1)
 def _get_real_config() -> tuple[dict, dict, tuple]:
-    from engine.control.config.loader import parse_and_validate_global_config
+    from engine.control.framework.executable import compile_framework
 
-    schema_path = REPOSITORY_ROOT / "schemas" / "base.schema.json"
-    with schema_path.open("r", encoding="utf-8") as handle:
-        schema = json.load(handle)
+    framework = compile_framework(REPOSITORY_ROOT)
+    return (
+        _thaw(framework.validation_rules),
+        dict(framework.governance.severity_levels),
+        framework.blocking_severities,
+    )
 
-    return parse_and_validate_global_config(schema)
+
+def runtime_rules() -> dict:
+    """Return a mutable test projection of the compiled runtime policy."""
+    rules, _, _ = _get_real_config()
+    return _thaw(rules)
 
 
 def make_validator(
