@@ -105,12 +105,11 @@ def _validate_nfr_taxonomy(v: BaseValidator) -> None:
     Ensure NFRs strictly map to AWS WAF pillars (GDC-000 Section 2.4).
     """
     sections_map = extract_section_contents(v.content)
-    specific_config = v.domain_schema.get("x-global-config", {})
-    rules_structure = specific_config
-    aws_waf_pillars = rules_structure.get("quantification_pillars", [])
+    taxonomy = v.global_rules.get("content_rules", {}).get("nfr_taxonomy", {})
+    aws_waf_pillars = taxonomy.get("pillars", [])
 
     if not aws_waf_pillars:
-        return
+        raise RuntimeError("NFR taxonomy policy is unavailable")
 
     for section_name, section_text in sections_map.items():
         if "non-functional requirements" in section_name.lower():

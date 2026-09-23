@@ -148,6 +148,28 @@ seams and testability. The trade-off is that Slice 11.5 still has to move remain
 non-structural runtime configuration out of JSON Schema; compiling a checked schema
 projection here does not legitimize JSON Schema as long-term semantic authority.
 
+## REC-11-007 - Separate structural schema from runtime policy and gate promotion
+
+**Status: selected and implemented in Slice 11.5.**
+
+Keep JSON Schema responsible only for JSON/document structural shape. Move repository
+discovery policy, content policy, severity mappings, blocking severities and the
+existing NFR taxonomy into the governed declarative governance-policy family compiled
+by `ExecutableFramework`. Compatibility projections may feed existing validators but
+must not make schema configuration authoritative again.
+
+Introduce explicit immutable `SourceDocument`, `ParsedArtifact` and
+`ArtifactCandidate` states. Deterministic validation produces a `ValidationReport`;
+only a candidate bound to a PASS report can be promoted into `RepositoryModel`.
+Invalid candidates remain available for diagnostics, and multi-candidate promotion
+also rejects relationship-DAG violations.
+
+This is intentionally not the final canonical repository trust boundary. Git
+repository/revision/content-digest provenance is Slice 11.6 and
+`ValidatedRepositorySnapshot` is Slice 11.7. Do not collapse those later trust
+boundaries into this slice or imply that an unversioned promoted `RepositoryModel`
+is canonical knowledge.
+
 ## Verification
 
 `python scripts/framework_contract_check.py` validates the complete authored set,

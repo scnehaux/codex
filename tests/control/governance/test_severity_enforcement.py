@@ -14,14 +14,9 @@ REGISTRY = ROOT / "governance" / "severity-enforcement-registry.yaml"
 
 
 def _severity_levels():
-    import json
-    from engine.control.config.loader import parse_and_validate_global_config
+    from engine.control.framework.executable import executable_framework
 
-    base = json.loads(
-        (ROOT / "schemas" / "base.schema.json").read_text(encoding="utf-8")
-    )
-    _, severity_levels, _ = parse_and_validate_global_config(base)
-    return severity_levels
+    return dict(executable_framework().governance.severity_levels)
 
 
 def test_current_severity_registry_is_structurally_reconciled():

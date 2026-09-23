@@ -19,15 +19,13 @@ def test_validate_structure():
 
 def test_validate_nfr_taxonomy():
     rules = {
+        "content_rules": {"nfr_taxonomy": {"pillars": ["Security", "Reliability"]}},
         "severity_levels": {"structural_integrity_violation": "ERROR"},
-    }
-    domain_schema = {
-        "x-global-config": {"quantification_pillars": ["Security", "Reliability"]}
     }
     content = (
         "## Non-Functional Requirements\n### Security\nGood.\n### Invalid Pillar\nBad."
     )
-    v = make_validator(rules=rules, domain_schema=domain_schema, content=content)
+    v = make_validator(rules=rules, content=content)
     _validate_nfr_taxonomy(v)
     assert len(v.errors) == 1
     assert "not an approved AWS WAF Pillar" in v.errors[0][1]
@@ -36,15 +34,13 @@ def test_validate_nfr_taxonomy():
 def test_nfr_taxonomy_unstructured_section():
     # If NFR section exists but has no ### headers, it must throw a structural integrity error.
     rules = {
+        "content_rules": {"nfr_taxonomy": {"pillars": ["Security", "Reliability"]}},
         "severity_levels": {},
-    }
-    domain_schema = {
-        "x-global-config": {"quantification_pillars": ["Security", "Reliability"]}
     }
     content = (
         "## Non-Functional Requirements\nJust some plain text without H3 pillars.\n"
     )
-    v = make_validator(rules=rules, domain_schema=domain_schema, content=content)
+    v = make_validator(rules=rules, content=content)
     _validate_nfr_taxonomy(v)
     assert len(v.errors) == 1
     assert "unstructured" in v.errors[0][1]

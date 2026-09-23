@@ -17,7 +17,7 @@ from tests.support.repository import REPOSITORY_ROOT
 
 
 ROOT = REPOSITORY_ROOT
-EXPECTED_SEMANTIC = "6f7e79c82aea1342d7f8eed9d2181383bb52b349f30af3cdf7ea3c609cf14980"
+EXPECTED_SEMANTIC = "2f8c498fbc951e756d1ca6e9179a967a966f9f8edf3b02b45ca62568a8fa3a65"
 
 
 def _fixture(tmp_path: Path) -> Path:
@@ -141,21 +141,23 @@ def test_identity_and_extension_profile_must_match(tmp_path):
         compile_framework(root)
 
 
-def test_invalid_global_config_is_fail_closed(tmp_path):
+def test_invalid_governance_policy_is_fail_closed(tmp_path):
     root = _fixture(tmp_path)
-    schema = root / "schemas/base.schema.json"
-    text = schema.read_text(encoding="utf-8")
-    schema.write_text(
-        text.replace(
-            '"blocking_severities": ["CRITICAL", "ERROR"]',
-            '"blocking_severities": ["ERROR"]',
-        ),
-        encoding="utf-8",
-    )
+    policy = root / "governance/framework/contracts/governance-policy.yaml"
+    value = _yaml(policy)
+    value["data"]["severity_levels"]["missing_metadata"] = "INVALID"
+    _write(policy, value)
     with pytest.raises(
-        FrameworkContractError, match="executable-framework-severity-policy"
+        FrameworkContractError, match="executable-framework-severity-value"
     ):
         compile_framework(root)
+
+
+def test_base_schema_is_structural_only():
+    import json
+
+    base = json.loads((ROOT / "schemas/base.schema.json").read_text(encoding="utf-8"))
+    assert "x-global-config" not in base
 
 
 def test_fragment_contract_identity_must_match_full_contract(monkeypatch):

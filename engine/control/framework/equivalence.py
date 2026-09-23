@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import ast
-import json
 from pathlib import Path
 from typing import Any
 
@@ -84,7 +83,6 @@ def framework_contract_findings(repo_root: str | Path) -> tuple[str, ...]:
     except FrameworkContractError as exc:
         return (f"contract-load:{exc}",)
     findings: list[str] = []
-    base = json.loads((root / "schemas/base.schema.json").read_text(encoding="utf-8"))
     framework = yaml.safe_load(
         (root / "governance/framework/scnehaux-framework.yaml").read_text(
             encoding="utf-8"
@@ -107,10 +105,6 @@ def framework_contract_findings(repo_root: str | Path) -> tuple[str, ...]:
     if identity != expected_identity:
         findings.append("identity-drift")
 
-    layout = _family(contract, "repository-layout")["artifact_directories"]
-    if layout != base["x-global-config"]["structure_rules"]["artifact_directories"]:
-        findings.append("repository-layout-schema-projection-drift")
-
     schemas = _family(contract, "schema-bindings")
     expected_schemas = {
         "base_schema": "schemas/base.schema.json",
@@ -128,23 +122,6 @@ def framework_contract_findings(repo_root: str | Path) -> tuple[str, ...]:
 
     findings.extend(_validator_binding_findings(runtime, root))
 
-    policy = _family(contract, "governance-policy")
-    expected_policy = {
-        "global_config": "schemas/base.schema.json#x-global-config",
-        "normative_control_registry": "governance/normative-control-registry.yaml",
-        "severity_evidence_registry": "governance/severity-enforcement-registry.yaml",
-        "scm_enforcement_policy": "governance/scm/enforcement-policy.yaml",
-        "blocking_severities": base["x-global-config"]["blocking_severities"],
-    }
-    if policy != expected_policy:
-        findings.append("governance-policy-reference-drift")
-    for relative in (
-        "governance/normative-control-registry.yaml",
-        "governance/severity-enforcement-registry.yaml",
-        "governance/scm/enforcement-policy.yaml",
-    ):
-        if not (root / relative).is_file():
-            findings.append(f"governance-policy-reference-missing:{relative}")
     extensions = _family(contract, "extensions")
     expected_extensions = {
         "extension_points": framework["extension_points"],

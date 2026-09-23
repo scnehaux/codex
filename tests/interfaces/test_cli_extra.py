@@ -51,51 +51,28 @@ def test_validate_execution_root_passes_with_git(tmp_path):
     assert True
 
 
-def test_main_missing_global_config(monkeypatch):
+@pytest.mark.parametrize(
+    "message",
+    [
+        "framework unavailable",
+        "blocking severity policy invalid",
+        "severity mapping invalid",
+    ],
+)
+def test_main_framework_policy_failure_is_fatal(monkeypatch, message):
     monkeypatch.setattr(sys, "argv", ["cli.py"])
     monkeypatch.setattr(
         "engine.interfaces.cli._validate_execution_root", lambda x: None
     )
-    monkeypatch.setattr("engine.interfaces.cli.load_json_schema_file", lambda p: {})
 
-    with pytest.raises(SystemExit) as e:
+    def fail():
+        raise RuntimeError(message)
+
+    monkeypatch.setattr("engine.interfaces.cli.executable_framework", fail)
+
+    with pytest.raises(SystemExit) as exc:
         main()
-    assert e.value.code == 1
-
-
-def test_main_missing_blocking_severities(monkeypatch):
-    monkeypatch.setattr(sys, "argv", ["cli.py"])
-    monkeypatch.setattr(
-        "engine.interfaces.cli._validate_execution_root", lambda x: None
-    )
-    monkeypatch.setattr(
-        "engine.interfaces.cli.load_json_schema_file",
-        lambda p: {"x-global-config": {"severity_levels": {"mock": {"rule": "ERROR"}}}},
-    )
-
-    with pytest.raises(SystemExit) as e:
-        main()
-    assert e.value.code == 1
-
-
-def test_main_invalid_severity_schema(monkeypatch):
-    monkeypatch.setattr(sys, "argv", ["cli.py"])
-    monkeypatch.setattr(
-        "engine.interfaces.cli._validate_execution_root", lambda x: None
-    )
-    monkeypatch.setattr(
-        "engine.interfaces.cli.load_json_schema_file",
-        lambda p: {
-            "x-global-config": {
-                "severity_levels": {"mock": {"rule": "INVALID_SEV"}},
-                "blocking_severities": ["CRITICAL"],
-            }
-        },
-    )
-
-    with pytest.raises(SystemExit) as e:
-        main()
-    assert e.value.code == 1
+    assert exc.value.code == 1
 
 
 def test_main_break_glass(tmp_path, monkeypatch):
@@ -281,26 +258,22 @@ def test_main_registry_boundary_error_is_fatal(tmp_path, monkeypatch):
 
 
 def test_main_without_ignore_config_uses_empty_defaults(tmp_path, monkeypatch):
-    # No ignored-files config is a supported runtime configuration.
-    import copy
+    from dataclasses import replace
     import engine.interfaces.cli as linter
 
     monkeypatch.chdir(tmp_path)
     (tmp_path / ".git").mkdir()
 
-    base_schema = linter.load_json_schema_file(linter.BASE_SCHEMA_PATH)
-    global_rules, severity_levels, blocking = linter.parse_and_validate_global_config(
-        copy.deepcopy(base_schema)
+    framework = linter.executable_framework()
+    repository = replace(
+        framework.governance.repository,
+        ignored_files=(),
+        ignored_patterns=(),
     )
-    global_rules[linter.SCHEMA_KEY_STRUCTURE_RULES][
-        linter.SCHEMA_KEY_IGNORED_FILES
-    ] = {}
+    governance = replace(framework.governance, repository=repository)
+    runtime = replace(framework, governance=governance)
 
-    monkeypatch.setattr(
-        linter,
-        "parse_and_validate_global_config",
-        lambda schema: (global_rules, severity_levels, blocking),
-    )
+    monkeypatch.setattr(linter, "executable_framework", lambda: runtime)
     monkeypatch.setattr(
         linter, "build_metadata_registry", lambda *args, **kwargs: (set(), {}, {})
     )

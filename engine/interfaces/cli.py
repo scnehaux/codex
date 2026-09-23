@@ -26,20 +26,10 @@ from engine.control.auditors.graph_auditor import (
 )
 from engine.control.auditors.waiver_auditor import audit_waiver_expirations
 from engine.control.config.constants import (
-    BASE_SCHEMA_PATH,
     TECH_RADAR_YAML_PATH,
     TECH_RADAR_SCHEMA_PATH,
-    SCHEMA_KEY_BLOCKING_SEVERITIES,
-    SCHEMA_KEY_STRUCTURE_RULES,
-    SCHEMA_KEY_ARTIFACT_DIRS,
-    SCHEMA_KEY_IGNORED_FILES,
-    SCHEMA_KEY_MAX_DIR_DEPTH,
-    SCHEMA_KEY_EXACT_MATCHES,
 )
-from engine.control.config.loader import (
-    load_json_schema_file,
-    parse_and_validate_global_config,
-)
+from engine.control.framework.executable import executable_framework
 from engine.control.config.severity import SeverityRule
 from engine.control.fs.crawler import build_metadata_registry, gather_markdown_paths
 from engine.control.reporting.reporter import print_errors, build_sarif
@@ -153,48 +143,29 @@ def main() -> None:
         format="%(levelname)s: %(message)s",
     )
 
-    # @flow: ParseArgs --> LoadGlobal["1.2. <b>loader.py - load_json_schema_file()</b>: Load base schema (global rules)"]
-    # @flow: LoadGlobal --> CheckGlobalRules{"Valid global rules?"}
-    # @flow: CheckGlobalRules -->|No| ExitFailGlobal((sys.exit 1))
-    # Step 2: Load the Global Governance Rules baseline from base schema
-
+    # Step 2: Resolve all runtime framework/governance semantics from the compiled
+    # ExecutableFramework. JSON Schema is structural-only and is not configuration.
     try:
-        base_schema = load_json_schema_file(BASE_SCHEMA_PATH)
-        # @flow: CheckGlobalRules -->|Yes| IsConfigValid{"Valid Global Config & Severity? </br> <b>loader.py - (validate_global_config_structure, validate_severity_schema, validate_blocking_severities)</b>"}
-        # @flow: IsConfigValid -->|No| ExitFailConfig((sys.exit 1))
-        global_rules, severity_levels, blocking_severities = (
-            parse_and_validate_global_config(base_schema)
-        )
+        framework = executable_framework()
+        global_rules = framework.validation_rules
+        severity_levels = framework.governance.severity_levels
+        blocking_severities = framework.blocking_severities
         governance_kernel_root = os.path.abspath(
             os.path.join(os.path.dirname(__file__), "..", "..")
         )
         assert_registry_integrity(governance_kernel_root, severity_levels)
-    except (FileNotFoundError, ValueError, RuntimeError) as e:
+    except (ValueError, RuntimeError) as e:
         logger.error("FATAL: %s", str(e))
         sys.exit(1)
 
-    std_dirs = global_rules.get(SCHEMA_KEY_STRUCTURE_RULES, {}).get(
-        SCHEMA_KEY_ARTIFACT_DIRS, {}
-    )
-    allowed_root_dirs = set(std_dirs.values()) if std_dirs else None
-
-    ignored_config = global_rules.get(SCHEMA_KEY_STRUCTURE_RULES, {}).get(
-        SCHEMA_KEY_IGNORED_FILES, {}
-    )
-    if ignored_config:
-        ignored_files_lower = {
-            f.lower() for f in ignored_config.get(SCHEMA_KEY_EXACT_MATCHES, [])
-        }
-        ignored_patterns = [
-            re.compile(p, re.IGNORECASE) for p in ignored_config.get("patterns", [])
-        ]
-    else:
-        ignored_files_lower = set()
-        ignored_patterns = []
-
-    max_dir_depth = global_rules.get(SCHEMA_KEY_STRUCTURE_RULES, {}).get(
-        SCHEMA_KEY_MAX_DIR_DEPTH, 3
-    )
+    allowed_root_dirs = set(framework.repository_layout.values())
+    repository_policy = framework.governance.repository
+    ignored_files_lower = {item.lower() for item in repository_policy.ignored_files}
+    ignored_patterns = [
+        re.compile(pattern, re.IGNORECASE)
+        for pattern in repository_policy.ignored_patterns
+    ]
+    max_dir_depth = repository_policy.max_directory_depth
 
     # Validate that the Current Working Directory (CWD) is a valid repository root
     cwd = os.getcwd()
@@ -299,7 +270,7 @@ def main() -> None:
                 TECH_RADAR_YAML_PATH,
                 radar_errors,
                 args.format,
-                tuple(global_rules[SCHEMA_KEY_BLOCKING_SEVERITIES]),
+                blocking_severities,
             )
             if has_blocking:
                 radar_has_blocking = True
@@ -352,7 +323,7 @@ def main() -> None:
                 full_path,
                 depth_errors,
                 args.format,
-                tuple(global_rules[SCHEMA_KEY_BLOCKING_SEVERITIES]),
+                blocking_severities,
             )
 
             if is_blocking:

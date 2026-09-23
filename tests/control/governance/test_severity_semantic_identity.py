@@ -69,9 +69,9 @@ def test_nfr_taxonomy_has_distinct_rule_identity():
                 "### Banana\n\n"
                 "This heading is deliberately outside the approved taxonomy.\n"
             )
-            self.domain_schema = {
-                "x-global-config": {
-                    "quantification_pillars": ["Security", "Reliability"]
+            self.global_rules = {
+                "content_rules": {
+                    "nfr_taxonomy": {"pillars": ["Security", "Reliability"]}
                 }
             }
             self.findings = []

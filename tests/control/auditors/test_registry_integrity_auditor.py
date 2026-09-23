@@ -19,7 +19,6 @@ from engine.control.auditors.registry_integrity_auditor import (
     assert_registry_integrity,
     audit_registry_integrity,
 )
-from engine.control.config.loader import parse_and_validate_global_config
 
 
 ROOT = REPOSITORY_ROOT
@@ -31,8 +30,9 @@ def _base_schema():
 
 
 def _severity_levels():
-    _, severity_levels, _ = parse_and_validate_global_config(_base_schema())
-    return severity_levels
+    from engine.control.framework.executable import executable_framework
+
+    return dict(executable_framework().governance.severity_levels)
 
 
 def test_structural_registry_integrity_before_severity_reconciliation():

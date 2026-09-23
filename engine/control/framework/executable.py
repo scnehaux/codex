@@ -6,9 +6,10 @@ from hashlib import sha256
 import json
 from pathlib import Path
 from types import MappingProxyType
-from typing import Mapping
+from typing import Any, Mapping
+import re
 
-from engine.control.config.loader import parse_and_validate_global_config
+from engine.control.config.severity import BlockingSeverity, SeverityRule
 from engine.control.framework.artifacts import (
     ArtifactRuntimeView,
     compile_artifact_runtime,
@@ -38,11 +39,19 @@ class FrameworkIdentity:
 
 
 @dataclass(frozen=True, slots=True)
+class RepositoryPolicy:
+    ignored_files: tuple[str, ...]
+    ignored_patterns: tuple[str, ...]
+    max_directory_depth: int
+
+
+@dataclass(frozen=True, slots=True)
 class GovernancePolicy:
-    global_config_ref: str
     normative_control_registry: str
     severity_evidence_registry: str
     scm_enforcement_policy: str
+    repository: RepositoryPolicy
+    content_rules: Mapping[str, Mapping[str, Any]]
     severity_levels: Mapping[str, str]
     blocking_severities: tuple[str, ...]
 
@@ -93,6 +102,28 @@ class ExecutableFramework:
     @property
     def blocking_severities(self) -> tuple[str, ...]:
         return self.governance.blocking_severities
+
+    @property
+    def validation_rules(self) -> Mapping[str, Any]:
+        return MappingProxyType(
+            {
+                "structure_rules": MappingProxyType(
+                    {
+                        "artifact_directories": self.repository_layout,
+                        "ignored_files": MappingProxyType(
+                            {
+                                "exact_matches": self.governance.repository.ignored_files,
+                                "patterns": self.governance.repository.ignored_patterns,
+                            }
+                        ),
+                        "max_directory_depth": self.governance.repository.max_directory_depth,
+                    }
+                ),
+                "content_rules": self.governance.content_rules,
+                "severity_levels": self.governance.severity_levels,
+                "blocking_severities": self.governance.blocking_severities,
+            }
+        )
 
 
 def _require(condition: bool, code: str) -> None:
@@ -160,41 +191,32 @@ def _compile_identity(contract: FrameworkContractSet) -> FrameworkIdentity:
     )
 
 
+def _freeze_mapping(value: object, code: str) -> Mapping[str, Any]:
+    _require(hasattr(value, "items"), code)
+    result: dict[str, Any] = {}
+    for key, item in value.items():
+        _require(isinstance(key, str) and bool(key), code)
+        if hasattr(item, "items"):
+            result[key] = _freeze_mapping(item, code)
+        elif isinstance(item, tuple):
+            result[key] = tuple(item)
+        else:
+            result[key] = item
+    return MappingProxyType(result)
+
+
 def _compile_governance(root: Path, contract: FrameworkContractSet) -> GovernancePolicy:
     data = _plain_family(contract, "governance-policy")
     expected = {
-        "global_config",
         "normative_control_registry",
         "severity_evidence_registry",
         "scm_enforcement_policy",
+        "repository_policy",
+        "content_rules",
+        "severity_levels",
         "blocking_severities",
     }
     _require(set(data) == expected, "executable-framework-governance-fields")
-    global_ref = data["global_config"]
-    _require(
-        isinstance(global_ref, str)
-        and global_ref == "schemas/base.schema.json#x-global-config",
-        "executable-framework-global-config-ref",
-    )
-    schema_path = _relative_regular_file(
-        root, "schemas/base.schema.json", "executable-framework-global-config"
-    )
-    try:
-        base_schema = json.loads(schema_path.read_text(encoding="utf-8"))
-    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
-        raise FrameworkContractError("executable-framework-global-config-json") from exc
-    try:
-        _global_rules, severity_levels, blocking = parse_and_validate_global_config(
-            base_schema
-        )
-    except (RuntimeError, TypeError, ValueError) as exc:
-        raise FrameworkContractError("executable-framework-severity-policy") from exc
-
-    declared_blocking = data["blocking_severities"]
-    _require(
-        isinstance(declared_blocking, tuple) and tuple(declared_blocking) == blocking,
-        "executable-framework-blocking-severities",
-    )
 
     refs = {}
     for key in (
@@ -205,13 +227,93 @@ def _compile_governance(root: Path, contract: FrameworkContractSet) -> Governanc
         value = data[key]
         _relative_regular_file(root, value, f"executable-framework-{key}")
         refs[key] = value
+
+    repository = data["repository_policy"]
+    _require(
+        hasattr(repository, "items")
+        and set(repository)
+        == {"ignored_files", "ignored_patterns", "max_directory_depth"},
+        "executable-framework-repository-policy",
+    )
+    ignored_files = repository["ignored_files"]
+    ignored_patterns = repository["ignored_patterns"]
+    max_depth = repository["max_directory_depth"]
+    _require(
+        isinstance(ignored_files, tuple)
+        and all(isinstance(item, str) and item for item in ignored_files)
+        and len(ignored_files) == len(set(ignored_files)),
+        "executable-framework-ignored-files",
+    )
+    _require(
+        isinstance(ignored_patterns, tuple)
+        and all(isinstance(item, str) and item for item in ignored_patterns)
+        and len(ignored_patterns) == len(set(ignored_patterns)),
+        "executable-framework-ignored-patterns",
+    )
+    for pattern in ignored_patterns:
+        try:
+            re.compile(pattern)
+        except re.error as exc:
+            raise FrameworkContractError(
+                "executable-framework-ignored-pattern-invalid"
+            ) from exc
+    _require(
+        type(max_depth) is int and 1 <= max_depth <= 64,
+        "executable-framework-max-directory-depth",
+    )
+
+    content_rules = _freeze_mapping(
+        data["content_rules"], "executable-framework-content-rules"
+    )
+    required_content = {
+        "max_review_age_days",
+        "min_content_length_chars",
+        "prohibited_words",
+        "ambiguity_rules",
+        "nfr_taxonomy",
+    }
+    _require(
+        set(content_rules) == required_content,
+        "executable-framework-content-rule-set",
+    )
+
+    severity_raw = data["severity_levels"]
+    _require(
+        hasattr(severity_raw, "items"),
+        "executable-framework-severity-levels",
+    )
+    severity_levels = dict(severity_raw.items())
+    expected_rules = {item.value for item in SeverityRule}
+    _require(
+        set(severity_levels) == expected_rules,
+        "executable-framework-severity-rule-set",
+    )
+    allowed_levels = {"CRITICAL", "ERROR", "WARNING", "INFO"}
+    _require(
+        all(level in allowed_levels for level in severity_levels.values()),
+        "executable-framework-severity-value",
+    )
+
+    declared_blocking = data["blocking_severities"]
+    expected_blocking = tuple(item.value for item in BlockingSeverity)
+    _require(
+        isinstance(declared_blocking, tuple)
+        and tuple(declared_blocking) == expected_blocking,
+        "executable-framework-blocking-severities",
+    )
+
     return GovernancePolicy(
-        global_config_ref=global_ref,
         normative_control_registry=refs["normative_control_registry"],
         severity_evidence_registry=refs["severity_evidence_registry"],
         scm_enforcement_policy=refs["scm_enforcement_policy"],
+        repository=RepositoryPolicy(
+            ignored_files=tuple(ignored_files),
+            ignored_patterns=tuple(ignored_patterns),
+            max_directory_depth=max_depth,
+        ),
+        content_rules=content_rules,
         severity_levels=MappingProxyType(dict(sorted(severity_levels.items()))),
-        blocking_severities=tuple(blocking),
+        blocking_severities=expected_blocking,
     )
 
 
@@ -339,10 +441,18 @@ def _semantic_state(
         },
         "relationships": _relationship_state(relationships),
         "governance": {
-            "global_config_ref": governance.global_config_ref,
             "normative_control_registry": governance.normative_control_registry,
             "severity_evidence_registry": governance.severity_evidence_registry,
             "scm_enforcement_policy": governance.scm_enforcement_policy,
+            "repository_policy": {
+                "ignored_files": sorted(governance.repository.ignored_files),
+                "ignored_patterns": sorted(governance.repository.ignored_patterns),
+                "max_directory_depth": governance.repository.max_directory_depth,
+            },
+            "content_rules": {
+                key: dict(value)
+                for key, value in sorted(governance.content_rules.items())
+            },
             "severity_levels": dict(sorted(governance.severity_levels.items())),
             "blocking_severities": sorted(governance.blocking_severities),
         },

@@ -1,7 +1,6 @@
 from tests.support.validators import make_validator
 import re
 import os
-import json
 from tests.support.repository import REPOSITORY_ROOT
 from engine.control.validators.global_rules import (
     _validate_content_quality,
@@ -13,11 +12,9 @@ ROOT = str(REPOSITORY_ROOT)
 
 
 def _global_rules():
-    with open(
-        os.path.join(ROOT, "schemas", "base.schema.json"),
-        encoding="utf-8",
-    ) as f:
-        return json.load(f).get("x-global-config", {})
+    from tests.support.validators import runtime_rules
+
+    return runtime_rules()
 
 
 def test_validate_content_quality():

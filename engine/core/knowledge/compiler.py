@@ -96,7 +96,7 @@ def compile_repository_graph(
     additional_nodes: Iterable[KnowledgeNode] = (),
     additional_edges: Iterable[KnowledgeEdge] = (),
 ) -> KnowledgeGraph:
-    """Compile graph state from the canonical RepositoryModel authority."""
+    """Compile graph state from a repository model supplied by the control boundary."""
     if not isinstance(repository, RepositoryModel):
         raise TypeError("repository must be RepositoryModel")
     return _compile_artifacts(

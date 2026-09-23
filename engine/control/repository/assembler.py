@@ -31,11 +31,11 @@ GOVERNED_CORPUS_SUPPORT_PATTERNS = (r"(?:^|/)templates(?:/|$)",)
 
 
 class RepositoryAssemblyError(ValueError):
-    """Base deterministic failure while constructing canonical repository state."""
+    """Base deterministic failure while constructing parsed repository state."""
 
 
 class RepositoryIngestionError(RepositoryAssemblyError):
-    """Source bytes or Markdown cannot be converted into canonical artifact state."""
+    """Source bytes or Markdown cannot be converted into parsed artifact state."""
 
 
 class RepositoryIdentityError(RepositoryAssemblyError):
