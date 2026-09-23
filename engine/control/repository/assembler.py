@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from hashlib import sha256
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -65,6 +66,7 @@ class RepositoryAssembler:
         source_path: str,
         content: str = "",
         namespace: ArchitectureNamespace | None = None,
+        source_reference: SourceReference | None = None,
     ) -> RepositoryArtifact:
         if not isinstance(metadata, Mapping):
             raise RepositoryIngestionError(
@@ -90,7 +92,19 @@ class RepositoryAssembler:
                 f"Artifact '{source_path}' has invalid knowledge_state "
                 f"{raw_knowledge_state!r}."
             ) from exc
-        provenance = SourceReference(origin=source_path)
+        if source_reference is not None and not isinstance(
+            source_reference, SourceReference
+        ):
+            raise RepositoryIngestionError(
+                f"Artifact '{source_path}' source_reference must be SourceReference."
+            )
+        provenance = source_reference or SourceReference(origin=source_path)
+        if provenance.content_digest is not None and (
+            sha256(content.encode("utf-8")).hexdigest() != provenance.content_digest
+        ):
+            raise RepositoryIngestionError(
+                f"Artifact '{source_path}' content_digest does not match content."
+            )
 
         relationships: list[ArtifactRelationship] = []
         relation_fields = set()

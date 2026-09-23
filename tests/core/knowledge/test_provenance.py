@@ -142,3 +142,17 @@ def test_provenance_validation_rejects_invalid_types_and_blank_values():
         Claim("c", "s", KnowledgeState.DECLARED, (object(),))
     with pytest.raises(TypeError):
         Claim("c", "s", KnowledgeState.DECLARED, (_evidence(),), attributes=[])
+
+
+def test_content_digest_alignment_is_enforced():
+    with pytest.raises(ValueError, match="content_digest must match"):
+        Evidence(
+            evidence_id="ev-digest",
+            source=SourceReference(
+                origin="x.md",
+                revision="rev",
+                content_digest="sha256:aaa",
+            ),
+            authority=SourceAuthority("repo", "repository"),
+            revision=KnowledgeRevision("rev", "sha256:bbb"),
+        )

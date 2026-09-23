@@ -49,11 +49,14 @@ Live GitHub ruleset                  : INSTALLED / ACTIVE (23193929)
 Default branch protected by ruleset : YES / no bypass actors
 Desired/effective drift             : ALIGNED at acceptance preflight
 Phase 10                            : DONE in scoped reference-provider acceptance
-Next planned slice                  : 11.1 Declarative Framework Contract
+Phase 11                            : ACTIVE; Slices 11.1-11.5 complete
+Active local slice                  : 11.6; local qualification passed, governed merge pending
 Governance 1.0                       : NOT READY
 ```
 
-The Genesis event already exists and MUST NOT be described as pending
+The Genesis event already exists and MUST NOT be described as pending. Provider
+state above is historical evidence from the Phase 10 acceptance preflight, not a
+fresh live observation. Implementation sequencing follows the Phase 11 ledger.
 
 ---
 
@@ -91,7 +94,7 @@ Goal:
 
 ### Phase 10 Stabilization Exit Evidence
 
-Current reference-provider gate remains GitHub-specific until Slice 10.7 extracts the provider adapter contract:
+The GitHub reference-provider projection gate remains alongside the implemented provider-neutral SCM contract. Historical Phase 10 qualification evidence:
 
 ```text
 make github-policy-check   PASS
@@ -181,7 +184,8 @@ review or native-Git default-deletion result is invented. The review exception
 remains active, while privileged bootstrap and standing publication remain disabled.
 Historical false component flags are not overwritten. Relevant provider/policy,
 App/runtime or review-exception changes require reassessment. Phase 11 and later
-phases remain unimplemented; Governance 1.0 is not declared ready.
+phases retain their own acceptance boundaries; Phase 11 progress is recorded below.
+Governance 1.0 is not declared ready.
 
 ---
 
@@ -222,7 +226,7 @@ Canonical Knowledge
 | 11.3  | Relationship Ontology                        | DONE    | Typed ontology runtime derives all relationship semantics from declarative contracts |
 | 11.4  | FrameworkCompiler + ExecutableFramework      | DONE    | One deterministic immutable compiled runtime authority and semantic digest exist     |
 | 11.5  | Schema Boundary & Validation Pipeline        | DONE    | Schema is structural-only; deterministic reports gate candidate promotion            |
-| 11.6  | Provenance-Bound Repository Ingestion        | PLANNED | Canonical Git ingestion is repository/namespace/revision/path/digest bound           |
+| 11.6  | Provenance-Bound Repository Ingestion        | ACTIVE  | Local gates PASS; candidate submission and governed merge pending                    |
 | 11.7  | ValidatedRepositorySnapshot                  | PLANNED | Only validated revision-bound snapshots can feed canonical knowledge                 |
 | 11.8  | Framework Extension / Company Pack Model     | PLANNED | Company semantics extend core without Python/core fork                               |
 | 11.9  | Compatibility & Versioning                   | PLANNED | Framework/ontology/extensions have enforceable compatibility contracts               |
@@ -234,9 +238,13 @@ declarative. Slice 11.4 composed those semantics plus governance/severity and
 extension declarations into one immutable `ExecutableFramework`. Slice 11.5 now
 restores JSON Schema to structural shape only, moves runtime governance policy into
 the executable framework contract, and gates repository promotion behind
-deterministic validation reports. Revision-bound provenance and the canonical
-repository snapshot remain Slices 11.6-11.7. REC-11-001 through REC-11-007 in
-`governance/framework/README.md` record the migration rationale and boundaries.
+deterministic validation reports. Slice 11.6 now has a local Git ingestion
+implementation binding exact commit blobs to repository, namespace, source path and
+raw-byte digest. Local qualification passed with 1075 tests and 98.59% coverage;
+this ledger does not claim external Authority approval or a governed merge. The canonical
+repository snapshot remains Slice 11.7. REC-11-001 through REC-11-007 in
+`governance/framework/README.md` record accepted migration rationale; REC-11-008 is
+a proposed design recommendation without an owner-approval claim.
 
 ## 4.3 Phase 11 Hard Invariants
 
@@ -254,7 +262,8 @@ repository snapshot remain Slices 11.6-11.7. REC-11-001 through REC-11-007 in
 - IntentSpec and capability-registry redesign
 - AI routing, model-provider, MCP, agent, studio, or chatbot runtime
 
-Phase 11 MUST NOT begin as part of Phase 10 enforcement stabilization. It starts only after Phase 10 external SCM enforcement trust-boundary evidence is complete.
+Phase 11 follows the accepted Phase 10 reference-provider trust-boundary evidence.
+Each new slice still requires its own canonical qualification and governed merge.
 
 # 5. PHASE 12 — REPRODUCIBILITY AND SUPPLY-CHAIN CLOSURE
 
@@ -318,18 +327,15 @@ Every admitted artifact must be evaluated as current architecture, with legacy c
 # 8. Current Critical Path
 
 ```text
-STAB-001..005 Internal Stabilization                         DONE
-→ SCM-001 Trust Boundary                                    ACTIVE
-→ SCM-002 Provider-Neutral Enforcement Contract             DONE
-→ SCM-003 Desired-State Semantic Validation                  DONE
-→ SCM-004 Review Bootstrap Exception                         DONE
-→ SCM-005 Live-State Observer                               DONE
-→ SCM-006 Reference-Provider Activation + Negative Evidence BLOCKED
-→ SCM-007 Drift Closure                                     BLOCKED
-→ Phase 11 Executable Framework & Declarative Semantic Authority
-→ Phase 12 Reproducibility
-→ Phase 13 Governance 1.0
-→ Phase 14 Architecture Re-Admission
+Phase 10 Stabilization + scoped reference-provider acceptance  DONE
+→ Phase 11 Slices 11.1-11.5                                    DONE
+→ Slice 11.6 Provenance-Bound Repository Ingestion             ACTIVE
+  Local qualification passed; governed merge pending
+→ Slice 11.7 ValidatedRepositorySnapshot                      PLANNED
+→ Slices 11.8-11.9 Extensions + Compatibility                  PLANNED
+→ Phase 12 Reproducibility                                    PLANNED
+→ Phase 13 Governance 1.0                                     BLOCKED
+→ Phase 14 Architecture Re-Admission                          BLOCKED
 ```
 
 This critical path is the authoritative sequencing until new observed evidence changes it
@@ -339,8 +345,8 @@ This critical path is the authoritative sequencing until new observed evidence c
 ## Execution Status
 
 - Genesis Integrity — DONE/CLOSED
-- Phase 10 SCM Enforcement and Stabilization — ACTIVE
-- Phase 11 Executable Framework & Declarative Semantic Authority — PLANNED
+- Phase 10 SCM Enforcement and Stabilization — DONE, scoped reference-provider acceptance
+- Phase 11 Executable Framework & Declarative Semantic Authority — ACTIVE, Slice 11.6 locally qualified, governed merge pending
 - Phase 12 Reproducibility and Supply-Chain Closure — PLANNED
 - Phase 13 Governance 1.0 — BLOCKED
 - Phase 14 Architecture Re-Admission — BLOCKED

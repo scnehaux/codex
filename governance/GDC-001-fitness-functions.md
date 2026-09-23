@@ -3,7 +3,7 @@ doc_meta:
   id: GDC-001
   title: Architecture Fitness Functions & Compliance Engine
   owner: Architecture Authority
-  version: 0.1.9
+  version: 0.1.10
   status: draft
   classification: public
   governed_by: [GDC-000]
@@ -113,7 +113,8 @@ codex/
 │   │   │   │   ├── executable.py
 │   │   │   │   └── relationships.py
 │   │   │   ├── fs/                # (File system utilities & workspace traversal)
-│   │   │   │   └── crawler.py
+│   │   │   │   ├── crawler.py
+│   │   │   │   └── source_path.py
 │   │   │   ├── governance/
 │   │   │   │   ├── classification.py
 │   │   │   │   ├── committed_mutation.py
@@ -139,7 +140,8 @@ codex/
 │   │   │   ├── reporting/         # (CLI output formatting & CI/CD error logs)
 │   │   │   │   └── reporter.py
 │   │   │   ├── repository/
-│   │   │   │   └── assembler.py
+│   │   │   │   ├── assembler.py
+│   │   │   │   └── git_ingestion.py
 │   │   │   ├── simulation/
 │   │   │   │   ├── contracts.py
 │   │   │   │   └── graph.py
@@ -262,7 +264,9 @@ codex/
 │       │   │   ├── test_contract_boundary.py
 │       │   │   └── test_roundtrip.py
 │       │   ├── repository/
-│       │   │   └── test_assembler.py
+│       │   │   ├── test_assembler.py
+│       │   │   ├── test_git_ingestion.py
+│       │   │   └── test_git_ingestion_regressions.py
 │       │   ├── simulation/
 │       │   │   ├── test_contracts.py
 │       │   │   └── test_graph.py

@@ -627,6 +627,53 @@ This index documents the test suite utilities and fixtures.
 | **test_governed_corpus_composes_caller_ignore_patterns_with_support_policy** | _(No docstring provided)_ |
 | **test_relationships_are_interpreted_once_into_typed_model**                 | _(No docstring provided)_ |
 
+### `tests/control/repository/test_git_ingestion.py`
+
+| Function                                                                  | Description               |
+| :------------------------------------------------------------------------ | :------------------------ |
+| **\_git**                                                                 | _(No docstring provided)_ |
+| **\_init_repo**                                                           | _(No docstring provided)_ |
+| **\_context**                                                             | _(No docstring provided)_ |
+| **test_git_repository_context_is_explicit_and_deterministic**             | _(No docstring provided)_ |
+| **test_git_source_provenance_round_trips_and_verifies_content**           | _(No docstring provided)_ |
+| **test_bound_source_document_rejects_content_digest_drift**               | _(No docstring provided)_ |
+| **test_reader_reads_exact_commit_not_dirty_worktree**                     | _(No docstring provided)_ |
+| **test_reader_requires_repository_root_and_exact_commit**                 | _(No docstring provided)_ |
+| **test_batch_discovers_only_governed_markdown_and_is_deterministic**      | _(No docstring provided)_ |
+| **test_same_artifact_id_is_distinguished_across_repository_and_revision** | _(No docstring provided)_ |
+| **test_ingested_candidate_and_batch_fail_closed_on_mismatch**             | _(No docstring provided)_ |
+| **test_tree_entry_rejects_symlink_and_git_output_failures**               | _(No docstring provided)_ |
+| **test_git_bytes_wraps_command_failures**                                 | _(No docstring provided)_ |
+| **test_git_paths_reject_ambiguous_or_nonrelative_names**                  | _(No docstring provided)_ |
+| **test_git_contracts_reject_wrong_types**                                 | _(No docstring provided)_ |
+| **test_candidate_rejects_inconsistent_provenance_and_evidence**           | _(No docstring provided)_ |
+| **test_assembler_verifies_supplied_digest**                               | _(No docstring provided)_ |
+| **test_reader_rejects_malformed_or_unsupported_tree_records**             | _(No docstring provided)_ |
+| **test_reader_rejects_invalid_context_and_noncommit_object**              | _(No docstring provided)_ |
+| **test_reader_wraps_non_utf8_control_output**                             | _(No docstring provided)_ |
+| **test_public_ingestion_api_preserves_binding_and_report_promotion**      | _(No docstring provided)_ |
+| **test_structured_namespace_components_do_not_alias**                     | _(No docstring provided)_ |
+
+### `tests/control/repository/test_git_ingestion_regressions.py`
+
+| Function                                                               | Description               |
+| :--------------------------------------------------------------------- | :------------------------ |
+| **\_git**                                                              | _(No docstring provided)_ |
+| **\_commit**                                                           | _(No docstring provided)_ |
+| **\_repository**                                                       | _(No docstring provided)_ |
+| **\_context**                                                          | _(No docstring provided)_ |
+| **test_recorded_commit_reads_ignore_git_replace_refs**                 | _(No docstring provided)_ |
+| **test_ingestion_and_validation_import_in_fresh_processes**            | _(No docstring provided)_ |
+| **test_git_source_digest_preserves_crlf_bom_and_unicode**              | _(No docstring provided)_ |
+| **test_non_utf8_committed_source_fails_closed**                        | _(No docstring provided)_ |
+| **test_commit_ingestion_ignores_staged_dirty_and_untracked_files**     | _(No docstring provided)_ |
+| **test_git_ingestion_ignores_inherited_repository_environment**        | _(No docstring provided)_ |
+| **\_tree**                                                             | _(No docstring provided)_ |
+| **test_noncanonical_git_names_cannot_alias_and_hide_governed_sources** | _(No docstring provided)_ |
+| **test_git_discovery_preserves_authored_ignore_pattern_case**          | _(No docstring provided)_ |
+| **test_candidate_identity_binds_namespace_even_when_parsing_fails**    | _(No docstring provided)_ |
+| **test_builder_inherits_bound_namespace_and_rejects_override**         | _(No docstring provided)_ |
+
 ### `tests/control/simulation/test_contracts.py`
 
 | Function                                                  | Description               |
@@ -916,6 +963,7 @@ This index documents the test suite utilities and fixtures.
 | **test_revision_alignment_is_enforced**                               | _(No docstring provided)_ |
 | **test_claim_requires_unique_evidence_and_lineage**                   | _(No docstring provided)_ |
 | **test_provenance_validation_rejects_invalid_types_and_blank_values** | _(No docstring provided)_ |
+| **test_content_digest_alignment_is_enforced**                         | _(No docstring provided)_ |
 
 ### `tests/core/knowledge/test_retrieval.py`
 

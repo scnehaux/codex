@@ -3,7 +3,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from hashlib import sha256
 import json
-from pathlib import PurePosixPath
 from types import MappingProxyType
 from typing import Any, Mapping
 
@@ -13,6 +12,7 @@ from engine.control.framework.executable import (
     ExecutableFramework,
     executable_framework,
 )
+from engine.control.fs.source_path import repository_source_path
 from engine.control.governance.relationships import relationship_contract_findings
 from engine.control.parsing.markdown_ast import parse_frontmatter
 from engine.control.repository.assembler import (
@@ -21,20 +21,10 @@ from engine.control.repository.assembler import (
 )
 from engine.control.validators.metadata_rules import validate_lifecycle_age
 from engine.control.validators.registry import get_validator
-from engine.core.metamodel import ArchitectureNamespace
+from engine.core.metamodel import ArchitectureNamespace, SourceReference
 from engine.core.repository import RepositoryArtifact, RepositoryModel
 
 from .contracts import ValidationFinding, ValidationReport
-
-
-def _source_path(value: str) -> str:
-    normalized = value.strip().replace("\\", "/")
-    if not normalized:
-        raise ValueError("source_path must not be blank")
-    path = PurePosixPath(normalized)
-    if path.is_absolute() or ".." in path.parts:
-        raise ValueError("source_path must be repository-relative")
-    return path.as_posix()
 
 
 def _freeze(value: Any) -> Any:
@@ -59,11 +49,29 @@ def _thaw(value: Any) -> Any:
 class SourceDocument:
     source_path: str
     content: str
+    source_reference: SourceReference | None = None
+    source_namespace: ArchitectureNamespace | None = None
 
     def __post_init__(self) -> None:
-        object.__setattr__(self, "source_path", _source_path(self.source_path))
+        object.__setattr__(
+            self, "source_path", repository_source_path(self.source_path)
+        )
+        if self.source_namespace is not None and not isinstance(
+            self.source_namespace, ArchitectureNamespace
+        ):
+            raise TypeError("source_namespace must be ArchitectureNamespace or None")
         if not isinstance(self.content, str):
             raise TypeError("content must be a string")
+        if self.source_reference is not None and not isinstance(
+            self.source_reference, SourceReference
+        ):
+            raise TypeError("source_reference must be SourceReference or None")
+        if (
+            self.source_reference is not None
+            and self.source_reference.content_digest is not None
+            and self.source_reference.content_digest != self.content_sha256
+        ):
+            raise ValueError("source_reference content_digest does not match content")
 
     @property
     def content_sha256(self) -> str:
@@ -71,7 +79,35 @@ class SourceDocument:
 
     @property
     def source_id(self) -> str:
-        payload = f"{self.source_path}\0{self.content_sha256}".encode("utf-8")
+        reference = self.source_reference
+        if reference is None and self.source_namespace is None:
+            payload = f"{self.source_path}\0{self.content_sha256}".encode("utf-8")
+        else:
+            namespace = self.source_namespace
+            payload = json.dumps(
+                {
+                    "source_path": self.source_path,
+                    "content_sha256": self.content_sha256,
+                    "reference": (
+                        [
+                            reference.origin,
+                            reference.revision,
+                            reference.line,
+                            reference.content_digest,
+                        ]
+                        if reference
+                        else None
+                    ),
+                    "namespace": (
+                        [namespace.organization_id, namespace.repository_id]
+                        if namespace
+                        else None
+                    ),
+                },
+                sort_keys=True,
+                separators=(",", ":"),
+                ensure_ascii=True,
+            ).encode("ascii")
         return sha256(payload).hexdigest()
 
 
@@ -123,6 +159,11 @@ def build_artifact_candidate(
     *,
     namespace: ArchitectureNamespace | None = None,
 ) -> ArtifactCandidate:
+    bound_namespace = parsed.source.source_namespace
+    if bound_namespace is not None:
+        if namespace is not None and namespace != bound_namespace:
+            raise ValueError("candidate namespace does not match source namespace")
+        namespace = bound_namespace
     if parsed.parse_error or parsed.metadata is None:
         return ArtifactCandidate(
             parsed=parsed,
@@ -135,6 +176,7 @@ def build_artifact_candidate(
             source_path=parsed.source.source_path,
             content=parsed.source.content,
             namespace=namespace,
+            source_reference=parsed.source.source_reference,
         )
     except RepositoryAssemblyError as exc:
         return ArtifactCandidate(parsed=parsed, artifact=None, assembly_error=str(exc))

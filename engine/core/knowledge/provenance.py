@@ -105,6 +105,14 @@ class Evidence:
             and self.source.revision != self.revision.revision_id
         ):
             raise ValueError("source revision must match KnowledgeRevision.revision_id")
+        if (
+            self.source.content_digest is not None
+            and self.revision.content_digest is not None
+            and self.source.content_digest != self.revision.content_digest
+        ):
+            raise ValueError(
+                "source content_digest must match KnowledgeRevision.content_digest"
+            )
         if not isinstance(self.attributes, Mapping):
             raise TypeError("attributes must be a mapping")
         object.__setattr__(self, "attributes", _freeze(self.attributes))
