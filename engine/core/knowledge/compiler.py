@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
+from typing import TYPE_CHECKING
 
 from engine.core.metamodel import ArtifactModel
-from engine.core.repository import RepositoryModel
 
 from .graph import KnowledgeEdge, KnowledgeGraph, KnowledgeNode
+
+if TYPE_CHECKING:
+    from engine.control.repository.snapshot import ValidatedRepositorySnapshot
 
 
 class GraphCompilationError(ValueError):
@@ -91,16 +94,18 @@ def _compile_artifacts(
 
 
 def compile_repository_graph(
-    repository: RepositoryModel,
+    repository: "ValidatedRepositorySnapshot",
     *,
     additional_nodes: Iterable[KnowledgeNode] = (),
     additional_edges: Iterable[KnowledgeEdge] = (),
 ) -> KnowledgeGraph:
-    """Compile graph state from a repository model supplied by the control boundary."""
-    if not isinstance(repository, RepositoryModel):
-        raise TypeError("repository must be RepositoryModel")
+    """Compile canonical graph state only from a validated repository snapshot."""
+    from engine.control.repository.snapshot import ValidatedRepositorySnapshot
+
+    if not isinstance(repository, ValidatedRepositorySnapshot):
+        raise TypeError("repository must be ValidatedRepositorySnapshot")
     return _compile_artifacts(
-        repository.artifact_models,
+        repository.repository.artifact_models,
         additional_nodes=additional_nodes,
         additional_edges=additional_edges,
     )

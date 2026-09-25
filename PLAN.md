@@ -43,7 +43,7 @@ Governance 1.0 readiness            : NOT READY (later phases remain)
 This snapshot is source-bound historical evidence, not an automatically refreshed
 current-state feed. Phase 10 is closed for the accepted reference-provider scope;
 the Phase 11 ledger and Current Next Action below own implementation sequencing.
-Slice 11.6 is locally qualified; governed merge remains pending. This status grants no standing publication.
+Slice 11.6 is complete through Authority publication and governed merge. Slice 11.7 is active. This status grants no standing publication.
 
 Git history is the historical ledger
 
@@ -519,7 +519,7 @@ next planned slice, not implemented by closing this phase.
 
 # 4. PHASE 11 — EXECUTABLE FRAMEWORK & DECLARATIVE SEMANTIC AUTHORITY
 
-**Status: ACTIVE — Slices 11.1–11.5 complete; Slice 11.6 implemented locally, local qualification passed; governed merge pending.**
+**Status: ACTIVE - Slices 11.1-11.6 complete; Slice 11.7 ValidatedRepositorySnapshot active.**
 
 Phase 11 separates authored framework semantics from Python implementation and establishes the first canonical repository trust boundary.
 
@@ -1021,15 +1021,14 @@ EAD
 The current next action is:
 
 ```text
-Slice 11.6 Provenance-Bound Repository Ingestion: local qualification passed
-→ Submit the exact candidate through clean-checkout and committed-delta checks
-→ Authority evaluation, dedicated-App publication and governed merge
-→ Slice 11.7 ValidatedRepositorySnapshot
+Slice 11.6 Provenance-Bound Repository Ingestion: DONE
+-> Slice 11.7 ValidatedRepositorySnapshot: ACTIVE
+-> Qualify exact snapshot candidate through governance + Authority
 ```
 
 Phase 10 is complete for its accepted GitHub reference-provider scope. Slices
-11.1–11.5 are complete; Slice 11.6 is locally qualified and remains active
-until its exact-candidate Authority and governed merge evidence exist. Architecture admission remains closed.
+11.1-11.6 are complete; Slice 11.7 is active as the first canonical repository
+trust boundary. Architecture admission remains closed.
 
 <!-- PHASE-STATUS:START -->
 
@@ -1038,7 +1037,7 @@ until its exact-candidate Authority and governed merge evidence exist. Architect
 - Genesis Integrity — DONE/CLOSED
 - Version and Mutation Authority — IMPLEMENTED; candidate delta qualification required per slice
 - Phase 10 SCM Enforcement and Stabilization — DONE, scoped reference-provider acceptance
-- Phase 11 Executable Framework & Declarative Semantic Authority — ACTIVE, Slice 11.6 locally qualified, governed merge pending
+- Phase 11 Executable Framework & Declarative Semantic Authority - ACTIVE, Slice 11.7 snapshot boundary under qualification
 - Phase 12 Reproducibility and Supply-Chain Closure — PLANNED
 - Phase 13 Governance 1.0 — BLOCKED
 - Phase 14 Architecture Re-Admission — BLOCKED

@@ -410,6 +410,15 @@ This index documents the internal functions and classes of the Fitness Function 
 | **GitRepositoryReader.ingest_governed_candidates**   | _(No docstring provided)_ |
 | **ingest_git_governed_corpus**                       | _(No docstring provided)_ |
 
+### `engine/control/repository/snapshot.py`
+
+| Function                                       | Description               |
+| :--------------------------------------------- | :------------------------ |
+| **\_canonical_digest**                         | _(No docstring provided)_ |
+| **ValidatedRepositorySnapshot.revision**       | _(No docstring provided)_ |
+| **ValidatedRepositorySnapshot.semantic_state** | _(No docstring provided)_ |
+| **build_validated_repository_snapshot**        | _(No docstring provided)_ |
+
 ### `engine/control/simulation/contracts.py`
 
 | Function                             | Description               |

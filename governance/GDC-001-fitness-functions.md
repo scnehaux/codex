@@ -3,7 +3,7 @@ doc_meta:
   id: GDC-001
   title: Architecture Fitness Functions & Compliance Engine
   owner: Architecture Authority
-  version: 0.1.10
+  version: 0.1.11
   status: draft
   classification: public
   governed_by: [GDC-000]
@@ -141,7 +141,8 @@ codex/
 │   │   │   │   └── reporter.py
 │   │   │   ├── repository/
 │   │   │   │   ├── assembler.py
-│   │   │   │   └── git_ingestion.py
+│   │   │   │   ├── git_ingestion.py
+│   │   │   │   └── snapshot.py
 │   │   │   ├── simulation/
 │   │   │   │   ├── contracts.py
 │   │   │   │   └── graph.py
@@ -266,7 +267,8 @@ codex/
 │       │   ├── repository/
 │       │   │   ├── test_assembler.py
 │       │   │   ├── test_git_ingestion.py
-│       │   │   └── test_git_ingestion_regressions.py
+│       │   │   ├── test_git_ingestion_regressions.py
+│       │   │   └── test_validated_snapshot.py
 │       │   ├── simulation/
 │       │   │   ├── test_contracts.py
 │       │   │   └── test_graph.py
