@@ -170,6 +170,42 @@ repository/revision/content-digest provenance is Slice 11.6 and
 boundaries into this slice or imply that an unversioned promoted `RepositoryModel`
 is canonical knowledge.
 
+## REC-11-008 - Bind Git candidates to exact source bytes and explicit context
+
+**Status: proposed; local qualification passed; governed merge pending. No owner approval is claimed.**
+
+Keep `SourceReference` provider-independent with an optional content digest. Put the
+Git-specific requirements in `GitRepositoryContext` and `GitSourceProvenance`:
+explicit repository identity, architecture namespace, full immutable commit SHA,
+canonical repository-relative path and raw-byte SHA-256. Preserve that reference
+on parsed source, candidate, artifact evidence and relationship provenance. Include
+structured namespace and source identity in deterministic candidate identities.
+
+Read exact committed regular-file blobs, not the working tree. Discovery follows
+compiled framework roots and ignore policy. Normalize portable input paths; reject
+ambiguous paths, noncanonical committed tree names, symlink/submodule source entries,
+invalid UTF-8, mismatched digests and inconsistent candidate provenance. Git replacement objects and inherited Git environment
+redirection must not substitute other content for the requested revision. Batches
+are deterministically sorted, reject duplicate source identities, share one context
+and retain invalid parsed candidates for diagnostics without granting them canonical
+status.
+
+Repository identity and namespace are caller-supplied bindings. They establish
+reconstructable provenance within the ingestion contract; they do not authenticate
+a remote repository, prove repository ownership or authorize publication. Generic
+observed-source contracts remain independent of Git commit and digest requirements.
+
+The local implementation is in `engine/control/repository/git_ingestion.py`, with
+shared path validation in `engine/control/fs/source_path.py`. Deterministic local
+Git ingestion follows the existing control-layer assembler and Git auditor pattern.
+It introduces no SCM provider-policy semantics; generic core contracts remain
+independent of Git.
+
+`GitCandidateBatch` is an ingestion result, not `ValidatedRepositorySnapshot` or
+canonical knowledge. Deterministic validation, snapshot construction and governed
+merge remain explicit boundaries. Slice 11.7 still owns the
+first canonical repository trust boundary; architecture admission remains closed.
+
 ## Verification
 
 `python scripts/framework_contract_check.py` validates the complete authored set,

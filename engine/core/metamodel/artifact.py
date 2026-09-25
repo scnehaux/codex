@@ -100,6 +100,7 @@ class SourceReference:
     origin: str
     revision: str | None = None
     line: int | None = None
+    content_digest: str | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(
@@ -114,6 +115,11 @@ class SourceReference:
         )
         if self.line is not None and self.line < 1:
             raise ValueError("line must be >= 1 when provided")
+        object.__setattr__(
+            self,
+            "content_digest",
+            _optional(self.content_digest, "content_digest"),
+        )
 
 
 @dataclass(frozen=True, slots=True)

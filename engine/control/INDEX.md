@@ -164,6 +164,12 @@ This index documents the internal functions and classes of the Fitness Function 
 | **gather_markdown_paths**   | Scans and deduplicates Markdown file paths from target directories.<br>Deduplication here applies strictly to file paths (to handle overlapping input directories),<br>NOT to document IDs. Enforces Fail-Closed security by strictly checking `allowed_root_dirs`<br>and bypassing deeply nested exclusions. If `repo_root` is provided, it guarantees that only<br>directories explicitly within the repository boundary are scanned; any external paths will<br>trigger a hard crash.<br><br><pre>Args:<br>&nbsp;&nbsp;&nbsp;&nbsp;- target_dirs (str \| list): Target paths/files to scan.<br>&nbsp;&nbsp;&nbsp;&nbsp;- repo_root (str, optional): Repository root for boundary validation.<br>&nbsp;&nbsp;&nbsp;&nbsp;- allowed_root_dirs (set, optional): Whitelisted top-level directories. External paths<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trigger a hard crash.<br><br>Returns:<br>&nbsp;&nbsp;&nbsp;&nbsp;list: Valid Markdown file paths.<br><br>Raises:<br>&nbsp;&nbsp;&nbsp;&nbsp;SystemExit: If path traversal (e.g., `../`) or unauthorized directories are detected.<br></pre>                                                                                                                                                                                                                                                                                                             |
 | **build_metadata_registry** | Builds a central registry of architecture documents by parsing YAML frontmatter. Enforces the<br>SSOT (Single Source of Truth) invariant by detecting duplicate IDs.<br>**Note**: This phase strictly GATHERS data by calling `gather_markdown_paths`. We then call<br>`parse_frontmatter` but intentionally IGNORE any parsing errors (e.g., missing `doc_meta` or<br>invalid YAML). This is because this phase is NOT for structural validation, its sole purpose<br>is to build a registry to detect duplicate IDs. All other metadata validation is delegated to<br>the main engine.<br><br><pre>Args:<br>&nbsp;&nbsp;&nbsp;&nbsp;- target_dirs (str \| list): Target directories to scan.<br>&nbsp;&nbsp;&nbsp;&nbsp;- allowed_root_dirs (set, optional): Whitelisted root directories for boundary enforcement.<br><br>Returns:<br>&nbsp;&nbsp;&nbsp;&nbsp;tuple: (unique_ids, registry, duplicates)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- unique_ids (set): Discovered document IDs.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- registry (dict): Maps `doc_id` to its metadata (includes `_filepath`).<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- duplicates (dict): Maps duplicated `doc_id` to conflicting file paths.<br><br>Raises:<br>&nbsp;&nbsp;&nbsp;&nbsp;ValueError: If `gather_markdown_paths` detects path traversal or unauthorized boundaries.<br></pre> |
 
+### `engine/control/fs/source_path.py`
+
+| Function                   | Description                                                                |
+| :------------------------- | :------------------------------------------------------------------------- |
+| **repository_source_path** | Normalize a portable repository file path, rejecting ambiguous components. |
+
 ### `engine/control/governance/classification.py`
 
 | Function                                | Description                                                             |
@@ -379,6 +385,31 @@ This index documents the internal functions and classes of the Fitness Function 
 | **RepositoryAssembler.load**                   | _(No docstring provided)_ |
 | **RepositoryAssembler.load_governed_corpus**   | _(No docstring provided)_ |
 
+### `engine/control/repository/git_ingestion.py`
+
+| Function                                             | Description               |
+| :--------------------------------------------------- | :------------------------ |
+| **\_required**                                       | _(No docstring provided)_ |
+| **\_canonical_digest**                               | _(No docstring provided)_ |
+| **GitRepositoryContext.context_id**                  | _(No docstring provided)_ |
+| **GitRepositoryContext.semantic_state**              | _(No docstring provided)_ |
+| **GitSourceProvenance.origin**                       | _(No docstring provided)_ |
+| **GitSourceProvenance.source_reference**             | _(No docstring provided)_ |
+| **GitSourceProvenance.provenance_id**                | _(No docstring provided)_ |
+| **GitSourceProvenance.verify_content**               | _(No docstring provided)_ |
+| **GitSourceProvenance.to_record**                    | _(No docstring provided)_ |
+| **GitSourceProvenance.from_record**                  | _(No docstring provided)_ |
+| **GitIngestedCandidate.provenance_id**               | _(No docstring provided)_ |
+| **GitCandidateBatch.candidates**                     | _(No docstring provided)_ |
+| **GitCandidateBatch.batch_id**                       | _(No docstring provided)_ |
+| **GitRepositoryReader.\_git_bytes**                  | _(No docstring provided)_ |
+| **GitRepositoryReader.\_git_text**                   | _(No docstring provided)_ |
+| **GitRepositoryReader.\_tree_entry**                 | _(No docstring provided)_ |
+| **GitRepositoryReader.read_source**                  | _(No docstring provided)_ |
+| **GitRepositoryReader.list_governed_markdown_paths** | _(No docstring provided)_ |
+| **GitRepositoryReader.ingest_governed_candidates**   | _(No docstring provided)_ |
+| **ingest_git_governed_corpus**                       | _(No docstring provided)_ |
+
 ### `engine/control/simulation/contracts.py`
 
 | Function                             | Description               |
@@ -412,7 +443,6 @@ This index documents the internal functions and classes of the Fitness Function 
 
 | Function                           | Description               |
 | :--------------------------------- | :------------------------ |
-| **\_source_path**                  | _(No docstring provided)_ |
 | **\_freeze**                       | _(No docstring provided)_ |
 | **\_thaw**                         | _(No docstring provided)_ |
 | **SourceDocument.content_sha256**  | _(No docstring provided)_ |

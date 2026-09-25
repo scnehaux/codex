@@ -54,12 +54,14 @@ def test_identity_rejects_blank_artifact_id():
 
 
 def test_source_reference_normalizes_and_validates():
-    source = SourceReference(" repo/file.md ", " abc123 ", 4)
+    source = SourceReference(" repo/file.md ", " abc123 ", 4, " sha256:deadbeef ")
     assert source.origin == "repo/file.md"
     assert source.revision == "abc123"
     assert source.line == 4
+    assert source.content_digest == "sha256:deadbeef"
 
     assert SourceReference("repo/file.md").revision is None
+    assert SourceReference("repo/file.md").content_digest is None
 
     with pytest.raises(ValueError, match="revision"):
         SourceReference("repo/file.md", " ")

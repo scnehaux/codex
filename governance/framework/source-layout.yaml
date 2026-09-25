@@ -84,6 +84,14 @@ repository_authority:
     location: engine/control/repository
     role: filesystem-discovery-parsing-and-model-construction
     status: active
+  git_ingestion:
+    location: engine/control/repository/git_ingestion.py
+    role: provenance-bound-git-candidate-ingestion
+    status: locally-qualified-pending-governed-merge
+  repository_source_path:
+    location: engine/control/fs/source_path.py
+    role: portable-repository-relative-source-path-validation
+    status: locally-qualified-pending-governed-merge
   invariant:
   - core-must-not-import-control
   - filesystem-and-parsing-do-not-belong-to-core-repository-model

@@ -22,7 +22,7 @@ Current execution authority:
 
 This plan is the current execution contract for `scnehaux/codex`
 
-Observed reference-provider acceptance baseline (before this status-closure PR):
+Historical reference-provider acceptance baseline (Phase 10 status closure):
 
 ```text
 Canonical branch                  : main
@@ -40,9 +40,10 @@ Privileged maintenance bootstrap   : disabled / permanent reader promoted
 Governance 1.0 readiness            : NOT READY (later phases remain)
 ```
 
-This snapshot is source-bound evidence, not an automatically refreshed current-state
-feed. Phase 10 closure is recorded by this status change only through the ordinary
-qualified, dedicated-App-authorized PR merge. It grants no standing publication.
+This snapshot is source-bound historical evidence, not an automatically refreshed
+current-state feed. Phase 10 is closed for the accepted reference-provider scope;
+the Phase 11 ledger and Current Next Action below own implementation sequencing.
+Slice 11.6 is locally qualified; governed merge remains pending. This status grants no standing publication.
 
 Git history is the historical ledger
 
@@ -101,7 +102,7 @@ SCNEHAUX_MUTATION_BASE_REF=35ba5f427b8fcda41e8bb3a989cdf21cdf8e31cc make mutatio
 make governance-qualify
 ```
 
-`make governance-qualify` is necessary but not sufficient for Phase 10 completion because committed-delta validation and effective external SCM enforcement are separate controls. `make github-policy-check` remains the current reference-provider gate until Slice 10.7 extracts the provider adapter contract
+`make governance-qualify` is necessary but not sufficient for merge readiness because committed-delta validation and effective external SCM enforcement are separate controls. `make github-policy-check` remains the GitHub reference-provider projection gate alongside the implemented provider-neutral SCM contract.
 
 ---
 
@@ -352,7 +353,7 @@ Validate at minimum:
 - ownership semantics
 - repository settings required by governance
 
-The existing `make github-policy-check` remains the current reference-provider gate until adapter extraction is implemented. It MUST NOT be renamed ahead of implementation.
+`make github-policy-check` remains the GitHub reference-provider projection gate for the implemented provider-neutral SCM contract. Adapter extraction does not remove reference-provider validation.
 
 ### Acceptance
 
@@ -517,6 +518,8 @@ next planned slice, not implemented by closing this phase.
 ---
 
 # 4. PHASE 11 — EXECUTABLE FRAMEWORK & DECLARATIVE SEMANTIC AUTHORITY
+
+**Status: ACTIVE — Slices 11.1–11.5 complete; Slice 11.6 implemented locally, local qualification passed; governed merge pending.**
 
 Phase 11 separates authored framework semantics from Python implementation and establishes the first canonical repository trust boundary.
 
@@ -810,6 +813,41 @@ Generic source contracts remain provider-independent so future observed sources 
 - source content can be integrity-checked against its recorded digest
 - provenance identity is deterministic and reconstructable
 
+### Slice 11.6 local implementation evidence
+
+Status: **LOCALLY QUALIFIED — governed merge pending.**
+
+`engine/control/repository/git_ingestion.py` introduces immutable
+`GitRepositoryContext`, `GitSourceProvenance`, `GitIngestedCandidate` and
+`GitCandidateBatch` contracts plus `GitRepositoryReader` and the
+`ingest_git_governed_corpus` entrypoint. The reader obtains regular-file blobs from
+an exact full commit SHA and binds their raw-byte SHA-256 to repository identity,
+architecture namespace and repository-relative path. Discovery uses compiled
+framework layout and ignore policy. Unsafe or ambiguous paths, non-regular files,
+invalid UTF-8 and mismatched content/provenance fail closed.
+
+`SourceReference.content_digest` stays optional and provider-independent. The
+assembler preserves supplied provenance on artifacts and relationships;
+`SourceDocument` and the candidate identity preserve source namespace and digest.
+Git provenance records and deterministic identities can be reconstructed without
+reading mutable working-tree content. Repository identity and namespace are explicit
+caller bindings; this does not authenticate a remote repository or grant approval.
+
+Regression evidence is maintained in
+`tests/control/repository/test_git_ingestion.py` and
+`tests/control/repository/test_git_ingestion_regressions.py`, with supporting core,
+assembler and pipeline tests. Local qualification passed: **1075 tests**,
+**98.59% total coverage**, the **95% per-file coverage gate**, Ruff, Prettier,
+generated-state reproducibility, framework/SCM checks, waiver checks, Genesis and
+mutation/version integrity. GDC-001 is bumped to 0.1.10 for generated topography.
+These results do not authorize external publication. Each submitted revision must
+complete clean-checkout and committed-delta qualification against its actual base,
+followed by exact-candidate Authority evidence and governed merge.
+
+REC-11-008 records the proposed design recommendation; it does not claim owner
+approval. No `ValidatedRepositorySnapshot`, canonical knowledge admission or
+architecture admission is claimed; those boundaries remain later slices.
+
 ## Slice 11.7 — ValidatedRepositorySnapshot
 
 ### Target
@@ -983,25 +1021,24 @@ EAD
 The current next action is:
 
 ```text
-Slice 10.1 Cross-Platform Formatting Contract
-→ Slice 10.2 Python Quality Baseline
-→ Slice 10.3 Generated-State Reconciliation
-→ Slice 10.4 Mutation/Version Reconciliation
-→ Slice 10.5 Internal Qualification
+Slice 11.6 Provenance-Bound Repository Ingestion: local qualification passed
+→ Submit the exact candidate through clean-checkout and committed-delta checks
+→ Authority evaluation, dedicated-App publication and governed merge
+→ Slice 11.7 ValidatedRepositorySnapshot
 ```
 
-Do not activate reference-provider enforcement before the SCM trust boundary and desired-state contract are ready
-
-Do not begin ontology extraction as part of a formatter/lint repair commit
+Phase 10 is complete for its accepted GitHub reference-provider scope. Slices
+11.1–11.5 are complete; Slice 11.6 is locally qualified and remains active
+until its exact-candidate Authority and governed merge evidence exist. Architecture admission remains closed.
 
 <!-- PHASE-STATUS:START -->
 
 ## Execution Status
 
 - Genesis Integrity — DONE/CLOSED
-- Version and Mutation Authority — IMPLEMENTED, ACTIVE BRANCH RECONCILIATION REQUIRED
-- Phase 10 SCM Enforcement and Stabilization — CURRENT ACTIVE
-- Phase 11 Executable Framework & Declarative Semantic Authority — PLANNED
+- Version and Mutation Authority — IMPLEMENTED; candidate delta qualification required per slice
+- Phase 10 SCM Enforcement and Stabilization — DONE, scoped reference-provider acceptance
+- Phase 11 Executable Framework & Declarative Semantic Authority — ACTIVE, Slice 11.6 locally qualified, governed merge pending
 - Phase 12 Reproducibility and Supply-Chain Closure — PLANNED
 - Phase 13 Governance 1.0 — BLOCKED
 - Phase 14 Architecture Re-Admission — BLOCKED
