@@ -208,7 +208,7 @@ first canonical repository trust boundary; architecture admission remains closed
 
 ## REC-11-009 - Admit canonical repository state only through deterministic validated snapshots
 
-**Status: selected for Slice 11.7 implementation; governed merge pending.**
+**Status: selected and implemented in Slice 11.7; governed merge completed.**
 
 Introduce `ValidatedRepositorySnapshot` as the first canonical repository trust
 boundary. Snapshot construction consumes one `GitCandidateBatch`, reruns deterministic
@@ -231,6 +231,37 @@ inside the trust boundary so a caller cannot elevate malformed or semantically i
 state by fabricating a `ValidationReport`. Architecture admission, remote repository
 ownership authentication, extension semantics and Phase 11 completion remain outside
 this slice.
+
+## REC-11-010 - Compose company semantics as governed declarative layers
+
+**Status: selected for Slice 11.8 implementation; governed merge pending.**
+
+Keep one `FrameworkCompiler` and one `ExecutableFramework`; do not fork the core
+framework per organization. The governed composition order is core framework,
+framework profile, then the explicitly declared ordered company-pack set. Every
+contributing layer is bound into compiled provenance with layer kind, identity,
+version, path and authored-layer SHA-256 evidence.
+
+Company packs use typed extension operations. Slice 11.8 enables additive artifact
+types and relationship types. Additive artifact types must supply their complete
+runtime surface (family, unique repository root, lifecycle, schema and validator
+binding), while additive relationships must satisfy the existing ontology contract.
+Validator plugins may live outside core only under the isolated `company_packs.*`
+namespace; the compiler still requires exact schema/validator coverage.
+
+The extension policy distinguishes additive extension, governed restriction,
+compatibility-preserving override and forbidden core semantic override. Restriction
+and compatibility-preserving override are default-denied in the current policy;
+they may only become legal through a separately governed policy change. Forbidden
+core semantic override is always fail-closed. Duplicate artifact identity, duplicate
+relationship identity, repository-root conflict and source-field relationship conflict
+also fail closed before an `ExecutableFramework` exists.
+
+Raw layer SHA-256 values are provenance evidence rather than semantic meaning, so
+reordering declarations that are already defined as semantically unordered does not
+change the executable semantic digest. Layer identity/version/path and the composed
+runtime semantics do contribute to that digest. Compatibility ranges, migration and
+deprecation policy remain Slice 11.9; Slice 11.8 does not claim those concerns closed.
 
 ## Verification
 

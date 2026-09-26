@@ -81,6 +81,8 @@ def framework_contract_findings(repo_root: str | Path) -> tuple[str, ...]:
         framework_runtime = compile_framework(root)
         runtime = framework_runtime.artifacts
     except FrameworkContractError as exc:
+        if str(exc) == "executable-framework-profile-drift":
+            return ("extension-contract-drift",)
         return (f"contract-load:{exc}",)
     findings: list[str] = []
     framework = yaml.safe_load(
@@ -131,6 +133,16 @@ def framework_contract_findings(repo_root: str | Path) -> tuple[str, ...]:
         "profile_id": profile["profile_id"],
         "profile_version": profile["profile_version"],
         "profile_core_fork_required": profile["extension"]["core_fork_required"],
+        "extension_policy": {
+            "additive": ["artifact-type", "relationship-type"],
+            "governed-restriction": [],
+            "compatibility-preserving-override": [],
+            "forbidden-core-semantic-override": [
+                "artifact-type",
+                "relationship-type",
+            ],
+        },
+        "company_packs": [],
     }
     if extensions != expected_extensions:
         findings.append("extension-contract-drift")

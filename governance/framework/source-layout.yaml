@@ -381,6 +381,8 @@ governance_qualification:
       - governance/framework/contracts/validator-bindings.yaml
       - governance/framework/contracts/governance-policy.yaml
       - governance/framework/contracts/extensions.yaml
+      - governance/framework/profiles/scnehaux-codex-default.yaml
+      - governance/framework/company-packs/README.md
       - engine/control/framework/contracts.py
       - engine/control/framework/artifacts.py
       - engine/control/framework/relationships.py
@@ -393,6 +395,7 @@ governance_qualification:
       - tests/control/framework/test_artifact_runtime.py
       - tests/control/framework/test_relationship_runtime.py
       - tests/control/framework/test_executable_framework.py
+      - tests/control/framework/test_company_packs.py
       - tests/control/validation/test_pipeline.py
       - tests/control/governance/test_relationships.py
       - tests/scripts/test_framework_contract_check.py

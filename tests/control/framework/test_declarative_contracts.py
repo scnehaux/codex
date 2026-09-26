@@ -31,6 +31,12 @@ def _fixture(tmp_path: Path) -> Path:
     for source in (ROOT / CONTRACTS).iterdir():
         if source.is_file():
             shutil.copy2(source, target / CONTRACTS / source.name)
+    profile = ROOT / "governance/framework/profiles/scnehaux-codex-default.yaml"
+    profile_target = (
+        target / "governance/framework/profiles/scnehaux-codex-default.yaml"
+    )
+    profile_target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(profile, profile_target)
     return target
 
 
@@ -268,7 +274,7 @@ def _mutate_family(root: Path, filename: str, mutator) -> None:
         ),
         (
             "extensions.yaml",
-            "contract-load:executable-framework-profile-drift",
+            "extension-contract-drift",
             lambda data: data.__setitem__("profile_version", 999),
         ),
     ],

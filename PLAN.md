@@ -910,6 +910,19 @@ Extension policy MUST distinguish:
 - core semantic replacement is forbidden by default
 - compiled framework provenance identifies all contributing contract layers
 
+Implementation candidate:
+
+- `load_framework_contract_set` composes the governed core contract, exact framework profile, and explicitly declared company packs into one deterministic contract set.
+- company packs declare typed operations; additive artifact types and relationship types are supported without core Python edits.
+- governed restriction and compatibility-preserving override modes are distinct policy classes and default-denied until explicitly enabled by governed policy.
+- forbidden core semantic overrides fail closed even when named explicitly.
+- `ExecutableFramework.provenance` records core, profile, and company-pack layer identity/version/path plus immutable authored-layer SHA-256 evidence.
+- semantic identity includes contributing layer identity/version/path while remaining insensitive to semantically unordered authored declaration ordering.
+- validator plugins for company artifact types are isolated under the `company_packs.*` namespace; arbitrary import paths remain rejected.
+- current core semantics remain unchanged when `company_packs` is empty.
+
+Governed merge and exact-candidate Authority evidence are still required before Slice 11.8 can be marked DONE.
+
 ## Slice 11.9 — Compatibility & Versioning
 
 ### Target

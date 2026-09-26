@@ -17,6 +17,7 @@ from engine.control.framework.artifacts import (
 from engine.control.framework.contracts import (
     FrameworkContractError,
     FrameworkContractSet,
+    FrameworkLayer,
     load_framework_contract_set,
 )
 from engine.control.framework.relationships import (
@@ -63,6 +64,8 @@ class ExtensionDeclarations:
     profile_id: str
     profile_version: int
     profile_core_fork_required: bool
+    extension_policy: Mapping[str, tuple[str, ...]]
+    company_pack_paths: tuple[str, ...]
 
 
 @dataclass(frozen=True, slots=True)
@@ -72,6 +75,7 @@ class ExecutableFramework:
     relationships: RelationshipRuntimeView
     governance: GovernancePolicy
     extensions: ExtensionDeclarations
+    provenance: tuple[FrameworkLayer, ...]
     contract_sha256: str
     semantic_sha256: str
 
@@ -325,6 +329,8 @@ def _compile_extensions(contract: FrameworkContractSet) -> ExtensionDeclarations
         "profile_id",
         "profile_version",
         "profile_core_fork_required",
+        "extension_policy",
+        "company_packs",
     }
     _require(set(data) == expected, "executable-framework-extension-fields")
     points = data["extension_points"]
@@ -353,12 +359,46 @@ def _compile_extensions(contract: FrameworkContractSet) -> ExtensionDeclarations
         and data["profile_core_fork_required"] is False,
         "executable-framework-core-fork-policy",
     )
+    policy = data["extension_policy"]
+    _require(hasattr(policy, "items"), "executable-framework-extension-policy")
+    expected_modes = {
+        "additive",
+        "governed-restriction",
+        "compatibility-preserving-override",
+        "forbidden-core-semantic-override",
+    }
+    _require(
+        set(policy) == expected_modes, "executable-framework-extension-policy-modes"
+    )
+    frozen_policy = {}
+    for mode in sorted(policy):
+        targets = policy[mode]
+        _require(
+            isinstance(targets, tuple)
+            and all(isinstance(item, str) and item for item in targets)
+            and len(targets) == len(set(targets)),
+            "executable-framework-extension-policy-targets",
+        )
+        frozen_policy[mode] = tuple(targets)
+    packs = data["company_packs"]
+    _require(isinstance(packs, tuple), "executable-framework-company-packs")
+    paths = []
+    for descriptor in packs:
+        _require(
+            hasattr(descriptor, "items")
+            and set(descriptor) == {"path", "kind"}
+            and descriptor["kind"] == "scnehaux-company-pack",
+            "executable-framework-company-pack-descriptor",
+        )
+        paths.append(descriptor["path"])
     return ExtensionDeclarations(
         extension_points=tuple(points),
         company_pack_must_not_require_core_fork=True,
         profile_id=data["profile_id"],
         profile_version=data["profile_version"],
         profile_core_fork_required=False,
+        extension_policy=MappingProxyType(frozen_policy),
+        company_pack_paths=tuple(paths),
     )
 
 
@@ -415,6 +455,7 @@ def _semantic_state(
     relationships: RelationshipRuntimeView,
     governance: GovernancePolicy,
     extensions: ExtensionDeclarations,
+    provenance: tuple[FrameworkLayer, ...],
 ) -> dict:
     return {
         "identity": {
@@ -464,7 +505,21 @@ def _semantic_state(
             "profile_id": extensions.profile_id,
             "profile_version": extensions.profile_version,
             "profile_core_fork_required": extensions.profile_core_fork_required,
+            "extension_policy": {
+                mode: sorted(targets)
+                for mode, targets in sorted(extensions.extension_policy.items())
+            },
+            "company_pack_paths": list(extensions.company_pack_paths),
         },
+        "provenance": [
+            {
+                "layer_kind": layer.layer_kind,
+                "layer_id": layer.layer_id,
+                "layer_version": layer.layer_version,
+                "path": layer.path,
+            }
+            for layer in provenance
+        ],
     }
 
 
@@ -509,6 +564,7 @@ class FrameworkCompiler:
             relationships,
             governance,
             extensions,
+            contract.layers,
         )
         return ExecutableFramework(
             identity=identity,
@@ -516,6 +572,7 @@ class FrameworkCompiler:
             relationships=relationships,
             governance=governance,
             extensions=extensions,
+            provenance=contract.layers,
             contract_sha256=contract.canonical_sha256,
             semantic_sha256=_semantic_digest(state),
         )

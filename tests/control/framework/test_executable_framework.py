@@ -17,7 +17,7 @@ from tests.support.repository import REPOSITORY_ROOT
 
 
 ROOT = REPOSITORY_ROOT
-EXPECTED_SEMANTIC = "2f8c498fbc951e756d1ca6e9179a967a966f9f8edf3b02b45ca62568a8fa3a65"
+EXPECTED_SEMANTIC = "f28eb2b1c78bb933b798ff50a18fa66974dd3b7ca06375b2bad572ca185d09bc"
 
 
 def _fixture(tmp_path: Path) -> Path:
