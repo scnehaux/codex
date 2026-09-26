@@ -17,7 +17,7 @@ from tests.support.repository import REPOSITORY_ROOT
 
 
 ROOT = REPOSITORY_ROOT
-EXPECTED_SEMANTIC = "f28eb2b1c78bb933b798ff50a18fa66974dd3b7ca06375b2bad572ca185d09bc"
+EXPECTED_SEMANTIC = "3f30905265191a36a6f758b207588b88e32379193ceef0e1be5c9715ec3ab3d6"
 
 
 def _fixture(tmp_path: Path) -> Path:
@@ -93,6 +93,7 @@ def test_reordering_semantically_unordered_declarations_keeps_semantic_digest(tm
     after = compile_framework(root)
     assert after.semantic_sha256 == before.semantic_sha256
     assert after.contract_sha256 != before.contract_sha256
+    assert after.authority_sha256 != before.authority_sha256
 
 
 def test_semantic_change_changes_executable_digest(tmp_path):

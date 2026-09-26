@@ -3,7 +3,7 @@ doc_meta:
   id: GDC-001
   title: Architecture Fitness Functions & Compliance Engine
   owner: Architecture Authority
-  version: 0.1.12
+  version: 0.1.13
   status: draft
   classification: public
   governed_by: [GDC-000]

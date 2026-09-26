@@ -48,6 +48,7 @@ class RelationshipSpec:
 
 @dataclass(frozen=True, slots=True)
 class RelationshipRuntimeView:
+    ontology_version: str
     relationships: tuple[RelationshipSpec, ...]
     by_source: Mapping[str, tuple[RelationshipSpec, ...]]
     all_fields: frozenset[str]
@@ -100,9 +101,9 @@ def _statuses(value: object, valid: set[str], code: str) -> frozenset[str]:
     return result
 
 
-def _canonical(specs: tuple[RelationshipSpec, ...]) -> bytes:
+def _canonical(ontology_version: str, specs: tuple[RelationshipSpec, ...]) -> bytes:
     rows = []
-    for spec in specs:
+    for spec in sorted(specs, key=lambda item: item.name):
         rows.append(
             {
                 "name": spec.name,
@@ -123,7 +124,7 @@ def _canonical(specs: tuple[RelationshipSpec, ...]) -> bytes:
             }
         )
     return json.dumps(
-        rows,
+        {"ontology_version": ontology_version, "relationships": rows},
         sort_keys=True,
         separators=(",", ":"),
         ensure_ascii=True,
@@ -135,7 +136,13 @@ def compile_relationship_runtime(repo_root: str | Path) -> RelationshipRuntimeVi
     contract = load_framework_contract_set(repo_root)
     artifact = compile_artifact_runtime(repo_root)
     valid_types = frozenset(artifact.artifact_types)
-    raw = contract.families["relationships"]["data"].get("relationships")
+    data = contract.families["relationships"]["data"]
+    ontology_version = data.get("ontology_version")
+    _require(
+        isinstance(ontology_version, str) and bool(ontology_version),
+        "relationship-runtime-ontology-version",
+    )
+    raw = data.get("relationships")
     _require(isinstance(raw, tuple) and bool(raw), "relationship-runtime-ontology")
 
     specs: list[RelationshipSpec] = []
@@ -263,10 +270,11 @@ def compile_relationship_runtime(repo_root: str | Path) -> RelationshipRuntimeVi
         )
     all_fields = frozenset(spec.metadata_field for spec in compiled)
     return RelationshipRuntimeView(
+        ontology_version=ontology_version,
         relationships=compiled,
         by_source=MappingProxyType(by_source),
         all_fields=all_fields,
-        ontology_sha256=sha256(_canonical(compiled)).hexdigest(),
+        ontology_sha256=sha256(_canonical(ontology_version, compiled)).hexdigest(),
         contract_sha256=contract.canonical_sha256,
     )
 

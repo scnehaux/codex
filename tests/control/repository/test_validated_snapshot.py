@@ -77,8 +77,23 @@ class ValidatedRepositorySnapshotTests(unittest.TestCase):
         self.assertEqual(a, b)
         self.assertEqual(a.snapshot_id, b.snapshot_id)
         self.assertEqual(a.revision, SHA)
+        runtime = executable_framework()
+        self.assertEqual(a.framework_semantic_sha256, runtime.semantic_sha256)
+        self.assertEqual(a.framework_contract_sha256, runtime.contract_sha256)
+        self.assertEqual(a.framework_authority_sha256, runtime.authority_sha256)
+        self.assertEqual(a.ontology_version, runtime.relationships.ontology_version)
         self.assertEqual(
-            a.framework_semantic_sha256, executable_framework().semantic_sha256
+            a.framework_layers,
+            tuple(
+                (
+                    layer.layer_kind,
+                    layer.layer_id,
+                    layer.layer_version,
+                    layer.path,
+                    layer.sha256,
+                )
+                for layer in runtime.provenance
+            ),
         )
         self.assertEqual(a.validation_report_ids, (report.report_id,))
 
@@ -154,6 +169,10 @@ doc_meta:
             "framework_id": snapshot.framework_id,
             "framework_version": snapshot.framework_version,
             "framework_semantic_sha256": snapshot.framework_semantic_sha256,
+            "framework_contract_sha256": snapshot.framework_contract_sha256,
+            "framework_authority_sha256": snapshot.framework_authority_sha256,
+            "ontology_version": snapshot.ontology_version,
+            "framework_layers": snapshot.framework_layers,
             "repository_context": snapshot.repository_context,
             "repository": snapshot.repository,
             "batch_id": snapshot.batch_id,
@@ -164,6 +183,10 @@ doc_meta:
             ("framework_id", " "),
             ("framework_version", " "),
             ("framework_semantic_sha256", "x"),
+            ("framework_contract_sha256", "x"),
+            ("framework_authority_sha256", "x"),
+            ("ontology_version", " "),
+            ("framework_layers", ()),
             ("batch_id", "x"),
             ("snapshot_id", "x"),
         ):
@@ -183,6 +206,10 @@ doc_meta:
             "framework_id": snapshot.framework_id,
             "framework_version": snapshot.framework_version,
             "framework_semantic_sha256": snapshot.framework_semantic_sha256,
+            "framework_contract_sha256": snapshot.framework_contract_sha256,
+            "framework_authority_sha256": snapshot.framework_authority_sha256,
+            "ontology_version": snapshot.ontology_version,
+            "framework_layers": snapshot.framework_layers,
             "repository_context": snapshot.repository_context,
             "repository": snapshot.repository,
             "batch_id": snapshot.batch_id,

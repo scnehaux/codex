@@ -3,6 +3,7 @@ kind: scnehaux-relationship-ontology
 owns:
 - relationship-ontology
 data:
+  ontology_version: 1.0.0
   relationships:
   - name: gdc-governed-by
     metadata_field: governed_by

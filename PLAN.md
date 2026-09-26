@@ -921,7 +921,7 @@ Implementation candidate:
 - validator plugins for company artifact types are isolated under the `company_packs.*` namespace; arbitrary import paths remain rejected.
 - current core semantics remain unchanged when `company_packs` is empty.
 
-Governed merge and exact-candidate Authority evidence are still required before Slice 11.8 can be marked DONE.
+Governed merge and exact-candidate Authority evidence completed for Slice 11.8. The company-pack composition boundary is now DONE.
 
 ## Slice 11.9 — Compatibility & Versioning
 
@@ -945,6 +945,19 @@ Define:
 - framework/profile/company-pack combinations are reproducible
 - semantic migrations are explicit rather than inferred
 - historical repository revisions can be interpreted against the framework authority that governed them
+
+Implementation candidate:
+
+- framework semantic authority advances from `0.1.0` to `0.2.0`; relationship ontology is independently versioned as `1.0.0`.
+- `extensions.yaml`, which already owns `compatibility-metadata`, declares same-major backward compatibility, explicit-only migration, the historical authority origin, migration rules, and deprecation/removal policy.
+- company packs must declare half-open framework and ontology compatibility ranges; incompatible packs fail before extension operations are composed.
+- `ExecutableFramework.semantic_sha256` identifies normalized semantic meaning, while `authority_sha256` additionally binds the exact authored contract hash and all contributing core/profile/company-pack layer SHA-256 identities.
+- semantically unordered declaration reordering may preserve semantic identity while changing exact authored authority identity.
+- `ValidatedRepositorySnapshot` records framework version, ontology version, semantic SHA, contract SHA, authority SHA, and exact contributing layer identities/hashes so historical repository state remains bound to the authority that interpreted it.
+- migration is never inferred: a path from the declared historical origin to the current framework/ontology pair must exist explicitly.
+- deprecation declarations are explicit and removal requires a later major-version boundary.
+
+Governed merge and exact-candidate Authority evidence are still required before Slice 11.9 or Phase 11 can be marked DONE.
 
 ### Phase 11 Exit
 

@@ -228,8 +228,8 @@ Canonical Knowledge
 | 11.5  | Schema Boundary & Validation Pipeline        | DONE    | Schema is structural-only; deterministic reports gate candidate promotion            |
 | 11.6  | Provenance-Bound Repository Ingestion        | DONE    | Exact Git provenance candidate received Authority publication and governed merge     |
 | 11.7  | ValidatedRepositorySnapshot                  | DONE    | Exact snapshot candidate received Authority publication and governed merge           |
-| 11.8  | Framework Extension / Company Pack Model     | ACTIVE  | Layer-aware declarative company-pack composition under implementation                |
-| 11.9  | Compatibility & Versioning                   | PLANNED | Framework/ontology/extensions have enforceable compatibility contracts               |
+| 11.8  | Framework Extension / Company Pack Model     | DONE    | Exact company-pack candidate received Authority publication and governed merge        |
+| 11.9  | Compatibility & Versioning                   | ACTIVE  | Explicit framework/ontology compatibility and historical authority binding in progress |
 
 Slice 11.1 began as a staged mirror. Slice 11.2 made artifact vocabulary,
 lossless family identity, canonical roots, lifecycle, schema bindings and validator
@@ -241,9 +241,12 @@ the executable framework contract, and gates repository promotion behind
 deterministic validation reports. Slice 11.6 binds exact commit blobs to repository,
 namespace, source path and raw-byte digest and is complete through exact-candidate
 Authority publication and governed merge. Slice 11.7 completed the canonical validated repository snapshot boundary through
-exact-candidate Authority publication and governed merge. Slice 11.8 now introduces
-layer-aware framework/profile/company-pack composition. REC-11-001 through REC-11-010
-in `governance/framework/README.md` record the staged migration decisions.
+exact-candidate Authority publication and governed merge. Slice 11.8 completed
+layer-aware framework/profile/company-pack composition through exact-candidate
+Authority publication and governed merge. Slice 11.9 now makes framework/ontology
+compatibility, migration, deprecation and historical authority identity explicit.
+REC-11-001 through REC-11-011 in `governance/framework/README.md` record the staged
+migration decisions.
 
 ## 4.3 Phase 11 Hard Invariants
 

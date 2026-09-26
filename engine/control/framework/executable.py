@@ -24,6 +24,7 @@ from engine.control.framework.relationships import (
     RelationshipRuntimeView,
     compile_relationship_runtime,
 )
+from engine.control.framework.versioning import CompatibilityPolicy
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -75,9 +76,11 @@ class ExecutableFramework:
     relationships: RelationshipRuntimeView
     governance: GovernancePolicy
     extensions: ExtensionDeclarations
+    compatibility: CompatibilityPolicy
     provenance: tuple[FrameworkLayer, ...]
     contract_sha256: str
     semantic_sha256: str
+    authority_sha256: str
 
     @property
     def artifact_types(self) -> tuple[str, ...]:
@@ -331,6 +334,7 @@ def _compile_extensions(contract: FrameworkContractSet) -> ExtensionDeclarations
         "profile_core_fork_required",
         "extension_policy",
         "company_packs",
+        "compatibility",
     }
     _require(set(data) == expected, "executable-framework-extension-fields")
     points = data["extension_points"]
@@ -455,6 +459,7 @@ def _semantic_state(
     relationships: RelationshipRuntimeView,
     governance: GovernancePolicy,
     extensions: ExtensionDeclarations,
+    compatibility: CompatibilityPolicy,
     provenance: tuple[FrameworkLayer, ...],
 ) -> dict:
     return {
@@ -480,7 +485,46 @@ def _semantic_state(
                 for key, value in sorted(artifacts.validator_bindings.items())
             },
         },
-        "relationships": _relationship_state(relationships),
+        "relationships": {
+            "ontology_version": relationships.ontology_version,
+            "ontology_sha256": relationships.ontology_sha256,
+            "definitions": _relationship_state(relationships),
+        },
+        "compatibility": {
+            "backward_compatibility": compatibility.backward_compatibility,
+            "migration_mode": compatibility.migration_mode,
+            "history_origin": {
+                "framework": str(compatibility.history_origin.framework),
+                "ontology": str(compatibility.history_origin.ontology),
+            },
+            "migration_rules": [
+                {
+                    "from": {
+                        "framework": str(rule.source.framework),
+                        "ontology": str(rule.source.ontology),
+                    },
+                    "to": {
+                        "framework": str(rule.target.framework),
+                        "ontology": str(rule.target.ontology),
+                    },
+                    "classification": rule.classification,
+                    "action": rule.action,
+                }
+                for rule in compatibility.migration_rules
+            ],
+            "deprecation": {
+                "mode": compatibility.deprecation.mode,
+                "minimum_notice_minor_releases": (
+                    compatibility.deprecation.minimum_notice_minor_releases
+                ),
+                "removal_requires_major_bump": (
+                    compatibility.deprecation.removal_requires_major_bump
+                ),
+                "declarations": [
+                    dict(item) for item in compatibility.deprecation.declarations
+                ],
+            },
+        },
         "governance": {
             "normative_control_registry": governance.normative_control_registry,
             "severity_evidence_registry": governance.severity_evidence_registry,
@@ -534,6 +578,37 @@ def _semantic_digest(state: dict) -> str:
     return sha256(payload).hexdigest()
 
 
+def _authority_digest(
+    contract_sha256: str,
+    semantic_sha256: str,
+    ontology_version: str,
+    layers: tuple[FrameworkLayer, ...],
+) -> str:
+    payload = {
+        "contract_sha256": contract_sha256,
+        "semantic_sha256": semantic_sha256,
+        "ontology_version": ontology_version,
+        "layers": [
+            {
+                "kind": layer.layer_kind,
+                "id": layer.layer_id,
+                "version": layer.layer_version,
+                "path": layer.path,
+                "sha256": layer.sha256,
+            }
+            for layer in layers
+        ],
+    }
+    raw = json.dumps(
+        payload,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=True,
+        allow_nan=False,
+    ).encode("ascii")
+    return sha256(raw).hexdigest()
+
+
 class FrameworkCompiler:
     def __init__(self, repo_root: str | Path):
         self.repo_root = Path(repo_root).resolve()
@@ -564,6 +639,7 @@ class FrameworkCompiler:
             relationships,
             governance,
             extensions,
+            contract.compatibility,
             contract.layers,
         )
         return ExecutableFramework(
@@ -572,9 +648,16 @@ class FrameworkCompiler:
             relationships=relationships,
             governance=governance,
             extensions=extensions,
+            compatibility=contract.compatibility,
             provenance=contract.layers,
             contract_sha256=contract.canonical_sha256,
             semantic_sha256=_semantic_digest(state),
+            authority_sha256=_authority_digest(
+                contract.canonical_sha256,
+                _semantic_digest(state),
+                relationships.ontology_version,
+                contract.layers,
+            ),
         )
 
 

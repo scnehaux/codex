@@ -57,7 +57,7 @@ def test_current_contract_set_is_deterministic_and_equivalent():
     second = load_framework_contract_set(ROOT)
     assert first.canonical_sha256 == second.canonical_sha256
     assert first.framework_id == "scnehaux-codex"
-    assert first.framework_version == "0.1.0"
+    assert first.framework_version == "0.2.0"
     assert set(first.families) == FAMILY_NAMES
     assert framework_contract_findings(ROOT) == ()
     assert assert_framework_contract_equivalence(ROOT).canonical_sha256 == (

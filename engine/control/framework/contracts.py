@@ -10,6 +10,13 @@ from typing import Any, Mapping
 
 import yaml
 
+from engine.control.framework.versioning import (
+    CompatibilityPolicy,
+    FrameworkVersionError,
+    assert_range_contains,
+    load_compatibility_policy,
+)
+
 
 MANIFEST = Path("governance/framework/contract-set.yaml")
 PROFILE_ROOT = Path("governance/framework/profiles")
@@ -166,6 +173,8 @@ class FrameworkContractSet:
     families: Mapping[str, Mapping[str, Any]]
     ownership: Mapping[str, str]
     runtime_authority: str
+    ontology_version: str
+    compatibility: CompatibilityPolicy
     layers: tuple[FrameworkLayer, ...]
     canonical_sha256: str
 
@@ -358,6 +367,8 @@ def _load_company_pack(
     *,
     profile_id: str,
     profile_version: int,
+    framework_version: str,
+    ontology_version: str,
     policy: Mapping[str, tuple[str, ...]],
     families: dict[str, dict[str, Any]],
 ) -> tuple[dict, FrameworkLayer]:
@@ -382,6 +393,7 @@ def _load_company_pack(
             "pack_id",
             "pack_version",
             "profile",
+            "compatibility",
             "operations",
         },
         "company-pack",
@@ -405,6 +417,24 @@ def _load_company_pack(
         profile["id"] == profile_id and profile["version"] == profile_version,
         "company-pack-profile-drift",
     )
+    compatibility = _exact_fields(
+        pack["compatibility"],
+        {"framework", "ontology"},
+        "company-pack-compatibility",
+    )
+    try:
+        assert_range_contains(
+            compatibility["framework"],
+            version=framework_version,
+            code="company-pack-framework-range",
+        )
+        assert_range_contains(
+            compatibility["ontology"],
+            version=ontology_version,
+            code="company-pack-ontology-range",
+        )
+    except FrameworkVersionError as exc:
+        raise FrameworkContractError(str(exc)) from exc
     operations = pack["operations"]
     _require(
         isinstance(operations, list) and 0 < len(operations) <= 256,
@@ -564,9 +594,25 @@ def load_framework_contract_set(repo_root: str | Path) -> FrameworkContractSet:
             "profile_core_fork_required",
             "extension_policy",
             "company_packs",
+            "compatibility",
         },
         "framework-extension-declaration-fields",
     )
+    relationships_data = family_values["relationships"]["data"]
+    _require(
+        set(relationships_data) == {"ontology_version", "relationships"},
+        "framework-relationship-declaration-fields",
+    )
+    ontology_version = relationships_data["ontology_version"]
+    try:
+        compatibility_policy = load_compatibility_policy(
+            extension_data["compatibility"],
+            current_framework=framework["version"],
+            current_ontology=ontology_version,
+        )
+    except FrameworkVersionError as exc:
+        raise FrameworkContractError(str(exc)) from exc
+
     profile_id = extension_data["profile_id"]
     profile_version = extension_data["profile_version"]
     _require(
@@ -612,6 +658,8 @@ def load_framework_contract_set(repo_root: str | Path) -> FrameworkContractSet:
             descriptor,
             profile_id=profile_id,
             profile_version=profile_version,
+            framework_version=framework["version"],
+            ontology_version=ontology_version,
             policy=policy,
             families=family_values,
         )
@@ -636,6 +684,8 @@ def load_framework_contract_set(repo_root: str | Path) -> FrameworkContractSet:
         families=_freeze(family_values),
         ownership=_freeze(ownership),
         runtime_authority=activation["runtime_authority"],
+        ontology_version=ontology_version,
+        compatibility=compatibility_policy,
         layers=tuple(layers),
         canonical_sha256=sha256(canonical).hexdigest(),
     )
