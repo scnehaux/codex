@@ -160,6 +160,26 @@ This index documents the test suite utilities and fixtures.
 | **test_artifact_type_from_id_rejects_non_string_and_unknown**      | _(No docstring provided)_ |
 | **test_validator_registry_fails_closed_on_import_and_type_drift**  | _(No docstring provided)_ |
 
+### `tests/control/framework/test_company_packs.py`
+
+| Function                                                                        | Description               |
+| :------------------------------------------------------------------------------ | :------------------------ |
+| **\_fixture**                                                                   | _(No docstring provided)_ |
+| **\_yaml**                                                                      | _(No docstring provided)_ |
+| **\_write**                                                                     | _(No docstring provided)_ |
+| **\_activate_pack**                                                             | _(No docstring provided)_ |
+| **\_artifact_definition**                                                       | _(No docstring provided)_ |
+| **\_relationship_definition**                                                   | _(No docstring provided)_ |
+| **\_pack**                                                                      | _(No docstring provided)_ |
+| **\_op**                                                                        | _(No docstring provided)_ |
+| **test_company_pack_adds_artifact_and_relationship_without_core_contract_edit** | _(No docstring provided)_ |
+| **test_company_pack_cannot_additively_replace_core_artifact**                   | _(No docstring provided)_ |
+| **test_company_pack_cannot_replace_core_relationship**                          | _(No docstring provided)_ |
+| **test_non_additive_modes_are_distinguished_and_default_denied**                | _(No docstring provided)_ |
+| **test_forbidden_core_semantic_override_is_explicitly_rejected**                | _(No docstring provided)_ |
+| **test_company_pack_profile_binding_is_exact**                                  | _(No docstring provided)_ |
+| **test_company_pack_contract_version_is_strict_integer**                        | _(No docstring provided)_ |
+
 ### `tests/control/framework/test_declarative_contracts.py`
 
 | Function                                                                        | Description               |

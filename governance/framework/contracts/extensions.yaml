@@ -21,3 +21,13 @@ data:
   profile_id: scnehaux-codex-default
   profile_version: 2
   profile_core_fork_required: false
+  extension_policy:
+    additive:
+    - artifact-type
+    - relationship-type
+    governed-restriction: []
+    compatibility-preserving-override: []
+    forbidden-core-semantic-override:
+    - artifact-type
+    - relationship-type
+  company_packs: []

@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from functools import lru_cache
 import importlib
+import re
 from pathlib import Path
 from types import MappingProxyType
 from typing import Mapping
@@ -187,8 +188,18 @@ def compile_artifact_runtime(repo_root: str | Path) -> ArtifactRuntimeView:
         if not hasattr(raw_binding, "items") or set(raw_binding) != {"module", "class"}:
             raise FrameworkContractError("artifact-runtime-validator-binding")
         module, class_name = raw_binding["module"], raw_binding["class"]
-        if not isinstance(module, str) or not module.startswith(
-            "engine.control.validators.domains."
+        if (
+            not isinstance(module, str)
+            or re.fullmatch(
+                r"[A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)+",
+                module,
+            )
+            is None
+            or any(part.startswith("_") for part in module.split("."))
+            or not (
+                module.startswith("engine.control.validators.domains.")
+                or module.startswith("company_packs.")
+            )
         ):
             raise FrameworkContractError("artifact-runtime-validator-module")
         if not isinstance(class_name, str) or not class_name.endswith("Validator"):

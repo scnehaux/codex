@@ -96,16 +96,26 @@ This index documents the internal functions and classes of the Fitness Function 
 
 ### `engine/control/framework/contracts.py`
 
-| Function                        | Description               |
-| :------------------------------ | :------------------------ |
-| **\_unique_mapping**            | _(No docstring provided)_ |
-| **\_require**                   | _(No docstring provided)_ |
-| **\_exact_fields**              | _(No docstring provided)_ |
-| **\_load_yaml**                 | _(No docstring provided)_ |
-| **\_relative_file**             | _(No docstring provided)_ |
-| **\_freeze**                    | _(No docstring provided)_ |
-| **\_canonical**                 | _(No docstring provided)_ |
-| **load_framework_contract_set** | _(No docstring provided)_ |
+| Function                          | Description               |
+| :-------------------------------- | :------------------------ |
+| **\_unique_mapping**              | _(No docstring provided)_ |
+| **\_require**                     | _(No docstring provided)_ |
+| **\_exact_fields**                | _(No docstring provided)_ |
+| **\_load_yaml**                   | _(No docstring provided)_ |
+| **\_relative_file**               | _(No docstring provided)_ |
+| **\_relative_contract_file**      | _(No docstring provided)_ |
+| **\_freeze**                      | _(No docstring provided)_ |
+| **\_thaw**                        | _(No docstring provided)_ |
+| **\_canonical**                   | _(No docstring provided)_ |
+| **\_digest**                      | _(No docstring provided)_ |
+| **\_load_profile**                | _(No docstring provided)_ |
+| **\_validate_extension_policy**   | _(No docstring provided)_ |
+| **\_artifact_definition**         | _(No docstring provided)_ |
+| **\_relationship_definition**     | _(No docstring provided)_ |
+| **\_apply_additive_artifact**     | _(No docstring provided)_ |
+| **\_apply_additive_relationship** | _(No docstring provided)_ |
+| **\_load_company_pack**           | _(No docstring provided)_ |
+| **load_framework_contract_set**   | _(No docstring provided)_ |
 
 ### `engine/control/framework/equivalence.py`
 

@@ -227,8 +227,8 @@ Canonical Knowledge
 | 11.4  | FrameworkCompiler + ExecutableFramework      | DONE    | One deterministic immutable compiled runtime authority and semantic digest exist     |
 | 11.5  | Schema Boundary & Validation Pipeline        | DONE    | Schema is structural-only; deterministic reports gate candidate promotion            |
 | 11.6  | Provenance-Bound Repository Ingestion        | DONE    | Exact Git provenance candidate received Authority publication and governed merge     |
-| 11.7  | ValidatedRepositorySnapshot                  | ACTIVE  | Deterministic framework+revision-bound snapshot boundary under implementation        |
-| 11.8  | Framework Extension / Company Pack Model     | PLANNED | Company semantics extend core without Python/core fork                               |
+| 11.7  | ValidatedRepositorySnapshot                  | DONE    | Exact snapshot candidate received Authority publication and governed merge           |
+| 11.8  | Framework Extension / Company Pack Model     | ACTIVE  | Layer-aware declarative company-pack composition under implementation                |
 | 11.9  | Compatibility & Versioning                   | PLANNED | Framework/ontology/extensions have enforceable compatibility contracts               |
 
 Slice 11.1 began as a staged mirror. Slice 11.2 made artifact vocabulary,
@@ -240,9 +240,10 @@ restores JSON Schema to structural shape only, moves runtime governance policy i
 the executable framework contract, and gates repository promotion behind
 deterministic validation reports. Slice 11.6 binds exact commit blobs to repository,
 namespace, source path and raw-byte digest and is complete through exact-candidate
-Authority publication and governed merge. Slice 11.7 now implements the canonical
-validated repository snapshot boundary. REC-11-001 through REC-11-009 in
-`governance/framework/README.md` record the staged migration decisions.
+Authority publication and governed merge. Slice 11.7 completed the canonical validated repository snapshot boundary through
+exact-candidate Authority publication and governed merge. Slice 11.8 now introduces
+layer-aware framework/profile/company-pack composition. REC-11-001 through REC-11-010
+in `governance/framework/README.md` record the staged migration decisions.
 
 ## 4.3 Phase 11 Hard Invariants
 
@@ -328,8 +329,9 @@ Every admitted artifact must be evaluated as current architecture, with legacy c
 Phase 10 Stabilization + scoped reference-provider acceptance  DONE
 → Phase 11 Slices 11.1-11.5                                    DONE
 -> Slice 11.6 Provenance-Bound Repository Ingestion             DONE
--> Slice 11.7 ValidatedRepositorySnapshot                      ACTIVE
-→ Slices 11.8-11.9 Extensions + Compatibility                  PLANNED
+-> Slice 11.7 ValidatedRepositorySnapshot                      DONE
+-> Slice 11.8 Framework Extension / Company Pack Model          ACTIVE
+-> Slice 11.9 Compatibility & Versioning                       PLANNED
 → Phase 12 Reproducibility                                    PLANNED
 → Phase 13 Governance 1.0                                     BLOCKED
 → Phase 14 Architecture Re-Admission                          BLOCKED
