@@ -219,17 +219,17 @@ Canonical Knowledge
 
 ## 4.2 Phase 11 Ledger
 
-| Slice | Capability                                   | Status  | Exit Evidence                                                                        |
-| ----- | -------------------------------------------- | ------- | ------------------------------------------------------------------------------------ |
-| 11.1  | Declarative Framework Contract               | DONE    | Versioned nine-family contract set, strict loader, lossless equivalence gate         |
-| 11.2  | Artifact Type / Layout / Lifecycle Contracts | DONE    | Immutable runtime view derives type/family/layout/lifecycle/bindings from contracts  |
-| 11.3  | Relationship Ontology                        | DONE    | Typed ontology runtime derives all relationship semantics from declarative contracts |
-| 11.4  | FrameworkCompiler + ExecutableFramework      | DONE    | One deterministic immutable compiled runtime authority and semantic digest exist     |
-| 11.5  | Schema Boundary & Validation Pipeline        | DONE    | Schema is structural-only; deterministic reports gate candidate promotion            |
-| 11.6  | Provenance-Bound Repository Ingestion        | DONE    | Exact Git provenance candidate received Authority publication and governed merge     |
-| 11.7  | ValidatedRepositorySnapshot                  | DONE    | Exact snapshot candidate received Authority publication and governed merge           |
-| 11.8  | Framework Extension / Company Pack Model     | DONE    | Exact company-pack candidate received Authority publication and governed merge        |
-| 11.9  | Compatibility & Versioning                   | ACTIVE  | Explicit framework/ontology compatibility and historical authority binding in progress |
+| Slice | Capability                                   | Status | Exit Evidence                                                                          |
+| ----- | -------------------------------------------- | ------ | -------------------------------------------------------------------------------------- |
+| 11.1  | Declarative Framework Contract               | DONE   | Versioned nine-family contract set, strict loader, lossless equivalence gate           |
+| 11.2  | Artifact Type / Layout / Lifecycle Contracts | DONE   | Immutable runtime view derives type/family/layout/lifecycle/bindings from contracts    |
+| 11.3  | Relationship Ontology                        | DONE   | Typed ontology runtime derives all relationship semantics from declarative contracts   |
+| 11.4  | FrameworkCompiler + ExecutableFramework      | DONE   | One deterministic immutable compiled runtime authority and semantic digest exist       |
+| 11.5  | Schema Boundary & Validation Pipeline        | DONE   | Schema is structural-only; deterministic reports gate candidate promotion              |
+| 11.6  | Provenance-Bound Repository Ingestion        | DONE   | Exact Git provenance candidate received Authority publication and governed merge       |
+| 11.7  | ValidatedRepositorySnapshot                  | DONE   | Exact snapshot candidate received Authority publication and governed merge             |
+| 11.8  | Framework Extension / Company Pack Model     | DONE   | Exact company-pack candidate received Authority publication and governed merge         |
+| 11.9  | Compatibility & Versioning                   | ACTIVE | Explicit framework/ontology compatibility and historical authority binding in progress |
 
 Slice 11.1 began as a staged mirror. Slice 11.2 made artifact vocabulary,
 lossless family identity, canonical roots, lifecycle, schema bindings and validator
