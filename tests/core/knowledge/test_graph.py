@@ -352,7 +352,7 @@ def test_compile_knowledge_graph_wraps_invalid_additional_edge():
         )
 
 
-def test_repository_graph_compiler_requires_canonical_repository_model():
+def test_repository_graph_compiler_rejects_unvalidated_repository_state():
     from engine.core.knowledge.compiler import compile_repository_graph
     from engine.core.repository import RepositoryArtifact, RepositoryModel
 
@@ -360,8 +360,8 @@ def test_repository_graph_compiler_requires_canonical_repository_model():
     repository = RepositoryModel(
         (RepositoryArtifact(artifact=artifact, source_path="systems/SAD-900.md"),)
     )
-    graph = compile_repository_graph(repository)
-    assert tuple(node.key for node in graph.nodes) == (artifact.canonical_key,)
+    with pytest.raises(TypeError, match="ValidatedRepositorySnapshot"):
+        compile_repository_graph(repository)  # type: ignore[arg-type]
 
-    with pytest.raises(TypeError, match="RepositoryModel"):
+    with pytest.raises(TypeError, match="ValidatedRepositorySnapshot"):
         compile_repository_graph((artifact,))  # type: ignore[arg-type]

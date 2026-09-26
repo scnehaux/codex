@@ -674,6 +674,24 @@ This index documents the test suite utilities and fixtures.
 | **test_candidate_identity_binds_namespace_even_when_parsing_fails**    | _(No docstring provided)_ |
 | **test_builder_inherits_bound_namespace_and_rejects_override**         | _(No docstring provided)_ |
 
+### `tests/control/repository/test_validated_snapshot.py`
+
+| Function                                                                                                        | Description               |
+| :-------------------------------------------------------------------------------------------------------------- | :------------------------ |
+| **entry**                                                                                                       | _(No docstring provided)_ |
+| **batch_of**                                                                                                    | _(No docstring provided)_ |
+| **passing_report**                                                                                              | _(No docstring provided)_ |
+| **ValidatedRepositorySnapshotTests.test_snapshot_is_deterministic_and_framework_revision_bound**                | _(No docstring provided)_ |
+| **ValidatedRepositorySnapshotTests.test_builder_runs_validation_and_rejects_malformed_candidate**               | _(No docstring provided)_ |
+| **ValidatedRepositorySnapshotTests.test_failed_validation_cannot_be_overridden_by_caller**                      | _(No docstring provided)_ |
+| **ValidatedRepositorySnapshotTests.test_unresolved_relationship_cannot_enter_snapshot_even_after_pass**         | _(No docstring provided)_ |
+| **ValidatedRepositorySnapshotTests.test_graph_compilation_requires_snapshot**                                   | _(No docstring provided)_ |
+| **ValidatedRepositorySnapshotTests.test_snapshot_compiles_to_canonical_graph**                                  | _(No docstring provided)_ |
+| **ValidatedRepositorySnapshotTests.test_value_object_rejects_invalid_identity_fields**                          | _(No docstring provided)_ |
+| **ValidatedRepositorySnapshotTests.test_snapshot_value_object_type_and_report_guards**                          | _(No docstring provided)_ |
+| **ValidatedRepositorySnapshotTests.test_builder_rejects_wrong_batch_and_framework_types**                       | _(No docstring provided)_ |
+| **ValidatedRepositorySnapshotTests.test_nonpromotable_candidate_is_rejected_even_if_validation_is_forged_pass** | _(No docstring provided)_ |
+
 ### `tests/control/simulation/test_contracts.py`
 
 | Function                                                  | Description               |
@@ -952,7 +970,7 @@ This index documents the test suite utilities and fixtures.
 | **test_knowledge_node_rejects_invalid_state_properties_and_provenance** | _(No docstring provided)_ |
 | **test_knowledge_edge_rejects_invalid_state_properties_and_provenance** | _(No docstring provided)_ |
 | **test_compile_knowledge_graph_wraps_invalid_additional_edge**          | _(No docstring provided)_ |
-| **test_repository_graph_compiler_requires_canonical_repository_model**  | _(No docstring provided)_ |
+| **test_repository_graph_compiler_rejects_unvalidated_repository_state** | _(No docstring provided)_ |
 
 ### `tests/core/knowledge/test_provenance.py`
 

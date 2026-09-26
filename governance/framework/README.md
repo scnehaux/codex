@@ -172,7 +172,7 @@ is canonical knowledge.
 
 ## REC-11-008 - Bind Git candidates to exact source bytes and explicit context
 
-**Status: proposed; local qualification passed; governed merge pending. No owner approval is claimed.**
+**Status: selected and implemented in Slice 11.6; governed merge completed.**
 
 Keep `SourceReference` provider-independent with an optional content digest. Put the
 Git-specific requirements in `GitRepositoryContext` and `GitSourceProvenance`:
@@ -205,6 +205,32 @@ independent of Git.
 canonical knowledge. Deterministic validation, snapshot construction and governed
 merge remain explicit boundaries. Slice 11.7 still owns the
 first canonical repository trust boundary; architecture admission remains closed.
+
+## REC-11-009 - Admit canonical repository state only through deterministic validated snapshots
+
+**Status: selected for Slice 11.7 implementation; governed merge pending.**
+
+Introduce `ValidatedRepositorySnapshot` as the first canonical repository trust
+boundary. Snapshot construction consumes one `GitCandidateBatch`, reruns deterministic
+validation internally under one `ExecutableFramework`, rejects any blocking finding or
+non-promotable candidate, promotes only the resulting validated repository state, and
+rejects unresolved relationship targets before canonical knowledge compilation.
+
+Snapshot identity binds the executable framework identity/version/semantic SHA-256,
+the exact Git repository context, the deterministic ingestion batch identity and the
+sorted validation report identities. The same framework + repository revision + source
+bytes + validation result therefore yields the same snapshot identity.
+
+Canonical `compile_repository_graph` accepts only `ValidatedRepositorySnapshot`;
+plain `RepositoryModel` remains a compatibility data model but is no longer sufficient
+authority for canonical knowledge compilation. Lower-level artifact-only graph
+compilers remain compatibility seams and do not represent repository admission.
+
+Snapshot construction does not accept caller-supplied PASS reports. It runs validation
+inside the trust boundary so a caller cannot elevate malformed or semantically invalid
+state by fabricating a `ValidationReport`. Architecture admission, remote repository
+ownership authentication, extension semantics and Phase 11 completion remain outside
+this slice.
 
 ## Verification
 
