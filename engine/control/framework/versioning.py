@@ -25,7 +25,9 @@ class SemanticVersion:
     patch: int
 
     @classmethod
-    def parse(cls, value: object, code: str = "framework-version-semver") -> "SemanticVersion":
+    def parse(
+        cls, value: object, code: str = "framework-version-semver"
+    ) -> "SemanticVersion":
         _require(isinstance(value, str), code)
         match = _SEMVER.fullmatch(value)
         _require(match is not None, code)
@@ -98,7 +100,9 @@ class CompatibilityPolicy:
         by_source: dict[MigrationPoint, list[MigrationRule]] = {}
         for rule in self.migration_rules:
             by_source.setdefault(rule.source, []).append(rule)
-        frontier: list[tuple[MigrationPoint, tuple[MigrationRule, ...]]] = [(source, ())]
+        frontier: list[tuple[MigrationPoint, tuple[MigrationRule, ...]]] = [
+            (source, ())
+        ]
         visited = {source}
         while frontier:
             point, path = frontier.pop(0)
@@ -239,7 +243,8 @@ def load_compatibility_policy(
             "framework-deprecation-declaration",
         )
         _require(
-            declaration["kind"] in {"artifact-type", "relationship-type", "extension-point"},
+            declaration["kind"]
+            in {"artifact-type", "relationship-type", "extension-point"},
             "framework-deprecation-kind",
         )
         _require(

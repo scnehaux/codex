@@ -84,7 +84,9 @@ def test_missing_migration_is_never_inferred():
 def test_duplicate_migration_edge_fails_closed():
     value = policy()
     value["migration_rules"].append(dict(value["migration_rules"][0]))
-    with pytest.raises(FrameworkVersionError, match="framework-migration-duplicate-edge"):
+    with pytest.raises(
+        FrameworkVersionError, match="framework-migration-duplicate-edge"
+    ):
         load_compatibility_policy(
             value,
             current_framework="0.2.0",
@@ -122,7 +124,9 @@ def test_breaking_rule_requires_major_bump_and_explicit_transform():
     value = policy()
     value["migration_rules"][0]["to"]["framework"] = "1.0.0"
     value["migration_rules"][0]["classification"] = "breaking"
-    with pytest.raises(FrameworkVersionError, match="framework-breaking-migration-action"):
+    with pytest.raises(
+        FrameworkVersionError, match="framework-breaking-migration-action"
+    ):
         load_compatibility_policy(
             value,
             current_framework="1.0.0",
