@@ -957,7 +957,7 @@ Implementation candidate:
 - migration is never inferred: a path from the declared historical origin to the current framework/ontology pair must exist explicitly.
 - deprecation declarations are explicit and removal requires a later major-version boundary.
 
-Governed merge and exact-candidate Authority evidence are still required before Slice 11.9 or Phase 11 can be marked DONE.
+Governed merge and exact-candidate Authority evidence completed for Slice 11.9. All Phase 11 exit criteria below are now satisfied; Phase 11 is DONE and Phase 12 is the active workstream.
 
 ### Phase 11 Exit
 
@@ -971,6 +971,8 @@ Phase 11 is complete only when:
 - only `ValidatedRepositorySnapshot` may feed canonical knowledge compilation
 - extension/company-pack semantics work without a core fork
 - framework compatibility and semantic versioning are enforced
+
+Closure evidence: Codex PR #35 merged as `744e43549c85698f71b99de62b816c069e1af2b8` after dedicated App check `108711549650` succeeded on exact head `0316f5677c02b30434dc6433a8d12bc2e0ca7720`; Authority completion/disarm is recorded separately in `scnehaux/codex-authority`.
 
 Phase 11 explicitly does NOT include:
 

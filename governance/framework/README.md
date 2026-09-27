@@ -265,7 +265,7 @@ deprecation policy remain Slice 11.9; Slice 11.8 does not claim those concerns c
 
 ## REC-11-011 - Version semantic authority separately from exact authored authority
 
-**Status: selected for Slice 11.9 implementation; governed merge pending.**
+**Status: selected and implemented in Slice 11.9; governed merge completed.**
 
 Treat framework evolution as an explicit governed contract rather than inference from
 Git history or implementation changes. Framework semantic version and relationship
@@ -294,6 +294,14 @@ against whatever framework happens to be current later.
 
 This slice does not define dependency locking, build reproducibility, provider
 artifact pinning, or release-toolchain supply-chain policy; those remain Phase 12.
+
+## REC-11-012 - Close Phase 11 only after all semantic-authority boundaries are governed
+
+**Status: selected for Phase 11 closure.**
+
+Close Phase 11 only after Slices 11.1 through 11.9 are implemented, canonically qualified, and the externally protected slices have completed exact-candidate Authority publication plus governed merge. The closure evidence includes deterministic declarative framework compilation, structural-only JSON Schema, provenance-bound Git ingestion, `ValidatedRepositorySnapshot` as the canonical knowledge boundary, company-pack composition without a core fork, and explicit framework/ontology compatibility and versioning.
+
+Slice 11.9 completed through Codex merge `744e43549c85698f71b99de62b816c069e1af2b8` after `Codex Governance Authority` check `108711549650` succeeded on exact candidate `0316f5677c02b30434dc6433a8d12bc2e0ca7720`. This closes Phase 11 but does not close Phase 12, release Governance 1.0, or open architecture admission. Phase 12 reproducibility and supply-chain closure is the next active workstream.
 
 ## Verification
 
