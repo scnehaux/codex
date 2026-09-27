@@ -179,6 +179,9 @@ This index documents the test suite utilities and fixtures.
 | **test_forbidden_core_semantic_override_is_explicitly_rejected**                | _(No docstring provided)_ |
 | **test_company_pack_profile_binding_is_exact**                                  | _(No docstring provided)_ |
 | **test_company_pack_contract_version_is_strict_integer**                        | _(No docstring provided)_ |
+| **test_company_pack_framework_range_is_checked_before_composition**             | _(No docstring provided)_ |
+| **test_company_pack_ontology_range_is_checked_before_composition**              | _(No docstring provided)_ |
+| **test_company_pack_invalid_range_fails_closed**                                | _(No docstring provided)_ |
 
 ### `tests/control/framework/test_declarative_contracts.py`
 
@@ -250,6 +253,20 @@ This index documents the test suite utilities and fixtures.
 | **test_compiler_rejects_missing_inverse**                              | _(No docstring provided)_ |
 | **test_compiler_rejects_inconsistent_inverse**                         | _(No docstring provided)_ |
 | **test_runtime_grouping_is_source_specific_and_immutable**             | _(No docstring provided)_ |
+
+### `tests/control/framework/test_versioning.py`
+
+| Function                                                          | Description               |
+| :---------------------------------------------------------------- | :------------------------ |
+| **policy**                                                        | _(No docstring provided)_ |
+| **test_semantic_version_is_strict_and_ordered**                   | _(No docstring provided)_ |
+| **test_range_is_half_open_and_strict**                            | _(No docstring provided)_ |
+| **test_current_migration_path_is_explicit_and_reproducible**      | _(No docstring provided)_ |
+| **test_missing_migration_is_never_inferred**                      | _(No docstring provided)_ |
+| **test_duplicate_migration_edge_fails_closed**                    | _(No docstring provided)_ |
+| **test_backward_compatible_rule_cannot_cross_major**              | _(No docstring provided)_ |
+| **test_breaking_rule_requires_major_bump_and_explicit_transform** | _(No docstring provided)_ |
+| **test_deprecation_removal_requires_explicit_major_boundary**     | _(No docstring provided)_ |
 
 ### `tests/control/fs/test_crawler.py`
 

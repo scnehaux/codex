@@ -143,6 +143,25 @@ def framework_contract_findings(repo_root: str | Path) -> tuple[str, ...]:
             ],
         },
         "company_packs": [],
+        "compatibility": {
+            "backward_compatibility": "same-major",
+            "migration_mode": "explicit-only",
+            "history_origin": {"framework": "0.1.0", "ontology": "1.0.0"},
+            "migration_rules": [
+                {
+                    "from": {"framework": "0.1.0", "ontology": "1.0.0"},
+                    "to": {"framework": "0.2.0", "ontology": "1.0.0"},
+                    "classification": "backward-compatible",
+                    "action": "no-transform",
+                }
+            ],
+            "deprecation": {
+                "mode": "explicit",
+                "minimum_notice_minor_releases": 1,
+                "removal_requires_major_bump": True,
+                "declarations": [],
+            },
+        },
     }
     if extensions != expected_extensions:
         findings.append("extension-contract-drift")

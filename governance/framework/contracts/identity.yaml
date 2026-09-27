@@ -5,7 +5,7 @@ owns:
 - framework-version
 data:
   framework_id: scnehaux-codex
-  framework_version: 0.1.0
+  framework_version: 0.2.0
   product_name: Scnehaux Codex
   profile_id: scnehaux-codex-default
   profile_version: 2

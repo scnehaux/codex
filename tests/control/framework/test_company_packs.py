@@ -106,6 +106,10 @@ def _pack(*operations: dict) -> dict:
         "pack_id": "acme-governance",
         "pack_version": "1.0.0",
         "profile": {"id": "scnehaux-codex-default", "version": 2},
+        "compatibility": {
+            "framework": {"minimum": "0.2.0", "maximum_exclusive": "1.0.0"},
+            "ontology": {"minimum": "1.0.0", "maximum_exclusive": "2.0.0"},
+        },
         "operations": list(operations),
     }
 
@@ -230,4 +234,44 @@ def test_company_pack_contract_version_is_strict_integer(tmp_path):
     pack["contract_version"] = True
     _activate_pack(root, pack)
     with pytest.raises(FrameworkContractError, match="company-pack-version"):
+        compile_framework(root)
+
+
+def test_company_pack_framework_range_is_checked_before_composition(tmp_path):
+    root = _fixture(tmp_path)
+    pack = _pack(_op("additive", "relationship-type", _relationship_definition()))
+    pack["compatibility"]["framework"] = {
+        "minimum": "0.3.0",
+        "maximum_exclusive": "1.0.0",
+    }
+    _activate_pack(root, pack)
+    with pytest.raises(
+        FrameworkContractError, match="company-pack-framework-range-incompatible"
+    ):
+        compile_framework(root)
+
+
+def test_company_pack_ontology_range_is_checked_before_composition(tmp_path):
+    root = _fixture(tmp_path)
+    pack = _pack(_op("additive", "relationship-type", _relationship_definition()))
+    pack["compatibility"]["ontology"] = {
+        "minimum": "2.0.0",
+        "maximum_exclusive": "3.0.0",
+    }
+    _activate_pack(root, pack)
+    with pytest.raises(
+        FrameworkContractError, match="company-pack-ontology-range-incompatible"
+    ):
+        compile_framework(root)
+
+
+def test_company_pack_invalid_range_fails_closed(tmp_path):
+    root = _fixture(tmp_path)
+    pack = _pack(_op("additive", "relationship-type", _relationship_definition()))
+    pack["compatibility"]["framework"] = {
+        "minimum": "1.0.0",
+        "maximum_exclusive": "0.2.0",
+    }
+    _activate_pack(root, pack)
+    with pytest.raises(FrameworkContractError, match="framework-version-range-order"):
         compile_framework(root)

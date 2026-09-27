@@ -2,7 +2,7 @@ contract_version: 1
 kind: scnehaux-framework-contract-set
 framework:
   id: scnehaux-codex
-  version: 0.1.0
+  version: 0.2.0
   status: draft
 families:
   identity:

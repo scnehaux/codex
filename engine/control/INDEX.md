@@ -150,6 +150,7 @@ This index documents the internal functions and classes of the Fitness Function 
 | **\_relationship_state**                      | _(No docstring provided)_ |
 | **\_semantic_state**                          | _(No docstring provided)_ |
 | **\_semantic_digest**                         | _(No docstring provided)_ |
+| **\_authority_digest**                        | _(No docstring provided)_ |
 | **FrameworkCompiler.compile**                 | _(No docstring provided)_ |
 | **compile_framework**                         | _(No docstring provided)_ |
 | **executable_framework**                      | _(No docstring provided)_ |
@@ -166,6 +167,20 @@ This index documents the internal functions and classes of the Fitness Function 
 | **\_canonical**                  | _(No docstring provided)_ |
 | **compile_relationship_runtime** | _(No docstring provided)_ |
 | **relationship_runtime**         | _(No docstring provided)_ |
+
+### `engine/control/framework/versioning.py`
+
+| Function                               | Description               |
+| :------------------------------------- | :------------------------ |
+| **\_require**                          | _(No docstring provided)_ |
+| **SemanticVersion.parse**              | _(No docstring provided)_ |
+| **VersionRange.contains**              | _(No docstring provided)_ |
+| **CompatibilityPolicy.migration_path** | _(No docstring provided)_ |
+| **\_exact**                            | _(No docstring provided)_ |
+| **load_version_range**                 | _(No docstring provided)_ |
+| **\_migration_point**                  | _(No docstring provided)_ |
+| **load_compatibility_policy**          | _(No docstring provided)_ |
+| **assert_range_contains**              | _(No docstring provided)_ |
 
 ### `engine/control/fs/crawler.py`
 

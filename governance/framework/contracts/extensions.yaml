@@ -31,3 +31,23 @@ data:
     - artifact-type
     - relationship-type
   company_packs: []
+  compatibility:
+    backward_compatibility: same-major
+    migration_mode: explicit-only
+    history_origin:
+      framework: 0.1.0
+      ontology: 1.0.0
+    migration_rules:
+    - from:
+        framework: 0.1.0
+        ontology: 1.0.0
+      to:
+        framework: 0.2.0
+        ontology: 1.0.0
+      classification: backward-compatible
+      action: no-transform
+    deprecation:
+      mode: explicit
+      minimum_notice_minor_releases: 1
+      removal_requires_major_bump: true
+      declarations: []

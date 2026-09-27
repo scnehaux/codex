@@ -3,7 +3,7 @@ doc_meta:
   id: GDC-001
   title: Architecture Fitness Functions & Compliance Engine
   owner: Architecture Authority
-  version: 0.1.12
+  version: 0.1.13
   status: draft
   classification: public
   governed_by: [GDC-000]
@@ -111,7 +111,8 @@ codex/
 │   │   │   │   ├── contracts.py
 │   │   │   │   ├── equivalence.py
 │   │   │   │   ├── executable.py
-│   │   │   │   └── relationships.py
+│   │   │   │   ├── relationships.py
+│   │   │   │   └── versioning.py
 │   │   │   ├── fs/                # (File system utilities & workspace traversal)
 │   │   │   │   ├── crawler.py
 │   │   │   │   └── source_path.py
@@ -237,7 +238,8 @@ codex/
 │       │   │   ├── test_company_packs.py
 │       │   │   ├── test_declarative_contracts.py
 │       │   │   ├── test_executable_framework.py
-│       │   │   └── test_relationship_runtime.py
+│       │   │   ├── test_relationship_runtime.py
+│       │   │   └── test_versioning.py
 │       │   ├── fs/               # (File system utilities & workspace traversal)
 │       │   │   └── test_crawler.py
 │       │   ├── governance/

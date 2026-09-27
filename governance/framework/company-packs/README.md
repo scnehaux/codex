@@ -21,6 +21,13 @@ pack_version: 1.0.0
 profile:
   id: scnehaux-codex-default
   version: 2
+compatibility:
+  framework:
+    minimum: 0.2.0
+    maximum_exclusive: 1.0.0
+  ontology:
+    minimum: 1.0.0
+    maximum_exclusive: 2.0.0
 operations: []
 ```
 
@@ -39,5 +46,8 @@ A pack may not replace a core artifact type or relationship, reuse an occupied
 repository root, or introduce a conflicting relationship metadata field for the same
 source type. All such conflicts fail compilation.
 
-Compatibility ranges, migrations, deprecation and historical interpretation are
-owned by Slice 11.9 and are intentionally not inferred here.
+Compatibility is explicit and fail-closed. Every pack declares half-open framework
+and ontology ranges; the current compiled versions must fall inside both ranges before
+any operation is applied. Core compatibility metadata also requires explicit migration
+paths and deprecation policy. Compatibility, migration, or removals are never inferred
+from pack contents or Python implementation details.

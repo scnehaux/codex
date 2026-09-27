@@ -29,6 +29,10 @@ class ValidatedRepositorySnapshot:
     framework_id: str
     framework_version: str
     framework_semantic_sha256: str
+    framework_contract_sha256: str
+    framework_authority_sha256: str
+    ontology_version: str
+    framework_layers: tuple[tuple[str, str, str, str, str], ...]
     repository_context: GitRepositoryContext
     repository: RepositoryModel
     batch_id: str
@@ -42,6 +46,25 @@ class ValidatedRepositorySnapshot:
             raise ValueError("framework_version must not be blank")
         if len(self.framework_semantic_sha256) != 64:
             raise ValueError("framework_semantic_sha256 must be SHA-256")
+        if len(self.framework_contract_sha256) != 64:
+            raise ValueError("framework_contract_sha256 must be SHA-256")
+        if len(self.framework_authority_sha256) != 64:
+            raise ValueError("framework_authority_sha256 must be SHA-256")
+        if not self.ontology_version.strip():
+            raise ValueError("ontology_version must not be blank")
+        layers = tuple(self.framework_layers)
+        if not layers:
+            raise ValueError("framework_layers must be non-empty")
+        if any(
+            len(layer) != 5
+            or any(not isinstance(value, str) or not value for value in layer[:4])
+            or len(layer[4]) != 64
+            for layer in layers
+        ):
+            raise ValueError("framework_layers contains invalid authority identity")
+        if len(layers) != len(set(layers)):
+            raise ValueError("framework_layers must be unique")
+        object.__setattr__(self, "framework_layers", layers)
         if not isinstance(self.repository_context, GitRepositoryContext):
             raise TypeError("repository_context must be GitRepositoryContext")
         if not isinstance(self.repository, RepositoryModel):
@@ -66,6 +89,10 @@ class ValidatedRepositorySnapshot:
             self.framework_id,
             self.framework_version,
             self.framework_semantic_sha256,
+            self.framework_contract_sha256,
+            self.framework_authority_sha256,
+            self.ontology_version,
+            self.framework_layers,
             self.repository_context.semantic_state(),
             self.batch_id,
             self.validation_report_ids,
@@ -138,6 +165,19 @@ def build_validated_repository_snapshot(
                 "id": runtime.identity.framework_id,
                 "version": runtime.identity.framework_version,
                 "semantic_sha256": runtime.semantic_sha256,
+                "contract_sha256": runtime.contract_sha256,
+                "authority_sha256": runtime.authority_sha256,
+                "ontology_version": runtime.relationships.ontology_version,
+                "layers": [
+                    [
+                        layer.layer_kind,
+                        layer.layer_id,
+                        layer.layer_version,
+                        layer.path,
+                        layer.sha256,
+                    ]
+                    for layer in runtime.provenance
+                ],
             },
             "repository_context_id": batch.context.context_id,
             "batch_id": batch.batch_id,
@@ -148,6 +188,19 @@ def build_validated_repository_snapshot(
         framework_id=runtime.identity.framework_id,
         framework_version=runtime.identity.framework_version,
         framework_semantic_sha256=runtime.semantic_sha256,
+        framework_contract_sha256=runtime.contract_sha256,
+        framework_authority_sha256=runtime.authority_sha256,
+        ontology_version=runtime.relationships.ontology_version,
+        framework_layers=tuple(
+            (
+                layer.layer_kind,
+                layer.layer_id,
+                layer.layer_version,
+                layer.path,
+                layer.sha256,
+            )
+            for layer in runtime.provenance
+        ),
         repository_context=batch.context,
         repository=repository,
         batch_id=batch.batch_id,

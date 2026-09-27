@@ -234,7 +234,7 @@ this slice.
 
 ## REC-11-010 - Compose company semantics as governed declarative layers
 
-**Status: selected for Slice 11.8 implementation; governed merge pending.**
+**Status: selected and implemented in Slice 11.8; governed merge completed.**
 
 Keep one `FrameworkCompiler` and one `ExecutableFramework`; do not fork the core
 framework per organization. The governed composition order is core framework,
@@ -262,6 +262,38 @@ reordering declarations that are already defined as semantically unordered does 
 change the executable semantic digest. Layer identity/version/path and the composed
 runtime semantics do contribute to that digest. Compatibility ranges, migration and
 deprecation policy remain Slice 11.9; Slice 11.8 does not claim those concerns closed.
+
+## REC-11-011 - Version semantic authority separately from exact authored authority
+
+**Status: selected for Slice 11.9 implementation; governed merge pending.**
+
+Treat framework evolution as an explicit governed contract rather than inference from
+Git history or implementation changes. Framework semantic version and relationship
+ontology version are independent authorities. The compatibility metadata already
+owned by the extensions contract defines same-major backward-compatibility
+expectations, explicit-only migration rules, historical origin, and explicit
+deprecation/removal policy.
+
+Company packs must declare half-open compatibility ranges for both framework and
+ontology versions. Those ranges are checked before any pack operation is applied, so
+an incompatible extension cannot partially compose an executable framework. Migration
+from historical authority to current authority requires a declared path; absence of a
+path fails closed rather than assuming compatibility.
+
+`ExecutableFramework.semantic_sha256` remains the normalized identity of semantic
+meaning. A separate `authority_sha256` additionally binds the exact canonical contract
+set and all contributing layer SHA-256 identities. Therefore semantically unordered
+authored reordering can preserve semantic identity while still producing a distinct
+exact authority identity.
+
+`ValidatedRepositorySnapshot` records framework and ontology versions, semantic,
+contract and authority SHA-256 identities, plus the exact contributing layer
+identities/hashes. Historical repository revisions can therefore retain the exact
+framework authority under which they were validated instead of being reinterpreted
+against whatever framework happens to be current later.
+
+This slice does not define dependency locking, build reproducibility, provider
+artifact pinning, or release-toolchain supply-chain policy; those remain Phase 12.
 
 ## Verification
 
