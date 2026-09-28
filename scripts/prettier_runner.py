@@ -8,34 +8,24 @@ import subprocess
 from typing import Literal, Sequence
 
 
-PRETTIER_PACKAGE = "prettier@3.9.6"
+PRETTIER_VERSION = "3.9.6"
 PRETTIER_PATTERNS = ("**/*.md", "**/*.json")
 PrettierMode = Literal["check", "write"]
 
 
-def _resolve_npx(*, platform_name: str | None = None) -> str:
+def _resolve_prettier(*, cwd: str | Path, platform_name: str | None = None) -> str:
     platform_name = os.name if platform_name is None else platform_name
-    candidates = ("npx.cmd", "npx") if platform_name == "nt" else ("npx",)
-
-    for candidate in candidates:
-        resolved = shutil.which(candidate)
-        if resolved:
-            return resolved
-
-    raise RuntimeError("npx is not available on PATH")
+    name = "prettier.cmd" if platform_name == "nt" else "prettier"
+    candidate = Path(cwd) / "node_modules" / ".bin" / name
+    if not candidate.is_file():
+        raise RuntimeError("locked Prettier binary is not installed; run npm ci")
+    return str(candidate)
 
 
-def _prettier_args(mode: PrettierMode, *, npx: str) -> list[str]:
+def _prettier_args(mode: PrettierMode, *, executable: str) -> list[str]:
     if mode not in {"check", "write"}:
         raise ValueError("mode must be 'check' or 'write'")
-
-    return [
-        npx,
-        "--yes",
-        PRETTIER_PACKAGE,
-        "--check" if mode == "check" else "--write",
-        *PRETTIER_PATTERNS,
-    ]
+    return [executable, "--check" if mode == "check" else "--write", *PRETTIER_PATTERNS]
 
 
 def _windows_command_string(args: Sequence[str]) -> str:
@@ -80,8 +70,8 @@ def run_prettier(
     cwd: str | Path | None = None,
 ) -> int:
     working_directory = Path.cwd() if cwd is None else Path(cwd)
-    npx = _resolve_npx()
-    command = _prettier_args(mode, npx=npx)
+    executable = _resolve_prettier(cwd=working_directory)
+    command = _prettier_args(mode, executable=executable)
     return _execute(command, cwd=working_directory)
 
 

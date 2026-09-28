@@ -1009,6 +1009,18 @@ Pin the governance qualification environment before adding artifact hash locks:
 
 This slice does not claim package artifact hash locking or npm lockfile closure; those remain Phase 12.2. Dependency update workflow and policy closure remain Phase 12.3.
 
+### Slice 12.2 â€” Artifact Hash Locks & Locked Document Toolchain
+
+Close artifact-integrity gaps for qualification installs:
+
+- hash-lock the Python qualification artifact set for supported CI platforms
+- require `pip --require-hashes` for governance qualification dependencies
+- commit npm package metadata and lock Prettier with registry integrity
+- replace network-resolving `npx --yes` execution with the local `npm ci` installed binary
+- fail closed when either lock or local toolchain is missing/drifted
+
+Dependency update workflow/policy closure remains Phase 12.3.
+
 ---
 
 # 6. PHASE 13 — GOVERNANCE 1.0

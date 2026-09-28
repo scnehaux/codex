@@ -1392,7 +1392,7 @@ This index documents the test suite utilities and fixtures.
 | **test_all_runs_stages_in_order**                           | _(No docstring provided)_                                                 |
 | **test_all_stops_after_failure_even_with_keep_going**       | _(No docstring provided)_                                                 |
 | **test_default_goal_remains_all**                           | _(No docstring provided)_                                                 |
-| **test_install_uses_python_pip_and_repository_constraints** | _(No docstring provided)_                                                 |
+| **test_install_uses_hash_locked_python_and_npm_toolchains** | _(No docstring provided)_                                                 |
 
 ### `tests/scripts/test_mutation_integrity.py`
 
@@ -1405,18 +1405,17 @@ This index documents the test suite utilities and fixtures.
 
 ### `tests/scripts/test_prettier_runner.py`
 
-| Function                                            | Description               |
-| :-------------------------------------------------- | :------------------------ |
-| **load**                                            | _(No docstring provided)_ |
-| **test_resolve_npx_posix**                          | _(No docstring provided)_ |
-| **test_resolve_npx_windows_prefers_npx_cmd**        | _(No docstring provided)_ |
-| **test_missing_npx_fails_closed**                   | _(No docstring provided)_ |
-| **test_prettier_args_are_pinned_and_mode_specific** | _(No docstring provided)_ |
-| **test_invalid_mode_is_rejected**                   | _(No docstring provided)_ |
-| **test_run_prettier_resolves_builds_and_executes**  | _(No docstring provided)_ |
-| **test_main_supports_check_and_write**              | _(No docstring provided)_ |
-| **test_main_returns_one_for_runtime_failure**       | _(No docstring provided)_ |
-| **test_cli_requires_exactly_one_mode**              | _(No docstring provided)_ |
+| Function                                           | Description               |
+| :------------------------------------------------- | :------------------------ |
+| **load**                                           | _(No docstring provided)_ |
+| **test_resolve_prettier_uses_locked_local_binary** | _(No docstring provided)_ |
+| **test_missing_locked_prettier_fails_closed**      | _(No docstring provided)_ |
+| **test_prettier_args_are_local_and_mode_specific** | _(No docstring provided)_ |
+| **test_invalid_mode_is_rejected**                  | _(No docstring provided)_ |
+| **test_run_prettier_resolves_builds_and_executes** | _(No docstring provided)_ |
+| **test_main_supports_check_and_write**             | _(No docstring provided)_ |
+| **test_main_returns_one_for_runtime_failure**      | _(No docstring provided)_ |
+| **test_cli_requires_exactly_one_mode**             | _(No docstring provided)_ |
 
 ### `tests/scripts/test_prettier_runner_windows_quoting.py`
 
@@ -1437,6 +1436,9 @@ This index documents the test suite utilities and fixtures.
 | **test_current_reproducibility_policy_passes**                             | _(No docstring provided)_ |
 | **test_reproducibility_policy_fails_closed_on_floating_or_mutable_inputs** | _(No docstring provided)_ |
 | **test_missing_resolved_constraint_fails_closed**                          | _(No docstring provided)_ |
+| **test_python_hash_tamper_fails_closed**                                   | _(No docstring provided)_ |
+| **test_missing_python_hash_fails_closed**                                  | _(No docstring provided)_ |
+| **test_prettier_integrity_tamper_fails_closed**                            | _(No docstring provided)_ |
 
 ### `tests/scripts/test_scm_policy_check.py`
 

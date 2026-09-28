@@ -23,3 +23,6 @@ break-glass-audit.log
 htmlcov/
 
 # Controlled live provenance proof target; close without merge after evidence capture
+
+# Locked document toolchain install output
+node_modules/

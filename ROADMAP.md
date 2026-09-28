@@ -278,15 +278,15 @@ Goal:
 | ------- | -------------------------------------------------------------------- | --------- |
 | REP-001 | Python build backend deterministic                                   | `DONE`    |
 | REP-002 | Governance Python dependency resolution has no floating ranges       | `DONE`    |
-| REP-003 | Lock/hash policy defined                                             | `PLANNED` |
-| REP-004 | Node/Prettier resolution reproducible                                | `PLANNED` |
+| REP-003 | Lock/hash policy defined                                             | `DONE`    |
+| REP-004 | Node/Prettier resolution reproducible                                | `DONE`    |
 | REP-005 | Runtime/runner version policy explicit                               | `DONE`    |
 | REP-006 | Provider CI/action dependencies are immutably pinned where supported | `DONE`    |
 | REP-007 | Dependency update process governed and tested                        | `PLANNED` |
 
 ### Phase 12.1 â€” Deterministic Toolchain & Dependency Declarations
 
-**Status: ACTIVE.**
+**Status: DONE.**
 
 - qualification Python is pinned to `3.13.15`
 - qualification Node is pinned to `24.21.0`
@@ -296,6 +296,17 @@ Goal:
 - `scripts/reproducibility_check.py` is a permanent fail-closed qualification gate
 - Prettier remains version-pinned at `3.9.6`; npm lock/integrity closure is intentionally Phase 12.2
 - hash-locked Python artifact installation and governed dependency update procedure remain later Phase 12 slices
+
+### Phase 12.2 â€” Artifact Hash Locks & Locked Document Toolchain
+
+**Status: ACTIVE.**
+
+- `requirements-lock.txt` binds the Python qualification artifact set to SHA-256 hashes for Python 3.13 Windows x64 and manylinux x86_64 wheels
+- governance CI installs the Python qualification environment with `pip --require-hashes`
+- `package-lock.json` binds Prettier `3.9.6` to npm integrity metadata
+- document formatting uses the locally installed locked Prettier binary; `npx --yes` resolution is removed
+- `npm ci --ignore-scripts` is the only supported document-toolchain installation path
+- dependency update procedure remains Phase 12.3
 
 ---
 

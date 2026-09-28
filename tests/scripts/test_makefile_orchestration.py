@@ -145,20 +145,35 @@ def test_default_goal_remains_all(
     assert _events(make_sandbox) == _completed_events(STAGES)
 
 
-def test_install_uses_python_pip_and_repository_constraints(
+def test_install_uses_hash_locked_python_and_npm_toolchains(
     gnu_make: str, tmp_path: Path, make_env: dict[str, str]
 ) -> None:
     # Dry-run the untouched install recipe: no dependency download is performed.
     shutil.copyfile(ROOT / "Makefile", tmp_path / "Makefile")
     result = _run_make(gnu_make, tmp_path, make_env, "--dry-run", "install")
     assert result.returncode == 0, result.stdout + result.stderr
-    assert shlex.split(result.stdout.strip()) == [
-        "python",
-        "-m",
-        "pip",
-        "install",
-        "-c",
-        "constraints.txt",
-        "-e",
-        ".[dev]",
+    commands = [
+        shlex.split(line) for line in result.stdout.splitlines() if line.strip()
+    ]
+    assert commands == [
+        [
+            "python",
+            "-m",
+            "pip",
+            "install",
+            "--require-hashes",
+            "-r",
+            "requirements-lock.txt",
+        ],
+        [
+            "python",
+            "-m",
+            "pip",
+            "install",
+            "--no-build-isolation",
+            "--no-deps",
+            "-e",
+            ".[dev]",
+        ],
+        ["npm", "ci", "--ignore-scripts", "--no-audit", "--no-fund"],
     ]

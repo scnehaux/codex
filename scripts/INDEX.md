@@ -83,7 +83,7 @@ This index documents the internal functions and classes of the CI/CD scripts.
 
 | Function                     | Description               |
 | :--------------------------- | :------------------------ |
-| **\_resolve_npx**            | _(No docstring provided)_ |
+| **\_resolve_prettier**       | _(No docstring provided)_ |
 | **\_prettier_args**          | _(No docstring provided)_ |
 | **\_windows_command_string** | _(No docstring provided)_ |
 | **\_execute**                | _(No docstring provided)_ |
@@ -98,6 +98,7 @@ This index documents the internal functions and classes of the CI/CD scripts.
 | **\_require**                     | _(No docstring provided)_ |
 | **\_requirements**                | _(No docstring provided)_ |
 | **\_assert_exact**                | _(No docstring provided)_ |
+| **\_hash_lock**                   | _(No docstring provided)_ |
 | **assert_reproducibility_policy** | _(No docstring provided)_ |
 | **main**                          | _(No docstring provided)_ |
 
