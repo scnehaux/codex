@@ -5,7 +5,8 @@ from types import SimpleNamespace
 import scripts.dependency_update_check as target
 
 
-def test_dependency_update_check_requires_baseline(capsys):
+def test_dependency_update_check_requires_baseline(monkeypatch, capsys):
+    monkeypatch.delenv("SCNEHAUX_MUTATION_BASE_REF", raising=False)
     assert target.main([]) == 2
     assert "baseline is required" in capsys.readouterr().out
 
