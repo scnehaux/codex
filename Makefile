@@ -1,4 +1,4 @@
-.PHONY: lint lint-code lint-docs-format lint-sarif format format-code format-docs test install install-hooks generate-docs verify-generated check-waivers all coverage docker-build docker-run clean genesis-check mutation-check framework-contract-check governance-qualify genesis-commit-check mutation-ci-check scm-trust-boundary-check scm-policy-check github-policy-check github-activation-plan github-live-state-observe
+.PHONY: lint lint-code lint-docs-format lint-sarif format format-code format-docs test install install-hooks generate-docs verify-generated check-waivers all coverage docker-build docker-run clean genesis-check mutation-check framework-contract-check governance-qualify genesis-commit-check mutation-ci-check scm-trust-boundary-check scm-policy-check github-policy-check github-activation-plan github-live-state-observe reproducibility-check
 
 # Run setup, generation, linting, and testing in order, including under make -j.
 # Separate recursive recipe lines preserve make flags and stop after a failed stage.
@@ -133,3 +133,7 @@ github-activation-plan:
 # Observe live GitHub SCM state without mutating provider configuration
 github-live-state-observe:
 	python scripts/github_live_state_observe.py
+
+# Phase 12 deterministic toolchain/dependency declaration gate
+reproducibility-check:
+	python scripts/reproducibility_check.py

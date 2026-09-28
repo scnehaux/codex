@@ -3,7 +3,7 @@ doc_meta:
   id: GDC-001
   title: Architecture Fitness Functions & Compliance Engine
   owner: Architecture Authority
-  version: 0.1.13
+  version: 0.1.14
   status: draft
   classification: public
   governed_by: [GDC-000]
@@ -214,6 +214,7 @@ codex/
 │   │   ├── install-hooks.py
 │   │   ├── mutation_integrity.py
 │   │   ├── prettier_runner.py
+│   │   ├── reproducibility_check.py
 │   │   ├── scm_policy_check.py
 │   │   ├── scm_trust_boundary_check.py
 │   │   └── waiver-expiry-check.py
@@ -347,6 +348,7 @@ codex/
 │       │   ├── test_mutation_integrity.py
 │       │   ├── test_prettier_runner.py
 │       │   ├── test_prettier_runner_windows_quoting.py
+│       │   ├── test_reproducibility_check.py
 │       │   ├── test_scm_policy_check.py
 │       │   ├── test_scm_trust_boundary_check.py
 │       │   └── test_temporary_tool_hygiene.py

@@ -1429,6 +1429,15 @@ This index documents the test suite utilities and fixtures.
 | **test_missing_windows_command_processor_fails_closed**  | _(No docstring provided)_ |
 | **test_posix_execution_remains_shell_free**              | _(No docstring provided)_ |
 
+### `tests/scripts/test_reproducibility_check.py`
+
+| Function                                                                   | Description               |
+| :------------------------------------------------------------------------- | :------------------------ |
+| **\_fixture**                                                              | _(No docstring provided)_ |
+| **test_current_reproducibility_policy_passes**                             | _(No docstring provided)_ |
+| **test_reproducibility_policy_fails_closed_on_floating_or_mutable_inputs** | _(No docstring provided)_ |
+| **test_missing_resolved_constraint_fails_closed**                          | _(No docstring provided)_ |
+
 ### `tests/scripts/test_scm_policy_check.py`
 
 | Function                                  | Description               |

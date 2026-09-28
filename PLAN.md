@@ -997,6 +997,18 @@ Required work includes:
 - pin provider CI/action dependencies immutably where supported; keep current GitHub Actions on full commit SHAs
 - document and test dependency update procedure
 
+### Slice 12.1 â€” Deterministic Toolchain & Dependency Declarations
+
+Pin the governance qualification environment before adding artifact hash locks:
+
+- exact build backend version
+- exact direct and observed transitive Python package declarations
+- exact Python and Node versions in CI
+- immutable full-SHA GitHub Action references
+- machine-checkable rejection of floating dependency/tool declarations
+
+This slice does not claim package artifact hash locking or npm lockfile closure; those remain Phase 12.2. Dependency update workflow and policy closure remain Phase 12.3.
+
 ---
 
 # 6. PHASE 13 — GOVERNANCE 1.0

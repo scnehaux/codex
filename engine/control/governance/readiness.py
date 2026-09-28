@@ -19,6 +19,7 @@ REQUIRED_CONTROL_KEYS = frozenset(
         "github_reference_enforcement",
         "scm_live_state_observation",
         "declarative_framework_contract",
+        "reproducibility_qualification",
     }
 )
 TEMPORARY_PATTERNS = ("phase*.py", "slice5_*.py")
@@ -37,6 +38,7 @@ PERMANENT_ROOT_FILES = frozenset(
         "conftest.py",
         "Makefile",
         "pyproject.toml",
+        "constraints.txt",
     }
 )
 
