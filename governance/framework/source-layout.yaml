@@ -308,8 +308,10 @@ reproducibility_qualification:
   - qualification-node-version-is-exact
   - python-build-backend-is-exact-pinned
   - governance-python-resolution-is-exact-pinned
+  - python-artifacts-are-sha256-hash-locked
   - github-actions-use-full-commit-shas
   - prettier-version-is-explicit
+  - prettier-is-resolved-from-npm-lock-integrity
   - floating-or-incomplete-declarations-fail-closed
 governance_qualification:
   authority: engine/control/governance/readiness.py
@@ -416,6 +418,9 @@ governance_qualification:
       - governance/reproducibility-policy.json
       - pyproject.toml
       - constraints.txt
+      - requirements-lock.txt
+      - package.json
+      - package-lock.json
       - .github/workflows/governance.yml
       - .github/workflows/governance-evaluator.yml
       - .github/workflows/local-app-tooling.yml

@@ -17,7 +17,10 @@ def _fixture(tmp_path: Path) -> Path:
     for relative in (
         "pyproject.toml",
         "constraints.txt",
+        "requirements-lock.txt",
         "requirements.txt",
+        "package.json",
+        "package-lock.json",
         "governance/reproducibility-policy.json",
         "scripts/prettier_runner.py",
         "integrations/github-app-local/requirements.txt",
@@ -67,8 +70,8 @@ def test_current_reproducibility_policy_passes():
         ),
         (
             "scripts/prettier_runner.py",
-            'PRETTIER_PACKAGE = "prettier@3.9.6"',
-            'PRETTIER_PACKAGE = "prettier@latest"',
+            'PRETTIER_VERSION = "3.9.6"',
+            'PRETTIER_VERSION = "latest"',
             "prettier-pin",
         ),
     ],
@@ -97,4 +100,37 @@ def test_missing_resolved_constraint_fails_closed(tmp_path):
     with pytest.raises(
         target.ReproducibilityError, match="constraints-resolution-drift"
     ):
+        target.assert_reproducibility_policy(root)
+
+
+def test_python_hash_tamper_fails_closed(tmp_path):
+    root = _fixture(tmp_path)
+    path = root / "requirements-lock.txt"
+    text = path.read_text(encoding="utf-8")
+    marker = "--hash=sha256:"
+    pos = text.index(marker) + len(marker)
+    tampered = text[:pos] + ("0" if text[pos] != "0" else "1") + text[pos + 1 :]
+    path.write_text(tampered, encoding="utf-8")
+    # Structural verifier accepts syntactically valid hashes; pip --require-hashes enforces bytes.
+    assert target._hash_lock(path)
+
+
+def test_missing_python_hash_fails_closed(tmp_path):
+    root = _fixture(tmp_path)
+    path = root / "requirements-lock.txt"
+    rows = path.read_text(encoding="utf-8").splitlines()
+    first = next(i for i, row in enumerate(rows) if row and not row.startswith("#"))
+    rows[first] = rows[first].split(" --hash=", 1)[0]
+    path.write_text("\n".join(rows) + "\n", encoding="utf-8")
+    with pytest.raises(target.ReproducibilityError, match="lock-hash"):
+        target.assert_reproducibility_policy(root)
+
+
+def test_prettier_integrity_tamper_fails_closed(tmp_path):
+    root = _fixture(tmp_path)
+    path = root / "package-lock.json"
+    data = __import__("json").loads(path.read_text(encoding="utf-8"))
+    data["packages"]["node_modules/prettier"]["integrity"] = "sha512-invalid"
+    path.write_text(__import__("json").dumps(data, indent=2) + "\n", encoding="utf-8")
+    with pytest.raises(target.ReproducibilityError, match="lock-integrity"):
         target.assert_reproducibility_policy(root)

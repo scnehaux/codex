@@ -33,8 +33,12 @@ jobs:
         with:
           node-version: "24.21.0"
           package-manager-cache: false
-      - name: Install deterministic Python toolchain
-        run: python -m pip install -c constraints.txt -e ".[dev]"
+      - name: Install hash-locked Python toolchain
+        run: |
+          python -m pip install --require-hashes -r requirements-lock.txt
+          python -m pip install --no-build-isolation --no-deps -e ".[dev]"
+      - name: Install locked document toolchain
+        run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Resolve committed mutation baseline
         shell: bash
         run: |

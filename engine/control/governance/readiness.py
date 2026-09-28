@@ -39,6 +39,9 @@ PERMANENT_ROOT_FILES = frozenset(
         "Makefile",
         "pyproject.toml",
         "constraints.txt",
+        "package-lock.json",
+        "package.json",
+        "requirements-lock.txt",
     }
 )
 

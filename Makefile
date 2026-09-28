@@ -11,7 +11,9 @@ all:
 
 # Install through the same Python used by runtime targets, applying repository pins.
 install:
-	python -m pip install -c constraints.txt -e ".[dev]"
+	python -m pip install --require-hashes -r requirements-lock.txt
+	python -m pip install --no-build-isolation --no-deps -e ".[dev]"
+	npm ci --ignore-scripts --no-audit --no-fund
 
 # Install the Git hook script to block dirty/unformatted commits
 install-hooks:
