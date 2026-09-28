@@ -49,8 +49,8 @@ Live GitHub ruleset                  : INSTALLED / ACTIVE (23193929)
 Default branch protected by ruleset : YES / no bypass actors
 Desired/effective drift             : ALIGNED at acceptance preflight
 Phase 10                            : DONE in scoped reference-provider acceptance
-Phase 11                            : ACTIVE; Slices 11.1-11.6 complete
-Active local slice                  : 11.7; ValidatedRepositorySnapshot implementation
+Phase 11                            : DONE; Slices 11.1-11.9 complete
+Active local phase                  : Phase 12; Reproducibility and Supply-Chain Closure
 Governance 1.0                       : NOT READY
 ```
 
@@ -191,7 +191,7 @@ Governance 1.0 is not declared ready.
 
 # 4. PHASE 11 — EXECUTABLE FRAMEWORK & DECLARATIVE SEMANTIC AUTHORITY
 
-**Status: ACTIVE**
+**Status: DONE**
 
 Goal: compile governed declarative framework semantics into one immutable runtime authority and prevent unvalidated or revision-unbound repository state from entering canonical knowledge.
 
@@ -219,17 +219,17 @@ Canonical Knowledge
 
 ## 4.2 Phase 11 Ledger
 
-| Slice | Capability                                   | Status | Exit Evidence                                                                          |
-| ----- | -------------------------------------------- | ------ | -------------------------------------------------------------------------------------- |
-| 11.1  | Declarative Framework Contract               | DONE   | Versioned nine-family contract set, strict loader, lossless equivalence gate           |
-| 11.2  | Artifact Type / Layout / Lifecycle Contracts | DONE   | Immutable runtime view derives type/family/layout/lifecycle/bindings from contracts    |
-| 11.3  | Relationship Ontology                        | DONE   | Typed ontology runtime derives all relationship semantics from declarative contracts   |
-| 11.4  | FrameworkCompiler + ExecutableFramework      | DONE   | One deterministic immutable compiled runtime authority and semantic digest exist       |
-| 11.5  | Schema Boundary & Validation Pipeline        | DONE   | Schema is structural-only; deterministic reports gate candidate promotion              |
-| 11.6  | Provenance-Bound Repository Ingestion        | DONE   | Exact Git provenance candidate received Authority publication and governed merge       |
-| 11.7  | ValidatedRepositorySnapshot                  | DONE   | Exact snapshot candidate received Authority publication and governed merge             |
-| 11.8  | Framework Extension / Company Pack Model     | DONE   | Exact company-pack candidate received Authority publication and governed merge         |
-| 11.9  | Compatibility & Versioning                   | ACTIVE | Explicit framework/ontology compatibility and historical authority binding in progress |
+| Slice | Capability                                   | Status | Exit Evidence                                                                              |
+| ----- | -------------------------------------------- | ------ | ------------------------------------------------------------------------------------------ |
+| 11.1  | Declarative Framework Contract               | DONE   | Versioned nine-family contract set, strict loader, lossless equivalence gate               |
+| 11.2  | Artifact Type / Layout / Lifecycle Contracts | DONE   | Immutable runtime view derives type/family/layout/lifecycle/bindings from contracts        |
+| 11.3  | Relationship Ontology                        | DONE   | Typed ontology runtime derives all relationship semantics from declarative contracts       |
+| 11.4  | FrameworkCompiler + ExecutableFramework      | DONE   | One deterministic immutable compiled runtime authority and semantic digest exist           |
+| 11.5  | Schema Boundary & Validation Pipeline        | DONE   | Schema is structural-only; deterministic reports gate candidate promotion                  |
+| 11.6  | Provenance-Bound Repository Ingestion        | DONE   | Exact Git provenance candidate received Authority publication and governed merge           |
+| 11.7  | ValidatedRepositorySnapshot                  | DONE   | Exact snapshot candidate received Authority publication and governed merge                 |
+| 11.8  | Framework Extension / Company Pack Model     | DONE   | Exact company-pack candidate received Authority publication and governed merge             |
+| 11.9  | Compatibility & Versioning                   | DONE   | Exact compatibility/versioning candidate received Authority publication and governed merge |
 
 Slice 11.1 began as a staged mirror. Slice 11.2 made artifact vocabulary,
 lossless family identity, canonical roots, lifecycle, schema bindings and validator
@@ -243,8 +243,7 @@ namespace, source path and raw-byte digest and is complete through exact-candida
 Authority publication and governed merge. Slice 11.7 completed the canonical validated repository snapshot boundary through
 exact-candidate Authority publication and governed merge. Slice 11.8 completed
 layer-aware framework/profile/company-pack composition through exact-candidate
-Authority publication and governed merge. Slice 11.9 now makes framework/ontology
-compatibility, migration, deprecation and historical authority identity explicit.
+Authority publication and governed merge. Slice 11.9 completed framework/ontology compatibility, migration, deprecation and historical authority identity through exact-candidate Authority publication and governed merge.
 REC-11-001 through REC-11-011 in `governance/framework/README.md` record the staged
 migration decisions.
 
@@ -333,9 +332,9 @@ Phase 10 Stabilization + scoped reference-provider acceptance  DONE
 → Phase 11 Slices 11.1-11.5                                    DONE
 -> Slice 11.6 Provenance-Bound Repository Ingestion             DONE
 -> Slice 11.7 ValidatedRepositorySnapshot                      DONE
--> Slice 11.8 Framework Extension / Company Pack Model          ACTIVE
--> Slice 11.9 Compatibility & Versioning                       PLANNED
-→ Phase 12 Reproducibility                                    PLANNED
+-> Slice 11.8 Framework Extension / Company Pack Model          DONE
+-> Slice 11.9 Compatibility & Versioning                       DONE
+→ Phase 12 Reproducibility                                    ACTIVE
 → Phase 13 Governance 1.0                                     BLOCKED
 → Phase 14 Architecture Re-Admission                          BLOCKED
 ```
@@ -348,7 +347,7 @@ This critical path is the authoritative sequencing until new observed evidence c
 
 - Genesis Integrity — DONE/CLOSED
 - Phase 10 SCM Enforcement and Stabilization — DONE, scoped reference-provider acceptance
-- Phase 11 Executable Framework & Declarative Semantic Authority - ACTIVE, Slice 11.7 snapshot boundary under qualification
+- Phase 11 Executable Framework & Declarative Semantic Authority â€” DONE, Slices 11.1-11.9 governed and merged
 - Phase 12 Reproducibility and Supply-Chain Closure — PLANNED
 - Phase 13 Governance 1.0 — BLOCKED
 - Phase 14 Architecture Re-Admission — BLOCKED

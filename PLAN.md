@@ -957,11 +957,13 @@ Implementation candidate:
 - migration is never inferred: a path from the declared historical origin to the current framework/ontology pair must exist explicitly.
 - deprecation declarations are explicit and removal requires a later major-version boundary.
 
-Governed merge and exact-candidate Authority evidence are still required before Slice 11.9 or Phase 11 can be marked DONE.
+Governed merge and exact-candidate Authority evidence completed for Slice 11.9. Compatibility and versioning are now DONE.
 
 ### Phase 11 Exit
 
-Phase 11 is complete only when:
+**Status: DONE.** All Slice 11.1-11.9 acceptance boundaries have completed governed merge. The closure is scoped to the executable framework and canonical repository trust boundary; Governance 1.0 remains not ready and architecture admission remains CLOSED.
+
+Phase 11 exit criteria:
 
 - declarative framework contracts are the authored semantic authority
 - `FrameworkCompiler` deterministically produces immutable `ExecutableFramework`
@@ -979,7 +981,7 @@ Phase 11 explicitly does NOT include:
 - IntentSpec/capability routing redesign
 - model-provider, MCP, agent, or studio implementation
 
-Those concerns begin only after the canonical repository trust boundary is established.
+Those concerns begin only after the canonical repository trust boundary is established. Phase 12 is now the active next phase.
 
 # 5. PHASE 12 — REPRODUCIBILITY AND SUPPLY-CHAIN CLOSURE
 
