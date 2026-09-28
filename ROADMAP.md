@@ -268,7 +268,7 @@ Each new slice still requires its own canonical qualification and governed merge
 
 # 5. PHASE 12 — REPRODUCIBILITY AND SUPPLY-CHAIN CLOSURE
 
-**Status: PLANNED**
+**Status: ACTIVE**
 
 Goal:
 
@@ -276,13 +276,26 @@ Goal:
 
 | ID      | Invariant                                                            | Status    |
 | ------- | -------------------------------------------------------------------- | --------- |
-| REP-001 | Python build backend deterministic                                   | `PLANNED` |
-| REP-002 | Governance Python dependency resolution has no floating ranges       | `PLANNED` |
+| REP-001 | Python build backend deterministic                                   | `DONE`    |
+| REP-002 | Governance Python dependency resolution has no floating ranges       | `DONE`    |
 | REP-003 | Lock/hash policy defined                                             | `PLANNED` |
 | REP-004 | Node/Prettier resolution reproducible                                | `PLANNED` |
-| REP-005 | Runtime/runner version policy explicit                               | `PLANNED` |
-| REP-006 | Provider CI/action dependencies are immutably pinned where supported | `PARTIAL` |
+| REP-005 | Runtime/runner version policy explicit                               | `DONE`    |
+| REP-006 | Provider CI/action dependencies are immutably pinned where supported | `DONE`    |
 | REP-007 | Dependency update process governed and tested                        | `PLANNED` |
+
+### Phase 12.1 â€” Deterministic Toolchain & Dependency Declarations
+
+**Status: ACTIVE.**
+
+- qualification Python is pinned to `3.13.15`
+- qualification Node is pinned to `24.21.0`
+- Python build backend is pinned to `setuptools==84.0.0`
+- governed Python dependencies and observed CI transitives use exact pins
+- GitHub Actions references remain full commit SHAs
+- `scripts/reproducibility_check.py` is a permanent fail-closed qualification gate
+- Prettier remains version-pinned at `3.9.6`; npm lock/integrity closure is intentionally Phase 12.2
+- hash-locked Python artifact installation and governed dependency update procedure remain later Phase 12 slices
 
 ---
 
@@ -348,7 +361,7 @@ This critical path is the authoritative sequencing until new observed evidence c
 - Genesis Integrity — DONE/CLOSED
 - Phase 10 SCM Enforcement and Stabilization — DONE, scoped reference-provider acceptance
 - Phase 11 Executable Framework & Declarative Semantic Authority â€” DONE, Slices 11.1-11.9 governed and merged
-- Phase 12 Reproducibility and Supply-Chain Closure — PLANNED
+- Phase 12 Reproducibility and Supply-Chain Closure — ACTIVE
 - Phase 13 Governance 1.0 — BLOCKED
 - Phase 14 Architecture Re-Admission — BLOCKED
 

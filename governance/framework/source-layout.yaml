@@ -300,6 +300,17 @@ declarative_framework_contract:
   - json-schema-is-structural-shape-only
   - repository-and-governance-runtime-policy-comes-from-executable-framework
   - fragment-runtime-views-are-compatibility-projections-not-independent-authorities
+reproducibility_qualification:
+  authority: scripts/reproducibility_check.py
+  invocation: scripts/reproducibility_check.py
+  contract:
+  - qualification-python-version-is-exact
+  - qualification-node-version-is-exact
+  - python-build-backend-is-exact-pinned
+  - governance-python-resolution-is-exact-pinned
+  - github-actions-use-full-commit-shas
+  - prettier-version-is-explicit
+  - floating-or-incomplete-declarations-fail-closed
 governance_qualification:
   authority: engine/control/governance/readiness.py
   invocation: scripts/governance_qualify.py
@@ -399,6 +410,19 @@ governance_qualification:
       - tests/control/validation/test_pipeline.py
       - tests/control/governance/test_relationships.py
       - tests/scripts/test_framework_contract_check.py
+    reproducibility_qualification:
+      policy_ref: reproducibility_qualification
+      implementation:
+      - governance/reproducibility-policy.json
+      - pyproject.toml
+      - constraints.txt
+      - .github/workflows/governance.yml
+      - .github/workflows/governance-evaluator.yml
+      - .github/workflows/local-app-tooling.yml
+      - scripts/prettier_runner.py
+      - scripts/reproducibility_check.py
+      test_evidence:
+      - tests/scripts/test_reproducibility_check.py
     github_reference_enforcement:
       policy_ref: github_reference_enforcement
       implementation:

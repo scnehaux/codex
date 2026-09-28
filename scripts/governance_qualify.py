@@ -21,6 +21,7 @@ from engine.control.governance.readiness import (
 )
 from engine.control.governance.scm_policy import assert_scm_enforcement_policy
 from engine.control.governance.scm_trust import assert_scm_trust_boundary
+from scripts.reproducibility_check import assert_reproducibility_policy
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -46,6 +47,7 @@ def main(argv: list[str] | None = None) -> int:
         assert_scm_enforcement_policy(root)
         genesis = assert_genesis_integrity(root)
         mutation = assert_version_mutation_integrity(root)
+        assert_reproducibility_policy(root)
     except RuntimeError as exc:
         print(f"[FAIL] {exc}")
         return 1
@@ -60,6 +62,7 @@ def main(argv: list[str] | None = None) -> int:
     print("  SCM desired-state semantics: QUALIFIED")
     print(f"  Genesis mode: {genesis.mode}")
     print(f"  mutation mode: {mutation.mode}")
+    print("  reproducibility declarations: QUALIFIED (Phase 12.1)")
     print("  architecture admission: CLOSED")
 
     if args.control_only:
