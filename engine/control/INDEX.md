@@ -225,6 +225,15 @@ This index documents the internal functions and classes of the Fitness Function 
 | **registry_structure_errors**    | _(No docstring provided)_ |
 | **coverage_drift**               | _(No docstring provided)_ |
 
+### `engine/control/governance/dependency_update.py`
+
+| Function                               | Description               |
+| :------------------------------------- | :------------------------ |
+| **\_require**                          | _(No docstring provided)_ |
+| **\_git**                              | _(No docstring provided)_ |
+| **\_policy**                           | _(No docstring provided)_ |
+| **assert_dependency_update_integrity** | _(No docstring provided)_ |
+
 ### `engine/control/governance/genesis.py`
 
 | Function                      | Description                                                                             |

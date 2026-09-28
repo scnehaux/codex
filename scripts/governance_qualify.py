@@ -62,7 +62,7 @@ def main(argv: list[str] | None = None) -> int:
     print("  SCM desired-state semantics: QUALIFIED")
     print(f"  Genesis mode: {genesis.mode}")
     print(f"  mutation mode: {mutation.mode}")
-    print("  reproducibility declarations: QUALIFIED (Phase 12.2)")
+    print("  reproducibility declarations: QUALIFIED (Phase 12.3)")
     print("  architecture admission: CLOSED")
 
     if args.control_only:

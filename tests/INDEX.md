@@ -354,6 +354,17 @@ This index documents the test suite utilities and fixtures.
 | **test_current_pending_controls_have_explicit_disposition**               | _(No docstring provided)_ |
 | **test_current_registry_has_no_unowned_gap**                              | _(No docstring provided)_ |
 
+### `tests/control/governance/test_dependency_update.py`
+
+| Function                               | Description               |
+| :------------------------------------- | :------------------------ |
+| **\_root**                             | _(No docstring provided)_ |
+| **\_git**                              | _(No docstring provided)_ |
+| **test_no_dependency_changes_pass**    | _(No docstring provided)_ |
+| **test_complete_python_bundle_passes** | _(No docstring provided)_ |
+| **test_complete_npm_bundle_passes**    | _(No docstring provided)_ |
+| **test_partial_bundle_fails_closed**   | _(No docstring provided)_ |
+
 ### `tests/control/governance/test_genesis.py`
 
 | Function                                                             | Description               |
@@ -1298,6 +1309,14 @@ This index documents the test suite utilities and fixtures.
 | **load**                            | _(No docstring provided)_ |
 | **test_missing_baseline_returns_2** | _(No docstring provided)_ |
 | **test_success_and_failure**        | _(No docstring provided)_ |
+
+### `tests/scripts/test_dependency_update_check.py`
+
+| Function                                                | Description               |
+| :------------------------------------------------------ | :------------------------ |
+| **test_dependency_update_check_requires_baseline**      | _(No docstring provided)_ |
+| **test_dependency_update_check_reports_engine_failure** | _(No docstring provided)_ |
+| **test_dependency_update_check_reports_success**        | _(No docstring provided)_ |
 
 ### `tests/scripts/test_framework_contract_check.py`
 

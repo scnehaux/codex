@@ -80,5 +80,7 @@ jobs:
         run: make mutation-ci-check
       - name: Validate reproducibility declarations
         run: make reproducibility-check
+      - name: Validate dependency update bundle
+        run: make dependency-update-check
       - name: Qualify governance control plane
         run: make governance-qualify

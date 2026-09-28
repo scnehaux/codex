@@ -3,7 +3,7 @@ doc_meta:
   id: GDC-001
   title: Architecture Fitness Functions & Compliance Engine
   owner: Architecture Authority
-  version: 0.1.14
+  version: 0.1.15
   status: draft
   classification: public
   governed_by: [GDC-000]
@@ -120,6 +120,7 @@ codex/
 │   │   │   │   ├── classification.py
 │   │   │   │   ├── committed_mutation.py
 │   │   │   │   ├── controls.py
+│   │   │   │   ├── dependency_update.py
 │   │   │   │   ├── genesis.py
 │   │   │   │   ├── genesis_candidate.py
 │   │   │   │   ├── lifecycle.py
@@ -204,6 +205,7 @@ codex/
 │   ├── scripts/                 # (Git hooks and manual CI/CD utilities)
 │   │   ├── codeowners-validator.py
 │   │   ├── committed_mutation_integrity.py
+│   │   ├── dependency_update_check.py
 │   │   ├── framework_contract_check.py
 │   │   ├── genesis_commit_qualify.py
 │   │   ├── genesis_integrity.py
@@ -247,6 +249,7 @@ codex/
 │       │   │   ├── test_classification.py
 │       │   │   ├── test_committed_mutation.py
 │       │   │   ├── test_controls.py
+│       │   │   ├── test_dependency_update.py
 │       │   │   ├── test_genesis.py
 │       │   │   ├── test_genesis_candidate.py
 │       │   │   ├── test_lifecycle.py
@@ -336,6 +339,7 @@ codex/
 │       │   └── test_cli_extra.py
 │       ├── scripts/             # (Git hooks and manual CI/CD utilities)
 │       │   ├── test_committed_mutation_integrity.py
+│       │   ├── test_dependency_update_check.py
 │       │   ├── test_framework_contract_check.py
 │       │   ├── test_genesis_commit_qualify.py
 │       │   ├── test_genesis_integrity.py

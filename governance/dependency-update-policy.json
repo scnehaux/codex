@@ -1,0 +1,33 @@
+{
+  "claims": {
+    "manual_lock_only_updates_allowed": false,
+    "partial_dependency_updates_allowed": false
+  },
+  "kind": "scnehaux-dependency-update-policy",
+  "npm_bundle": [
+    "package.json",
+    "package-lock.json",
+    "governance/reproducibility-policy.json"
+  ],
+  "procedure": {
+    "npm": [
+      "update package.json exact version",
+      "regenerate package-lock.json with npm",
+      "prove npm ci and locked local Prettier",
+      "run governance qualification"
+    ],
+    "python": [
+      "update exact declarations",
+      "regenerate cross-platform wheel hashes",
+      "prove pip --require-hashes on supported platforms",
+      "run governance qualification"
+    ]
+  },
+  "python_bundle": [
+    "pyproject.toml",
+    "constraints.txt",
+    "requirements-lock.txt",
+    "governance/reproducibility-policy.json"
+  ],
+  "schema_version": 1
+}
