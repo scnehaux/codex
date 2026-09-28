@@ -1392,7 +1392,7 @@ This index documents the test suite utilities and fixtures.
 | **test_all_runs_stages_in_order**                           | _(No docstring provided)_                                                 |
 | **test_all_stops_after_failure_even_with_keep_going**       | _(No docstring provided)_                                                 |
 | **test_default_goal_remains_all**                           | _(No docstring provided)_                                                 |
-| **test_install_uses_python_pip_and_repository_constraints** | _(No docstring provided)_                                                 |
+| **test_install_uses_hash_locked_python_and_npm_toolchains** | _(No docstring provided)_                                                 |
 
 ### `tests/scripts/test_mutation_integrity.py`
 
