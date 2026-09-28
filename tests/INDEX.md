@@ -356,14 +356,16 @@ This index documents the test suite utilities and fixtures.
 
 ### `tests/control/governance/test_dependency_update.py`
 
-| Function                               | Description               |
-| :------------------------------------- | :------------------------ |
-| **\_root**                             | _(No docstring provided)_ |
-| **\_git**                              | _(No docstring provided)_ |
-| **test_no_dependency_changes_pass**    | _(No docstring provided)_ |
-| **test_complete_python_bundle_passes** | _(No docstring provided)_ |
-| **test_complete_npm_bundle_passes**    | _(No docstring provided)_ |
-| **test_partial_bundle_fails_closed**   | _(No docstring provided)_ |
+| Function                                    | Description               |
+| :------------------------------------------ | :------------------------ |
+| **\_root**                                  | _(No docstring provided)_ |
+| **\_git**                                   | _(No docstring provided)_ |
+| **test_no_dependency_changes_pass**         | _(No docstring provided)_ |
+| **test_complete_python_bundle_passes**      | _(No docstring provided)_ |
+| **test_complete_npm_bundle_passes**         | _(No docstring provided)_ |
+| **test_partial_bundle_fails_closed**        | _(No docstring provided)_ |
+| **test_git_failure_is_fail_closed**         | _(No docstring provided)_ |
+| **test_policy_load_failure_is_fail_closed** | _(No docstring provided)_ |
 
 ### `tests/control/governance/test_genesis.py`
 

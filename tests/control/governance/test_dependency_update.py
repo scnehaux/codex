@@ -5,6 +5,8 @@ from pathlib import Path
 
 import pytest
 
+import engine.control.governance.dependency_update as target
+
 from engine.control.governance.dependency_update import (
     DependencyUpdateError,
     assert_dependency_update_integrity,
@@ -109,3 +111,22 @@ def test_partial_bundle_fails_closed(tmp_path, changed):
             base_ref="a",
             git=_git(changed),
         )
+
+
+def test_git_failure_is_fail_closed(monkeypatch, tmp_path):
+    class Result:
+        returncode = 1
+        stdout = ""
+
+    monkeypatch.setattr(target.subprocess, "run", lambda *args, **kwargs: Result())
+    with pytest.raises(DependencyUpdateError, match="dependency-update-git-failed"):
+        target._git(tmp_path, "status")
+
+
+def test_policy_load_failure_is_fail_closed(tmp_path):
+    root = tmp_path / "repo"
+    policy = root / "governance/dependency-update-policy.json"
+    policy.parent.mkdir(parents=True)
+    policy.write_text("{not-json", encoding="utf-8")
+    with pytest.raises(DependencyUpdateError, match="dependency-update-policy-load"):
+        target._policy(root)
