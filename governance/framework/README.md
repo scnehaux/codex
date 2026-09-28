@@ -265,7 +265,7 @@ deprecation policy remain Slice 11.9; Slice 11.8 does not claim those concerns c
 
 ## REC-11-011 - Version semantic authority separately from exact authored authority
 
-**Status: selected for Slice 11.9 implementation; governed merge pending.**
+**Status: selected and implemented in Slice 11.9; governed merge completed.**
 
 Treat framework evolution as an explicit governed contract rather than inference from
 Git history or implementation changes. Framework semantic version and relationship
