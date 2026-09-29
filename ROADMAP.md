@@ -50,7 +50,7 @@ Default branch protected by ruleset : YES / no bypass actors
 Desired/effective drift             : ALIGNED at acceptance preflight
 Phase 10                            : DONE in scoped reference-provider acceptance
 Phase 11                            : DONE; Slices 11.1-11.9 complete
-Active local phase                  : Phase 12; Reproducibility and Supply-Chain Closure
+Active local phase                  : Phase 13; Governance 1.0
 Governance 1.0                       : NOT READY
 ```
 
@@ -268,7 +268,7 @@ Each new slice still requires its own canonical qualification and governed merge
 
 # 5. PHASE 12 — REPRODUCIBILITY AND SUPPLY-CHAIN CLOSURE
 
-**Status: ACTIVE**
+**Status: DONE**
 
 Goal:
 
@@ -316,13 +316,19 @@ Goal:
 - npm dependency/lock mutations are an atomic three-file bundle: `package.json`, `package-lock.json`, and `governance/reproducibility-policy.json`
 - lock-only and declaration-only mutations fail closed in committed-delta CI
 - the policy is a permanent governance readiness control with implementation and test evidence
-- Phase 12 exit closure follows governed merge of this slice
+- governed merge completed via Codex PR #40 after exact-candidate Authority publication; controlled publication was subsequently disarmed
+
+### Phase 12 Exit
+
+**Status: DONE.** All REP-001 through REP-007 invariants are implemented and qualified. Codex PR #40 merged as `6d08b695556f19ceff78e50996fa027cb95e862b` after `Governance Qualification` and dedicated-App `Codex Governance Authority` check `109587442778` succeeded on exact candidate `b0e2fb076a19d456d18e487657b0cd99ab1a1ddc`. Authority subsequently recorded Slice 12.3 completion and disarmed controlled publication.
+
+This closure establishes the reproducibility/supply-chain prerequisite for Phase 13. It does not declare Governance 1.0 released, approve draft GDCs at stable versions, or open architecture admission.
 
 ---
 
 # 6. PHASE 13 — GOVERNANCE 1.0
 
-**Status: BLOCKED**
+**Status: ACTIVE — Governance 1.0 NOT READY.**
 
 Governance 1.0 requires:
 
@@ -368,8 +374,8 @@ Phase 10 Stabilization + scoped reference-provider acceptance  DONE
 -> Slice 11.7 ValidatedRepositorySnapshot                      DONE
 -> Slice 11.8 Framework Extension / Company Pack Model          DONE
 -> Slice 11.9 Compatibility & Versioning                       DONE
-→ Phase 12 Reproducibility                                    ACTIVE
-→ Phase 13 Governance 1.0                                     BLOCKED
+→ Phase 12 Reproducibility                                    DONE
+→ Phase 13 Governance 1.0                                     ACTIVE
 → Phase 14 Architecture Re-Admission                          BLOCKED
 ```
 
@@ -382,8 +388,8 @@ This critical path is the authoritative sequencing until new observed evidence c
 - Genesis Integrity — DONE/CLOSED
 - Phase 10 SCM Enforcement and Stabilization — DONE, scoped reference-provider acceptance
 - Phase 11 Executable Framework & Declarative Semantic Authority â€” DONE, Slices 11.1-11.9 governed and merged
-- Phase 12 Reproducibility and Supply-Chain Closure — ACTIVE
-- Phase 13 Governance 1.0 — BLOCKED
+- Phase 12 Reproducibility and Supply-Chain Closure — DONE
+- Phase 13 Governance 1.0 — ACTIVE / NOT READY
 - Phase 14 Architecture Re-Admission — BLOCKED
 
 <!-- PHASE-STATUS:END -->
