@@ -41,7 +41,7 @@
     "python": "3.13.15"
   },
   "remaining": {
-    "dependency_update_procedure": "pending-phase12-3"
+    "dependency_update_procedure": "governance/dependency-update-policy.json"
   },
   "schema_version": 1
 }

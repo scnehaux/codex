@@ -300,6 +300,14 @@ declarative_framework_contract:
   - json-schema-is-structural-shape-only
   - repository-and-governance-runtime-policy-comes-from-executable-framework
   - fragment-runtime-views-are-compatibility-projections-not-independent-authorities
+dependency_update_qualification:
+  authority: engine/control/governance/dependency_update.py
+  invocation: scripts/dependency_update_check.py
+  contract:
+  - dependency-declaration-and-lock-updates-are-atomic
+  - python-update-bundle-includes-declarations-lock-and-reproducibility-policy
+  - npm-update-bundle-includes-package-lock-and-reproducibility-policy
+  - partial-or-lock-only-updates-fail-closed
 reproducibility_qualification:
   authority: scripts/reproducibility_check.py
   invocation: scripts/reproducibility_check.py
@@ -412,6 +420,16 @@ governance_qualification:
       - tests/control/validation/test_pipeline.py
       - tests/control/governance/test_relationships.py
       - tests/scripts/test_framework_contract_check.py
+    dependency_update_qualification:
+      policy_ref: dependency_update_qualification
+      implementation:
+      - governance/dependency-update-policy.json
+      - engine/control/governance/dependency_update.py
+      - scripts/dependency_update_check.py
+      - .github/workflows/governance.yml
+      test_evidence:
+      - tests/control/governance/test_dependency_update.py
+      - tests/scripts/test_dependency_update_check.py
     reproducibility_qualification:
       policy_ref: reproducibility_qualification
       implementation:

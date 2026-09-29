@@ -274,15 +274,15 @@ Goal:
 
 > Make governance qualification reproducible enough for a stable root-of-trust release
 
-| ID      | Invariant                                                            | Status    |
-| ------- | -------------------------------------------------------------------- | --------- |
-| REP-001 | Python build backend deterministic                                   | `DONE`    |
-| REP-002 | Governance Python dependency resolution has no floating ranges       | `DONE`    |
-| REP-003 | Lock/hash policy defined                                             | `DONE`    |
-| REP-004 | Node/Prettier resolution reproducible                                | `DONE`    |
-| REP-005 | Runtime/runner version policy explicit                               | `DONE`    |
-| REP-006 | Provider CI/action dependencies are immutably pinned where supported | `DONE`    |
-| REP-007 | Dependency update process governed and tested                        | `PLANNED` |
+| ID      | Invariant                                                            | Status |
+| ------- | -------------------------------------------------------------------- | ------ |
+| REP-001 | Python build backend deterministic                                   | `DONE` |
+| REP-002 | Governance Python dependency resolution has no floating ranges       | `DONE` |
+| REP-003 | Lock/hash policy defined                                             | `DONE` |
+| REP-004 | Node/Prettier resolution reproducible                                | `DONE` |
+| REP-005 | Runtime/runner version policy explicit                               | `DONE` |
+| REP-006 | Provider CI/action dependencies are immutably pinned where supported | `DONE` |
+| REP-007 | Dependency update process governed and tested                        | `DONE` |
 
 ### Phase 12.1 â€” Deterministic Toolchain & Dependency Declarations
 
@@ -299,7 +299,7 @@ Goal:
 
 ### Phase 12.2 â€” Artifact Hash Locks & Locked Document Toolchain
 
-**Status: ACTIVE.**
+**Status: DONE.**
 
 - `requirements-lock.txt` binds the Python qualification artifact set to SHA-256 hashes for Python 3.13 Windows x64 and manylinux x86_64 wheels
 - governance CI installs the Python qualification environment with `pip --require-hashes`
@@ -307,6 +307,16 @@ Goal:
 - document formatting uses the locally installed locked Prettier binary; `npx --yes` resolution is removed
 - `npm ci --ignore-scripts` is the only supported document-toolchain installation path
 - dependency update procedure remains Phase 12.3
+
+### Phase 12.3 â€” Governed Dependency Update Procedure
+
+**Status: ACTIVE.**
+
+- Python dependency/lock mutations are an atomic four-file bundle: `pyproject.toml`, `constraints.txt`, `requirements-lock.txt`, and `governance/reproducibility-policy.json`
+- npm dependency/lock mutations are an atomic three-file bundle: `package.json`, `package-lock.json`, and `governance/reproducibility-policy.json`
+- lock-only and declaration-only mutations fail closed in committed-delta CI
+- the policy is a permanent governance readiness control with implementation and test evidence
+- Phase 12 exit closure follows governed merge of this slice
 
 ---
 

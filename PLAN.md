@@ -1021,6 +1021,17 @@ Close artifact-integrity gaps for qualification installs:
 
 Dependency update workflow/policy closure remains Phase 12.3.
 
+### Slice 12.3 â€” Governed Dependency Update Procedure
+
+Make dependency changes reviewable as atomic governed mutations rather than independent file edits:
+
+- Python declaration, constraints, hash lock, and reproducibility policy move together
+- npm declaration, lockfile, and reproducibility policy move together
+- committed-delta CI rejects partial or lock-only updates
+- the permanent readiness graph records policy, implementation, and test evidence
+
+After this slice merges, evaluate Phase 12 exit criteria before Governance 1.0.
+
 ---
 
 # 6. PHASE 13 — GOVERNANCE 1.0

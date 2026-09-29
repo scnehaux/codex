@@ -20,6 +20,7 @@ REQUIRED_CONTROL_KEYS = frozenset(
         "scm_live_state_observation",
         "declarative_framework_contract",
         "reproducibility_qualification",
+        "dependency_update_qualification",
     }
 )
 TEMPORARY_PATTERNS = ("phase*.py", "slice5_*.py")
