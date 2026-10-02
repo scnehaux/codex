@@ -997,7 +997,7 @@ Required work includes:
 - pin provider CI/action dependencies immutably where supported; keep current GitHub Actions on full commit SHAs
 - document and test dependency update procedure
 
-### Slice 12.1 â€” Deterministic Toolchain & Dependency Declarations
+### Slice 12.1 — Deterministic Toolchain & Dependency Declarations
 
 Pin the governance qualification environment before adding artifact hash locks:
 
@@ -1009,7 +1009,7 @@ Pin the governance qualification environment before adding artifact hash locks:
 
 This slice does not claim package artifact hash locking or npm lockfile closure; those remain Phase 12.2. Dependency update workflow and policy closure remain Phase 12.3.
 
-### Slice 12.2 â€” Artifact Hash Locks & Locked Document Toolchain
+### Slice 12.2 — Artifact Hash Locks & Locked Document Toolchain
 
 Close artifact-integrity gaps for qualification installs:
 
@@ -1021,7 +1021,7 @@ Close artifact-integrity gaps for qualification installs:
 
 Dependency update workflow/policy closure remains Phase 12.3.
 
-### Slice 12.3 â€” Governed Dependency Update Procedure
+### Slice 12.3 — Governed Dependency Update Procedure
 
 Make dependency changes reviewable as atomic governed mutations rather than independent file edits:
 
@@ -1049,9 +1049,172 @@ Governance 1.0 may be released only when:
 - required GDCs are approved and versioned for stable baseline
 - release metadata binds governance, engine, ontology/schema, and source commit versions
 
+## 6.1 Phase 13 Entry Observations
+
+Observed at Codex `main` `6d08b695556f19ceff78e50996fa027cb95e862b` before any Phase 13 slice:
+
+- the normative control registry holds 166 controls: 79 `verified`, 87 `pending`, 0 `gap`
+- the registry has no field that identifies a root-of-trust P0 control; "root-of-trust P0" appears only in this plan and ROADMAP, so the first release criterion has no machine-checkable closure condition
+- 37 pending controls still target retired phase labels (`Phase 6 Genesis Integrity`, `Phase 7 Version + Mutation`, `Phase 8 ...`, `Phase 9 Effective GitHub Enforcement`, `Slice 5.7 RepositoryModel + Zero-Corpus`) although Genesis and Phase 10 are closed; 50 pending controls target `Phase 10 Governance 1.0 Review`, which is now Phase 13
+- all 41 GDC-000 controls record `source_file: GDC-0governance-policy.md`; the extractor fingerprints the real file name `GDC-000-governance-policy.md`, so the field is a descriptive artifact of numeric-prefix retirement, not a fingerprint defect
+- all twelve required baseline GDCs are `draft` at `0.x.y`; GDC-000 §2.6 item 6 makes approval and promotion to `1.0.0` one act
+- `ValidatedRepositorySnapshot`, repository graph compilation and graph simulation are exercised by tests but are not called by the CLI, scripts or integrations; `make lint` is not part of `Scnehaux Governance` CI
+- `engine/control/framework/artifacts.py` rejects any layout where `TDD` is not `designs`, which is a semantic rule authored in Python
+- `governance/github/authority-binding.yaml` is `desired_state_only: true` and still declares `activation.state: planned` and evaluator revision `23b05a8...`, while Authority `governance/attested-handover.json` promotes runtime package source `d835991...`
+- no release metadata artifact, release verifier or release tag exists
+
+These observations are inputs for the slices below, not completion claims.
+
+## 6.2 Phase 13 Slice Ledger
+
+Every slice follows the §1 operating rules, its own canonical qualification, exact-candidate Authority publication and governed merge.
+
+### Slice 13.1 — Root-of-Trust Release Classification
+
+Invariant: the first Governance 1.0 criterion becomes machine-checkable.
+
+- add an explicit release classification to every control record, as selected by REC-13-001
+- registry structure checks fail closed on a missing or unknown classification
+- governance readiness reports the pending root-of-trust set by control id
+- no control changes evidence status in this slice
+
+### Slice 13.2 — Registry Evidence Reconciliation
+
+Invariant: no pending control targets a retired or closed phase without a recorded reason.
+
+- each of the 37 retired-phase controls becomes `verified` with implementation and test or Authority evidence references, or is re-targeted to a current Phase 13 or Phase 14 slice with the reason recorded
+- `Phase 10 Governance 1.0 Review` targets are renamed to the current Phase 13 slice that owns them
+- `target_phase` values are validated against the governed phase/slice vocabulary
+- `source_file` records the real GDC file name
+- `governance/github/authority-binding.yaml` is reconciled with Authority promotion evidence, or its desired-state-only `planned` value is explicitly justified; effective enforcement remains an observed-evidence claim only
+
+### Slice 13.3 — Runtime Authority Closure
+
+Invariant: canonical qualification validates the governed corpus through the executable framework path that Phase 11 declared authoritative.
+
+- governance qualification builds a `ValidatedRepositorySnapshot` of the current GDC corpus and fails closed on any rejected candidate
+- framework-injected validation no longer falls back to module-level validator, lifecycle or relationship state
+- the `TDD == designs` Python rule moves into the declarative layout or lifecycle contract
+- raw-artifact graph compilation is either removed from the public surface or restricted to snapshot input
+- the canonical CI path runs the repository lint/audit entrypoint, or its retirement is recorded with the replacing gate
+
+### Slice 13.4 — Release Metadata Binding
+
+Invariant: a Governance release is identified by one deterministic, verifiable manifest.
+
+- implement the release manifest selected by REC-13-002
+- a release verifier recomputes every bound identity from the exact source commit and fails closed on drift
+- CI verifies the manifest whenever a release candidate is declared
+
+### Slice 13.5 — Stable GDC Baseline
+
+Invariant: every GDC in `required_baseline_ids` is `approved` at `>=1.0.0` through the review evidence selected by REC-13-003.
+
+- GDC-000 is promoted first, because every other GDC is `governed_by` GDC-000
+- each candidate carries a GDC-002 quality rubric score sheet with at least 9 passes and its normative-control delta
+- approval and the `1.0.0` version change happen in the same governed change, per GDC-000 §2.6 item 6
+- the ARB approval is an owner act; preparation of a candidate does not approve it
+
+### Slice 13.6 — Governance 1.0 Release
+
+Invariant: Governance 1.0 is declared only from observed evidence.
+
+- every root-of-trust control is `verified`
+- canonical qualification and the release verifier pass on the exact release commit
+- the release manifest, Authority publication evidence and release tag bind the same commit
+- PLAN and ROADMAP record the release; opening architecture admission is the first Phase 14 act, not part of this slice
+
+## 6.3 Phase 13 Recommendations
+
+These are recommendations for owner decision. None is accepted until the owner decision is recorded; until then the affected slice does not start implementation.
+
+### REC-13-001 — Define root-of-trust by integrity of the authority chain
+
+**Status: recommended; awaiting owner decision.**
+
+Recommendation: a control is root-of-trust when its failure would let an unauthorized, unverified or unreproducible change become canonical governance authority. In practice this covers controls that protect:
+
+1. who may change the governed source and how (change restriction, PR-only path, no history rewrite)
+2. separation between the candidate change and the authority that approves it
+3. integrity verification of governed source, runtime and toolchain
+4. provenance and archival of each governance release
+
+Content-quality, authoring-style and consumer-artifact rules remain release obligations of their own phase, but they are not root-of-trust. Every control records exactly one class; root-of-trust controls must be `verified` before Governance 1.0, while other pending controls must name their owning later slice.
+
+Alternatives considered:
+
+- treat every `CRITICAL` control as P0: rejected, because severity measures lint blocking strength, not trust impact; for example the PAD and SAD cohesion rules are `CRITICAL` content rules with no artifacts to evaluate while admission is closed
+- require all 166 controls verified: rejected, because the registry also holds consumer-artifact rules, for example EAD flatness (`CTRL-GDC-006-005`) and PAD/SAD asset containers (`CTRL-GDC-008-006`, `CTRL-GDC-009-009`), that cannot be exercised before Phase 14 admits artifacts
+
+Trade-off and residual risk: classification is itself a judgment applied per control; Slice 13.1 must show the per-control class in its diff so the classification is reviewable, and changing a control's class later is a governed mutation.
+
+References:
+
+1. NIST SP 800-218, SSDF v1.1, PS.1: "Help prevent unauthorized changes to code, both inadvertent and intentional, which could circumvent or negate the intended security characteristics of the software." <https://doi.org/10.6028/NIST.SP.800-218>
+2. NIST SP 800-218, PS.2: "Help software acquirers ensure that the software they acquire is legitimate and has not been tampered with."
+3. NIST SP 800-218, PS.3.1: "Securely archive the necessary files and supporting data (e.g., integrity verification information, provenance data) to be retained for each software release."
+4. NIST SP 800-53 Rev. 5, CM-5: "Define, document, approve, and enforce physical and logical access restrictions associated with changes to the system."
+5. NIST SP 800-53 Rev. 5, SI-7: "Employ integrity verification tools to detect unauthorized changes to the following software, firmware, and information: [Assignment: organization-defined software, firmware, and information] ..."
+6. NIST SP 800-53 Rev. 5, AC-5 discussion: "Separation of duties addresses the potential for abuse of authorized privileges and helps to reduce the risk of malevolent activity without collusion."
+
+### REC-13-002 — Bind each release with a deterministic release manifest
+
+**Status: recommended; awaiting owner decision.**
+
+Recommendation: a committed, canonical JSON release manifest per Governance release binds:
+
+- release version `MAJOR.MINOR.PATCH` (Semantic Versioning 2.0.0)
+- exact source commit SHA
+- every required baseline GDC id, version and Git blob SHA
+- engine package version from `pyproject.toml`
+- framework semantic version, ontology version, `semantic_sha256` and `authority_sha256` from `ExecutableFramework`
+- schema file Git blob SHAs
+- reproducibility policy digest and qualification toolchain pins
+- the Authority publication evidence for the release commit
+
+A verifier recomputes every field from the exact commit; the release tag points at that commit, and the manifest SHA-256 is published with the release.
+
+Alternatives considered:
+
+- Git tag only: rejected, because a tag identifies a commit but does not state which governance, framework and schema identities a consumer should verify
+- signed SLSA provenance now: deferred, because Build L2 requires a hosted build platform with signed provenance, which Codex does not yet operate; the manifest fields are chosen to map onto SLSA `buildDefinition`/`resolvedDependencies` later
+
+Trade-off and residual risk: the manifest is unsigned, so its integrity rests on the protected `main` ruleset and the Authority check; this corresponds to SLSA Build L1 ("can be used to prevent mistakes but is trivial to bypass or forge") and must be stated in the release notes.
+
+References:
+
+1. Semantic Versioning 2.0.0, item 5: "Version 1.0.0 defines the public API. The way in which the version number is incremented after this release is dependent on this public API and how it changes." <https://semver.org/spec/v2.0.0.html>
+2. Semantic Versioning 2.0.0, item 4: "Major version zero (0.y.z) is for initial development. Anything MAY change at any time. The public API SHOULD NOT be considered stable."
+3. SLSA v1.0 Provenance: provenance exists to "Describe how an artifact or set of artifacts was produced so that: Consumers of the provenance can verify that the artifact was built according to expectations." <https://slsa.dev/spec/v1.0/provenance>
+4. SLSA v1.0 Levels, Build L1: "Package has provenance showing how it was built. Can be used to prevent mistakes but is trivial to bypass or forge."; Build L2: "Forging the provenance or evading verification requires an explicit 'attack', though this may be easy to perform." <https://slsa.dev/spec/v1.0/levels>
+5. NIST SP 800-218, PS.2.1: "Make software integrity verification information available to software acquirers."; PS.3.2: "Collect, safeguard, maintain, and share provenance data for all components of each software release (e.g., in a software bill of materials [SBOM])."
+
+### REC-13-003 — Record GDC approval explicitly while the review bootstrap exception is active
+
+**Status: recommended; awaiting owner decision.**
+
+Context: GDC-003 §3.2 names the ARB as the required approver for GDCs, and its bootstrap exception allows the SCM projection of 0 mandatory approvals while fewer than 2 independent qualified reviewers exist. A merge therefore does not by itself prove an ARB approval.
+
+Recommendation: each Slice 13.5 GDC promotion carries an explicit, PR-bound approval record that names the approver acting as ARB, the exact candidate head, the GDC-002 score sheet result and the review-exception status. The record is created by the approver, never by the change author or an automated agent, and it lives on the PR as a provider review or in the independently administered Authority repository.
+
+Alternatives considered:
+
+- wait for 2 independent qualified reviewers before Governance 1.0: strongest separation, but it blocks the release on staffing rather than on evidence; acceptable if the owner prefers it
+- treat merge as approval: rejected, because under the bootstrap exception it cannot distinguish approval from authorship
+
+Trade-off and residual risk: with one administrator, author and approver may be the same person; the record makes this visible instead of preventing it. The bootstrap exception and this residual risk must be stated in the Governance 1.0 release notes and reassessed when the reviewer count reaches 2.
+
+References:
+
+1. NIST SP 800-53 Rev. 5, AC-5: "Identify and document [Assignment: organization-defined duties of individuals]; and Define system access authorizations to support separation of duties."
+2. NIST SP 800-53 Rev. 5, CM-5 discussion: "Therefore, organizations permit only qualified and authorized individuals to access systems for purposes of initiating changes."
+3. GDC-003 §3.2, bootstrap exception: "The exception MUST be explicit, retain the Pull Request path and all machine gates, and expire when the independent qualified reviewer count reaches 2."
+
 ---
 
 # 7. PHASE 14 — ARCHITECTURE RE-ADMISSION
+
+Admitted architecture instances live in the consumer repository `scnehaux/codex-architecture`; Codex framework roots never receive them.
 
 No legacy bulk migration
 
@@ -1088,7 +1251,8 @@ The current next action is:
 ```text
 Phase 12 Reproducibility and Supply-Chain Closure: DONE
 -> Phase 13 Governance 1.0: ACTIVE / NOT READY
--> Close remaining root-of-trust release obligations, stable GDC approvals/versioning, and release metadata binding
+-> Owner decisions on REC-13-001 through REC-13-003
+-> Slice 13.1 Root-of-Trust Release Classification
 ```
 
 Phase 10 reference-provider acceptance, Phase 11 executable-framework closure, and Phase 12 reproducibility closure are complete. Phase 13 is now the active workstream, but Governance 1.0 is not released and architecture admission remains closed.
