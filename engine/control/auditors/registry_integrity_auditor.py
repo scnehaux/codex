@@ -11,6 +11,7 @@ import jsonschema
 from engine.control.framework.executable import executable_framework
 from engine.control.governance.controls import (
     load_control_registry,
+    load_target_phases,
     registry_structure_errors,
 )
 from engine.control.governance.severity_enforcement import severity_registry_findings
@@ -348,7 +349,11 @@ def _evidence_path_exists(repo_root: Path, value: str) -> bool:
 def _control_findings(repo_root: Path) -> list[str]:
     registry_path = repo_root / "governance" / "normative-control-registry.yaml"
     records = load_control_registry(registry_path)
-    findings = [f"CONTROL {message}" for message in registry_structure_errors(records)]
+    target_phases = load_target_phases(registry_path)
+    findings = [
+        f"CONTROL {message}"
+        for message in registry_structure_errors(records, target_phases)
+    ]
 
     for record in records:
         if record.evidence_status != "verified":

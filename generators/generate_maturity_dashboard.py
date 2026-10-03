@@ -11,6 +11,7 @@ if str(REPOSITORY_ROOT) not in sys.path:
 from engine.control.framework.executable import executable_framework
 from engine.control.governance.controls import (
     load_control_registry,
+    load_target_phases,
     registry_structure_errors,
 )
 from engine.control.repository import RepositoryAssembler, RepositoryModelError
@@ -141,7 +142,7 @@ def generate_dashboard(
         )
 
     records = load_control_registry(registry_path)
-    findings = registry_structure_errors(records)
+    findings = registry_structure_errors(records, load_target_phases(registry_path))
 
     content = render_dashboard(
         artifact_inventory=_artifact_inventory(snapshot),

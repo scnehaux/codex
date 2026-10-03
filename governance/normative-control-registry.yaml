@@ -2,10 +2,18 @@ registry_version: 1
 kind: normative-control-registry
 source: governance/GDC-*.md
 policy_coverage_basis: MUST/MUST NOT/SHALL/SHALL NOT outside code fences and tables
+target_phases:
+- Slice 13.1 Root-of-Trust Release Classification
+- Slice 13.2 Registry Evidence Reconciliation
+- Slice 13.3 Runtime Authority Closure
+- Slice 13.4 Release Metadata Binding
+- Slice 13.5 Stable GDC Baseline
+- Slice 13.6 Governance 1.0 Release
+- Phase 14 Architecture Re-Admission
 controls:
 - control_id: CTRL-GDC-000-001
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.1 The Ecosystem Goals
   source_fingerprint: f15a6ec73c0c
   modality: MUST
@@ -22,10 +30,10 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-000-002
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.1 The Ecosystem Goals
   source_fingerprint: cfdc90ef618e
   modality: MUST
@@ -44,7 +52,7 @@ controls:
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-003
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.1 The Ecosystem Goals
   source_fingerprint: 54017f7f4481
   modality: MUST
@@ -61,10 +69,10 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-000-004
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.1 The Ecosystem Goals
   source_fingerprint: 83fd0bf6c3b3
   modality: MUST
@@ -81,10 +89,10 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-000-005
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.1 The Ecosystem Goals
   source_fingerprint: e130f2af024e
   modality: MUST
@@ -101,10 +109,10 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-000-006
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.2 Core Philosophy (The Existential
     Maxims)
   source_fingerprint: ffb9b37c2128
@@ -122,10 +130,10 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-000-007
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.2 Core Philosophy (The Existential
     Maxims)
   source_fingerprint: 569bf7d069cd
@@ -144,10 +152,10 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-000-008
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.2 Core Philosophy (The Existential
     Maxims)
   source_fingerprint: 58a484e34a8d
@@ -170,7 +178,7 @@ controls:
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-009
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.2 Core Philosophy (The Existential
     Maxims)
   source_fingerprint: e3e3c5938d5b
@@ -190,10 +198,10 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-000-010
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.2 Core Philosophy (The Existential
     Maxims)
   source_fingerprint: 968ebacf4a12
@@ -211,10 +219,10 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-000-011
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.3 SoC Artifact Domain Philosophy
   source_fingerprint: 11f32dcab6e2
   modality: MUST
@@ -230,10 +238,10 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-000-012
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework
   source_fingerprint: 4204c8e7032f
   modality: MUST
@@ -250,10 +258,10 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-000-013
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.1 The Boundary Constraints (Non-Leakage
     Policy)
   source_fingerprint: fbd936c3d95d
@@ -275,7 +283,7 @@ controls:
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-014
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.2 Metadata Governance (YAML
     Frontmatter)
   source_fingerprint: 611c057aa7cc
@@ -296,7 +304,7 @@ controls:
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-016
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.3 The Fractal Boundary (Physical
     vs. Logical Decentralization) > 2.3.2 Logical Decentralization (The Fractal Triad)
   source_fingerprint: 49631886b623
@@ -318,7 +326,7 @@ controls:
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-017
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.3 The Fractal Boundary (Physical
     vs. Logical Decentralization) > 2.3.2 Logical Decentralization (The Fractal Triad)
   source_fingerprint: a008348e8bc0
@@ -336,10 +344,10 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-000-018
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.4 Contractual Lineage (The C4
     DAG)
   source_fingerprint: c49afe82314b
@@ -359,7 +367,7 @@ controls:
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-019
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.4 Contractual Lineage (The C4
     DAG) > 2.4.1 DAG Integrity & Attachment Policies
   source_fingerprint: 73283ade603d
@@ -380,7 +388,7 @@ controls:
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-020
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.5 Non-Functional Requirements
     (NFR) Taxonomy
   source_fingerprint: a14cdb644794
@@ -398,10 +406,10 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-000-021
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.6 Artifact Lifecycle & Versioning
   source_fingerprint: 227bc4c43028
   modality: MUST
@@ -420,7 +428,7 @@ controls:
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-022
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.6 Artifact Lifecycle & Versioning
   source_fingerprint: e0984abe772c
   modality: MUST
@@ -436,10 +444,10 @@ controls:
   evidence_status: pending
   evidence_expectation: Phase 7 Version/Mutation engine; PR review remains interim evidence
   control_owner: Governance Process Authority
-  target_phase: Phase 7 Version + Mutation
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-000-023
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.6 Artifact Lifecycle & Versioning
   source_fingerprint: 1b1aa61b4dfc
   modality: MUST
@@ -458,7 +466,7 @@ controls:
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-024
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.6 Artifact Lifecycle & Versioning
   source_fingerprint: f870f7c3faaa
   modality: MUST
@@ -479,7 +487,7 @@ controls:
   evidence_expectation: baseline-bearing versioned artifacts reject 0.y.z versions
 - control_id: CTRL-GDC-000-025
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.6.1 Lifecycle State, Validation
     Profile, and Admission Authority
   source_fingerprint: 14292c0d4c1d
@@ -499,7 +507,7 @@ controls:
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-026
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.6.2 Genesis Governance Bootstrap
   source_fingerprint: 1b1410f759f8
   modality: MUST
@@ -514,10 +522,10 @@ controls:
   evidence_status: pending
   evidence_expectation: effective repository ruleset evidence and negative enforcement test
   control_owner: Repository Governance Authority
-  target_phase: Phase 6 Genesis Integrity
+  target_phase: Slice 13.2 Registry Evidence Reconciliation
 - control_id: CTRL-GDC-000-027
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.6.2 Genesis Governance Bootstrap
   source_fingerprint: e234f0fdf086
   modality: MUST
@@ -533,10 +541,10 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 6 Genesis Integrity
+  target_phase: Slice 13.2 Registry Evidence Reconciliation
 - control_id: CTRL-GDC-000-028
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.6.2 Genesis Governance Bootstrap
   source_fingerprint: 65bad0d2ba82
   modality: MUST
@@ -551,10 +559,10 @@ controls:
   evidence_status: pending
   evidence_expectation: effective repository ruleset evidence and negative enforcement test
   control_owner: Repository Governance Authority
-  target_phase: Phase 9 Effective GitHub Enforcement
+  target_phase: Slice 13.2 Registry Evidence Reconciliation
 - control_id: CTRL-GDC-000-029
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.8 The Quality Framework
   source_fingerprint: ffd4f6c68677
   modality: MUST
@@ -571,10 +579,10 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-000-030
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.9 The Metaprogramming Principle
     (Circular Governance)
   source_fingerprint: 8f35a88abbc9
@@ -591,10 +599,10 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-000-031
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.9 The Metaprogramming Principle
     (Circular Governance)
   source_fingerprint: ff6e2f83732a
@@ -616,7 +624,7 @@ controls:
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-032
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.12 The Architecture Authority
   source_fingerprint: c3daa2e00964
   modality: MUST
@@ -634,10 +642,10 @@ controls:
   evidence_status: pending
   evidence_expectation: auditable process record or approval artifact
   control_owner: Governance Process Authority
-  target_phase: Phase 8 Process Governance Hardening
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-000-033
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > Repository Classification Boundary
   source_fingerprint: acd0f11a9cd7
   modality: MUST
@@ -656,7 +664,7 @@ controls:
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-034
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > Repository Classification Boundary
   source_fingerprint: f854095386fa
   modality: MUST
@@ -674,7 +682,7 @@ controls:
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-035
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > Repository Classification Boundary
   source_fingerprint: 3e534cfd5b0d
   modality: MUST NOT
@@ -692,7 +700,7 @@ controls:
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-036
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > Repository Classification Boundary
   source_fingerprint: 41aa4a66d512
   modality: MUST NOT
@@ -710,7 +718,7 @@ controls:
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-037
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > Relationship Ontology
   source_fingerprint: ed44823c666f
   modality: MUST
@@ -729,7 +737,7 @@ controls:
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-038
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > Normative Control Registry
   source_fingerprint: 15de1e5c37ad
   modality: MUST
@@ -746,7 +754,7 @@ controls:
   evidence_expectation: Normative Control Registry structure and policy coverage are machine-validated with adversarial tests
 - control_id: CTRL-GDC-000-039
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > Normative Control Registry
   source_fingerprint: c684901c6b65
   modality: MUST
@@ -763,7 +771,7 @@ controls:
   evidence_expectation: Normative Control Registry structure and policy coverage are machine-validated with adversarial tests
 - control_id: CTRL-GDC-000-040
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > Normative Control Registry
   source_fingerprint: 682a5f2efad5
   modality: MUST
@@ -779,7 +787,7 @@ controls:
   evidence_expectation: Normative Control Registry structure and policy coverage are machine-validated with adversarial tests
 - control_id: CTRL-GDC-000-041
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > Normative Control Registry
   source_fingerprint: b1b80fe430e5
   modality: MUST
@@ -796,7 +804,7 @@ controls:
   evidence_expectation: Normative Control Registry structure and policy coverage are machine-validated with adversarial tests
 - control_id: CTRL-GDC-000-042
   source_gdc: GDC-000
-  source_file: GDC-0governance-policy.md
+  source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > Normative Control Registry
   source_fingerprint: 895c6413f36a
   modality: MUST
@@ -895,7 +903,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-001-005
   source_gdc: GDC-001
   source_file: GDC-001-fitness-functions.md
@@ -941,7 +949,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-001-007
   source_gdc: GDC-001
   source_file: GDC-001-fitness-functions.md
@@ -964,7 +972,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-001-008
   source_gdc: GDC-001
   source_file: GDC-001-fitness-functions.md
@@ -1077,7 +1085,7 @@ controls:
   evidence_status: pending
   evidence_expectation: continuous code review plus dead-code audit; no artificial coverage tests
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.3 Runtime Authority Closure
 - control_id: CTRL-GDC-001-014
   source_gdc: GDC-001
   source_file: GDC-001-fitness-functions.md
@@ -1094,7 +1102,7 @@ controls:
   evidence_status: pending
   evidence_expectation: test review must confirm coverage represents reachable production behavior
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-001-015
   source_gdc: GDC-001
   source_file: GDC-001-fitness-functions.md
@@ -1111,7 +1119,7 @@ controls:
   evidence_status: pending
   evidence_expectation: test review must exercise reachable contracts and failure modes
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-001-016
   source_gdc: GDC-001
   source_file: GDC-001-fitness-functions.md
@@ -1149,7 +1157,7 @@ controls:
   evidence_status: pending
   evidence_expectation: Phase 9 effective repository/downstream enforcement evidence
   control_owner: Repository Governance Authority
-  target_phase: Phase 9 Effective GitHub Enforcement
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-001-018
   source_gdc: GDC-001
   source_file: GDC-001-fitness-functions.md
@@ -1189,7 +1197,7 @@ controls:
   evidence_status: pending
   evidence_expectation: auditable process record or approval artifact
   control_owner: Governance Process Authority
-  target_phase: Phase 8 Process Governance Hardening
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-001-020
   source_gdc: GDC-001
   source_file: GDC-001-fitness-functions.md
@@ -1209,7 +1217,7 @@ controls:
   evidence_status: pending
   evidence_expectation: effective repository ruleset evidence and negative enforcement test
   control_owner: Repository Governance Authority
-  target_phase: Phase 9 Effective GitHub Enforcement
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-002-001
   source_gdc: GDC-002
   source_file: GDC-002-quality-rubric.md
@@ -1229,7 +1237,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-002-002
   source_gdc: GDC-002
   source_file: GDC-002-quality-rubric.md
@@ -1247,7 +1255,7 @@ controls:
   evidence_status: pending
   evidence_expectation: auditable process record or approval artifact
   control_owner: Governance Process Authority
-  target_phase: Phase 8 Process Governance Hardening
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-002-003
   source_gdc: GDC-002
   source_file: GDC-002-quality-rubric.md
@@ -1267,7 +1275,7 @@ controls:
   evidence_status: pending
   evidence_expectation: effective repository ruleset evidence and negative enforcement test
   control_owner: Repository Governance Authority
-  target_phase: Phase 9 Effective GitHub Enforcement
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-002-004
   source_gdc: GDC-002
   source_file: GDC-002-quality-rubric.md
@@ -1285,7 +1293,7 @@ controls:
   evidence_status: pending
   evidence_expectation: P1-B quality gate reconciliation; score cannot grant authority below threshold
   control_owner: Architecture Review Authority
-  target_phase: Phase 8 P1-B Review and Approval Model
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-003-001
   source_gdc: GDC-003
   source_file: GDC-003-review-process.md
@@ -1303,7 +1311,7 @@ controls:
   evidence_status: pending
   evidence_expectation: effective repository ruleset evidence and negative enforcement test
   control_owner: Repository Governance Authority
-  target_phase: Phase 9 Effective GitHub Enforcement
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-003-002
   source_gdc: GDC-003
   source_file: GDC-003-review-process.md
@@ -1322,7 +1330,7 @@ controls:
   evidence_status: pending
   evidence_expectation: effective repository ruleset evidence and negative enforcement test
   control_owner: Repository Governance Authority
-  target_phase: Phase 9 Effective GitHub Enforcement
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-003-003
   source_gdc: GDC-003
   source_file: GDC-003-review-process.md
@@ -1340,7 +1348,7 @@ controls:
   evidence_status: pending
   evidence_expectation: effective repository ruleset evidence and negative enforcement test
   control_owner: Repository Governance Authority
-  target_phase: Phase 9 Effective GitHub Enforcement
+  target_phase: Slice 13.2 Registry Evidence Reconciliation
 - control_id: CTRL-GDC-003-004
   source_gdc: GDC-003
   source_file: GDC-003-review-process.md
@@ -1357,7 +1365,7 @@ controls:
   evidence_status: pending
   evidence_expectation: effective repository ruleset evidence and negative enforcement test
   control_owner: Repository Governance Authority
-  target_phase: Phase 9 Effective GitHub Enforcement
+  target_phase: Slice 13.2 Registry Evidence Reconciliation
 - control_id: CTRL-GDC-003-005
   source_gdc: GDC-003
   source_file: GDC-003-review-process.md
@@ -1374,7 +1382,7 @@ controls:
   evidence_status: pending
   evidence_expectation: effective repository ruleset evidence and negative enforcement test
   control_owner: Repository Governance Authority
-  target_phase: Phase 9 Effective GitHub Enforcement
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-003-006
   source_gdc: GDC-003
   source_file: GDC-003-review-process.md
@@ -1392,7 +1400,7 @@ controls:
   evidence_status: pending
   evidence_expectation: effective repository ruleset evidence and negative enforcement test
   control_owner: Repository Governance Authority
-  target_phase: Phase 9 Effective GitHub Enforcement
+  target_phase: Slice 13.3 Runtime Authority Closure
 - control_id: CTRL-GDC-003-007
   source_gdc: GDC-003
   source_file: GDC-003-review-process.md
@@ -1433,7 +1441,7 @@ controls:
   evidence_status: pending
   evidence_expectation: effective repository ruleset evidence and negative enforcement test
   control_owner: Repository Governance Authority
-  target_phase: Phase 9 Effective GitHub Enforcement
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-003-009
   source_gdc: GDC-003
   source_file: GDC-003-review-process.md
@@ -1452,7 +1460,7 @@ controls:
   evidence_status: pending
   evidence_expectation: effective repository ruleset evidence and negative enforcement test
   control_owner: Repository Governance Authority
-  target_phase: Phase 9 Effective GitHub Enforcement
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-003-010
   source_gdc: GDC-003
   source_file: GDC-003-review-process.md
@@ -1471,7 +1479,7 @@ controls:
   evidence_status: pending
   evidence_expectation: effective repository ruleset evidence and negative enforcement test
   control_owner: Repository Governance Authority
-  target_phase: Phase 9 Effective GitHub Enforcement
+  target_phase: Slice 13.2 Registry Evidence Reconciliation
 - control_id: CTRL-GDC-003-011
   source_gdc: GDC-003
   source_file: GDC-003-review-process.md
@@ -1489,7 +1497,7 @@ controls:
   evidence_status: pending
   evidence_expectation: effective repository ruleset evidence and negative enforcement test
   control_owner: Repository Governance Authority
-  target_phase: Phase 9 Effective GitHub Enforcement
+  target_phase: Slice 13.2 Registry Evidence Reconciliation
 - control_id: CTRL-GDC-003-012
   source_gdc: GDC-003
   source_file: GDC-003-review-process.md
@@ -1615,7 +1623,7 @@ controls:
   evidence_status: pending
   evidence_expectation: auditable process record or approval artifact
   control_owner: Governance Process Authority
-  target_phase: Phase 8 Process Governance Hardening
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-003-019
   source_gdc: GDC-003
   source_file: GDC-003-review-process.md
@@ -1707,7 +1715,7 @@ controls:
   evidence_status: pending
   evidence_expectation: auditable process record or approval artifact
   control_owner: Governance Process Authority
-  target_phase: Phase 8 Process Governance Hardening
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-004-005
   source_gdc: GDC-004
   source_file: GDC-004-tech-lifecycle.md
@@ -1776,7 +1784,7 @@ controls:
   evidence_status: pending
   evidence_expectation: auditable process record or approval artifact
   control_owner: Governance Process Authority
-  target_phase: Phase 8 P1-D Waiver Governance
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-004-009
   source_gdc: GDC-004
   source_file: GDC-004-tech-lifecycle.md
@@ -1794,7 +1802,7 @@ controls:
   evidence_status: pending
   evidence_expectation: auditable process record or approval artifact
   control_owner: Governance Process Authority
-  target_phase: Phase 8 P1-D Waiver Governance
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-004-010
   source_gdc: GDC-004
   source_file: GDC-004-tech-lifecycle.md
@@ -1830,7 +1838,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-005-002
   source_gdc: GDC-005
   source_file: GDC-005-gdc-guideline.md
@@ -1908,7 +1916,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-005-006
   source_gdc: GDC-005
   source_file: GDC-005-gdc-guideline.md
@@ -1926,7 +1934,7 @@ controls:
   evidence_status: pending
   evidence_expectation: guideline review evidence for explicit taxonomy and directory semantics
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-005-007
   source_gdc: GDC-005
   source_file: GDC-005-gdc-guideline.md
@@ -1963,7 +1971,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-005-009
   source_gdc: GDC-005
   source_file: GDC-005-gdc-guideline.md
@@ -2000,7 +2008,7 @@ controls:
   evidence_status: pending
   evidence_expectation: governance-rule change PR demonstrates reconciliation flow
   control_owner: Governance Process Authority
-  target_phase: Phase 8 Process Governance Hardening
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-005-011
   source_gdc: GDC-005
   source_file: GDC-005-gdc-guideline.md
@@ -2020,7 +2028,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-005-012
   source_gdc: GDC-005
   source_file: GDC-005-gdc-guideline.md
@@ -2040,7 +2048,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-005-013
   source_gdc: GDC-005
   source_file: GDC-005-gdc-guideline.md
@@ -2060,7 +2068,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-006-001
   source_gdc: GDC-006
   source_file: GDC-006-ead-guideline.md
@@ -2079,7 +2087,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-006-002
   source_gdc: GDC-006
   source_file: GDC-006-ead-guideline.md
@@ -2098,7 +2106,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-006-003
   source_gdc: GDC-006
   source_file: GDC-006-ead-guideline.md
@@ -2154,7 +2162,7 @@ controls:
   evidence_expectation: Slice 5.7 RepositoryModel must enforce EAD flat placement within enterprise through one canonical
     repository topology authority with adversarial test evidence
   control_owner: RepositoryModel / Topology Authority
-  target_phase: Slice 5.7 RepositoryModel + Zero-Corpus
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-006-006
   source_gdc: GDC-006
   source_file: GDC-006-ead-guideline.md
@@ -2193,7 +2201,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-007-002
   source_gdc: GDC-007
   source_file: GDC-007-std-guideline.md
@@ -2229,7 +2237,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-007-004
   source_gdc: GDC-007
   source_file: GDC-007-std-guideline.md
@@ -2247,7 +2255,7 @@ controls:
   evidence_expectation: Slice 5.7 RepositoryModel must enforce Enterprise STD domain taxonomy within standards through
     one canonical repository topology authority with adversarial test evidence
   control_owner: RepositoryModel / Topology Authority
-  target_phase: Slice 5.7 RepositoryModel + Zero-Corpus
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-007-005
   source_gdc: GDC-007
   source_file: GDC-007-std-guideline.md
@@ -2266,7 +2274,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-007-006
   source_gdc: GDC-007
   source_file: GDC-007-std-guideline.md
@@ -2283,7 +2291,7 @@ controls:
   evidence_expectation: Slice 5.7 RepositoryModel must enforce Local STD placement within docs/01-standards through one canonical
     repository topology authority with adversarial test evidence
   control_owner: RepositoryModel / Topology Authority
-  target_phase: Slice 5.7 RepositoryModel + Zero-Corpus
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-007-007
   source_gdc: GDC-007
   source_file: GDC-007-std-guideline.md
@@ -2303,7 +2311,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-007-008
   source_gdc: GDC-007
   source_file: GDC-007-std-guideline.md
@@ -2341,7 +2349,7 @@ controls:
   evidence_status: pending
   evidence_expectation: Phase 7 mutation engine will automate STD version increment enforcement
   control_owner: Governance Process Authority
-  target_phase: Phase 7 Version + Mutation
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-007-010
   source_gdc: GDC-007
   source_file: GDC-007-std-guideline.md
@@ -2360,7 +2368,7 @@ controls:
   evidence_status: pending
   evidence_expectation: Phase 7 mutation engine will verify major STD bump authorization by approved ADR
   control_owner: Governance Process Authority
-  target_phase: Phase 7 Version + Mutation
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-008-001
   source_gdc: GDC-008
   source_file: GDC-008-pad-guideline.md
@@ -2379,7 +2387,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-008-002
   source_gdc: GDC-008
   source_file: GDC-008-pad-guideline.md
@@ -2417,7 +2425,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-008-004
   source_gdc: GDC-008
   source_file: GDC-008-pad-guideline.md
@@ -2456,7 +2464,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-008-006
   source_gdc: GDC-008
   source_file: GDC-008-pad-guideline.md
@@ -2475,7 +2483,7 @@ controls:
   evidence_expectation: Slice 5.7 RepositoryModel must enforce PAD asset-container placement within domains/[domain] through
     one canonical repository topology authority with adversarial test evidence
   control_owner: RepositoryModel / Topology Authority
-  target_phase: Slice 5.7 RepositoryModel + Zero-Corpus
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-008-007
   source_gdc: GDC-008
   source_file: GDC-008-pad-guideline.md
@@ -2550,7 +2558,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-009-003
   source_gdc: GDC-009
   source_file: GDC-009-sad-guideline.md
@@ -2571,7 +2579,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-009-004
   source_gdc: GDC-009
   source_file: GDC-009-sad-guideline.md
@@ -2592,7 +2600,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-009-005
   source_gdc: GDC-009
   source_file: GDC-009-sad-guideline.md
@@ -2612,7 +2620,7 @@ controls:
   evidence_expectation: Slice 5.7 RepositoryModel must enforce Library/SDK master_sad governance inheritance through one canonical
     repository topology authority with adversarial test evidence
   control_owner: RepositoryModel / Topology Authority
-  target_phase: Slice 5.7 RepositoryModel + Zero-Corpus
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-009-006
   source_gdc: GDC-009
   source_file: GDC-009-sad-guideline.md
@@ -2651,7 +2659,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-009-008
   source_gdc: GDC-009
   source_file: GDC-009-sad-guideline.md
@@ -2671,7 +2679,7 @@ controls:
   evidence_expectation: Slice 5.7 RepositoryModel must enforce SAD grouping by parent domain/system through one canonical
     repository topology authority with adversarial test evidence
   control_owner: RepositoryModel / Topology Authority
-  target_phase: Slice 5.7 RepositoryModel + Zero-Corpus
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-009-009
   source_gdc: GDC-009
   source_file: GDC-009-sad-guideline.md
@@ -2690,7 +2698,7 @@ controls:
   evidence_expectation: Slice 5.7 RepositoryModel must enforce SAD asset-container placement within systems/[system] through
     one canonical repository topology authority with adversarial test evidence
   control_owner: RepositoryModel / Topology Authority
-  target_phase: Slice 5.7 RepositoryModel + Zero-Corpus
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-009-010
   source_gdc: GDC-009
   source_file: GDC-009-sad-guideline.md
@@ -2785,7 +2793,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-010-001
   source_gdc: GDC-010
   source_file: GDC-010-adr-guideline.md
@@ -2805,7 +2813,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-010-002
   source_gdc: GDC-010
   source_file: GDC-010-adr-guideline.md
@@ -2823,7 +2831,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-010-003
   source_gdc: GDC-010
   source_file: GDC-010-adr-guideline.md
@@ -2926,7 +2934,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-010-008
   source_gdc: GDC-010
   source_file: GDC-010-adr-guideline.md
@@ -2946,7 +2954,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-010-009
   source_gdc: GDC-010
   source_file: GDC-010-adr-guideline.md
@@ -2966,7 +2974,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-010-010
   source_gdc: GDC-010
   source_file: GDC-010-adr-guideline.md
@@ -2987,7 +2995,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-010-011
   source_gdc: GDC-010
   source_file: GDC-010-adr-guideline.md
@@ -3043,7 +3051,7 @@ controls:
   evidence_status: pending
   evidence_expectation: auditable process record or approval artifact
   control_owner: Governance Process Authority
-  target_phase: Phase 8 P1-D Waiver Governance
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-011-001
   source_gdc: GDC-011
   source_file: GDC-011-tdd-guideline.md
@@ -3142,7 +3150,7 @@ controls:
   evidence_expectation: Slice 5.7 RepositoryModel must enforce TDD placement adjacent to owning deployable through one canonical
     repository topology authority with adversarial test evidence
   control_owner: RepositoryModel / Topology Authority
-  target_phase: Slice 5.7 RepositoryModel + Zero-Corpus
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-011-006
   source_gdc: GDC-011
   source_file: GDC-011-tdd-guideline.md
@@ -3180,7 +3188,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-011-008
   source_gdc: GDC-011
   source_file: GDC-011-tdd-guideline.md
@@ -3201,4 +3209,4 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Phase 10 Governance 1.0 Review
+  target_phase: Phase 14 Architecture Re-Admission

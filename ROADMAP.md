@@ -346,7 +346,7 @@ No architecture admission opens merely because the engine tests are green
 | Slice | Capability                           | Status  | Exit Evidence                                                                        |
 | ----- | ------------------------------------ | ------- | ------------------------------------------------------------------------------------ |
 | 13.1  | Root-of-Trust Release Classification | PLANNED | Every control carries one release class; readiness reports pending root-of-trust ids |
-| 13.2  | Registry Evidence Reconciliation     | PLANNED | No pending control targets a retired phase; phase targets are validated              |
+| 13.2  | Registry Evidence Reconciliation     | ACTIVE  | No pending control targets a retired phase; phase targets are validated              |
 | 13.3  | Runtime Authority Closure            | PLANNED | Qualification validates the GDC corpus through `ValidatedRepositorySnapshot`         |
 | 13.4  | Release Metadata Binding             | PLANNED | Deterministic release manifest and fail-closed release verifier                      |
 | 13.5  | Stable GDC Baseline                  | PLANNED | Twelve required GDCs `approved` at `>=1.0.0` with explicit approval records          |
