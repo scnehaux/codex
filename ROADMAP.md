@@ -284,7 +284,7 @@ Goal:
 | REP-006 | Provider CI/action dependencies are immutably pinned where supported | `DONE` |
 | REP-007 | Dependency update process governed and tested                        | `DONE` |
 
-### Phase 12.1 â€” Deterministic Toolchain & Dependency Declarations
+### Phase 12.1 — Deterministic Toolchain & Dependency Declarations
 
 **Status: DONE.**
 
@@ -297,7 +297,7 @@ Goal:
 - Prettier remains version-pinned at `3.9.6`; npm lock/integrity closure is intentionally Phase 12.2
 - hash-locked Python artifact installation and governed dependency update procedure remain later Phase 12 slices
 
-### Phase 12.2 â€” Artifact Hash Locks & Locked Document Toolchain
+### Phase 12.2 — Artifact Hash Locks & Locked Document Toolchain
 
 **Status: DONE.**
 
@@ -308,7 +308,7 @@ Goal:
 - `npm ci --ignore-scripts` is the only supported document-toolchain installation path
 - dependency update procedure remains Phase 12.3
 
-### Phase 12.3 â€” Governed Dependency Update Procedure
+### Phase 12.3 — Governed Dependency Update Procedure
 
 **Status: ACTIVE.**
 
@@ -341,11 +341,29 @@ Governance 1.0 requires:
 
 No architecture admission opens merely because the engine tests are green
 
+## 6.1 Phase 13 Ledger
+
+| Slice | Capability                           | Status  | Exit Evidence                                                                        |
+| ----- | ------------------------------------ | ------- | ------------------------------------------------------------------------------------ |
+| 13.1  | Root-of-Trust Release Classification | PLANNED | Every control carries one release class; readiness reports pending root-of-trust ids |
+| 13.2  | Registry Evidence Reconciliation     | PLANNED | No pending control targets a retired phase; phase targets are validated              |
+| 13.3  | Runtime Authority Closure            | PLANNED | Qualification validates the GDC corpus through `ValidatedRepositorySnapshot`         |
+| 13.4  | Release Metadata Binding             | PLANNED | Deterministic release manifest and fail-closed release verifier                      |
+| 13.5  | Stable GDC Baseline                  | PLANNED | Twelve required GDCs `approved` at `>=1.0.0` with explicit approval records          |
+| 13.6  | Governance 1.0 Release               | PLANNED | Release manifest, Authority evidence and tag bind one qualified commit               |
+
+REC-13-001 (root-of-trust definition), REC-13-002 (release manifest) and REC-13-003
+(approval evidence under the review bootstrap exception) in PLAN §6.3 await owner
+decision; Slices 13.1, 13.4 and 13.5 do not start implementation before their
+decision is recorded. PLAN §6.1 records the entry observations.
+
 ---
 
 # 7. PHASE 14 — ARCHITECTURE RE-ADMISSION
 
 **Status: BLOCKED**
+
+Consumer repository: `scnehaux/codex-architecture`
 
 Blocked by Governance 1.0
 
@@ -376,6 +394,8 @@ Phase 10 Stabilization + scoped reference-provider acceptance  DONE
 -> Slice 11.9 Compatibility & Versioning                       DONE
 → Phase 12 Reproducibility                                    DONE
 → Phase 13 Governance 1.0                                     ACTIVE
+-> REC-13-001..003 owner decisions                             PENDING
+-> Slice 13.1 Root-of-Trust Release Classification            NEXT
 → Phase 14 Architecture Re-Admission                          BLOCKED
 ```
 
@@ -387,7 +407,7 @@ This critical path is the authoritative sequencing until new observed evidence c
 
 - Genesis Integrity — DONE/CLOSED
 - Phase 10 SCM Enforcement and Stabilization — DONE, scoped reference-provider acceptance
-- Phase 11 Executable Framework & Declarative Semantic Authority â€” DONE, Slices 11.1-11.9 governed and merged
+- Phase 11 Executable Framework & Declarative Semantic Authority — DONE, Slices 11.1-11.9 governed and merged
 - Phase 12 Reproducibility and Supply-Chain Closure — DONE
 - Phase 13 Governance 1.0 — ACTIVE / NOT READY
 - Phase 14 Architecture Re-Admission — BLOCKED
