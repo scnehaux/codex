@@ -981,7 +981,7 @@ Phase 11 explicitly does NOT include:
 - IntentSpec/capability routing redesign
 - model-provider, MCP, agent, or studio implementation
 
-Those concerns begin only after the canonical repository trust boundary is established. Phase 12 is now the active next phase.
+Those concerns begin only after the canonical repository trust boundary is established. Phase 12 has now completed reproducibility and supply-chain closure; Phase 13 Governance 1.0 is the active next phase.
 
 # 5. PHASE 12 — REPRODUCIBILITY AND SUPPLY-CHAIN CLOSURE
 
@@ -1030,11 +1030,13 @@ Make dependency changes reviewable as atomic governed mutations rather than inde
 - committed-delta CI rejects partial or lock-only updates
 - the permanent readiness graph records policy, implementation, and test evidence
 
-After this slice merges, evaluate Phase 12 exit criteria before Governance 1.0.
+Governed merge completed via Codex PR #40 after exact-candidate Authority publication. All Phase 12 reproducibility invariants are now closed.
 
 ---
 
 # 6. PHASE 13 — GOVERNANCE 1.0
+
+**Status: ACTIVE — NOT READY FOR RELEASE.**
 
 Governance 1.0 may be released only when:
 
@@ -1084,14 +1086,12 @@ EAD
 The current next action is:
 
 ```text
-Slice 11.6 Provenance-Bound Repository Ingestion: DONE
--> Slice 11.7 ValidatedRepositorySnapshot: ACTIVE
--> Qualify exact snapshot candidate through governance + Authority
+Phase 12 Reproducibility and Supply-Chain Closure: DONE
+-> Phase 13 Governance 1.0: ACTIVE / NOT READY
+-> Close remaining root-of-trust release obligations, stable GDC approvals/versioning, and release metadata binding
 ```
 
-Phase 10 is complete for its accepted GitHub reference-provider scope. Slices
-11.1-11.6 are complete; Slice 11.7 is active as the first canonical repository
-trust boundary. Architecture admission remains closed.
+Phase 10 reference-provider acceptance, Phase 11 executable-framework closure, and Phase 12 reproducibility closure are complete. Phase 13 is now the active workstream, but Governance 1.0 is not released and architecture admission remains closed.
 
 <!-- PHASE-STATUS:START -->
 
@@ -1100,9 +1100,9 @@ trust boundary. Architecture admission remains closed.
 - Genesis Integrity — DONE/CLOSED
 - Version and Mutation Authority — IMPLEMENTED; candidate delta qualification required per slice
 - Phase 10 SCM Enforcement and Stabilization — DONE, scoped reference-provider acceptance
-- Phase 11 Executable Framework & Declarative Semantic Authority - ACTIVE, Slice 11.7 snapshot boundary under qualification
-- Phase 12 Reproducibility and Supply-Chain Closure — PLANNED
-- Phase 13 Governance 1.0 — BLOCKED
+- Phase 11 Executable Framework & Declarative Semantic Authority — DONE, Slices 11.1-11.9 governed and merged
+- Phase 12 Reproducibility and Supply-Chain Closure — DONE
+- Phase 13 Governance 1.0 — ACTIVE / NOT READY
 - Phase 14 Architecture Re-Admission — BLOCKED
 
 <!-- PHASE-STATUS:END -->
