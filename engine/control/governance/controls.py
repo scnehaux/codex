@@ -145,7 +145,27 @@ def load_control_registry(path: Path) -> tuple[ControlRecord, ...]:
     return tuple(records)
 
 
-def registry_structure_errors(records: tuple[ControlRecord, ...]) -> tuple[str, ...]:
+def load_target_phases(path: Path) -> frozenset[str]:
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise RuntimeError("Normative Control Registry must be a YAML mapping")
+
+    phases = data.get("target_phases")
+    if not isinstance(phases, list) or not phases:
+        raise RuntimeError(
+            "Normative Control Registry must declare a non-empty target_phases list"
+        )
+    if not all(isinstance(phase, str) and phase.strip() for phase in phases):
+        raise RuntimeError("Each target_phases entry must be a non-empty string")
+    if len(set(phases)) != len(phases):
+        raise RuntimeError("target_phases entries must be unique")
+    return frozenset(phases)
+
+
+def registry_structure_errors(
+    records: tuple[ControlRecord, ...],
+    target_phases: frozenset[str] | None = None,
+) -> tuple[str, ...]:
     errors: list[str] = []
     ids: set[str] = set()
     fingerprints: set[tuple[str, str]] = set()
@@ -189,6 +209,10 @@ def registry_structure_errors(records: tuple[ControlRecord, ...]) -> tuple[str, 
             if not record.target_phase:
                 errors.append(
                     f"{record.control_id}: pending/gap control is missing target_phase"
+                )
+            elif target_phases is not None and record.target_phase not in target_phases:
+                errors.append(
+                    f"{record.control_id}: unknown target_phase {record.target_phase!r}"
                 )
 
         if record.enforcement_mode != "automated" and not record.implementation:

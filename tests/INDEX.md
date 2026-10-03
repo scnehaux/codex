@@ -339,6 +339,8 @@ This index documents the test suite utilities and fixtures.
 | **test_load_registry_rejects_non_mapping**                                | _(No docstring provided)_ |
 | **test_load_registry_requires_controls_list**                             | _(No docstring provided)_ |
 | **test_load_registry_rejects_non_mapping_control**                        | _(No docstring provided)_ |
+| **test_load_target_phases_reads_declared_vocabulary**                     | _(No docstring provided)_ |
+| **test_load_target_phases_fails_closed**                                  | _(No docstring provided)_ |
 | **\_control_record**                                                      | _(No docstring provided)_ |
 | **test_registry_structure_errors_reject_invalid_control_id**              | _(No docstring provided)_ |
 | **test_registry_structure_errors_reject_duplicate_id**                    | _(No docstring provided)_ |
@@ -349,6 +351,9 @@ This index documents the test suite utilities and fixtures.
 | **test_verified_automated_control_requires_test_evidence**                | _(No docstring provided)_ |
 | **test_pending_or_gap_automated_control_may_expose_missing_mapping**      | _(No docstring provided)_ |
 | **test_pending_or_gap_control_requires_owner_and_target_phase**           | _(No docstring provided)_ |
+| **test_pending_control_target_phase_must_be_declared**                    | _(No docstring provided)_ |
+| **test_pending_control_with_declared_target_phase_is_valid**              | _(No docstring provided)_ |
+| **test_current_pending_controls_target_no_retired_phase**                 | _(No docstring provided)_ |
 | **test_non_automated_control_requires_enforcement_mechanism**             | _(No docstring provided)_ |
 | **test_verified_control_does_not_require_future_disposition**             | _(No docstring provided)_ |
 | **test_current_pending_controls_have_explicit_disposition**               | _(No docstring provided)_ |

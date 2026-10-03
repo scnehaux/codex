@@ -222,6 +222,7 @@ This index documents the internal functions and classes of the Fitness Function 
 | **\_strip_inline_markdown**      | _(No docstring provided)_ |
 | **extract_normative_statements** | _(No docstring provided)_ |
 | **load_control_registry**        | _(No docstring provided)_ |
+| **load_target_phases**           | _(No docstring provided)_ |
 | **registry_structure_errors**    | _(No docstring provided)_ |
 | **coverage_drift**               | _(No docstring provided)_ |
 

@@ -43,7 +43,7 @@ def _write_artifact(
 def _write_control_registry(path: Path, controls: list[dict]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
 
-    lines = ["controls:"]
+    lines = ["target_phases:", "  - Phase 5", "controls:"]
     for control in controls:
         lines.extend(
             [

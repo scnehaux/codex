@@ -8,6 +8,7 @@ from engine.control.governance.controls import (
     coverage_drift,
     extract_normative_statements,
     load_control_registry,
+    load_target_phases,
     registry_structure_errors,
 )
 
@@ -34,10 +35,9 @@ def test_current_registry_has_one_record_per_normative_must_shall():
 
 def test_current_registry_structure_is_valid():
     root = _repo_root()
-    records = load_control_registry(
-        root / "governance" / "normative-control-registry.yaml"
-    )
-    assert registry_structure_errors(records) == ()
+    path = root / "governance" / "normative-control-registry.yaml"
+    records = load_control_registry(path)
+    assert registry_structure_errors(records, load_target_phases(path)) == ()
 
 
 def test_extract_normative_statements_ignores_tables_code_and_should(tmp_path):
@@ -76,6 +76,35 @@ def test_load_registry_rejects_non_mapping_control(tmp_path):
     path.write_text("controls:\n  - bad\n", encoding="utf-8")
     with pytest.raises(RuntimeError, match="control entry"):
         load_control_registry(path)
+
+
+def test_load_target_phases_reads_declared_vocabulary(tmp_path):
+    path = tmp_path / "registry.yaml"
+    path.write_text(
+        "target_phases:\n  - Slice 13.2 Example\n  - Phase 14 Example\ncontrols: []\n",
+        encoding="utf-8",
+    )
+    assert load_target_phases(path) == frozenset(
+        {"Slice 13.2 Example", "Phase 14 Example"}
+    )
+
+
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("- bad\n", "YAML mapping"),
+        ("controls: []\n", "non-empty target_phases list"),
+        ("target_phases: []\ncontrols: []\n", "non-empty target_phases list"),
+        ("target_phases:\n  - ''\ncontrols: []\n", "non-empty string"),
+        ("target_phases:\n  - 13\ncontrols: []\n", "non-empty string"),
+        ("target_phases:\n  - A\n  - A\ncontrols: []\n", "must be unique"),
+    ],
+)
+def test_load_target_phases_fails_closed(tmp_path, text, expected):
+    path = tmp_path / "registry.yaml"
+    path.write_text(text, encoding="utf-8")
+    with pytest.raises(RuntimeError, match=expected):
+        load_target_phases(path)
 
 
 def _control_record(**overrides):
@@ -212,6 +241,41 @@ def test_pending_or_gap_control_requires_owner_and_target_phase():
         sum("pending/gap control is missing target_phase" in error for error in errors)
         == 2
     )
+
+
+def test_pending_control_target_phase_must_be_declared():
+    pending = _control_record(
+        evidence_status="pending",
+        control_owner="Architecture Review Authority",
+        target_phase="Phase 10 Governance 1.0 Review",
+    )
+    errors = registry_structure_errors(
+        (pending,), frozenset({"Slice 13.5 Stable GDC Baseline"})
+    )
+    assert any("unknown target_phase" in error for error in errors)
+
+
+def test_pending_control_with_declared_target_phase_is_valid():
+    pending = _control_record(
+        evidence_status="pending",
+        control_owner="Architecture Review Authority",
+        target_phase="Slice 13.5 Stable GDC Baseline",
+    )
+    errors = registry_structure_errors(
+        (pending,), frozenset({"Slice 13.5 Stable GDC Baseline"})
+    )
+    assert errors == ()
+
+
+def test_current_pending_controls_target_no_retired_phase():
+    path = _repo_root() / "governance" / "normative-control-registry.yaml"
+    target_phases = load_target_phases(path)
+    current = ("Slice 13.", "Phase 14 ")
+    assert all(phase.startswith(current) for phase in target_phases)
+    unresolved = [
+        record for record in load_control_registry(path) if record.target_phase
+    ]
+    assert all(record.target_phase in target_phases for record in unresolved)
 
 
 def test_non_automated_control_requires_enforcement_mechanism():
