@@ -16,6 +16,9 @@ ENFORCEMENT_MODES = frozenset(
     {"automated", "human-review", "process-control", "repository-control"}
 )
 EVIDENCE_STATES = frozenset({"verified", "pending", "gap"})
+RELEASE_CLASSES = frozenset(
+    {"root-of-trust", "governance-content", "consumer-artifact"}
+)
 SEVERITIES = frozenset({"CRITICAL", "ERROR", "WARNING", "INFO"})
 
 
@@ -45,6 +48,8 @@ class ControlRecord:
     test_evidence: tuple[str, ...]
     evidence_status: str
     evidence_expectation: str
+    release_class: str = ""
+    release_rationale: str = ""
     control_owner: str = ""
     target_phase: str = ""
 
@@ -138,6 +143,8 @@ def load_control_registry(path: Path) -> tuple[ControlRecord, ...]:
                 test_evidence=tuple(raw.get("test_evidence") or ()),
                 evidence_status=str(raw.get("evidence_status", "")),
                 evidence_expectation=str(raw.get("evidence_expectation", "")),
+                release_class=str(raw.get("release_class", "")),
+                release_rationale=str(raw.get("release_rationale", "")),
                 control_owner=str(raw.get("control_owner", "")),
                 target_phase=str(raw.get("target_phase", "")),
             )
@@ -171,6 +178,12 @@ def registry_structure_errors(
     fingerprints: set[tuple[str, str]] = set()
 
     for record in records:
+        if record.release_class not in RELEASE_CLASSES:
+            errors.append(
+                f"{record.control_id}: invalid release_class {record.release_class}"
+            )
+        if not record.release_rationale.strip():
+            errors.append(f"{record.control_id}: missing release_rationale")
         if not re.fullmatch(r"CTRL-GDC-\d{3}-\d{3}", record.control_id):
             errors.append(f"Invalid control_id: {record.control_id!r}")
         elif record.control_id in ids:

@@ -1074,6 +1074,8 @@ Every slice follows the §1 operating rules, its own canonical qualification, ex
 
 Invariant: the first Governance 1.0 criterion becomes machine-checkable.
 
+Status: ACTIVE; the implementation candidate classifies all 166 controls using accepted REC-13-001, with an explicit rationale per row. The proposed classes are `root-of-trust` (72), `governance-content` (11) and `consumer-artifact` (83). A compound obligation is root-of-trust if any part protects canonical authority; its incomplete evidence still blocks the root criterion. Registry counts remain 82 `verified` / 84 `pending`, including 29 pending root-of-trust controls. Readiness validates registry structure and reports their exact ids without equating implementation qualification with release readiness. Non-root pending obligations retain their existing Slice 13.5 or Phase 14 owner and target. Authority publication and governed merge remain required.
+
 - add an explicit release classification to every control record, as selected by REC-13-001
 - registry structure checks fail closed on a missing or unknown classification
 - governance readiness reports the pending root-of-trust set by control id
@@ -1108,7 +1110,7 @@ The desired-only Authority binding remains explicitly justified in `governance/g
 
 Invariant: canonical qualification validates the governed corpus through the executable framework path that Phase 11 declared authoritative.
 
-Status: ACTIVE; the implementation candidate adds commit-bound corpus qualification, threads the injected framework through assembly, validation and DAG promotion, retires raw-artifact public graph compilers, and runs `make lint` in governance CI. The layout contract alone owns the TDD root; eleven stale GDC links are corrected. Qualification requires a clean checkout so source bytes, schemas and the compiled framework belong to the reported revision. Local preflight uses focused tests and `make lint`; final qualification runs from a clean candidate checkout. Exact-candidate Authority publication and governed merge remain required before this slice is closed.
+Status: DONE; Codex PR #45 merged at `db18d03440afa2097f926314df53749a5d2bd7aa` after Authority check `111729656469` succeeded on exact head `8e2b8c088e484c0acc75255e2ebf95011b0fded4`. Authority PR #110 disarmed publication. The merged path qualifies the GDC corpus from a clean commit-bound checkout, threads the executable framework through assembly, validation and DAG promotion, retires public raw-artifact graph compilers, and runs repository lint in CI. The declarative layout owns the TDD root. Local qualification passed 1168 tests with 98.54% aggregate coverage and the per-file floor intact.
 
 - governance qualification builds a `ValidatedRepositorySnapshot` of the current GDC corpus and fails closed on any rejected candidate
 - framework-injected validation no longer falls back to module-level validator, lifecycle or relationship state
@@ -1144,11 +1146,11 @@ Invariant: Governance 1.0 is declared only from observed evidence.
 
 ## 6.3 Phase 13 Recommendations
 
-These are recommendations for owner decision. None is accepted until the owner decision is recorded; until then the affected slice does not start implementation.
+Owner decision recorded on 2026-10-05 (Asia/Jakarta): the owner replied "oke gas" to the explicit selection of REC-13-001, REC-13-002 and REC-13-003. All three recommendations are accepted. This decision authorizes their implementation; it does not constitute an ARB approval of an individual GDC candidate.
 
 ### REC-13-001 — Define root-of-trust by integrity of the authority chain
 
-**Status: recommended; awaiting owner decision.**
+**Status: accepted by owner on 2026-10-05.**
 
 Recommendation: a control is root-of-trust when its failure would let an unauthorized, unverified or unreproducible change become canonical governance authority. In practice this covers controls that protect:
 
@@ -1177,7 +1179,7 @@ References:
 
 ### REC-13-002 — Bind each release with a deterministic release manifest
 
-**Status: recommended; awaiting owner decision.**
+**Status: accepted by owner on 2026-10-05.**
 
 Recommendation: a committed, canonical JSON release manifest per Governance release binds:
 
@@ -1209,7 +1211,7 @@ References:
 
 ### REC-13-003 — Record GDC approval explicitly while the review bootstrap exception is active
 
-**Status: recommended; awaiting owner decision.**
+**Status: accepted by owner on 2026-10-05.**
 
 Context: GDC-003 §3.2 names the ARB as the required approver for GDCs, and its bootstrap exception allows the SCM projection of 0 mandatory approvals while fewer than 2 independent qualified reviewers exist. A merge therefore does not by itself prove an ARB approval.
 
@@ -1269,7 +1271,7 @@ The current next action is:
 ```text
 Phase 12 Reproducibility and Supply-Chain Closure: DONE
 -> Phase 13 Governance 1.0: ACTIVE / NOT READY
--> Owner decisions on REC-13-001 through REC-13-003
+-> REC-13-001 through REC-13-003: ACCEPTED by owner (2026-10-05)
 -> Slice 13.1 Root-of-Trust Release Classification
 ```
 
