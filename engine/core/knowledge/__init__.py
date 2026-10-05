@@ -2,8 +2,6 @@ from engine.core.knowledge.compiler import compile_repository_graph
 from .compiler import (
     GraphCompilationError,
     artifact_to_node,
-    compile_architecture_graph,
-    compile_knowledge_graph,
 )
 from .context import (
     ContextBudget,
@@ -65,7 +63,5 @@ __all__ = [
     "RetrievalStrategy",
     "SourceAuthority",
     "artifact_to_node",
-    "compile_architecture_graph",
-    "compile_knowledge_graph",
     "compile_repository_graph",
 ]

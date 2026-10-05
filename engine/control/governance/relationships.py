@@ -7,7 +7,10 @@ from engine.control.framework.relationships import (
     APPROVED_PARENT_FOR_ACTIVE_SAD,
     RelationshipSpec,
 )
-from engine.control.framework.executable import executable_framework
+from engine.control.framework.executable import (
+    ExecutableFramework,
+    executable_framework,
+)
 
 
 # Compatibility projections only; ontology semantics are authored in relationships.yaml.
@@ -34,18 +37,23 @@ def normalize_relation_values(value):
 
 def relationship_specs_for_source(
     source_type: str | None,
+    *,
+    framework: ExecutableFramework | None = None,
 ) -> tuple[RelationshipSpec, ...]:
     normalized = str(source_type or "").upper()
-    return executable_framework().relationships.by_source.get(normalized, ())
+    runtime = framework if framework is not None else executable_framework()
+    return runtime.relationships.by_source.get(normalized, ())
 
 
 def relationship_spec_for(
     source_type: str | None,
     metadata_field: str,
+    *,
+    framework: ExecutableFramework | None = None,
 ) -> RelationshipSpec | None:
     matches = tuple(
         spec
-        for spec in relationship_specs_for_source(source_type)
+        for spec in relationship_specs_for_source(source_type, framework=framework)
         if spec.metadata_field == metadata_field
     )
     if len(matches) > 1:
@@ -56,19 +64,24 @@ def relationship_spec_for(
     return matches[0] if matches else None
 
 
-def relationship_fields_for_source(source_type: str | None) -> frozenset[str]:
-    specs = relationship_specs_for_source(source_type)
+def relationship_fields_for_source(
+    source_type: str | None, *, framework: ExecutableFramework | None = None
+) -> frozenset[str]:
+    runtime = framework if framework is not None else executable_framework()
+    specs = relationship_specs_for_source(source_type, framework=runtime)
     if not specs:
-        return ALL_RELATION_FIELDS
+        return runtime.relationships.all_fields
     return frozenset(spec.metadata_field for spec in specs)
 
 
 def dag_relation_specs_for_source(
     source_type: str | None,
+    *,
+    framework: ExecutableFramework | None = None,
 ) -> tuple[RelationshipSpec, ...]:
     return tuple(
         spec
-        for spec in relationship_specs_for_source(source_type)
+        for spec in relationship_specs_for_source(source_type, framework=framework)
         if spec.dag_participation
     )
 
@@ -77,16 +90,19 @@ def relationship_contract_findings(
     source_id: str,
     source_meta: dict | None,
     all_doc_metadata: dict,
+    *,
+    framework: ExecutableFramework | None = None,
 ) -> list[RelationshipFinding]:
     if not isinstance(source_meta, dict):
         return []
 
-    source_type = artifact_type_from_id(source_id)
-    applicable = relationship_specs_for_source(source_type)
+    runtime = framework if framework is not None else executable_framework()
+    source_type = artifact_type_from_id(source_id, runtime=runtime.artifacts)
+    applicable = relationship_specs_for_source(source_type, framework=runtime)
     applicable_fields = {spec.metadata_field for spec in applicable}
     findings: list[RelationshipFinding] = []
 
-    for field in sorted(ALL_RELATION_FIELDS):
+    for field in sorted(runtime.relationships.all_fields):
         if field in source_meta and field not in applicable_fields:
             findings.append(
                 RelationshipFinding(
@@ -172,7 +188,7 @@ def relationship_contract_findings(
                 )
                 continue
 
-            target_type = artifact_type_from_id(target_id)
+            target_type = artifact_type_from_id(target_id, runtime=runtime.artifacts)
             if target_type not in spec.target_types:
                 allowed = ", ".join(sorted(spec.target_types))
                 findings.append(

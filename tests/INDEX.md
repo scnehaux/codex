@@ -149,6 +149,7 @@ This index documents the test suite utilities and fixtures.
 | **test_declarative_lifecycle_change_drives_compiled_view**         | _(No docstring provided)_ |
 | **test_artifact_type_and_layout_must_cover_each_other**            | _(No docstring provided)_ |
 | **test_tdd_topology_is_explicit_and_unique**                       | _(No docstring provided)_ |
+| **test_tdd_root_is_owned_by_declarative_layout_not_python**        | _(No docstring provided)_ |
 | **test_invalid_lifecycle_semantics_fail_closed**                   | _(No docstring provided)_ |
 | **test_schema_and_validator_bindings_cover_exact_vocabulary**      | _(No docstring provided)_ |
 | **test_family_reclassification_requires_separate_governed_change** | _(No docstring provided)_ |
@@ -358,6 +359,22 @@ This index documents the test suite utilities and fixtures.
 | **test_verified_control_does_not_require_future_disposition**             | _(No docstring provided)_ |
 | **test_current_pending_controls_have_explicit_disposition**               | _(No docstring provided)_ |
 | **test_current_registry_has_no_unowned_gap**                              | _(No docstring provided)_ |
+
+### `tests/control/governance/test_corpus.py`
+
+| Function                                                       | Description               |
+| :------------------------------------------------------------- | :------------------------ |
+| **\_git**                                                      | _(No docstring provided)_ |
+| **\_commit**                                                   | _(No docstring provided)_ |
+| **corpus_root**                                                | _(No docstring provided)_ |
+| **test_real_corpus_builds_commit_bound_snapshot_and_graph**    | _(No docstring provided)_ |
+| **test_dirty_corpus_cannot_claim_committed_snapshot**          | _(No docstring provided)_ |
+| **test_malformed_committed_gdc_blocks_qualification**          | _(No docstring provided)_ |
+| **test_missing_required_gdc_blocks_qualification**             | _(No docstring provided)_ |
+| **test_duplicate_committed_gdc_identity_blocks_qualification** | _(No docstring provided)_ |
+| **test_invalid_baseline_inventory_fails_closed**               | _(No docstring provided)_ |
+| **test_revision_change_during_qualification_fails_closed**     | _(No docstring provided)_ |
+| **test_unreadable_git_repository_fails_closed**                | _(No docstring provided)_ |
 
 ### `tests/control/governance/test_dependency_update.py`
 
@@ -797,6 +814,12 @@ This index documents the test suite utilities and fixtures.
 | **test_malformed_source_remains_diagnostic_but_cannot_promote**              | _(No docstring provided)_ |
 | **test_unknown_artifact_identity_is_candidate_failure**                      | _(No docstring provided)_ |
 | **test_real_governed_artifact_validates_before_promotion**                   | _(No docstring provided)_ |
+| **test_injected_framework_does_not_read_module_authority**                   | _(No docstring provided)_ |
+| **test_injected_lifecycle_controls_age_and_baseline_semantics**              | _(No docstring provided)_ |
+| **test_injected_relationship_cardinality_is_enforced**                       | _(No docstring provided)_ |
+| **test_injected_validator_binding_cannot_fall_back**                         | _(No docstring provided)_ |
+| **test_injected_framework_loads_schemas_from_its_resource_root**             | _(No docstring provided)_ |
+| **test_candidate_in_wrong_declared_root_cannot_promote**                     | _(No docstring provided)_ |
 | **test_report_is_deterministic_for_same_candidate_and_context**              | _(No docstring provided)_ |
 | **test_promotion_rejects_report_bound_to_other_candidate**                   | _(No docstring provided)_ |
 | **test_blocking_report_cannot_promote_even_when_artifact_exists**            | _(No docstring provided)_ |
@@ -889,30 +912,31 @@ This index documents the test suite utilities and fixtures.
 
 ### `tests/control/validators/test_base.py`
 
-| Function                                                          | Description               |
-| :---------------------------------------------------------------- | :------------------------ |
-| **\_mock_rules**                                                  | _(No docstring provided)_ |
-| **test_base_validator_lint_disable**                              | _(No docstring provided)_ |
-| **test_base_validator_add_error**                                 | _(No docstring provided)_ |
-| **test_base_validator_execution_loop**                            | _(No docstring provided)_ |
-| **test_base_validator_default**                                   | _(No docstring provided)_ |
-| **test_base_validator_lint_disable_ignored_inside_code_fence**    | _(No docstring provided)_ |
-| **test_base_validator_lint_disable_honored_with_reason**          | _(No docstring provided)_ |
-| **test_base_validator_lint_disable_undocumented_has_none_reason** | _(No docstring provided)_ |
-| **test_base_validator_lint_disable_invalid_rule_fails_fast**      | _(No docstring provided)_ |
-| **test_base_validator_lint_disable_inline_scope_limited**         | _(No docstring provided)_ |
-| **test_base_validator_lint_disable_cannot_silence_critical**      | _(No docstring provided)_ |
-| **test_base_validator_lint_disable_honors_non_critical**          | _(No docstring provided)_ |
-| **test_schema_validation_enum**                                   | _(No docstring provided)_ |
-| **test_schema_validation_pattern**                                | _(No docstring provided)_ |
-| **test_schema_validation_other**                                  | _(No docstring provided)_ |
-| **test_convert_dates**                                            | _(No docstring provided)_ |
-| **test_lint_disable_block_start_end_scope_and_reason**            | _(No docstring provided)_ |
-| **test_extract_rules_deduplicates_and_filters_garbage**           | _(No docstring provided)_ |
-| **test_add_error_unknown_rule_is_configuration_drift**            | _(No docstring provided)_ |
-| **test_schema_validation_required_root_maps_missing_section**     | _(No docstring provided)_ |
-| **test_schema_format_checker_rejects_invalid_calendar_date**      | _(No docstring provided)_ |
-| **test_schema_format_checker_accepts_valid_leap_day**             | _(No docstring provided)_ |
+| Function                                                              | Description               |
+| :-------------------------------------------------------------------- | :------------------------ |
+| **\_mock_rules**                                                      | _(No docstring provided)_ |
+| **test_git_snapshot_on_another_drive_keeps_absolute_diagnostic_path** | _(No docstring provided)_ |
+| **test_base_validator_lint_disable**                                  | _(No docstring provided)_ |
+| **test_base_validator_add_error**                                     | _(No docstring provided)_ |
+| **test_base_validator_execution_loop**                                | _(No docstring provided)_ |
+| **test_base_validator_default**                                       | _(No docstring provided)_ |
+| **test_base_validator_lint_disable_ignored_inside_code_fence**        | _(No docstring provided)_ |
+| **test_base_validator_lint_disable_honored_with_reason**              | _(No docstring provided)_ |
+| **test_base_validator_lint_disable_undocumented_has_none_reason**     | _(No docstring provided)_ |
+| **test_base_validator_lint_disable_invalid_rule_fails_fast**          | _(No docstring provided)_ |
+| **test_base_validator_lint_disable_inline_scope_limited**             | _(No docstring provided)_ |
+| **test_base_validator_lint_disable_cannot_silence_critical**          | _(No docstring provided)_ |
+| **test_base_validator_lint_disable_honors_non_critical**              | _(No docstring provided)_ |
+| **test_schema_validation_enum**                                       | _(No docstring provided)_ |
+| **test_schema_validation_pattern**                                    | _(No docstring provided)_ |
+| **test_schema_validation_other**                                      | _(No docstring provided)_ |
+| **test_convert_dates**                                                | _(No docstring provided)_ |
+| **test_lint_disable_block_start_end_scope_and_reason**                | _(No docstring provided)_ |
+| **test_extract_rules_deduplicates_and_filters_garbage**               | _(No docstring provided)_ |
+| **test_add_error_unknown_rule_is_configuration_drift**                | _(No docstring provided)_ |
+| **test_schema_validation_required_root_maps_missing_section**         | _(No docstring provided)_ |
+| **test_schema_format_checker_rejects_invalid_calendar_date**          | _(No docstring provided)_ |
+| **test_schema_format_checker_accepts_valid_leap_day**                 | _(No docstring provided)_ |
 
 ### `tests/control/validators/test_gdc_schema_lifecycle.py`
 
@@ -1040,6 +1064,7 @@ This index documents the test suite utilities and fixtures.
 | **test_knowledge_edge_rejects_invalid_state_properties_and_provenance** | _(No docstring provided)_ |
 | **test_compile_knowledge_graph_wraps_invalid_additional_edge**          | _(No docstring provided)_ |
 | **test_repository_graph_compiler_rejects_unvalidated_repository_state** | _(No docstring provided)_ |
+| **test_raw_artifact_graph_entrypoints_are_retired**                     | _(No docstring provided)_ |
 
 ### `tests/core/knowledge/test_provenance.py`
 

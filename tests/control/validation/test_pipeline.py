@@ -94,6 +94,166 @@ def test_real_governed_artifact_validates_before_promotion():
     assert promoted.document_id == "GDC-000"
 
 
+def test_injected_framework_does_not_read_module_authority(monkeypatch):
+    import engine.control.validators.registry as registry
+    import engine.control.governance.lifecycle as lifecycle
+    import engine.control.governance.relationships as relationships
+    import engine.control.repository.assembler as assembler
+    import engine.control.auditors.graph_auditor as graph
+    import engine.control.validation.pipeline as pipeline
+    import engine.control.validators.base as base
+    import engine.control.framework.artifacts as artifacts
+
+    runtime = executable_framework()
+    ids, metadata, _ = _registry()
+    source = _real_candidate().parsed
+
+    def forbidden():
+        raise AssertionError("module-level authority consulted")
+
+    for module in (
+        registry,
+        lifecycle,
+        relationships,
+        assembler,
+        graph,
+        pipeline,
+        base,
+    ):
+        monkeypatch.setattr(module, "executable_framework", forbidden)
+    monkeypatch.setattr(artifacts, "artifact_runtime", forbidden)
+    monkeypatch.setattr(registry, "VALIDATOR_REGISTRY", {})
+    candidate = build_artifact_candidate(source, framework=runtime)
+    report = validate_candidate(
+        candidate, framework=runtime, all_doc_ids=ids, all_doc_metadata=metadata
+    )
+    assert report.outcome.value == "pass"
+    assert promote_candidates((candidate,), (report,), framework=runtime).require(
+        "GDC-000"
+    )
+
+
+def test_injected_lifecycle_controls_age_and_baseline_semantics(monkeypatch):
+    from dataclasses import replace
+    from engine.control.framework.artifacts import AgePolicy, BASELINE_BEARING
+
+    monkeypatch.setenv("SCNEHAUX_EVALUATION_DATE", "2026-10-05")
+    runtime = executable_framework()
+    lifecycle = dict(runtime.lifecycle)
+    lifecycle["GDC"] = dict(lifecycle["GDC"])
+    lifecycle["GDC"]["draft"] = replace(
+        lifecycle["GDC"]["draft"],
+        semantic_class=BASELINE_BEARING,
+        age_policy=AgePolicy("created_date", 1, "Injected age limit {limit} exceeded"),
+    )
+    injected = replace(
+        runtime, artifacts=replace(runtime.artifacts, lifecycle=lifecycle)
+    )
+    ids, metadata, _ = _registry()
+    report = validate_candidate(
+        _real_candidate(),
+        framework=injected,
+        all_doc_ids=ids,
+        all_doc_metadata=metadata,
+    )
+    rules = {item.rule_id for item in report.findings}
+    assert "lifecycle_age_violation" in rules
+    assert "approved_version_not_stable" in rules
+
+
+def test_injected_relationship_cardinality_is_enforced():
+    from dataclasses import replace
+
+    runtime = executable_framework()
+    by_source = dict(runtime.relationships.by_source)
+    by_source["GDC"] = tuple(replace(spec, min_targets=2) for spec in by_source["GDC"])
+    injected = replace(
+        runtime, relationships=replace(runtime.relationships, by_source=by_source)
+    )
+    ids, metadata, _ = _registry()
+    report = validate_candidate(
+        _real_candidate(),
+        framework=injected,
+        all_doc_ids=ids,
+        all_doc_metadata=metadata,
+    )
+    assert any(
+        item.rule_id == "structural_integrity_violation"
+        and "found 1 target" in item.message
+        for item in report.findings
+    )
+
+
+def test_injected_validator_binding_cannot_fall_back():
+    from dataclasses import replace
+    from engine.control.framework.artifacts import ValidatorBinding
+    from engine.control.framework.contracts import FrameworkContractError
+
+    runtime = executable_framework()
+    bindings = dict(runtime.validator_bindings)
+    bindings["GDC"] = ValidatorBinding(
+        "engine.control.validators.domains.gdc_validator", "MissingValidator"
+    )
+    injected = replace(
+        runtime, artifacts=replace(runtime.artifacts, validator_bindings=bindings)
+    )
+    with pytest.raises(FrameworkContractError, match="validator-unresolvable:GDC"):
+        validate_candidate(_real_candidate(), framework=injected)
+
+
+def test_injected_framework_loads_schemas_from_its_resource_root(tmp_path):
+    from dataclasses import replace
+    import json
+    import shutil
+    from engine.control.linting import lint_file
+
+    runtime = executable_framework()
+    shutil.copytree(runtime.resource_root / "schemas", tmp_path / "schemas")
+    (tmp_path / "schemas/gdc.schema.json").write_text(
+        json.dumps({"type": "object", "required": ["Injected schema requirement"]}),
+        encoding="utf-8",
+    )
+    injected = replace(runtime, resource_root=tmp_path)
+    ids, metadata, _ = _registry()
+    report = validate_candidate(
+        _real_candidate(),
+        framework=injected,
+        all_doc_ids=ids,
+        all_doc_metadata=metadata,
+    )
+    assert report.outcome.value == "fail"
+    assert any(
+        "Injected schema requirement" in item.message for item in report.findings
+    )
+    errors, _, blocking, _ = lint_file(
+        str(REPOSITORY_ROOT / "governance/GDC-000-governance-policy.md"),
+        injected.validation_rules,
+        injected.governance.severity_levels,
+        injected.blocking_severities,
+        ids,
+        metadata,
+        "json",
+        framework=injected,
+    )
+    assert blocking
+    assert any("Injected schema requirement" in message for _, message in errors)
+
+
+def test_candidate_in_wrong_declared_root_cannot_promote():
+    candidate = build_artifact_candidate(
+        parse_source_document(
+            SourceDocument(
+                "systems/GDC-000-governance-policy.md",
+                _real_candidate().parsed.source.content,
+            )
+        )
+    )
+    ids, metadata, _ = _registry()
+    report = validate_candidate(candidate, all_doc_ids=ids, all_doc_metadata=metadata)
+    assert report.outcome.value == "fail"
+    assert any(item.rule_id == "compliance_macro_directory" for item in report.findings)
+
+
 def test_report_is_deterministic_for_same_candidate_and_context():
     ids, metadata, _ = _registry()
     candidate = _real_candidate()
@@ -233,7 +393,7 @@ def test_validate_candidate_reports_missing_validator(monkeypatch):
 
     ids, metadata, _ = _registry()
     candidate = _real_candidate()
-    monkeypatch.setattr(module, "get_validator", lambda _doc_type: None)
+    monkeypatch.setattr(module, "get_validator", lambda _doc_type, **_kwargs: None)
     report = module.validate_candidate(
         candidate,
         all_doc_ids=ids,
@@ -276,7 +436,9 @@ def test_validate_candidate_surfaces_validator_age_and_relationship_findings(
         def validate(self):
             return []
 
-    monkeypatch.setattr(module, "get_validator", lambda _doc_type: FakeValidator)
+    monkeypatch.setattr(
+        module, "get_validator", lambda _doc_type, **_kwargs: FakeValidator
+    )
     monkeypatch.setattr(module, "load_json_schema_file", lambda _path: {})
     monkeypatch.setattr(
         module,

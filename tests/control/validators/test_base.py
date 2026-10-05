@@ -7,6 +7,19 @@ def _mock_rules():
     return {"severity_levels": {r.value: "ERROR" for r in SeverityRule}}
 
 
+def test_git_snapshot_on_another_drive_keeps_absolute_diagnostic_path(monkeypatch):
+    import os
+
+    def different_drive(*args):
+        raise ValueError("path is on another drive")
+
+    monkeypatch.setattr(os.path, "relpath", different_drive)
+    validator = make_validator(file_path="governance/GDC-000.md")
+    assert validator.rel_path == os.path.abspath("governance/GDC-000.md").replace(
+        "\\", "/"
+    )
+
+
 def test_base_validator_lint_disable():
     content = "<!-- lint_disable: missing_metadata, prohibited_words -->\nSome content"
     validator = make_validator(

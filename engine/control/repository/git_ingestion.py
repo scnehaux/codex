@@ -403,6 +403,7 @@ class GitRepositoryReader:
             candidate = build_artifact_candidate(
                 parse_source_document(source),
                 namespace=self.context.namespace,
+                framework=runtime,
             )
             entries.append(GitIngestedCandidate(provenance, candidate))
         return GitCandidateBatch(self.context, tuple(entries))

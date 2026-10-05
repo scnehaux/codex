@@ -61,6 +61,8 @@ jobs:
         run: ruff format --diff engine tests generators scripts conftest.py
       - name: Validate document formatting
         run: make lint-docs-format
+      - name: Audit governed repository documents
+        run: make lint
       - name: Verify generated projections
         id: generated_projections
         run: make verify-generated

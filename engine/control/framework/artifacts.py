@@ -110,8 +110,6 @@ def compile_artifact_runtime(repo_root: str | Path) -> ArtifactRuntimeView:
         raise FrameworkContractError("artifact-runtime-layout-root")
     if len(layout.values()) != len(set(layout.values())):
         raise FrameworkContractError("artifact-runtime-layout-duplicate")
-    if layout.get("TDD") != "designs":
-        raise FrameworkContractError("artifact-runtime-tdd-topology")
 
     lifecycle_raw = _plain_family(contract, "lifecycle").get("artifact_lifecycle")
     if not hasattr(lifecycle_raw, "items") or set(lifecycle_raw) != set(artifact_types):
@@ -224,16 +222,22 @@ def artifact_runtime() -> ArtifactRuntimeView:
     return executable_framework().artifacts
 
 
-def artifact_type_from_id(doc_id: object) -> str | None:
+def artifact_type_from_id(
+    doc_id: object, *, runtime: ArtifactRuntimeView | None = None
+) -> str | None:
     if not isinstance(doc_id, str):
         return None
     prefix = doc_id.strip().split("-", 1)[0].upper()
-    return prefix if prefix in artifact_runtime().artifact_types else None
+    view = runtime if runtime is not None else artifact_runtime()
+    return prefix if prefix in view.artifact_types else None
 
 
-def validator_registry() -> Mapping[str, type]:
+def validator_registry(
+    runtime: ArtifactRuntimeView | None = None,
+) -> Mapping[str, type]:
     registry: dict[str, type] = {}
-    for artifact_type, binding in artifact_runtime().validator_bindings.items():
+    view = runtime if runtime is not None else artifact_runtime()
+    for artifact_type, binding in view.validator_bindings.items():
         try:
             module = importlib.import_module(binding.module)
             validator = getattr(module, binding.class_name)

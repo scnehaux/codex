@@ -3,7 +3,7 @@ doc_meta:
   id: GDC-001
   title: Architecture Fitness Functions & Compliance Engine
   owner: Architecture Authority
-  version: 0.1.16
+  version: 0.1.17
   status: draft
   classification: public
   governed_by: [GDC-000]
@@ -17,7 +17,7 @@ doc_meta:
 
 ### 1.1 The Core Mandate: The Master Fitness Function
 
-The **Master Fitness Function** is the central automated compliance engine designed to operationalize all five ecosystem goals established in the [Scnehaux Architectural Constitution](./GDC-0governance-policy.md#11-the-ecosystem-goals).
+The **Master Fitness Function** is the central automated compliance engine designed to operationalize all five ecosystem goals established in the [Scnehaux Architectural Constitution](./GDC-000-governance-policy.md#11-the-ecosystem-goals).
 
 Rather than relying on manual, bottleneck-prone reviews, we enforce these goals through the philosophy of **Separation of Concerns (SoC) Artifact Domains**. We mandate that every architectural perimeter must be fully automatable. To achieve this, we centralize critical boundaries, taxonomies, and lineages into the document's YAML Frontmatter (`doc_meta`) and structural Abstract Syntax Tree (AST).
 
@@ -29,8 +29,8 @@ To fulfill the Constitution (GDC-000), we divide deterministic validation into f
 
 1. **Topology & Identity Domain (Graph & Lineage)**
    Focuses on the identity of the artifact and how it connects to the ecosystem (C4 DAG). This ensures the architecture graph remains unbroken and non-overlapping.
-   - **Ontology & Identity**: Enforces unique architectural IDs, preventing duplicates and floating nodes. _[Non-Leakage Policy](./GDC-0governance-policy.md#21-the-boundary-constraints-non-leakage-policy)_
-   - **Traceability & Lineage**: Automates detection of circular references, missing parent attachments, and broken lineages. _[Contractual Lineage](./GDC-0governance-policy.md#23-contractual-lineage-the-c4-dag)_
+   - **Ontology & Identity**: Enforces unique architectural IDs, preventing duplicates and floating nodes. _[Non-Leakage Policy](./GDC-000-governance-policy.md#21-the-boundary-constraints-non-leakage-policy)_
+   - **Traceability & Lineage**: Automates detection of circular references, missing parent attachments, and broken lineages. _[Contractual Lineage](./GDC-000-governance-policy.md#24-contractual-lineage-the-c4-dag)_
 
 2. **Structural Compliance Domain (Shape & Completeness)**
    Focuses on the physical shape and required completeness of the artifact, regardless of its subjective text content.
@@ -39,14 +39,14 @@ To fulfill the Constitution (GDC-000), we divide deterministic validation into f
 
 3. **Semantic & Quality Domain (Meaning & Language)**
    Focuses on the editorial quality and semantic clarity of the architectural content.
-   - **NFR Taxonomy Enforcement**: Enforces that non-functional requirements map strictly to AWS Well-Architected Framework pillars. _[NFR Taxonomy](./GDC-0governance-policy.md#24-non-functional-requirements-nfr-taxonomy)_
-   - **Clarity & Objectivity**: Eradicates subjective terminology (e.g., "unquantified fast") and enforces clear, unambiguous claims. _[The Quality Framework](./GDC-0governance-policy.md#27-the-quality-framework)_
+   - **NFR Taxonomy Enforcement**: Enforces that non-functional requirements map strictly to AWS Well-Architected Framework pillars. _[NFR Taxonomy](./GDC-000-governance-policy.md#25-non-functional-requirements-nfr-taxonomy)_
+   - **Clarity & Objectivity**: Eradicates subjective terminology (e.g., "unquantified fast") and enforces clear, unambiguous claims. _[The Quality Framework](./GDC-000-governance-policy.md#28-the-quality-framework)_
 
 4. **Lifecycle & Environment Domain (Time, Space, & State)**
    Focuses on the artifact's status in time, its physical location, and its CI/CD lifecycle state.
-   - **Temporal Governance**: Uses the system clock against dates to expire exception waivers and enforce review cycles. _[Waivers](./GDC-0governance-policy.md#210-architecture-exceptions-waivers)_
+   - **Temporal Governance**: Uses the system clock against dates to expire exception waivers and enforce review cycles. _[Waivers](./GDC-000-governance-policy.md#211-architecture-exceptions-waivers)_
    - **Spatial Governance**: Enforces correct file naming and repository placement.
-   - **Immutability Lock**: Requires explicit semantic version bumps for any modifications. _[Artifact Lifecycle & Versioning](./GDC-0governance-policy.md#25-artifact-lifecycle--versioning)_
+   - **Immutability Lock**: Requires explicit semantic version bumps for any modifications. _[Artifact Lifecycle & Versioning](./GDC-000-governance-policy.md#26-artifact-lifecycle--versioning)_
 
 5. **Architecture Constraints Domain (Hard Technical Limits)**
    Focuses on enforcing absolute enterprise technical decisions and security boundaries.
@@ -55,7 +55,7 @@ To fulfill the Constitution (GDC-000), we divide deterministic validation into f
 
 ### 1.3 The Fractal Implementation Strategy
 
-The deterministic control plane does not hardcode domains into a monolithic interface. It implements the [**Fractal Triad**](./GDC-0governance-policy.md#22-the-fractal-boundary-physical-vs-logical-decentralization) concept defined in the Constitution. `engine/control/linting` owns the canonical document-validation facade; validators, parsing, governance rules, and reporting remain deterministic control-plane collaborators.
+The deterministic control plane does not hardcode domains into a monolithic interface. It implements the [**Fractal Triad**](./GDC-000-governance-policy.md#23-the-fractal-boundary-physical-vs-logical-decentralization) concept defined in the Constitution. `engine/control/linting` owns the canonical document-validation facade; validators, parsing, governance rules, and reporting remain deterministic control-plane collaborators.
 
 At runtime, an invocation surface such as `engine/interfaces/cli.py` composes that facade with the foundational global policy (`schemas/base.schema.json` and `engine/control/validators/global_rules.py`). The control plane then combines the global policy with the document-specific triad requested by the artifact's `governed_by` metadata.
 
@@ -120,6 +120,7 @@ codex/
 │   │   │   │   ├── classification.py
 │   │   │   │   ├── committed_mutation.py
 │   │   │   │   ├── controls.py
+│   │   │   │   ├── corpus.py
 │   │   │   │   ├── dependency_update.py
 │   │   │   │   ├── genesis.py
 │   │   │   │   ├── genesis_candidate.py
@@ -249,6 +250,7 @@ codex/
 │       │   │   ├── test_classification.py
 │       │   │   ├── test_committed_mutation.py
 │       │   │   ├── test_controls.py
+│       │   │   ├── test_corpus.py
 │       │   │   ├── test_dependency_update.py
 │       │   │   ├── test_genesis.py
 │       │   │   ├── test_genesis_candidate.py
@@ -383,7 +385,7 @@ The engine evaluates JSON Schema configuration files mapped by Document Type.
 >
 > All JSON Schema files intentionally reside within the `schemas/` directory to keep them tightly coupled with the architecture documentation. This colocation makes it straightforward for contributors to edit rules side-by-side with their governing policies.
 
-**Naming Convention Rule**: To achieve dynamic Deep-Merging of the [**Fractal Triad**](./GDC-0governance-policy.md#222-logical-decentralization-the-fractal-triad), the engine automatically identifies the necessary document-specific schema by extracting the Document Type prefix from the artifact's `doc_meta.id` (e.g., `ADR-IAM-000` -> `ADR`). It then resolves the specific JSON schema file by mapping it to the strict naming convention: `schemas/[doc_type].schema.json` (where `[doc_type]` is the exact acronym in lowercase, e.g., `schemas/adr.schema.json`). If a specific schema is required but missing, the engine MUST trigger a Hard Block.
+**Naming Convention Rule**: To achieve dynamic Deep-Merging of the [**Fractal Triad**](./GDC-000-governance-policy.md#232-logical-decentralization-the-fractal-triad), the engine automatically identifies the necessary document-specific schema by extracting the Document Type prefix from the artifact's `doc_meta.id` (e.g., `ADR-IAM-000` -> `ADR`). It then resolves the specific JSON schema file by mapping it to the strict naming convention: `schemas/[doc_type].schema.json` (where `[doc_type]` is the exact acronym in lowercase, e.g., `schemas/adr.schema.json`). If a specific schema is required but missing, the engine MUST trigger a Hard Block.
 
 | Document Type                | Ruleset File                     | Scope / Responsibilities                                                                                                                                                                                                                                                                                                                                                                                             |
 | :--------------------------- | :------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -520,7 +522,7 @@ The generator is capable of mapping complex JSON Schema constructs:
 
 The Validator Federation is composed by the deterministic linter facade in `engine/control/linting/`. JSON schemas provide static declarative constraints, while specialized validators under `engine/control/validators/` provide deterministic document-specific behavior. `engine/interfaces/cli.py` is an invocation adapter: it may compose the facade, but it does not own validator semantics.
 
-**Naming Convention Rule**: To enforce the [**Fractal Triad**](./GDC-0governance-policy.md#222-logical-decentralization-the-fractal-triad), the `engine/control/validators/registry.py` automatically maps the artifact to its validator by extracting the Document Type prefix from the artifact's `doc_meta.id` (e.g., `ADR-IAM-000` -> `ADR`). It then attempts to load the validator class using the strict naming convention: `[DocType]Validator` (e.g., `ADRValidator`), which must reside in the python file `engine/control/validators/domains/[doc_type]_validator.py` (lowercase, e.g., `engine/control/validators/domains/adr_validator.py`). If the registry fails to find a validator for an expected Document Type, the engine MUST trigger a Hard Block.
+**Naming Convention Rule**: To enforce the [**Fractal Triad**](./GDC-000-governance-policy.md#232-logical-decentralization-the-fractal-triad), the `engine/control/validators/registry.py` automatically maps the artifact to its validator by extracting the Document Type prefix from the artifact's `doc_meta.id` (e.g., `ADR-IAM-000` -> `ADR`). It then attempts to load the validator class using the strict naming convention: `[DocType]Validator` (e.g., `ADRValidator`), which must reside in the python file `engine/control/validators/domains/[doc_type]_validator.py` (lowercase, e.g., `engine/control/validators/domains/adr_validator.py`). If the registry fails to find a validator for an expected Document Type, the engine MUST trigger a Hard Block.
 
 **Execution Isolation (`validate_type_specific`)**: To guarantee clean Separation of Concerns (SoC), global rules (e.g., checking mandatory sections, banned vocabulary) are handled entirely by the parent `BaseValidator`. The specialized child classes (like `ADRValidator` or `SADValidator`) are strictly prohibited from implementing global logic. They MUST isolate their custom domain-logic entirely within the overridden `validate_type_specific()` function. This function serves as the exclusive sandbox for executing document-specific rules.
 

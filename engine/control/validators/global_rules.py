@@ -1,4 +1,5 @@
 import re
+import os
 import logging
 from .base import BaseValidator
 from engine.control.governance.classification import repository_classification_findings
@@ -61,13 +62,13 @@ def _validate_compliance_placement(v: BaseValidator) -> None:
     and that the filename starts with the metadata ID.
     """
     doc_type = v.doc_type_name
-    file_path = v.file_path.replace("\\", "/")
+    file_path = os.path.abspath(v.file_path).replace("\\", "/")
     filename = v.filename
     doc_id = (v.doc_meta or {}).get("id", "")
 
     # 1. Macro-Directory check
     macro_dir_map = v.global_rules.get("structure_rules", {}).get(
-        "standard_directory", {}
+        "artifact_directories", {}
     )
     expected_dir = macro_dir_map.get(doc_type)
     if expected_dir:

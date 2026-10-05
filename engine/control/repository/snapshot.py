@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from hashlib import sha256
 import json
+from pathlib import Path
 from typing import Any
 
 from engine.control.framework.executable import (
@@ -104,6 +105,7 @@ def build_validated_repository_snapshot(
     batch: GitCandidateBatch,
     *,
     framework: ExecutableFramework | None = None,
+    repo_root: str | Path | None = None,
 ) -> ValidatedRepositorySnapshot:
     if not isinstance(batch, GitCandidateBatch):
         raise TypeError("batch must be GitCandidateBatch")
@@ -129,17 +131,24 @@ def build_validated_repository_snapshot(
             all_doc_ids=doc_ids,
             all_doc_metadata=metadata,
             framework=runtime,
+            repo_root=repo_root,
         )
         for candidate in candidates
     )
     if any(report.outcome.value != "pass" for report in reports):
+        rejected = "; ".join(
+            f"{candidate.parsed.source.source_path}: {finding.rule_id}: {finding.message}"
+            for candidate, report in zip(candidates, reports, strict=True)
+            for finding in report.findings
+            if finding.blocking
+        )
         raise ValueError(
-            "validated snapshot requires all candidates to pass validation"
+            "validated snapshot requires all candidates to pass validation: " + rejected
         )
     if any(candidate.artifact is None for candidate in candidates):
         raise ValueError("validated snapshot requires promotable artifacts")
 
-    repository = promote_candidates(candidates, reports)
+    repository = promote_candidates(candidates, reports, framework=runtime)
     keys = set(repository.by_key)
     unresolved = sorted(
         (

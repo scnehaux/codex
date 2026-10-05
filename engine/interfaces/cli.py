@@ -349,6 +349,7 @@ def main() -> None:
             all_doc_ids,
             all_doc_metadata,
             args.format,
+            framework=framework,
         )
         # @flow: LintFileSub --> LoopFile
 

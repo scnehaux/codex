@@ -13,6 +13,7 @@ from engine.control.governance.relationships import (
     relationship_fields_for_source,
 )
 from engine.control.governance.temporal import evaluation_date
+from engine.control.framework.executable import ExecutableFramework
 from engine.control.governance.lifecycle import (
     is_baseline_bearing,
     lifecycle_age_policy,
@@ -29,9 +30,11 @@ def validate_lifecycle_age(
     doc_type: str,
     doc_status: str,
     violation_severity: str,
+    *,
+    framework: ExecutableFramework | None = None,
 ) -> list[tuple[str, str]]:
     """Validate only artifact-aware lifecycle age policies declared in the registry."""
-    policy = lifecycle_age_policy(doc_type, doc_status)
+    policy = lifecycle_age_policy(doc_type, doc_status, framework=framework)
     if policy is None:
         return []
 
@@ -125,7 +128,7 @@ def _validate_approved_version_stability(v: BaseValidator) -> None:
         return
 
     status = str(v.doc_meta.get("status", "")).strip().lower()
-    if not is_baseline_bearing(v.doc_type_name, status):
+    if not is_baseline_bearing(v.doc_type_name, status, framework=v.framework):
         return
 
     major = raw_version.split(".", 1)[0]
@@ -146,7 +149,7 @@ def _validate_cross_references(v: BaseValidator) -> None:
     if not v.doc_meta:
         return
 
-    for field in relationship_fields_for_source(v.doc_type_name):
+    for field in relationship_fields_for_source(v.doc_type_name, framework=v.framework):
         ref_ids = v.doc_meta.get(field)
         if not ref_ids:
             continue

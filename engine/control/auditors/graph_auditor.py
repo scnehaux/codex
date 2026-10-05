@@ -10,6 +10,10 @@ governing itself) are intentional and are NOT treated as cycles.
 """
 
 from engine.control.config.severity import SeverityRule
+from engine.control.framework.executable import (
+    ExecutableFramework,
+    executable_framework,
+)
 from engine.control.governance.relationships import (
     artifact_type_from_id,
     dag_relation_specs_for_source,
@@ -17,21 +21,22 @@ from engine.control.governance.relationships import (
     relationship_contract_findings,
 )
 
-# Hardcoded list of metadata fields that represent an upward dependency in the DAG
 
-
-def build_upward_graph(all_doc_metadata):
+def build_upward_graph(
+    all_doc_metadata, *, framework: ExecutableFramework | None = None
+):
     """Build the DAG adjacency map from registry-declared DAG relations only."""
     known = set(all_doc_metadata.keys())
+    runtime = framework if framework is not None else executable_framework()
     graph = {}
     for doc_id, meta in all_doc_metadata.items():
         if not isinstance(meta, dict):
             graph[doc_id] = set()
             continue
 
-        source_type = artifact_type_from_id(doc_id)
+        source_type = artifact_type_from_id(doc_id, runtime=runtime.artifacts)
         targets = set()
-        for spec in dag_relation_specs_for_source(source_type):
+        for spec in dag_relation_specs_for_source(source_type, framework=runtime):
             for ref in normalize_relation_values(meta.get(spec.metadata_field)):
                 if isinstance(ref, str) and ref in known and ref != doc_id:
                     targets.add(ref)
@@ -39,7 +44,9 @@ def build_upward_graph(all_doc_metadata):
     return graph
 
 
-def audit_traceability_graph(all_doc_metadata):
+def audit_traceability_graph(
+    all_doc_metadata, *, framework: ExecutableFramework | None = None
+):
     """
     Return a list of (category, message) tuples for global traceability defects.
 
@@ -47,7 +54,7 @@ def audit_traceability_graph(all_doc_metadata):
     graph and emits them as 'traceability_violation' (a blocking ERROR).
     """
     errors = []
-    graph = build_upward_graph(all_doc_metadata)
+    graph = build_upward_graph(all_doc_metadata, framework=framework)
 
     WHITE, GRAY, BLACK = 0, 1, 2
     color = {node: WHITE for node in graph}

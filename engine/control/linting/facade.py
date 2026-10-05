@@ -6,6 +6,7 @@ import sys
 from typing import Any, cast
 
 from engine.control.config.constants import FRAMEWORK_ROOT
+from engine.control.framework.executable import ExecutableFramework
 from engine.control.config.loader import load_json_schema_file
 from engine.control.config.severity import SeverityRule
 from engine.control.governance.lifecycle import RELAXED, validation_profile
@@ -51,6 +52,8 @@ def lint_file(
     all_doc_ids: set,
     all_doc_metadata: dict,
     output_format: str = "text",
+    *,
+    framework: ExecutableFramework | None = None,
 ) -> tuple[list[tuple[str, str]], bool, bool, dict]:
     """
     Orchestrate validation for a single markdown file.
@@ -119,7 +122,7 @@ def lint_file(
     # Lifecycle state, validation strictness, and admission authority are separate concerns.
     doc_meta = cast(dict, doc_meta)
     meta_id = doc_meta.get("id")
-    doc_type = detect_doc_type(meta_id, global_rules)
+    doc_type = detect_doc_type(meta_id, global_rules, framework=framework)
 
     if not doc_type:
         file_errors, is_clean, is_blocking = print_errors(
@@ -141,9 +144,10 @@ def lint_file(
         doc_type,
         doc_status,
         severity_levels[SeverityRule.LIFECYCLE_AGE_VIOLATION],
+        framework=framework,
     )
 
-    profile = validation_profile(doc_type, doc_status)
+    profile = validation_profile(doc_type, doc_status, framework=framework)
     if profile == RELAXED:
         if lifecycle_age_errors:
             file_errors, is_clean, is_blocking = print_errors(
@@ -174,7 +178,7 @@ def lint_file(
         return file_errors, is_clean, is_blocking, {"disabled": {}, "rejected": set()}
 
     # Step 5: Retrieve the specific domain validator for this document type
-    validator_cls = get_validator(doc_type)
+    validator_cls = get_validator(doc_type, framework=framework)
     # @flow-lint: IsDocType -->|Yes| GetValidator["2.8. <b>registry.py - get_validator()</b>: Get specific domain validator"]
     # @flow-lint: GetValidator --> IsVal{"2.9. Validator exists?"}
     if not validator_cls:
@@ -195,7 +199,10 @@ def lint_file(
 
     # Step 6: Load the specific JSON schema for this document type
     domain_schema_path = os.path.join(
-        FRAMEWORK_ROOT, "schemas", f"{doc_type.lower()}.schema.json"
+        framework.resource_root if framework is not None else FRAMEWORK_ROOT,
+        framework.schema_bindings[doc_type]
+        if framework is not None
+        else f"schemas/{doc_type.lower()}.schema.json",
     )
     # @flow-lint: IsVal -->|Yes| LoadSchemaType["2.10. <b>loader.py - load_json_schema_file()</b>: Load specific domainJSON schema"]
     # @flow-lint: LoadSchemaType --> IsSchema{"2.11. Schema exists?"}
@@ -219,6 +226,7 @@ def lint_file(
         all_doc_metadata,
         severity_levels,
         blocking_severities,
+        **({"framework": framework} if framework is not None else {}),
     )
     errors = lifecycle_age_errors + validator.validate()
     # @flow-lint: Execute --> Return[2.13. Return list of errors]
