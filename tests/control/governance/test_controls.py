@@ -123,6 +123,8 @@ def _control_record(**overrides):
         "test_evidence": ("tests/test_example.py",),
         "evidence_status": "verified",
         "evidence_expectation": "executable rule and control-specific test evidence",
+        "release_class": "root-of-trust",
+        "release_rationale": "Protects canonical governance admission.",
     }
     values.update(overrides)
     return ControlRecord(**values)
@@ -161,6 +163,26 @@ def test_registry_structure_errors_reject_invalid_enums():
     assert any("invalid enforcement_mode" in error for error in errors)
     assert any("invalid evidence_status" in error for error in errors)
     assert any("invalid severity" in error for error in errors)
+
+
+@pytest.mark.parametrize(
+    "release_class", ["", "CRITICAL", "unknown", "root-of-trust,consumer-artifact"]
+)
+def test_release_classification_is_explicit_and_fail_closed(release_class):
+    errors = registry_structure_errors((_control_record(release_class=release_class),))
+    assert any("invalid release_class" in error for error in errors)
+
+
+def test_release_classification_requires_reviewable_rationale():
+    errors = registry_structure_errors((_control_record(release_rationale=" "),))
+    assert any("missing release_rationale" in error for error in errors)
+
+
+def test_classification_is_not_inferred_from_severity():
+    content = _control_record(release_class="consumer-artifact", severity="CRITICAL")
+    root = _control_record(release_class="root-of-trust", severity="INFO")
+    assert registry_structure_errors((content,)) == ()
+    assert registry_structure_errors((root,)) == ()
 
 
 def test_registry_structure_errors_require_scope_and_evidence_expectation():
