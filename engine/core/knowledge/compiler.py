@@ -109,24 +109,3 @@ def compile_repository_graph(
         additional_nodes=additional_nodes,
         additional_edges=additional_edges,
     )
-
-
-def compile_knowledge_graph(
-    artifacts: Iterable[ArtifactModel],
-    *,
-    additional_nodes: Iterable[KnowledgeNode] = (),
-    additional_edges: Iterable[KnowledgeEdge] = (),
-) -> KnowledgeGraph:
-    """Compatibility entry point for already-canonical ArtifactModel sequences."""
-    return _compile_artifacts(
-        artifacts,
-        additional_nodes=additional_nodes,
-        additional_edges=additional_edges,
-    )
-
-
-def compile_architecture_graph(
-    artifacts: Iterable[ArtifactModel],
-) -> KnowledgeGraph:
-    """Compatibility entry point for artifact-only callers."""
-    return compile_knowledge_graph(artifacts)

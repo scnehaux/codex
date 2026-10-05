@@ -10,7 +10,10 @@ from engine.control.framework.artifacts import (
     AgePolicy,
     LifecyclePolicy,
 )
-from engine.control.framework.executable import executable_framework
+from engine.control.framework.executable import (
+    ExecutableFramework,
+    executable_framework,
+)
 
 
 __all__ = [
@@ -30,29 +33,38 @@ __all__ = [
 ]
 
 
-def lifecycle_policy(doc_type: str, status: str) -> LifecyclePolicy | None:
-    return (
-        executable_framework()
-        .artifacts.lifecycle.get(str(doc_type).upper(), {})
-        .get(str(status).strip().lower())
+def lifecycle_policy(
+    doc_type: str, status: str, *, framework: ExecutableFramework | None = None
+) -> LifecyclePolicy | None:
+    runtime = framework if framework is not None else executable_framework()
+    return runtime.artifacts.lifecycle.get(str(doc_type).upper(), {}).get(
+        str(status).strip().lower()
     )
 
 
-def semantic_lifecycle(doc_type: str, status: str) -> str | None:
-    policy = lifecycle_policy(doc_type, status)
+def semantic_lifecycle(
+    doc_type: str, status: str, *, framework: ExecutableFramework | None = None
+) -> str | None:
+    policy = lifecycle_policy(doc_type, status, framework=framework)
     return policy.semantic_class if policy else None
 
 
-def validation_profile(doc_type: str, status: str) -> str:
-    policy = lifecycle_policy(doc_type, status)
+def validation_profile(
+    doc_type: str, status: str, *, framework: ExecutableFramework | None = None
+) -> str:
+    policy = lifecycle_policy(doc_type, status, framework=framework)
     return policy.validation_profile if policy else FULL
 
 
-def lifecycle_age_policy(doc_type: str, status: str) -> AgePolicy | None:
-    policy = lifecycle_policy(doc_type, status)
+def lifecycle_age_policy(
+    doc_type: str, status: str, *, framework: ExecutableFramework | None = None
+) -> AgePolicy | None:
+    policy = lifecycle_policy(doc_type, status, framework=framework)
     return policy.age_policy if policy else None
 
 
-def is_baseline_bearing(doc_type: str, status: str) -> bool:
-    semantic = semantic_lifecycle(doc_type, status)
+def is_baseline_bearing(
+    doc_type: str, status: str, *, framework: ExecutableFramework | None = None
+) -> bool:
+    semantic = semantic_lifecycle(doc_type, status, framework=framework)
     return semantic in {BASELINE_BEARING, RETIRED}

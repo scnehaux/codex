@@ -5,11 +5,15 @@ from referencing import Registry, Resource
 from engine.control.config.constants import BASE_SCHEMA_PATH
 from engine.control.config.loader import load_json_schema_file
 from .schema_extensions import ExtendedValidator
+from engine.control.framework.executable import (
+    ExecutableFramework,
+    executable_framework,
+)
 
 _base_schema_cache = None
 
 
-def _get_base_schema():
+def _get_base_schema(schema_path=BASE_SCHEMA_PATH):
     """
     Load and cache the global base JSON schema for document validation.
     Prevents redundant disk reads by storing the schema in memory upon first invocation.
@@ -28,6 +32,8 @@ def _get_base_schema():
     </pre>
     """
     global _base_schema_cache
+    if os.path.abspath(schema_path) != os.path.abspath(BASE_SCHEMA_PATH):
+        return load_json_schema_file(schema_path)
     if _base_schema_cache is None:
         _base_schema_cache = load_json_schema_file(BASE_SCHEMA_PATH)
     return _base_schema_cache
@@ -85,7 +91,10 @@ class BaseValidator:
         all_doc_metadata: dict,
         severity_levels: dict,
         blocking_severities: tuple,
+        *,
+        framework: ExecutableFramework | None = None,
     ):
+        self.framework = framework if framework is not None else executable_framework()
         self.file_path = file_path
         self.content = content
         self.doc_meta = doc_meta
@@ -97,8 +106,11 @@ class BaseValidator:
         self.blocking_severities = blocking_severities
         self.errors: list[tuple[str, str]] = []
         self.finding_records: list[tuple[str, str, str]] = []
-        # Cross-drive paths are already blocked by crawler.py, so relpath is guaranteed to succeed.
-        self.rel_path = os.path.relpath(file_path, ".").replace("\\", "/")
+        # Git snapshots can be validated from a checkout on another Windows drive.
+        try:
+            self.rel_path = os.path.relpath(file_path, ".").replace("\\", "/")
+        except ValueError:
+            self.rel_path = os.path.abspath(file_path).replace("\\", "/")
         self.filename = os.path.basename(file_path)
 
         # --- PARSE INLINE LINT DIRECTIVES ---
@@ -359,7 +371,9 @@ class BaseValidator:
 
         # @flow-validator: ExtractSections --> BuildDocInstance["Build validation instance dict"]
         # @flow-validator: BuildDocInstance --> ExecJsonSchema["<b>ExtendedValidator.iter_errors()</b>"]
-        base_schema = _get_base_schema()
+        base_schema = _get_base_schema(
+            self.framework.resource_root / "schemas/base.schema.json"
+        )
         base_id = base_schema.get(
             "$id",
             "https://scnehaux.com/codex/gov/guidelines/schemas/base.schema.json",

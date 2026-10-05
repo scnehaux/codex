@@ -3,7 +3,7 @@ doc_meta:
   id: GDC-005
   title: Governance Document Contract (GDC) Guideline
   owner: Architecture Authority
-  version: 0.1.0
+  version: 0.1.1
   status: draft
   classification: public
   governed_by: [GDC-000]
@@ -15,7 +15,7 @@ doc_meta:
 
 ## 1. Context & Scope
 
-In accordance with the [Circular Governance (Metaprogramming)](./GDC-0governance-policy.md#12-core-philosophy-the-existential-maxims), the Governance framework must subject itself to the exact same rigorous validation criteria it imposes on downstream architectures.
+In accordance with the [Circular Governance (Metaprogramming)](./GDC-000-governance-policy.md#29-the-metaprogramming-principle-circular-governance), the Governance framework must subject itself to the exact same rigorous validation criteria it imposes on downstream architectures.
 
 As the foundational policies of the ecosystem, this artifact defines the deterministic boundaries governing **Governance Document Contracts (GDC)** themselves. This includes absolute compliance with the automation scope and criteria enforced by the Master Fitness Function (see [The Automation Scope & Domain Boundaries](GDC-001-fitness-functions.md#12-the-automation-scope--domain-boundaries)).
 
@@ -63,7 +63,7 @@ Framework resource boundary: `governance/`, `schemas/`, and `templates/` are sib
 ```text
 codex/
 ├── governance/
-│   ├── GDC-0governance-policy.md
+│   ├── GDC-000-governance-policy.md
 │   ├── GDC-001-fitness-functions.md
 │   ├── framework/
 │   └── github/

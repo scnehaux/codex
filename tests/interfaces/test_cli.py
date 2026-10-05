@@ -472,7 +472,7 @@ def test_lint_file_no_validator(tmp_path, monkeypatch):
 
     fm = "doc_meta:\n  id: SAD-TEST-001"
     fpath = _write_md(tmp_path, "SAD-TEST-001.sad.md", fm)
-    monkeypatch.setattr(linter, "get_validator", lambda x: None)
+    monkeypatch.setattr(linter, "get_validator", lambda x, **_kwargs: None)
     rules = _global_rules()
     errs, p, b, di = linter.lint_file(
         fpath,

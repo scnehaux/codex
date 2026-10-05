@@ -226,6 +226,14 @@ This index documents the internal functions and classes of the Fitness Function 
 | **registry_structure_errors**    | _(No docstring provided)_ |
 | **coverage_drift**               | _(No docstring provided)_ |
 
+### `engine/control/governance/corpus.py`
+
+| Function                   | Description                                                                   |
+| :------------------------- | :---------------------------------------------------------------------------- |
+| **\_git**                  | _(No docstring provided)_                                                     |
+| **\_clean_revision**       | _(No docstring provided)_                                                     |
+| **assert_governed_corpus** | Qualify the committed corpus with the framework from the same clean revision. |
+
 ### `engine/control/governance/dependency_update.py`
 
 | Function                               | Description               |

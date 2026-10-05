@@ -343,16 +343,18 @@ No architecture admission opens merely because the engine tests are green
 
 ## 6.1 Phase 13 Ledger
 
-| Slice | Capability                           | Status  | Exit Evidence                                                                        |
-| ----- | ------------------------------------ | ------- | ------------------------------------------------------------------------------------ |
-| 13.1  | Root-of-Trust Release Classification | PLANNED | Every control carries one release class; readiness reports pending root-of-trust ids |
-| 13.2  | Registry Evidence Reconciliation     | ACTIVE  | No pending control targets a retired phase; phase targets are validated              |
-| 13.3  | Runtime Authority Closure            | PLANNED | Qualification validates the GDC corpus through `ValidatedRepositorySnapshot`         |
-| 13.4  | Release Metadata Binding             | PLANNED | Deterministic release manifest and fail-closed release verifier                      |
-| 13.5  | Stable GDC Baseline                  | PLANNED | Twelve required GDCs `approved` at `>=1.0.0` with explicit approval records          |
-| 13.6  | Governance 1.0 Release               | PLANNED | Release manifest, Authority evidence and tag bind one qualified commit               |
+| Slice | Capability                           | Status  | Exit Evidence                                                                                                                           |
+| ----- | ------------------------------------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 13.1  | Root-of-Trust Release Classification | PLANNED | Every control carries one release class; readiness reports pending root-of-trust ids                                                    |
+| 13.2  | Registry Evidence Reconciliation     | ACTIVE  | No pending control targets a retired phase; phase targets are validated                                                                 |
+| 13.3  | Runtime Authority Closure            | ACTIVE  | Candidate qualification validates the GDC corpus through `ValidatedRepositorySnapshot`; Authority publication and merge remain required |
+| 13.4  | Release Metadata Binding             | PLANNED | Deterministic release manifest and fail-closed release verifier                                                                         |
+| 13.5  | Stable GDC Baseline                  | PLANNED | Twelve required GDCs `approved` at `>=1.0.0` with explicit approval records                                                             |
+| 13.6  | Governance 1.0 Release               | PLANNED | Release manifest, Authority evidence and tag bind one qualified commit                                                                  |
 
-Slice 13.2 has a locally prepared follow-up to Codex PR #43: bootstrap provenance and two history/PR-path controls are mapped to immutable Genesis and owner-accepted Phase 10 evidence, with its original reference-provider limits preserved. Candidate registry counts are 82 verified / 84 pending. Four obligations remain pending: historical pre-root qualification, complete short-lived-branch evidence, automatic branch cleanup, and actual behind-main refusal. The candidate still requires Authority publication and governed merge; Slice 13.2 is not complete.
+Slice 13.2's retained-evidence reconciliation merged in Codex PR #44 after Authority check `111666125699` succeeded on the exact head; Authority PR #107 disarmed publication. Bootstrap provenance and two history/PR-path controls map to immutable Genesis and owner-accepted Phase 10 evidence, with its original reference-provider limits preserved. Registry counts are 82 verified / 84 pending. Four obligations remain pending: historical pre-root qualification, complete short-lived-branch evidence, automatic branch cleanup, and actual behind-main refusal. Slice 13.2 is not complete.
+
+Slice 13.3 is active. Its candidate closes framework injection across assembly, validation and DAG promotion, uses clean commit-bound corpus snapshots in qualification, retires public raw-artifact graph compilation, and adds repository lint to governance CI. Authority publication and governed merge are still required.
 
 REC-13-001 (root-of-trust definition), REC-13-002 (release manifest) and REC-13-003
 (approval evidence under the review bootstrap exception) in PLAN §6.3 await owner

@@ -12,9 +12,8 @@ from engine.core.knowledge import (
     ObservedRef,
     ReferenceKind,
     artifact_to_node,
-    compile_architecture_graph,
-    compile_knowledge_graph,
 )
+from engine.core.knowledge.compiler import _compile_artifacts
 from engine.core.metamodel import (
     ArchitectureNamespace,
     ArtifactIdentity,
@@ -70,7 +69,7 @@ def test_graph_supports_non_artifact_knowledge_nodes():
         knowledge_state=KnowledgeState.DECLARED,
     )
 
-    graph = compile_knowledge_graph(
+    graph = _compile_artifacts(
         [artifact],
         additional_nodes=[technology],
         additional_edges=[uses],
@@ -91,8 +90,8 @@ def test_artifact_relationships_compile_deterministically():
     sad = _artifact("SAD-001", relationships=(relationship,))
     pad = _artifact("PAD-001", "PAD")
 
-    first = compile_architecture_graph([sad, pad])
-    second = compile_architecture_graph([pad, sad])
+    first = _compile_artifacts([sad, pad])
+    second = _compile_artifacts([pad, sad])
 
     assert first == second
     assert first.edges[0].relationship_type == "realizes"
@@ -104,7 +103,7 @@ def test_graph_compiler_is_fail_closed():
         GraphCompilationError,
         match="duplicate artifact identity",
     ):
-        compile_knowledge_graph([duplicate, duplicate])
+        _compile_artifacts([duplicate, duplicate])
 
     namespace = ArchitectureNamespace("acme", "architecture")
     unresolved = ArtifactRelationship(
@@ -115,7 +114,7 @@ def test_graph_compiler_is_fail_closed():
         GraphCompilationError,
         match="unresolved",
     ):
-        compile_knowledge_graph([_artifact("SAD-001", relationships=(unresolved,))])
+        _compile_artifacts([_artifact("SAD-001", relationships=(unresolved,))])
 
     duplicate_node = KnowledgeNode(
         key="acme/architecture/SAD-001",
@@ -126,17 +125,17 @@ def test_graph_compiler_is_fail_closed():
         GraphCompilationError,
         match="duplicate knowledge node",
     ):
-        compile_knowledge_graph(
+        _compile_artifacts(
             [_artifact("SAD-001")],
             additional_nodes=[duplicate_node],
         )
 
     with pytest.raises(TypeError, match="ArtifactModel"):
-        compile_knowledge_graph(["bad"])
+        _compile_artifacts(["bad"])
     with pytest.raises(TypeError, match="KnowledgeNode"):
-        compile_knowledge_graph([], additional_nodes=["bad"])
+        _compile_artifacts([], additional_nodes=["bad"])
     with pytest.raises(TypeError, match="KnowledgeEdge"):
-        compile_knowledge_graph([], additional_edges=["bad"])
+        _compile_artifacts([], additional_edges=["bad"])
 
 
 def test_knowledge_graph_core_validation():
@@ -345,7 +344,7 @@ def test_compile_knowledge_graph_wraps_invalid_additional_edge():
         GraphCompilationError,
         match="dangling edge",
     ):
-        compile_knowledge_graph(
+        _compile_artifacts(
             [],
             additional_nodes=[source],
             additional_edges=[dangling],
@@ -365,3 +364,12 @@ def test_repository_graph_compiler_rejects_unvalidated_repository_state():
 
     with pytest.raises(TypeError, match="ValidatedRepositorySnapshot"):
         compile_repository_graph((artifact,))  # type: ignore[arg-type]
+
+
+def test_raw_artifact_graph_entrypoints_are_retired():
+    import engine.core.knowledge as public
+    import engine.core.knowledge.compiler as compiler
+
+    for name in ("compile_architecture_graph", "compile_knowledge_graph"):
+        assert not hasattr(public, name)
+        assert not hasattr(compiler, name)

@@ -13,6 +13,7 @@ if str(REPOSITORY_ROOT) not in sys.path:
 
 from engine.control.framework.equivalence import assert_framework_contract_equivalence
 from engine.control.governance.genesis import assert_genesis_integrity
+from engine.control.governance.corpus import assert_governed_corpus
 from engine.control.governance.mutation import (
     assert_version_mutation_integrity,
 )
@@ -48,6 +49,7 @@ def main(argv: list[str] | None = None) -> int:
         genesis = assert_genesis_integrity(root)
         mutation = assert_version_mutation_integrity(root)
         assert_reproducibility_policy(root)
+        corpus = assert_governed_corpus(root)
     except RuntimeError as exc:
         print(f"[FAIL] {exc}")
         return 1
@@ -64,6 +66,8 @@ def main(argv: list[str] | None = None) -> int:
     print(f"  mutation mode: {mutation.mode}")
     print("  reproducibility declarations: QUALIFIED (Phase 12.3)")
     print("  architecture admission: CLOSED")
+    print(f"  validated GDC revision: {corpus.revision}")
+    print(f"  validated repository snapshot: {corpus.snapshot_id}")
 
     if args.control_only:
         print("  full regression: skipped (--control-only)")

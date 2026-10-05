@@ -94,6 +94,7 @@ make github-policy-check
 make framework-contract-check
 make lint-code
 make lint-docs-format
+make lint
 make verify-generated
 make check-waivers
 make genesis-check
@@ -1082,7 +1083,7 @@ Invariant: the first Governance 1.0 criterion becomes machine-checkable.
 
 Invariant: no pending control targets a retired or closed phase without a recorded reason.
 
-Status: ACTIVE; this evidence reconciliation is locally prepared and still requires exact-candidate Authority publication and governed merge. The target-phase vocabulary and descriptive source-file correction merged in Codex PR #43. This candidate maps three controls to retained evidence, producing 82 `verified` / 84 `pending` without changing normative statements:
+Status: ACTIVE; the target-phase vocabulary and descriptive source-file correction merged in Codex PR #43. The retained-evidence reconciliation merged in Codex PR #44 after Authority check `111666125699` succeeded on its exact head; Authority PR #107 disarmed that publication. Three controls now map to retained evidence, producing 82 `verified` / 84 `pending` without changing normative statements:
 
 - `CTRL-GDC-000-027`: current bootstrap provenance matches the immutable Genesis manifest; the real Genesis gate and its malformed-provenance tests supply deterministic evidence, replacing the generic human-review placeholder
 - `CTRL-GDC-000-028`: owner-accepted REC-D-018 rows 2-3 and effective production rules support history protection within that historical reference-provider scope; native Git default deletion remains unobserved
@@ -1106,6 +1107,8 @@ The desired-only Authority binding remains explicitly justified in `governance/g
 ### Slice 13.3 — Runtime Authority Closure
 
 Invariant: canonical qualification validates the governed corpus through the executable framework path that Phase 11 declared authoritative.
+
+Status: ACTIVE; the implementation candidate adds commit-bound corpus qualification, threads the injected framework through assembly, validation and DAG promotion, retires raw-artifact public graph compilers, and runs `make lint` in governance CI. The layout contract alone owns the TDD root; eleven stale GDC links are corrected. Qualification requires a clean checkout so source bytes, schemas and the compiled framework belong to the reported revision. Local preflight uses focused tests and `make lint`; final qualification runs from a clean candidate checkout. Exact-candidate Authority publication and governed merge remain required before this slice is closed.
 
 - governance qualification builds a `ValidatedRepositorySnapshot` of the current GDC corpus and fails closed on any rejected candidate
 - framework-injected validation no longer falls back to module-level validator, lifecycle or relationship state

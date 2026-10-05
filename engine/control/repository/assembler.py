@@ -5,9 +5,11 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from engine.control.fs.crawler import gather_markdown_paths
-from engine.control.framework.executable import executable_framework
+from engine.control.framework.executable import (
+    ExecutableFramework,
+    executable_framework,
+)
 from engine.control.governance.relationships import (
-    ALL_RELATION_FIELDS,
     artifact_type_from_id,
     normalize_relation_values,
     relationship_specs_for_source,
@@ -67,14 +69,16 @@ class RepositoryAssembler:
         content: str = "",
         namespace: ArchitectureNamespace | None = None,
         source_reference: SourceReference | None = None,
+        framework: ExecutableFramework | None = None,
     ) -> RepositoryArtifact:
         if not isinstance(metadata, Mapping):
             raise RepositoryIngestionError(
                 f"Artifact '{source_path}' metadata must be a mapping."
             )
 
+        runtime = framework if framework is not None else executable_framework()
         document_id = _required_text(metadata, "id", source_path)
-        artifact_type = artifact_type_from_id(document_id)
+        artifact_type = artifact_type_from_id(document_id, runtime=runtime.artifacts)
         if artifact_type is None:
             raise RepositoryIdentityError(
                 f"Unknown governed artifact identity '{document_id}' at '{source_path}'."
@@ -108,7 +112,7 @@ class RepositoryAssembler:
 
         relationships: list[ArtifactRelationship] = []
         relation_fields = set()
-        for spec in relationship_specs_for_source(artifact_type):
+        for spec in relationship_specs_for_source(artifact_type, framework=runtime):
             relation_fields.add(spec.metadata_field)
             for raw_target in normalize_relation_values(
                 metadata.get(spec.metadata_field)
@@ -132,7 +136,7 @@ class RepositoryAssembler:
             for key, value in metadata.items()
             if key not in {"id", "title", "status", "knowledge_state"}
             and key not in relation_fields
-            and key not in ALL_RELATION_FIELDS
+            and key not in runtime.relationships.all_fields
         }
 
         artifact = ArtifactModel(

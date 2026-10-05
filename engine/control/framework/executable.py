@@ -71,6 +71,7 @@ class ExtensionDeclarations:
 
 @dataclass(frozen=True, slots=True)
 class ExecutableFramework:
+    resource_root: Path
     identity: FrameworkIdentity
     artifacts: ArtifactRuntimeView
     relationships: RelationshipRuntimeView
@@ -643,6 +644,7 @@ class FrameworkCompiler:
             contract.layers,
         )
         return ExecutableFramework(
+            resource_root=self.repo_root,
             identity=identity,
             artifacts=artifacts,
             relationships=relationships,

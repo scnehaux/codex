@@ -120,7 +120,7 @@ def test_validate_technologies_whitelist(monkeypatch):
 
 
 def test_compliance_placement_macro_dir():
-    rules = {"structure_rules": {"standard_directory": {"SAD": "systems"}}}
+    rules = {"structure_rules": {"artifact_directories": {"SAD": "systems"}}}
     v_valid = make_validator(
         rules=rules,
         file_path="/home/repo/systems/scnehaux-ui-platform/SAD-003.sad.md",

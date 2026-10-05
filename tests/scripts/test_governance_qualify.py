@@ -34,6 +34,13 @@ class _Mutation:
 
 
 def _green(monkeypatch, module):
+    from types import SimpleNamespace
+
+    monkeypatch.setattr(
+        module,
+        "assert_governed_corpus",
+        lambda root: SimpleNamespace(revision="a" * 40, snapshot_id="b" * 64),
+    )
     monkeypatch.setattr(
         module,
         "assert_governance_readiness",

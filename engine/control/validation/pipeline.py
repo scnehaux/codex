@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from hashlib import sha256
 import json
+from pathlib import Path
 from types import MappingProxyType
 from typing import Any, Mapping
 
@@ -158,6 +159,7 @@ def build_artifact_candidate(
     parsed: ParsedArtifact,
     *,
     namespace: ArchitectureNamespace | None = None,
+    framework: ExecutableFramework | None = None,
 ) -> ArtifactCandidate:
     bound_namespace = parsed.source.source_namespace
     if bound_namespace is not None:
@@ -177,6 +179,7 @@ def build_artifact_candidate(
             content=parsed.source.content,
             namespace=namespace,
             source_reference=parsed.source.source_reference,
+            framework=framework,
         )
     except RepositoryAssemblyError as exc:
         return ArtifactCandidate(parsed=parsed, artifact=None, assembly_error=str(exc))
@@ -225,6 +228,7 @@ def validate_candidate(
     all_doc_ids: set[str] | None = None,
     all_doc_metadata: Mapping[str, Mapping[str, Any]] | None = None,
     framework: ExecutableFramework | None = None,
+    repo_root: str | Path | None = None,
 ) -> ValidationReport:
     if not isinstance(candidate, ArtifactCandidate):
         raise TypeError("candidate must be ArtifactCandidate")
@@ -279,7 +283,7 @@ def validate_candidate(
     ids.add(doc_id)
     metadata_registry.setdefault(doc_id, doc_meta)
 
-    validator_cls = get_validator(doc_type)
+    validator_cls = get_validator(doc_type, framework=runtime)
     if validator_cls is None:
         add(
             SeverityRule.MISSING_VALIDATOR.value,
@@ -287,7 +291,7 @@ def validate_candidate(
             runtime.governance.severity_levels[SeverityRule.MISSING_VALIDATOR.value],
         )
     else:
-        schema_path = runtime.schema_bindings[doc_type]
+        schema_path = runtime.resource_root / runtime.schema_bindings[doc_type]
         try:
             domain_schema = load_json_schema_file(schema_path)
         except (FileNotFoundError, ValueError) as exc:
@@ -300,7 +304,9 @@ def validate_candidate(
             )
         else:
             validator = validator_cls(
-                record.source_path,
+                str(Path(repo_root) / record.source_path)
+                if repo_root is not None
+                else record.source_path,
                 candidate.parsed.source.content,
                 doc_meta,
                 runtime.validation_rules,
@@ -309,6 +315,7 @@ def validate_candidate(
                 metadata_registry,
                 runtime.governance.severity_levels,
                 runtime.blocking_severities,
+                framework=runtime,
             )
             validator.validate()
             for rule_id, severity, message in validator.finding_records:
@@ -319,12 +326,13 @@ def validate_candidate(
         doc_type,
         artifact.lifecycle_status.lower(),
         runtime.governance.severity_levels[SeverityRule.LIFECYCLE_AGE_VIOLATION.value],
+        framework=runtime,
     )
     for severity, message in age_errors:
         add(SeverityRule.LIFECYCLE_AGE_VIOLATION.value, message, severity)
 
     for relation_finding in relationship_contract_findings(
-        doc_id, doc_meta, metadata_registry
+        doc_id, doc_meta, metadata_registry, framework=runtime
     ):
         add(
             SeverityRule.STRUCTURAL_INTEGRITY_VIOLATION.value,
@@ -362,6 +370,8 @@ def promote_candidate(
 def promote_candidates(
     candidates: tuple[ArtifactCandidate, ...],
     reports: tuple[ValidationReport, ...],
+    *,
+    framework: ExecutableFramework | None = None,
 ) -> RepositoryModel:
     if len(candidates) != len(reports):
         raise ValueError("candidate/report cardinality mismatch")
@@ -374,7 +384,7 @@ def promote_candidates(
     from engine.control.auditors.graph_auditor import audit_traceability_graph
 
     metadata = {item.document_id: dict(item.metadata) for item in repository.artifacts}
-    graph_findings = audit_traceability_graph(metadata)
+    graph_findings = audit_traceability_graph(metadata, framework=framework)
     if graph_findings:
         raise ValueError(
             "promoted candidate set violates relationship DAG: "

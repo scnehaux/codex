@@ -91,8 +91,20 @@ def test_tdd_topology_is_explicit_and_unique(tmp_path):
     value = _yaml(path)
     value["data"]["artifact_directories"]["TDD"] = "systems"
     _write(path, value)
-    with pytest.raises(FrameworkContractError, match="layout-duplicate|tdd-topology"):
+    with pytest.raises(FrameworkContractError, match="layout-duplicate"):
         compile_artifact_runtime(root)
+
+
+def test_tdd_root_is_owned_by_declarative_layout_not_python(tmp_path):
+    root = _fixture(tmp_path)
+    path = root / "governance/framework/contracts/repository-layout.yaml"
+    value = _yaml(path)
+    value["data"]["artifact_directories"]["TDD"] = "technical-designs"
+    _write(path, value)
+    assert (
+        compile_artifact_runtime(root).artifact_directories["TDD"]
+        == "technical-designs"
+    )
 
 
 def test_invalid_lifecycle_semantics_fail_closed(tmp_path):
