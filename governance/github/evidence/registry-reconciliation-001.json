@@ -1,0 +1,674 @@
+{
+  "schema_version": 1,
+  "kind": "codex-registry-evidence-reconciliation",
+  "recorded_date": "2026-10-05",
+  "codex_baseline": "043c1d51fd621428e59a5988cb383a857e690bd1",
+  "scope": "Historical Phase 10 GitHub reference-provider acceptance under owner-approved REC-D-018; not a fresh provider observation or standing publication authorization.",
+  "sources": {
+    "acceptance": {
+      "repository": "scnehaux/codex-authority",
+      "revision": "1f0b98f60bcb321fde762f13b8f2c558c7d0015e",
+      "path": "governance/evidence/phase10-acceptance-001.json",
+      "git_blob": "1c9c00cdd2c411fa3ce677c06de722cc2eb1c169",
+      "canonical_sha256": "72b8c715b25e2c6e020f00a69e7a5706b76ac487396005e5d6d408e433030397",
+      "record": {
+        "assessed_at": "2026-09-20T20:09:34.910871+00:00",
+        "authority_revision": "251451c98eda2332674384cd56f5f02a0c42e032",
+        "claims": {
+          "all_ten_obligations_accepted_in_declared_scope": true,
+          "effective_enforcement_proven": true,
+          "full_mirror_equivalence_proven": false,
+          "independent_human_review_proven": false,
+          "native_git_default_deletion_observed": false,
+          "new_live_destructive_tests_performed": false,
+          "phase10_status_finalized": false,
+          "publication_capability_granted": false
+        },
+        "codex_revision": "107f0dc53e873ef6d24a9f12cd28da7348f79331",
+        "decision": {
+          "assessment_by": "assistant under owner-approved evidence method",
+          "independent_human_acceptance_claimed": false,
+          "method_status": "Accepted",
+          "owner_response": "oke gas",
+          "recommendation": "REC-D-018",
+          "record": "https://github.com/scnehaux/codex-authority/issues/28#issuecomment-5752319468",
+          "recorded_by": "assistant on behalf of project owner"
+        },
+        "dossier": {
+          "git_blob": "83edaf7540991ca63a7d03ac03d8903c5b02d1a6",
+          "path": "governance/evidence/phase10-acceptance-dossier-001.json",
+          "source_inventory": {
+            "isolated": {
+              "git_blob": "bc69b86743bc366072215b345a0d03b8240833b9",
+              "path": "governance/evidence/provider-negative-001.json"
+            },
+            "maintenance": {
+              "git_blob": "48fa70d93461e3b7b773ea3669445f5443f13023",
+              "path": "governance/evidence/permanent-maintenance-proof-001.json"
+            },
+            "missing_authority": {
+              "git_blob": "e7e48d7d16cfbebd483007244cb6dd77085459a4",
+              "path": "governance/evidence/provider-enforcement-001.json"
+            },
+            "native_git": {
+              "git_blob": "120270fe584ded7972e970e96bc33d36c3e70f7f",
+              "path": "governance/evidence/provider-git-transport-001.json"
+            },
+            "qualification": {
+              "git_blob": "29557244841665b5116dbebcf9989bccf35a4a30",
+              "path": "governance/evidence/provider-qualification-negative-001.json"
+            },
+            "runtime": {
+              "git_blob": "662883622642315e05b7ac72fa2f58c3a5c0f69f",
+              "path": "governance/evidence/provider-qualification-negative-001.runtime.json"
+            },
+            "stale_review": {
+              "git_blob": "1a52b9698b126311ed43246640fe492474e87e31",
+              "path": "governance/evidence/provider-stale-review-001.json"
+            },
+            "wrong_source": {
+              "git_blob": "a3530cc0227c6584f3cb361dc90fff12916c1e2e",
+              "path": "governance/evidence/provider-wrong-source-001.json"
+            }
+          }
+        },
+        "invalidation_events": [
+          "relevant provider rule or inherited/legacy protection change",
+          "semantic policy or review-bootstrap applicability change",
+          "authority App identity or permissions change",
+          "promoted runtime or privileged boundary change",
+          "contradictory provider observation"
+        ],
+        "kind": "codex-phase10-scoped-acceptance",
+        "next_step": "Codex PLAN/ROADMAP status closure through ordinary qualification, evidenced permit, dedicated-App publication and normal PR merge; then publication disarm.",
+        "preflight": {
+          "canonical_data_sha256": "92a45334ceea002a494ee8819cea18f357b32816cacfced73cca9ee7a3129a8e",
+          "path": "governance/evidence/phase10-final-preflight-001.json"
+        },
+        "qualification": {
+          "conclusion": "success",
+          "event": "push",
+          "head_sha": "107f0dc53e873ef6d24a9f12cd28da7348f79331",
+          "job": "Governance Qualification",
+          "job_id": 105959532913,
+          "observed_run_updated_at": "2026-09-19T20:08:54Z",
+          "qualify_governance_control_plane": "success",
+          "reexecuted": false,
+          "repository": "scnehaux/codex",
+          "run_attempt": 1,
+          "run_id": 35466444121,
+          "url": "https://github.com/scnehaux/codex/actions/runs/35466444121/job/105959532913",
+          "workflow": "Scnehaux Governance"
+        },
+        "residual_limits": [
+          "Full mirror remains BLOCKED; no claim of testing all combined interactions in an identical repository.",
+          "Native default-deletion evidence is REST native guard plus isolated custom deletion; unsent Git deletion has no proof credit.",
+          "Production qualification refusal had failed and missing checks; isolated status controls provide separate causal attribution.",
+          "Review bootstrap is still active; two accounts are not two independent humans.",
+          "Historical component and runtime false flags retain their local meaning; this acceptance record owns the scoped system-level assessment."
+        ],
+        "rows": [
+          {
+            "assessment": "accepted-under-rec-d-018",
+            "evidence_sources": ["native_git", "isolated"],
+            "id": 1,
+            "limit": "No actual Git push to production main; the original complete-mirror requirement needs an explicit method decision.",
+            "obligation": "direct-push",
+            "observation": "Observed disposable default-branch Git rejection plus successful control."
+          },
+          {
+            "assessment": "accepted-under-rec-d-018",
+            "evidence_sources": ["native_git", "isolated"],
+            "id": 2,
+            "limit": "Copied non-fast-forward rule on a different repository and ref; no destructive production attempt.",
+            "obligation": "force-push",
+            "observation": "Observed genuine forced rollback rejection plus matching successful control."
+          },
+          {
+            "assessment": "accepted-under-rec-d-018",
+            "evidence_sources": ["isolated", "native_git"],
+            "id": 3,
+            "limit": "Native Git default deletion remains unobserved; native guard is not custom-ruleset attribution.",
+            "obligation": "default-deletion",
+            "observation": "Observed REST native default guard and separately isolated custom deletion."
+          },
+          {
+            "assessment": "accepted-under-rec-d-018",
+            "evidence_sources": [
+              "qualification",
+              "runtime",
+              "isolated",
+              "missing_authority",
+              "wrong_source"
+            ],
+            "id": 4,
+            "limit": "Production refusal has two unmet checks; separate synthetic status controls supply causal isolation.",
+            "obligation": "failing-qualification",
+            "observation": "Real failing check, promoted runtime FAIL, no permit, and normal merge refusal."
+          },
+          {
+            "assessment": "accepted-under-rec-d-018",
+            "evidence_sources": ["isolated", "maintenance", "stale_review"],
+            "id": 5,
+            "limit": "Does not satisfy the normative independent-review target or terminate its bootstrap exception.",
+            "obligation": "bootstrap-review",
+            "observation": "Zero-review squash and governed maintenance are observed under active zero-approval policy."
+          },
+          {
+            "assessment": "accepted-under-rec-d-018",
+            "evidence_sources": ["isolated"],
+            "id": 6,
+            "limit": "Copied isolated PR rule, not all production gates in one mirrored environment.",
+            "obligation": "unresolved-thread",
+            "observation": "Same candidate denied before thread resolution and merged after resolution."
+          },
+          {
+            "assessment": "accepted-under-rec-d-018",
+            "evidence_sources": ["stale_review"],
+            "id": 7,
+            "limit": "Distinct accounts are not independent humans; zero required approvals does not imply merge blocking after dismissal.",
+            "obligation": "stale-review",
+            "observation": "Same actual user approval became DISMISSED after a reviewable commit."
+          },
+          {
+            "assessment": "accepted-under-rec-d-018",
+            "evidence_sources": ["isolated"],
+            "id": 8,
+            "limit": "Isolated PR-rule restriction; not a claim about all provider transports.",
+            "obligation": "merge-method",
+            "observation": "Merge and rebase denied while repo settings permit them; same candidate squash succeeds."
+          },
+          {
+            "assessment": "accepted-under-rec-d-018",
+            "evidence_sources": ["isolated"],
+            "id": 9,
+            "limit": "Non-atomic point-in-time observation, not continuous monitoring; full details and original observer note retained in preflight.",
+            "obligation": "configuration-parity",
+            "observation": "Fresh named, effective and inherited rules match tested controls; admin legacy read reports Branch not protected; observer installed/active/aligned."
+          },
+          {
+            "assessment": "accepted-under-rec-d-018",
+            "evidence_sources": ["maintenance", "wrong_source"],
+            "id": 10,
+            "limit": "Static/CI evidence is separate from provider behavior; this is not a new full test execution.",
+            "obligation": "neutral-semantics",
+            "observation": "Authored neutral contract and existing exact-main qualification support the source boundary."
+          }
+        ],
+        "schema_version": 1,
+        "scope": {
+          "authority_app_id": 4864946,
+          "future_states_automatically_accepted": false,
+          "method": "composed-production-and-causally-controlled-disposable-evidence",
+          "obligation_waiver": false,
+          "provider": "github",
+          "repository": "scnehaux/codex",
+          "review_exception": "active-zero-mandatory-approvals",
+          "ruleset_id": 23193929
+        },
+        "state": "accepted-reference-provider-scope"
+      }
+    },
+    "completion": {
+      "repository": "scnehaux/codex-authority",
+      "revision": "1f0b98f60bcb321fde762f13b8f2c558c7d0015e",
+      "path": "governance/evidence/phase10-completion-001.json",
+      "git_blob": "316b41ffde1f3437afd5e82ac2be2d3dfeb191c0",
+      "canonical_sha256": "b1075e02801ba56dd7d0562d9ebc65877d83f2a22d55ad6ae74a50e7b5c9f585",
+      "record": {
+        "acceptance": {
+          "decision_record": "https://github.com/scnehaux/codex-authority/issues/28#issuecomment-5752319468",
+          "git_blob": "1c9c00cdd2c411fa3ce677c06de722cc2eb1c169",
+          "method": "REC-D-018",
+          "path": "governance/evidence/phase10-acceptance-001.json",
+          "repository": "scnehaux/codex-authority",
+          "revision": "360d9729310bf2903f4456f5b4464aaac17f873a"
+        },
+        "bundle": {
+          "evidence_sha256": "949d31463a22b75b6fdd9d4db07a496c1d21f06bcae85dd2249740a6e8c52247",
+          "permit_digest": "51a00232ede8227ef287af873256ca014d8721c83d837a16c4467ed36af7aa93",
+          "receipt_sha256": "f864e570fc91855de79d0f3373cd350624e2603668ed71b5ca01db3ac4e63415"
+        },
+        "candidate": {
+          "base_sha": "107f0dc53e873ef6d24a9f12cd28da7348f79331",
+          "changed_files": ["PLAN.md", "ROADMAP.md"],
+          "head_sha": "07a393a24c29d19de8da703c49e22a1ce30f6b51",
+          "merge_commit_sha": "915d24e861ededec0c516e9b9a95b4ca83796651",
+          "merge_method": "squash",
+          "merged_at": "2026-09-20T20:24:51Z",
+          "pull_request": 26,
+          "repository": "scnehaux/codex"
+        },
+        "claims": {
+          "effective_enforcement_proven": true,
+          "full_mirror_equivalence_proven": false,
+          "governance_1_0_ready": false,
+          "independent_human_review_proven": false,
+          "native_git_default_deletion_observed": false,
+          "phase10_status_finalized": true,
+          "standing_publication_capability": false
+        },
+        "disarm": {
+          "canonical_data_sha256": "62ff9985af29002d2ed988f4a2e2dd195492d431be5114d00c197d51fd2124b6",
+          "configuration_in_this_change": {
+            "activation": null,
+            "claims": {
+              "effective_enforcement_proven": false,
+              "live_publication_proven": false
+            },
+            "kind": "codex-controlled-publication",
+            "schema_version": 1,
+            "state": "disabled"
+          },
+          "path": "governance/controlled-publication.json",
+          "privileged_bootstrap_enabled": false,
+          "proof_captured_before_write": true,
+          "review_bootstrap_active": true,
+          "scope": "takes effect on normal merge of this completion change"
+        },
+        "kind": "codex-phase10-governed-completion",
+        "limits": [
+          "Acceptance remains bounded by the unchanged REC-D-018 scope and invalidation events.",
+          "Selected provider reads are sequential and not a signature or an atomic snapshot.",
+          "Historical component and packaging flags remain unchanged; system claims belong to scoped acceptance and this completion record.",
+          "The old 5bcff61 head bundle was superseded before publication; only the corrected 07a393a head was published.",
+          "The disarm configuration is recorded in this change; its merge and clean-main readback must be confirmed in the PR checkpoint."
+        ],
+        "next_planned_slice": "11.1 Declarative Framework Contract",
+        "postmerge": {
+          "default_branch_history_not_rewritten": true,
+          "observer": {
+            "evidence": {
+              "drift": [],
+              "drift_state": "aligned",
+              "effective_policy": {
+                "allowed_merge_methods": ["squash"],
+                "bypass_allowed": false,
+                "candidate_check_context": "Governance Qualification",
+                "candidate_check_required": true,
+                "candidate_check_strict": true,
+                "changes_require_review": true,
+                "deletion_allowed": false,
+                "dismiss_stale_on_push": true,
+                "external_authority_check_context": "Codex Governance Authority",
+                "external_authority_check_required": true,
+                "external_authority_source_bound": true,
+                "force_push_allowed": false,
+                "linear_history_required": true,
+                "require_last_push_approval": false,
+                "require_qualified_owner_approval": false,
+                "require_thread_resolution": true,
+                "required_approvals": 0
+              },
+              "enforcement_state": "active",
+              "installed_state": "installed",
+              "notes": [
+                "branch-protection observation unavailable: HTTP 401: Unauthorized"
+              ],
+              "observation_state": "observed",
+              "observation_time": "2026-09-20T20:25:22.849691+00:00",
+              "observed_revision": "915d24e861ededec0c516e9b9a95b4ca83796651",
+              "provider": "github",
+              "repository": "scnehaux/codex"
+            },
+            "exit_code": 0,
+            "recorded_at": "2026-09-20T20:25:22.868728+00:00",
+            "stderr": ""
+          },
+          "reads": {
+            "effective": {
+              "completed_at": "2026-09-20T20:26:15.696257+00:00",
+              "endpoint": "repos/scnehaux/codex/rules/branches/main?per_page=100",
+              "headers": {
+                "date": "Sun, 20 Sep 2026 20:26:15 GMT",
+                "x-github-request-id": "E1E6:3C6A5D:2ED2F3B:312AEB3:6AB04167"
+              },
+              "http_status": 200,
+              "selected_body": [
+                {
+                  "parameters": null,
+                  "ruleset_id": 23193929,
+                  "ruleset_source": "scnehaux/codex",
+                  "ruleset_source_type": "Repository",
+                  "type": "deletion"
+                },
+                {
+                  "parameters": null,
+                  "ruleset_id": 23193929,
+                  "ruleset_source": "scnehaux/codex",
+                  "ruleset_source_type": "Repository",
+                  "type": "non_fast_forward"
+                },
+                {
+                  "parameters": null,
+                  "ruleset_id": 23193929,
+                  "ruleset_source": "scnehaux/codex",
+                  "ruleset_source_type": "Repository",
+                  "type": "required_linear_history"
+                },
+                {
+                  "parameters": {
+                    "allowed_merge_methods": ["squash"],
+                    "dismiss_stale_reviews_on_push": true,
+                    "dismissal_restriction": {
+                      "allowed_actors": [],
+                      "enabled": false
+                    },
+                    "require_code_owner_review": false,
+                    "require_extra_approval_for_unattributed_changes": true,
+                    "require_last_push_approval": false,
+                    "required_approving_review_count": 0,
+                    "required_review_thread_resolution": true,
+                    "required_reviewers": []
+                  },
+                  "ruleset_id": 23193929,
+                  "ruleset_source": "scnehaux/codex",
+                  "ruleset_source_type": "Repository",
+                  "type": "pull_request"
+                },
+                {
+                  "parameters": {
+                    "do_not_enforce_on_create": false,
+                    "required_status_checks": [
+                      {
+                        "context": "Governance Qualification"
+                      },
+                      {
+                        "context": "Codex Governance Authority",
+                        "integration_id": 4864946
+                      }
+                    ],
+                    "strict_required_status_checks_policy": true
+                  },
+                  "ruleset_id": 23193929,
+                  "ruleset_source": "scnehaux/codex",
+                  "ruleset_source_type": "Repository",
+                  "type": "required_status_checks"
+                }
+              ],
+              "started_at": "2026-09-20T20:26:15.060452+00:00"
+            },
+            "pull": {
+              "completed_at": "2026-09-20T20:26:14.435422+00:00",
+              "endpoint": "repos/scnehaux/codex/pulls/26",
+              "headers": {
+                "date": "Sun, 20 Sep 2026 20:26:14 GMT",
+                "x-github-request-id": "FCB2:338821:2F98361:31F020D:6AB04165"
+              },
+              "http_status": 200,
+              "selected_body": {
+                "base_sha": "107f0dc53e873ef6d24a9f12cd28da7348f79331",
+                "head_sha": "07a393a24c29d19de8da703c49e22a1ce30f6b51",
+                "merge_commit_sha": "915d24e861ededec0c516e9b9a95b4ca83796651",
+                "merged": true,
+                "merged_at": "2026-09-20T20:24:51Z",
+                "number": 26,
+                "state": "closed"
+              },
+              "started_at": "2026-09-20T20:26:13.625055+00:00"
+            },
+            "ruleset": {
+              "completed_at": "2026-09-20T20:26:15.060389+00:00",
+              "endpoint": "repos/scnehaux/codex/rulesets/23193929",
+              "headers": {
+                "date": "Sun, 20 Sep 2026 20:26:14 GMT",
+                "x-github-request-id": "D418:202500:2F1B9FF:317285A:6AB04166"
+              },
+              "http_status": 200,
+              "selected_body": {
+                "bypass_actors": [],
+                "conditions": {
+                  "ref_name": {
+                    "exclude": [],
+                    "include": ["~DEFAULT_BRANCH"]
+                  }
+                },
+                "enforcement": "active",
+                "id": 23193929,
+                "rules": [
+                  {
+                    "type": "deletion"
+                  },
+                  {
+                    "type": "non_fast_forward"
+                  },
+                  {
+                    "type": "required_linear_history"
+                  },
+                  {
+                    "parameters": {
+                      "allowed_merge_methods": ["squash"],
+                      "dismiss_stale_reviews_on_push": true,
+                      "dismissal_restriction": {
+                        "allowed_actors": [],
+                        "enabled": false
+                      },
+                      "require_code_owner_review": false,
+                      "require_extra_approval_for_unattributed_changes": true,
+                      "require_last_push_approval": false,
+                      "required_approving_review_count": 0,
+                      "required_review_thread_resolution": true,
+                      "required_reviewers": []
+                    },
+                    "type": "pull_request"
+                  },
+                  {
+                    "parameters": {
+                      "do_not_enforce_on_create": false,
+                      "required_status_checks": [
+                        {
+                          "context": "Governance Qualification"
+                        },
+                        {
+                          "context": "Codex Governance Authority",
+                          "integration_id": 4864946
+                        }
+                      ],
+                      "strict_required_status_checks_policy": true
+                    },
+                    "type": "required_status_checks"
+                  }
+                ]
+              },
+              "started_at": "2026-09-20T20:26:14.435487+00:00"
+            }
+          },
+          "semantic_policy_unchanged": true,
+          "tested_rules_unchanged": true
+        },
+        "publication": {
+          "activation_commit_sha": "144ce1edc92fe39694df49a90989fb93ac81f219",
+          "activation_pr": 32,
+          "duplicate_publication_attempted": false,
+          "journal": {
+            "activation_digest": "37dae2207f0b3d47102733905898209327eeb657a105fa4b497d9152cd92a772",
+            "candidate": {
+              "base_sha": "107f0dc53e873ef6d24a9f12cd28da7348f79331",
+              "head_sha": "07a393a24c29d19de8da703c49e22a1ce30f6b51",
+              "pull_request": 26,
+              "repository": "scnehaux/codex"
+            },
+            "check_post_attempted": true,
+            "check_run_id": 106143120366,
+            "effective_enforcement_proven": false,
+            "kind": "codex-publication-outcome",
+            "permit_digest": "51a00232ede8227ef287af873256ca014d8721c83d837a16c4467ed36af7aa93",
+            "schema_version": 1,
+            "status": "published",
+            "token_revoked": true
+          },
+          "journal_canonical_sha256": "dc307752237976bdc6c04dc9339a0c601cb94da9db784126835c9e51599f7620",
+          "provider_read": {
+            "completed_at": "2026-09-20T20:26:13.624996+00:00",
+            "endpoint": "repos/scnehaux/codex/check-runs/106143120366",
+            "headers": {
+              "date": "Sun, 20 Sep 2026 20:26:13 GMT",
+              "x-github-request-id": "FCB1:19830:300CC4C:32652C5:6AB04165"
+            },
+            "http_status": 200,
+            "selected_body": {
+              "app": {
+                "id": 4864946,
+                "owner": "scnehaux",
+                "slug": "scnehaux-codex-authority"
+              },
+              "completed_at": "2026-09-20T20:21:41Z",
+              "conclusion": "success",
+              "head_sha": "07a393a24c29d19de8da703c49e22a1ce30f6b51",
+              "id": 106143120366,
+              "name": "Codex Governance Authority",
+              "started_at": "2026-09-20T20:21:41Z",
+              "status": "completed"
+            },
+            "started_at": "2026-09-20T20:26:12.883265+00:00"
+          },
+          "qualification_check_run_id": 106142550431
+        },
+        "recorded_at": "2026-09-20T20:26:15.981518+00:00",
+        "schema_version": 1,
+        "source": {
+          "authority_baseline_before_disarm": "144ce1edc92fe39694df49a90989fb93ac81f219",
+          "publisher_revision": "360d9729310bf2903f4456f5b4464aaac17f873a",
+          "runtime_revision": "d835991afe6ada47a66d012a3ddc2c4350cd9ff8",
+          "semantic_policy_blobs_unchanged": {
+            "governance/scm/enforcement-policy.yaml": "0d982747e46fed16363b0509f031366bab50b3f4",
+            "governance/scm/trust-boundary.yaml": "d46bb0f6454c3552bccd5967196844846d83bd79"
+          },
+          "service_revision": "360d9729310bf2903f4456f5b4464aaac17f873a"
+        },
+        "state": "status-merged-publication-disarmed-in-this-change"
+      }
+    },
+    "handover": {
+      "repository": "scnehaux/codex-authority",
+      "revision": "1f0b98f60bcb321fde762f13b8f2c558c7d0015e",
+      "path": "governance/attested-handover.json",
+      "git_blob": "63a62dfa78b32643415cb9618f527e535aa6a4b4",
+      "canonical_sha256": "b20a662fd47758ee6e1bc9fbc8d4b5f1332eafb441373a58f87138eea24dd900",
+      "record": {
+        "schema_version": 1,
+        "kind": "codex-attested-runtime-handover",
+        "state": "runtime-promoted",
+        "candidate_repository": "scnehaux/codex",
+        "reviewed_input": {
+          "pull_request": 22,
+          "head_sha": "eaa5b41cd84fcc77fd1ff464120d4be83c57d1cd",
+          "entrypoint_blob": "c9a0c3bf2fd3c33be4deb1b1e5fc624d1b0b796a",
+          "result_schema_version": 2
+        },
+        "runtime_package": {
+          "repository": "scnehaux/codex",
+          "source_revision": "d835991afe6ada47a66d012a3ddc2c4350cd9ff8",
+          "entrypoint": "attested_runtime.py",
+          "blobs": {
+            "attested_runtime.py": "c9a0c3bf2fd3c33be4deb1b1e5fc624d1b0b796a",
+            "runtime.py": "c59911e9c0800c917fed21e6f33f3181c3a61e60",
+            "evaluator.py": "ab2f152c21bd6d6f22df21172c4d027035ff8c11",
+            "promotion.json": "f8f67280baf1c8725f67592d015ff37be2c4a4c3",
+            "runtime-promotion.json": "83658bf5a44d22804d1628074dd8f27a7047d68e"
+          }
+        },
+        "execution": {
+          "enabled": true,
+          "timeout_seconds": 120,
+          "max_output_bytes": 512000,
+          "candidate_code_execution": false,
+          "credentials_allowed": false
+        },
+        "publication": {
+          "write_enabled": false,
+          "mode": "offline-preview-only"
+        },
+        "claims": {
+          "privileged_governance_maintenance_path_proven": true,
+          "effective_enforcement_proven": false
+        }
+      }
+    },
+    "maintenance": {
+      "repository": "scnehaux/codex-authority",
+      "revision": "1f0b98f60bcb321fde762f13b8f2c558c7d0015e",
+      "path": "governance/privileged-maintenance.json",
+      "git_blob": "b4757230d6f0487f515d2a44ae67cf148c63c872",
+      "canonical_sha256": "8b957c2c4a0a5b1273ef867b3955948cecb7c95481f02924d02e1f2c3b2135bf",
+      "record": {
+        "schema_version": 1,
+        "state": "permanent-runtime",
+        "candidate_repository": "scnehaux/codex",
+        "attestation": {
+          "repository": "scnehaux/codex-authority",
+          "default_branch": "main",
+          "path_prefix": "governance/privileged-validations/",
+          "contract_version": 1,
+          "kind": "codex-privileged-validation-attestation",
+          "append_only": true,
+          "exact_candidate_binding": true
+        },
+        "bootstrap": {
+          "enabled": false,
+          "candidate": null,
+          "allowed_runtime_blockers": [
+            "privileged-validation-missing",
+            "runtime-critical-mutation-requires-privileged-validation"
+          ],
+          "publication_mode": "candidate-proof",
+          "candidate_code_execution": false,
+          "evaluation_credentials_allowed": false
+        },
+        "permanent_runtime": {
+          "owner_repository": "scnehaux/codex",
+          "state": "promoted",
+          "attestation_read": "public-read-only"
+        },
+        "claims": {
+          "privileged_governance_maintenance_path_proven": true,
+          "effective_enforcement_proven": false
+        }
+      }
+    }
+  },
+  "controls": {
+    "CTRL-GDC-000-027": {
+      "assessment": "verified",
+      "basis": "Current and immutable-root bootstrap manifests identify the same canonical target repository and legacy repository/ref/immutable source commit; permanent Genesis tests validate malformed and missing provenance.",
+      "accepted_rows": []
+    },
+    "CTRL-GDC-000-028": {
+      "assessment": "verified-in-accepted-reference-provider-scope",
+      "basis": "Accepted force-push and default-deletion rows, active effective production rules, and unchanged semantic policy; native Git default deletion remains unobserved.",
+      "accepted_rows": [2, 3]
+    },
+    "CTRL-GDC-003-003": {
+      "assessment": "verified-in-accepted-reference-provider-scope",
+      "basis": "The sole immutable Genesis root exists; the owner-accepted direct-push rejection and production PR-only/no-bypass rule prevent reusing the Genesis exception.",
+      "accepted_rows": [1]
+    },
+    "CTRL-GDC-003-004": {
+      "assessment": "pending",
+      "basis": "PR-only controls and governed feature-branch examples do not establish the short-lived-branch obligation or automatic branch cleanup.",
+      "accepted_rows": []
+    },
+    "CTRL-GDC-000-026": {
+      "assessment": "pending",
+      "basis": "Post-Genesis integrity and later qualification cannot recreate the missing pre-root full qualification record.",
+      "accepted_rows": []
+    },
+    "CTRL-GDC-003-010": {
+      "assessment": "pending",
+      "basis": "Squash enforcement is accepted, but automatic source-branch deletion is not evidenced and was previously observed disabled.",
+      "accepted_rows": []
+    },
+    "CTRL-GDC-003-011": {
+      "assessment": "pending",
+      "basis": "A strict-check setting alone does not evidence rejection of an actual behind-main PR.",
+      "accepted_rows": []
+    }
+  },
+  "limits": [
+    "No new provider operations or destructive negative tests were performed.",
+    "No independent human review, full-mirror equivalence or native Git default deletion is claimed.",
+    "Relevant policy, provider, App/runtime, access or review-exception changes and contradictory observations require reassessment.",
+    "Historical source records retain their original claims, dates and identifiers; exported copies are offline evidence inputs.",
+    "The registry assessment is a candidate governed change; it does not itself approve GDCs, release Governance 1.0 or open architecture admission."
+  ]
+}

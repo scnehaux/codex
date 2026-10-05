@@ -533,15 +533,16 @@ controls:
     legacy source repository, the source ref, and the immutable source commit SHA used for re-admission.'
   scope: governance-constitution
   severity: CRITICAL
-  enforcement_mode: human-review
+  enforcement_mode: automated
   implementation:
-  - governance/GDC-002-quality-rubric.md
-  - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.2 Registry Evidence Reconciliation
+  - engine/control/governance/genesis.py
+  - scripts/genesis_integrity.py
+  - governance/bootstrap-manifest.yaml
+  test_evidence:
+  - tests/control/governance/test_genesis.py::test_manifest_contract_failures_are_explicit
+  - tests/control/governance/test_registry_reconciliation.py::test_bootstrap_provenance_matches_the_immutable_genesis_source
+  evidence_status: verified
+  evidence_expectation: current and immutable-root bootstrap provenance validated by the permanent Genesis gate and regression tests
 - control_id: CTRL-GDC-000-028
   source_gdc: GDC-000
   source_file: GDC-000-governance-policy.md
@@ -554,12 +555,14 @@ controls:
   severity: CRITICAL
   enforcement_mode: repository-control
   implementation:
-  - GitHub repository ruleset / branch protection
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: effective repository ruleset evidence and negative enforcement test
-  control_owner: Repository Governance Authority
-  target_phase: Slice 13.2 Registry Evidence Reconciliation
+  - governance/scm/enforcement-policy.yaml
+  - governance/github/main-ruleset.json
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-001.json#controls/CTRL-GDC-000-028
+  - tests/control/governance/test_registry_reconciliation.py::test_accepted_provider_rows_do_not_exceed_the_owner_approved_scope
+  - tests/control/governance/test_registry_reconciliation.py::test_provider_assessment_remains_bound_to_unchanged_semantic_policy
+  evidence_status: verified
+  evidence_expectation: REC-D-018 scoped acceptance rows 2-3 plus effective production rules; native Git default deletion remains unobserved
 - control_id: CTRL-GDC-000-029
   source_gdc: GDC-000
   source_file: GDC-000-governance-policy.md
@@ -1343,12 +1346,16 @@ controls:
   severity: CRITICAL
   enforcement_mode: repository-control
   implementation:
-  - GitHub repository ruleset / branch protection
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: effective repository ruleset evidence and negative enforcement test
-  control_owner: Repository Governance Authority
-  target_phase: Slice 13.2 Registry Evidence Reconciliation
+  - governance/bootstrap-manifest.yaml
+  - engine/control/governance/genesis.py
+  - governance/scm/enforcement-policy.yaml
+  - governance/github/main-ruleset.json
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-001.json#controls/CTRL-GDC-003-003
+  - tests/control/governance/test_registry_reconciliation.py::test_bootstrap_provenance_matches_the_immutable_genesis_source
+  - tests/control/governance/test_registry_reconciliation.py::test_accepted_provider_rows_do_not_exceed_the_owner_approved_scope
+  evidence_status: verified
+  evidence_expectation: immutable Genesis root plus REC-D-018 direct-push refusal and effective production PR-only/no-bypass policy
 - control_id: CTRL-GDC-003-004
   source_gdc: GDC-003
   source_file: GDC-003-review-process.md

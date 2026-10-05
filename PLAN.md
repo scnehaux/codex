@@ -1082,12 +1082,20 @@ Invariant: the first Governance 1.0 criterion becomes machine-checkable.
 
 Invariant: no pending control targets a retired or closed phase without a recorded reason.
 
-Status: ACTIVE. The registry now declares a `target_phases` vocabulary that registry structure checks enforce; every pending control targets a current Phase 13 slice or Phase 14, and `source_file` records the real GDC file name. No evidence status changed. Seven controls target this slice for evidence reconciliation:
+Status: ACTIVE; this evidence reconciliation is locally prepared and still requires exact-candidate Authority publication and governed merge. The target-phase vocabulary and descriptive source-file correction merged in Codex PR #43. This candidate maps three controls to retained evidence, producing 82 `verified` / 84 `pending` without changing normative statements:
 
-- `CTRL-GDC-000-027`, `CTRL-GDC-000-028`, `CTRL-GDC-003-003` and `CTRL-GDC-003-004` have candidate evidence (genesis manifest checks and tests; Phase 10 acceptance rows 1-3 under REC-D-018) awaiting a governed status change
-- `CTRL-GDC-000-026` has no retained qualification record for root commit `35ba5f4`
-- `CTRL-GDC-003-010` is unmet while repository setting `delete_branch_on_merge` is `false`
-- `CTRL-GDC-003-011` has no observed rejection of a behind-main PR
+- `CTRL-GDC-000-027`: current bootstrap provenance matches the immutable Genesis manifest; the real Genesis gate and its malformed-provenance tests supply deterministic evidence, replacing the generic human-review placeholder
+- `CTRL-GDC-000-028`: owner-accepted REC-D-018 rows 2-3 and effective production rules support history protection within that historical reference-provider scope; native Git default deletion remains unobserved
+- `CTRL-GDC-003-003`: the immutable root exists, and owner-accepted direct-push refusal plus production PR-only/no-bypass rules support expiry of the Genesis exception
+
+The offline source-bound assessment is `governance/github/evidence/registry-reconciliation-001.json`. Historical Authority records are preserved with revision/blob pins and canonical content digests; scoped acceptance is not a fresh provider observation or standing publication capability. Four controls remain pending in this slice:
+
+- `CTRL-GDC-000-026`: later qualification cannot reconstruct the missing pre-root full qualification record
+- `CTRL-GDC-003-004`: PR-only controls and feature-branch examples do not establish the complete short-lived-branch obligation
+- `CTRL-GDC-003-010`: automatic source-branch deletion remains unevidenced and was previously observed disabled; squash-method evidence does not close the cleanup requirement
+- `CTRL-GDC-003-011`: strict-check configuration does not substitute for observed rejection of a behind-main PR
+
+The desired-only Authority binding remains explicitly justified in `governance/github/README.md`: evaluator, promoted runtime package and publisher identities are separate; historical system acceptance does not activate publication or change component proof flags.
 
 - each of the 37 retired-phase controls becomes `verified` with implementation and test or Authority evidence references, or is re-targeted to a current Phase 13 or Phase 14 slice with the reason recorded
 - `Phase 10 Governance 1.0 Review` targets are renamed to the current Phase 13 slice that owns them
