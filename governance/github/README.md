@@ -42,6 +42,37 @@ Do not infer provider activation from files in this directory. Effective enforce
 
 Until those conditions are met, `effective_enforcement_claimed` must remain false.
 
+### Desired binding and retained promotion evidence
+
+`authority-binding.yaml` is a provider projection, not the operational promotion
+or publication configuration. Its `evaluator.authority_revision` identifies the
+deterministic evaluator `23b05a855419b86b61b0c9266805bb66b143c366`. Authority's
+promoted runtime package at `d835991afe6ada47a66d012a3ddc2c4350cd9ff8` contains
+the attestation reader, collector and that evaluator as separately pinned inputs.
+Replacing the evaluator identity with the package identity would conflate distinct
+sources rather than reconcile them.
+
+The projection's `desired_state_only: true`, `activation.state: planned` and
+`effective_enforcement_claimed: false` therefore remain deliberate. They do not
+override the owner-accepted historical Phase 10 assessment, nor describe current
+publisher activation. Operational source promotion belongs to Authority's
+`governance/attested-handover.json`; each publication needs a separately reviewed
+candidate activation in `governance/controlled-publication.json`.
+
+The offline [registry reconciliation](evidence/registry-reconciliation-001.json)
+retains the complete accepted Phase 10 assessment, completion and promotion
+records from Authority revision `1f0b98f60bcb321fde762f13b8f2c558c7d0015e`, with
+source path/blob pins and canonical content digests. Its tests bind the accepted
+provider assessment to unchanged semantic policy and preserve the original limits:
+full-mirror equivalence, independent human review and native Git default deletion
+are not proven. These historical records provide scoped control evidence; they
+are not a live-state feed, a provider signature or a publication permit.
+
+The three proposed evidence-status changes are a candidate governed assessment.
+Four Slice 13.2 obligations remain pending, including complete short-lived-branch
+evidence and automatic cleanup. No source record is rewritten, and no provider
+setting, App scope, credential or publication activation changes here.
+
 ---
 
 # Local GitHub App / Governance Authority Runbook

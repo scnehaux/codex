@@ -352,6 +352,8 @@ No architecture admission opens merely because the engine tests are green
 | 13.5  | Stable GDC Baseline                  | PLANNED | Twelve required GDCs `approved` at `>=1.0.0` with explicit approval records          |
 | 13.6  | Governance 1.0 Release               | PLANNED | Release manifest, Authority evidence and tag bind one qualified commit               |
 
+Slice 13.2 has a locally prepared follow-up to Codex PR #43: bootstrap provenance and two history/PR-path controls are mapped to immutable Genesis and owner-accepted Phase 10 evidence, with its original reference-provider limits preserved. Candidate registry counts are 82 verified / 84 pending. Four obligations remain pending: historical pre-root qualification, complete short-lived-branch evidence, automatic branch cleanup, and actual behind-main refusal. The candidate still requires Authority publication and governed merge; Slice 13.2 is not complete.
+
 REC-13-001 (root-of-trust definition), REC-13-002 (release manifest) and REC-13-003
 (approval evidence under the review bootstrap exception) in PLAN §6.3 await owner
 decision; Slices 13.1, 13.4 and 13.5 do not start implementation before their

@@ -3,7 +3,7 @@ doc_meta:
   id: GDC-001
   title: Architecture Fitness Functions & Compliance Engine
   owner: Architecture Authority
-  version: 0.1.15
+  version: 0.1.16
   status: draft
   classification: public
   governed_by: [GDC-000]
@@ -255,6 +255,7 @@ codex/
 │       │   │   ├── test_lifecycle.py
 │       │   │   ├── test_mutation.py
 │       │   │   ├── test_readiness.py
+│       │   │   ├── test_registry_reconciliation.py
 │       │   │   ├── test_relationships.py
 │       │   │   ├── test_repository_text_policy.py
 │       │   │   ├── test_scm_observer.py

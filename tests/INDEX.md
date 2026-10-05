@@ -480,6 +480,20 @@ This index documents the test suite utilities and fixtures.
 | **test_nonstring_evidence_is_reported**                                  | _(No docstring provided)_ |
 | **test_hidden_repository_paths_preserve_leading_dot**                    | _(No docstring provided)_ |
 
+### `tests/control/governance/test_registry_reconciliation.py`
+
+| Function                                                                          | Description               |
+| :-------------------------------------------------------------------------------- | :------------------------ |
+| **\_evidence**                                                                    | _(No docstring provided)_ |
+| **\_git**                                                                         | _(No docstring provided)_ |
+| **\_canonical_digest**                                                            | _(No docstring provided)_ |
+| **test_imported_authority_records_retain_reviewed_content_and_identity**          | _(No docstring provided)_ |
+| **test_bootstrap_provenance_matches_the_immutable_genesis_source**                | _(No docstring provided)_ |
+| **test_accepted_provider_rows_do_not_exceed_the_owner_approved_scope**            | _(No docstring provided)_ |
+| **test_provider_assessment_remains_bound_to_unchanged_semantic_policy**           | _(No docstring provided)_ |
+| **test_incomplete_obligations_remain_pending**                                    | _(No docstring provided)_ |
+| **test_promotion_evidence_does_not_grant_publication_or_change_component_claims** | _(No docstring provided)_ |
+
 ### `tests/control/governance/test_relationships.py`
 
 | Function                                                                      | Description               |
