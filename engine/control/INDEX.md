@@ -305,17 +305,18 @@ This index documents the internal functions and classes of the Fitness Function 
 
 ### `engine/control/governance/readiness.py`
 
-| Function                         | Description               |
-| :------------------------------- | :------------------------ |
-| **GovernanceReadinessReport.ok** | _(No docstring provided)_ |
-| **\_load_mapping**               | _(No docstring provided)_ |
-| **\_normalize**                  | _(No docstring provided)_ |
-| **\_temporary**                  | _(No docstring provided)_ |
-| **\_permanent_path**             | _(No docstring provided)_ |
-| **\_path_findings**              | _(No docstring provided)_ |
-| **\_makefile_target_findings**   | _(No docstring provided)_ |
-| **audit_governance_readiness**   | _(No docstring provided)_ |
-| **assert_governance_readiness**  | _(No docstring provided)_ |
+| Function                                          | Description               |
+| :------------------------------------------------ | :------------------------ |
+| **GovernanceReadinessReport.ok**                  | _(No docstring provided)_ |
+| **GovernanceReadinessReport.root_of_trust_ready** | _(No docstring provided)_ |
+| **\_load_mapping**                                | _(No docstring provided)_ |
+| **\_normalize**                                   | _(No docstring provided)_ |
+| **\_temporary**                                   | _(No docstring provided)_ |
+| **\_permanent_path**                              | _(No docstring provided)_ |
+| **\_path_findings**                               | _(No docstring provided)_ |
+| **\_makefile_target_findings**                    | _(No docstring provided)_ |
+| **audit_governance_readiness**                    | _(No docstring provided)_ |
+| **assert_governance_readiness**                   | _(No docstring provided)_ |
 
 ### `engine/control/governance/relationships.py`
 

@@ -23,6 +23,9 @@ def _load():
 
 class _Readiness:
     checked_controls = ("a", "b", "c")
+    root_of_trust_controls = ("CTRL-GDC-000-026",)
+    pending_root_of_trust = root_of_trust_controls
+    root_of_trust_ready = False
 
 
 class _Genesis:
@@ -79,6 +82,8 @@ def test_control_only_composes_all_permanent_controls(
     output = capsys.readouterr().out
     assert "Governance control qualification" in output
     assert "controls: 3" in output
+    assert "root-of-trust release criterion: NOT READY" in output
+    assert "pending root-of-trust: CTRL-GDC-000-026" in output
     assert "skipped" in output
 
 

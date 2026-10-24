@@ -347,6 +347,9 @@ This index documents the test suite utilities and fixtures.
 | **test_registry_structure_errors_reject_duplicate_id**                    | _(No docstring provided)_ |
 | **test_registry_structure_errors_reject_duplicate_source_fingerprint**    | _(No docstring provided)_ |
 | **test_registry_structure_errors_reject_invalid_enums**                   | _(No docstring provided)_ |
+| **test_release_classification_is_explicit_and_fail_closed**               | _(No docstring provided)_ |
+| **test_release_classification_requires_reviewable_rationale**             | _(No docstring provided)_ |
+| **test_classification_is_not_inferred_from_severity**                     | _(No docstring provided)_ |
 | **test_registry_structure_errors_require_scope_and_evidence_expectation** | _(No docstring provided)_ |
 | **test_verified_automated_control_requires_implementation_mapping**       | _(No docstring provided)_ |
 | **test_verified_automated_control_requires_test_evidence**                | _(No docstring provided)_ |
@@ -484,6 +487,12 @@ This index documents the test suite utilities and fixtures.
 | **\_materialize**                                                        | _(No docstring provided)_ |
 | **test_current_repository_is_governance_ready**                          | _(No docstring provided)_ |
 | **test_materialized_valid_contract_passes**                              | _(No docstring provided)_ |
+| **\_registry_path**                                                      | _(No docstring provided)_ |
+| **\_write_registry**                                                     | _(No docstring provided)_ |
+| **test_root_criterion_reports_pending_ids_without_granting_release**     | _(No docstring provided)_ |
+| **test_root_criterion_excludes_pending_content_and_consumer_controls**   | _(No docstring provided)_ |
+| **test_registry_failure_cannot_satisfy_root_criterion**                  | _(No docstring provided)_ |
+| **test_gap_root_control_remains_a_release_blocker**                      | _(No docstring provided)_ |
 | **test_contract_corruption_is_fail_closed**                              | _(No docstring provided)_ |
 | **test_evidence_path_rules_reject_blank_temporary_external_and_missing** | _(No docstring provided)_ |
 | **test_invalid_qualification_entrypoints_are_reported**                  | _(No docstring provided)_ |

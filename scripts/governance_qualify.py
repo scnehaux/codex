@@ -56,6 +56,15 @@ def main(argv: list[str] | None = None) -> int:
 
     print("[PASS] Governance control qualification")
     print(f"  controls: {len(readiness.checked_controls)}")
+    print(f"  root-of-trust controls: {len(readiness.root_of_trust_controls)}")
+    print(
+        "  root-of-trust release criterion: "
+        + ("SATISFIED" if readiness.root_of_trust_ready else "NOT READY")
+    )
+    print(
+        "  pending root-of-trust: "
+        + (", ".join(readiness.pending_root_of_trust) or "none")
+    )
     print(
         f"  framework contract: {framework_contract.framework_id} {framework_contract.framework_version}"
     )

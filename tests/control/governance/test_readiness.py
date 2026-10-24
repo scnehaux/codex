@@ -95,6 +95,13 @@ def _materialize(
         encoding="utf-8",
     )
 
+    (tmp_path / "governance" / "normative-control-registry.yaml").write_text(
+        (REPOSITORY_ROOT / "governance" / "normative-control-registry.yaml").read_text(
+            encoding="utf-8"
+        ),
+        encoding="utf-8",
+    )
+
     return tmp_path
 
 
@@ -114,6 +121,108 @@ def test_materialized_valid_contract_passes(tmp_path):
     root = _materialize(tmp_path)
     report = assert_governance_readiness(root)
     assert report.ok
+
+
+def _registry_path(root):
+    return root / "governance" / "normative-control-registry.yaml"
+
+
+def _write_registry(root, records):
+    _registry_path(root).write_text(
+        yaml.safe_dump(records, sort_keys=False), encoding="utf-8"
+    )
+
+
+def test_root_criterion_reports_pending_ids_without_granting_release(tmp_path):
+    root = _materialize(tmp_path)
+    before = _registry_path(root).read_bytes()
+    report = assert_governance_readiness(root)
+    records = yaml.safe_load(before)["controls"]
+    expected = tuple(
+        sorted(
+            r["control_id"]
+            for r in records
+            if r["release_class"] == "root-of-trust"
+            and r["evidence_status"] != "verified"
+        )
+    )
+    assert report.ok
+    assert expected and report.pending_root_of_trust == expected
+    assert not report.root_of_trust_ready
+    assert _registry_path(root).read_bytes() == before
+
+
+def test_root_criterion_excludes_pending_content_and_consumer_controls(tmp_path):
+    root = _materialize(tmp_path)
+    data = yaml.safe_load(_registry_path(root).read_text(encoding="utf-8"))
+    for record in data["controls"]:
+        if record["release_class"] == "root-of-trust":
+            record["evidence_status"] = "verified"
+            record["implementation"] = ["engine/example.py"]
+            record["test_evidence"] = ["tests/test_example.py"]
+    # Synthetic fixture proves classification semantics, not real evidence closure.
+    _write_registry(root, data)
+    report = assert_governance_readiness(root)
+    assert report.root_of_trust_ready
+    assert report.pending_root_of_trust == ()
+    assert any(r["evidence_status"] == "pending" for r in data["controls"])
+
+
+@pytest.mark.parametrize(
+    "damage",
+    [
+        "missing-file",
+        "invalid-yaml",
+        "invalid-root",
+        "missing-class",
+        "unknown-class",
+        "no-roots",
+        "invalid-status",
+    ],
+)
+def test_registry_failure_cannot_satisfy_root_criterion(tmp_path, damage):
+    root = _materialize(tmp_path)
+    path = _registry_path(root)
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if damage == "missing-file":
+        path.unlink()
+    elif damage == "invalid-yaml":
+        path.write_text("controls: [", encoding="utf-8")
+    elif damage == "invalid-root":
+        path.write_text("[]", encoding="utf-8")
+    else:
+        if damage == "missing-class":
+            data["controls"][0].pop("release_class")
+        elif damage == "unknown-class":
+            data["controls"][0]["release_class"] = "unknown"
+        elif damage == "invalid-status":
+            next(r for r in data["controls"] if r["release_class"] == "root-of-trust")[
+                "evidence_status"
+            ] = "unknown"
+        else:
+            for record in data["controls"]:
+                record["release_class"] = "consumer-artifact"
+        _write_registry(root, data)
+    report = audit_governance_readiness(root)
+    assert not report.ok
+    assert not report.root_of_trust_ready
+    with pytest.raises(RuntimeError, match="control-registry"):
+        assert_governance_readiness(root)
+
+
+def test_gap_root_control_remains_a_release_blocker(tmp_path):
+    root = _materialize(tmp_path)
+    data = yaml.safe_load(_registry_path(root).read_text(encoding="utf-8"))
+    record = next(
+        r
+        for r in data["controls"]
+        if r["release_class"] == "root-of-trust" and r["evidence_status"] == "pending"
+    )
+    record["evidence_status"] = "gap"
+    _write_registry(root, data)
+    report = assert_governance_readiness(root)
+    assert record["control_id"] in report.pending_root_of_trust
+    assert not report.root_of_trust_ready
 
 
 @pytest.mark.parametrize(

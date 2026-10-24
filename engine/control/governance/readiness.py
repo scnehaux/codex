@@ -7,6 +7,12 @@ from typing import Any, Mapping
 
 import yaml
 
+from engine.control.governance.controls import (
+    load_control_registry,
+    load_target_phases,
+    registry_structure_errors,
+)
+
 
 REQUIRED_CONTROL_KEYS = frozenset(
     {
@@ -58,10 +64,20 @@ class ReadinessFinding:
 class GovernanceReadinessReport:
     checked_controls: tuple[str, ...]
     findings: tuple[ReadinessFinding, ...]
+    root_of_trust_controls: tuple[str, ...]
+    pending_root_of_trust: tuple[str, ...]
 
     @property
     def ok(self) -> bool:
         return not self.findings
+
+    @property
+    def root_of_trust_ready(self) -> bool:
+        return (
+            self.ok
+            and bool(self.root_of_trust_controls)
+            and not self.pending_root_of_trust
+        )
 
 
 def _load_mapping(
@@ -204,6 +220,38 @@ def audit_governance_readiness(
 ) -> GovernanceReadinessReport:
     root = Path(repo_root).resolve()
     findings: list[ReadinessFinding] = []
+
+    registry_path = root / "governance" / "normative-control-registry.yaml"
+    root_controls: tuple[str, ...] = ()
+    pending_roots: tuple[str, ...] = ()
+    try:
+        records = load_control_registry(registry_path)
+        errors = registry_structure_errors(records, load_target_phases(registry_path))
+        root_controls = tuple(
+            sorted(r.control_id for r in records if r.release_class == "root-of-trust")
+        )
+        pending_roots = tuple(
+            sorted(
+                r.control_id
+                for r in records
+                if r.release_class == "root-of-trust"
+                and r.evidence_status != "verified"
+            )
+        )
+        if not root_controls:
+            errors += ("Registry must contain root-of-trust controls",)
+        findings.extend(
+            ReadinessFinding(
+                "control-registry-invalid", registry_path.as_posix(), error
+            )
+            for error in errors
+        )
+    except (OSError, RuntimeError, yaml.YAMLError) as exc:
+        findings.append(
+            ReadinessFinding(
+                "control-registry-load-failed", registry_path.as_posix(), str(exc)
+            )
+        )
 
     source_layout_path = root / "governance" / "framework" / "source-layout.yaml"
     bootstrap_path = root / "governance" / "bootstrap-manifest.yaml"
@@ -452,6 +500,8 @@ def audit_governance_readiness(
     return GovernanceReadinessReport(
         checked_controls=checked_controls,
         findings=tuple(findings),
+        root_of_trust_controls=root_controls,
+        pending_root_of_trust=pending_roots,
     )
 
 
