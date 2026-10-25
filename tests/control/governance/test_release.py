@@ -442,10 +442,14 @@ def test_unqualified_source_is_not_a_release(estate, tmp_path, damage):
         shutil.rmtree(source / "schemas")
     else:
         # Commit a symlink via the Git index, without requiring Windows symlink privileges.
+        # Preserve the index mode when git add sees its regular-file representation.
+        _git(source, "config", "core.symlinks", "false")
         oid = _git(source, "hash-object", "-w", "--stdin", input=b"../outside")
         _git(source, "update-index", "--add", "--cacheinfo", f"120000,{oid},link")
         (source / "link").write_text("../outside", encoding="utf-8")
     _commit(source)
+    if damage == "symlink":
+        assert _git(source, "ls-tree", "HEAD", "link").startswith("120000 blob ")
     revision = _publication(estate.authority, source)
     if damage in {"draft", "unstable", "root-pending"}:
         value = target.build_release_manifest(
