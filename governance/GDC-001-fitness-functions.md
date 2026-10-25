@@ -3,7 +3,7 @@ doc_meta:
   id: GDC-001
   title: Architecture Fitness Functions & Compliance Engine
   owner: Architecture Authority
-  version: 0.1.18
+  version: 0.1.19
   status: draft
   classification: public
   governed_by: [GDC-000]
@@ -92,7 +92,8 @@ codex/
 │   │   │   └── scm/
 │   │   │       ├── github.py
 │   │   │       ├── github_activation.py
-│   │   │       └── github_live.py
+│   │   │       ├── github_live.py
+│   │   │       └── github_release.py
 │   │   ├── control/
 │   │   │   ├── auditors/          # (External environment validators)
 │   │   │   │   ├── dependency_scanner.py
@@ -128,6 +129,7 @@ codex/
 │   │   │   │   ├── mutation.py
 │   │   │   │   ├── readiness.py
 │   │   │   │   ├── relationships.py
+│   │   │   │   ├── release.py
 │   │   │   │   ├── scm_observer.py
 │   │   │   │   ├── scm_policy.py
 │   │   │   │   ├── scm_trust.py
@@ -213,6 +215,7 @@ codex/
 │   │   ├── github_live_state_observe.py
 │   │   ├── github_policy_check.py
 │   │   ├── governance_qualify.py
+│   │   ├── governance_release.py
 │   │   ├── INDEX.md
 │   │   ├── install-hooks.py
 │   │   ├── mutation_integrity.py
@@ -225,7 +228,8 @@ codex/
 │       ├── adapters/
 │       │   └── scm/
 │       │       ├── test_github.py
-│       │       └── test_github_live.py
+│       │       ├── test_github_live.py
+│       │       └── test_github_release.py
 │       ├── control/
 │       │   ├── auditors/         # (External environment validators)
 │       │   │   ├── test_dependency_scanner.py
@@ -259,6 +263,7 @@ codex/
 │       │   │   ├── test_readiness.py
 │       │   │   ├── test_registry_reconciliation.py
 │       │   │   ├── test_relationships.py
+│       │   │   ├── test_release.py
 │       │   │   ├── test_repository_text_policy.py
 │       │   │   ├── test_scm_observer.py
 │       │   │   ├── test_scm_policy.py
@@ -349,6 +354,7 @@ codex/
 │       │   ├── test_github_live_state_observe.py
 │       │   ├── test_github_policy_check.py
 │       │   ├── test_governance_qualify.py
+│       │   ├── test_governance_release.py
 │       │   ├── test_governance_scripts.py
 │       │   ├── test_makefile_generated_state.py
 │       │   ├── test_makefile_orchestration.py

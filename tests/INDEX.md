@@ -36,6 +36,13 @@ This index documents the test suite utilities and fixtures.
 | **test_aligned_live_ruleset_has_zero_semantic_drift**          | _(No docstring provided)_ |
 | **test_github_live_fail_closed_and_partial_observation_paths** | _(No docstring provided)_ |
 
+### `tests/adapters/scm/test_github_release.py`
+
+| Function                                                             | Description               |
+| :------------------------------------------------------------------- | :------------------------ |
+| **test_provider_transport_is_read_only_and_bounded**                 | _(No docstring provided)_ |
+| **test_provider_transport_requires_no_secret_and_refuses_redirects** | _(No docstring provided)_ |
+
 ### `tests/control/auditors/test_dependency_scanner.py`
 
 | Function                                      | Description               |
@@ -549,6 +556,38 @@ This index documents the test suite utilities and fixtures.
 | **test_non_dict_metadata_is_ignored**                                         | _(No docstring provided)_ |
 | **test_relationship_spec_lookup_returns_none_for_unsupported_pair**           | _(No docstring provided)_ |
 | **test_relationship_specs_for_known_source_are_nonempty**                     | _(No docstring provided)_ |
+
+### `tests/control/governance/test_release.py`
+
+| Function                                                                  | Description               |
+| :------------------------------------------------------------------------ | :------------------------ |
+| **\_git**                                                                 | _(No docstring provided)_ |
+| **\_commit**                                                              | _(No docstring provided)_ |
+| **\_write**                                                               | _(No docstring provided)_ |
+| **\_publication**                                                         | _(No docstring provided)_ |
+| **\_manifest_commit**                                                     | _(No docstring provided)_ |
+| **estate**                                                                | _(No docstring provided)_ |
+| **\_provider**                                                            | _(No docstring provided)_ |
+| **\_verify**                                                              | _(No docstring provided)_ |
+| **bound_metadata**                                                        | _(No docstring provided)_ |
+| **test_real_recomputation_is_deterministic_and_binds_every_inventory**    | _(No docstring provided)_ |
+| **test_manifest_field_drift_is_not_repaired_or_ignored**                  | _(No docstring provided)_ |
+| **test_malformed_manifest_fails_closed**                                  | _(No docstring provided)_ |
+| **test_digest_and_canonical_bytes_are_required**                          | _(No docstring provided)_ |
+| **test_provider_check_must_belong_to_exact_app_and_source**               | _(No docstring provided)_ |
+| **test_unmerged_or_different_canonical_tree_cannot_release**              | _(No docstring provided)_ |
+| **test_missing_exact_qualification_and_wrong_tags_fail**                  | _(No docstring provided)_ |
+| **test_unqualified_source_is_not_a_release**                              | _(No docstring provided)_ |
+| **test_dirty_source_and_bad_version_or_revision_fail**                    | _(No docstring provided)_ |
+| **test_retained_publication_must_be_complete_and_exact**                  | _(No docstring provided)_ |
+| **test_missing_publication_and_invalid_git_fail_closed**                  | _(No docstring provided)_ |
+| **test_revision_change_during_binding_fails_closed**                      | _(No docstring provided)_ |
+| **test_git_batch_cannot_substitute_or_escape_blobs**                      | _(No docstring provided)_ |
+| **test_unmerged_authority_manifest_is_rejected**                          | _(No docstring provided)_ |
+| **test_git_timeout_fails_closed**                                         | _(No docstring provided)_ |
+| **test_malformed_yaml_metadata_fails_closed**                             | _(No docstring provided)_ |
+| **test_github_default_readback_uses_provider_adapter**                    | _(No docstring provided)_ |
+| **test_core_accepts_verified_publication_port_without_provider_payloads** | _(No docstring provided)_ |
 
 ### `tests/control/governance/test_repository_text_policy.py`
 
@@ -1425,6 +1464,16 @@ This index documents the test suite utilities and fixtures.
 | **test_full_qualification_propagates_pytest_failure**           | _(No docstring provided)_ |
 | **test_full_qualification_passes_when_pytest_passes**           | _(No docstring provided)_ |
 | **test_permanent_qualifier_runs_directly_in_control_only_mode** | _(No docstring provided)_ |
+
+### `tests/scripts/test_governance_release.py`
+
+| Function                                                              | Description               |
+| :-------------------------------------------------------------------- | :------------------------ |
+| **working**                                                           | _(No docstring provided)_ |
+| **test_build_is_reviewable_and_never_declares_or_overwrites_release** | _(No docstring provided)_ |
+| **test_required_mode_inputs_fail_closed**                             | _(No docstring provided)_ |
+| **test_verify_passes_exact_manifest_and_tag_to_verifier**             | _(No docstring provided)_ |
+| **test_declared_candidate_workflow_verifies_before_qualification**    | _(No docstring provided)_ |
 
 ### `tests/scripts/test_governance_scripts.py`
 

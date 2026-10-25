@@ -71,6 +71,12 @@ This index documents the internal functions and classes of the CI/CD scripts.
 | **\_parser** | _(No docstring provided)_ |
 | **main**     | _(No docstring provided)_ |
 
+### `scripts/governance_release.py`
+
+| Function | Description               |
+| :------- | :------------------------ |
+| **main** | _(No docstring provided)_ |
+
 ### `scripts/install-hooks.py`
 
 | Function            | Description                                                                                                                                                                                  |

@@ -329,6 +329,25 @@ This index documents the internal functions and classes of the Fitness Function 
 | **dag_relation_specs_for_source**  | _(No docstring provided)_ |
 | **relationship_contract_findings** | _(No docstring provided)_ |
 
+### `engine/control/governance/release.py`
+
+| Function                    | Description                                                                        |
+| :-------------------------- | :--------------------------------------------------------------------------------- |
+| **\_require**               | _(No docstring provided)_                                                          |
+| **canonical_json**          | _(No docstring provided)_                                                          |
+| **\_unique_object**         | _(No docstring provided)_                                                          |
+| **\_json**                  | _(No docstring provided)_                                                          |
+| **\_sha**                   | _(No docstring provided)_                                                          |
+| **\_git**                   | _(No docstring provided)_                                                          |
+| **\_text**                  | _(No docstring provided)_                                                          |
+| **\_blob**                  | _(No docstring provided)_                                                          |
+| **\_blob_id**               | _(No docstring provided)_                                                          |
+| **\_version**               | _(No docstring provided)_                                                          |
+| **\_export_blobs**          | _(No docstring provided)_                                                          |
+| **\_publication**           | _(No docstring provided)_                                                          |
+| **build_release_manifest**  | Build metadata only; this function does not approve or declare a release.          |
+| **verify_release_manifest** | Verify committed metadata, baseline eligibility and independent provider readback. |
+
 ### `engine/control/governance/scm_observer.py`
 
 | Function                             | Description               |

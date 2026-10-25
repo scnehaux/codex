@@ -27,6 +27,7 @@ REQUIRED_CONTROL_KEYS = frozenset(
         "declarative_framework_contract",
         "reproducibility_qualification",
         "dependency_update_qualification",
+        "release_metadata_binding",
     }
 )
 TEMPORARY_PATTERNS = ("phase*.py", "slice5_*.py")

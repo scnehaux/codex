@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 POLICY = ROOT / "governance/reproducibility-policy.json"
 WORKFLOW_RELATIVES = (
     ".github/workflows/governance.yml",
+    ".github/workflows/governance-release.yml",
     ".github/workflows/governance-evaluator.yml",
     ".github/workflows/local-app-tooling.yml",
 )
@@ -157,6 +158,8 @@ def assert_reproducibility_policy(repo_root: str | Path = ROOT) -> None:
         _require(
             PYTHON_VERSION in text, f"reproducibility-python-runner:{workflow.name}"
         )
+        if relative == ".github/workflows/governance-release.yml":
+            _require(NODE_VERSION in text, "reproducibility-release-node-runner")
         for line in text.splitlines():
             if line.lstrip().startswith("uses:"):
                 _require(

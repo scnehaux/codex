@@ -345,10 +345,10 @@ No architecture admission opens merely because the engine tests are green
 
 | Slice | Capability                           | Status  | Exit Evidence                                                                               |
 | ----- | ------------------------------------ | ------- | ------------------------------------------------------------------------------------------- |
-| 13.1  | Root-of-Trust Release Classification | ACTIVE  | Every control carries one release class; readiness reports pending root-of-trust ids        |
+| 13.1  | Root-of-Trust Release Classification | DONE    | Every control carries one release class; readiness reports pending root-of-trust ids        |
 | 13.2  | Registry Evidence Reconciliation     | ACTIVE  | No pending control targets a retired phase; phase targets are validated                     |
 | 13.3  | Runtime Authority Closure            | DONE    | PR #45 merged after exact-head Authority check `111729656469`; PR #110 disarmed publication |
-| 13.4  | Release Metadata Binding             | PLANNED | Deterministic release manifest and fail-closed release verifier                             |
+| 13.4  | Release Metadata Binding             | ACTIVE  | Deterministic release manifest and fail-closed release verifier                             |
 | 13.5  | Stable GDC Baseline                  | PLANNED | Twelve required GDCs `approved` at `>=1.0.0` with explicit approval records                 |
 | 13.6  | Governance 1.0 Release               | PLANNED | Release manifest, Authority evidence and tag bind one qualified commit                      |
 
@@ -358,7 +358,9 @@ Slice 13.3 merged in Codex PR #45 at `db18d03440afa2097f926314df53749a5d2bd7aa`,
 
 The owner accepted REC-13-001, REC-13-002 and REC-13-003 on 2026-10-05 by replying "oke gas" to their explicit selection. PLAN section 6.3 records the decision; individual GDC approval remains a separate owner ARB act.
 
-Slice 13.1 is active. Its candidate records a class and rationale for every control: 72 root-of-trust, 11 governance-content and 83 consumer-artifact. Readiness reports 29 pending root-of-trust ids and rejects missing or unknown classes. Evidence remains 82 verified / 84 pending. Authority publication and governed merge remain required.
+Slice 13.1 merged in Codex PR #46 at `86545a1324388fcc0777f7ca1f6ab1bcd2ab5def`, after exact-head Authority check `120984021092`; Authority PR #114 disarmed publication. The 166 controls retain 82 verified / 84 pending, including 29 pending roots. Local qualification passed 1184 tests with 98.55% aggregate coverage and the per-file floor intact.
+
+Slice 13.4 is active. Its candidate binds deterministic release metadata to exact Git source and independently retained Authority publication evidence, verifies all fields and live App/PR readback, and requires the published head's tree to match its merged canonical squash tree. Explicit release-candidate CI verifies the pinned manifest and runs exact-source qualification. Authority stores the manifest to avoid commit self-reference. No actual release manifest, tag, GDC approval or architecture admission is declared; candidate qualification, publication and governed merge are still required.
 
 ---
 
@@ -397,8 +399,9 @@ Phase 10 Stabilization + scoped reference-provider acceptance  DONE
 -> Slice 11.9 Compatibility & Versioning                       DONE
 → Phase 12 Reproducibility                                    DONE
 → Phase 13 Governance 1.0                                     ACTIVE
--> REC-13-001..003 owner decisions                             PENDING
--> Slice 13.1 Root-of-Trust Release Classification            NEXT
+-> REC-13-001..003 owner decisions                             ACCEPTED (2026-10-05)
+-> Slice 13.1 Root-of-Trust Release Classification            DONE (#46)
+-> Slice 13.4 Release Metadata Binding                         NEXT
 → Phase 14 Architecture Re-Admission                          BLOCKED
 ```
 

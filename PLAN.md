@@ -43,7 +43,7 @@ Governance 1.0 readiness            : NOT READY (later phases remain)
 This snapshot is source-bound historical evidence, not an automatically refreshed
 current-state feed. Phase 10 is closed for the accepted reference-provider scope;
 the Phase 11 ledger and Current Next Action below own implementation sequencing.
-Slice 11.6 is complete through Authority publication and governed merge. Slice 11.7 is active. This status grants no standing publication.
+Phase 11 and Phase 12 are closed. Phase 13 is active; Slices 13.1 and 13.3 are complete, and Slice 13.4 is the current implementation candidate. This status grants no standing publication.
 
 Git history is the historical ledger
 
@@ -1074,7 +1074,7 @@ Every slice follows the §1 operating rules, its own canonical qualification, ex
 
 Invariant: the first Governance 1.0 criterion becomes machine-checkable.
 
-Status: ACTIVE; the implementation candidate classifies all 166 controls using accepted REC-13-001, with an explicit rationale per row. The proposed classes are `root-of-trust` (72), `governance-content` (11) and `consumer-artifact` (83). A compound obligation is root-of-trust if any part protects canonical authority; its incomplete evidence still blocks the root criterion. Registry counts remain 82 `verified` / 84 `pending`, including 29 pending root-of-trust controls. Readiness validates registry structure and reports their exact ids without equating implementation qualification with release readiness. Non-root pending obligations retain their existing Slice 13.5 or Phase 14 owner and target. Authority publication and governed merge remain required.
+Status: DONE; Codex PR #46 merged at `86545a1324388fcc0777f7ca1f6ab1bcd2ab5def` after Authority check `120984021092` succeeded on exact head `9638a82b0dc40a6404dfbd5970a32c417810696f`. Authority PR #114 disarmed publication. All 166 controls carry an explicit release class and rationale: 72 root-of-trust, 11 governance-content and 83 consumer-artifact. Evidence remains 82 verified / 84 pending, including 29 pending root-of-trust controls. Local clean-tree qualification passed 1184 tests with 98.55% aggregate coverage and the per-file floor intact. Main post-merge control qualification passed; architecture admission remains closed.
 
 - add an explicit release classification to every control record, as selected by REC-13-001
 - registry structure checks fail closed on a missing or unknown classification
@@ -1121,6 +1121,8 @@ Status: DONE; Codex PR #45 merged at `db18d03440afa2097f926314df53749a5d2bd7aa` 
 ### Slice 13.4 — Release Metadata Binding
 
 Invariant: a Governance release is identified by one deterministic, verifiable manifest.
+
+Status: ACTIVE; the candidate implements deterministic manifest preparation and strict verification from exact Git blob snapshots and independently retained Authority publication blobs. The manifest is committed in Authority after publication, avoiding a self-referential Codex commit SHA. Release source, App check and tag bind the same published PR head; independent provider readback also requires its PR to be merged, its squash tree to be identical, and that merge to be reachable from fetched canonical main. The verifier rejects pending roots and unapproved or unstable GDCs. An explicit release-candidate workflow dispatch verifies the pinned manifest and runs full qualification on the exact source; normal implementation PRs do not declare releases. Metadata generation does not approve, publish, tag or open admission. No actual Governance 1.0 manifest or tag is created in this implementation slice; the 29 pending roots and individual owner ARB approvals remain separate obligations. Canonical qualification, exact-head Authority publication and governed merge of this candidate remain required.
 
 - implement the release manifest selected by REC-13-002
 - a release verifier recomputes every bound identity from the exact source commit and fails closed on drift
@@ -1272,7 +1274,8 @@ The current next action is:
 Phase 12 Reproducibility and Supply-Chain Closure: DONE
 -> Phase 13 Governance 1.0: ACTIVE / NOT READY
 -> REC-13-001 through REC-13-003: ACCEPTED by owner (2026-10-05)
--> Slice 13.1 Root-of-Trust Release Classification
+-> Slice 13.1 Root-of-Trust Release Classification: DONE (#46)
+-> Slice 13.4 Release Metadata Binding
 ```
 
 Phase 10 reference-provider acceptance, Phase 11 executable-framework closure, and Phase 12 reproducibility closure are complete. Phase 13 is now the active workstream, but Governance 1.0 is not released and architecture admission remains closed.
