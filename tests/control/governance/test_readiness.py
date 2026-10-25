@@ -114,6 +114,7 @@ def test_current_repository_is_governance_ready():
         "version_mutation_integrity",
         "scm_desired_state_semantics",
         "scm_live_state_observation",
+        "release_metadata_binding",
     }
 
 

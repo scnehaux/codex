@@ -321,10 +321,32 @@ reproducibility_qualification:
   - prettier-version-is-explicit
   - prettier-is-resolved-from-npm-lock-integrity
   - floating-or-incomplete-declarations-fail-closed
+release_metadata_binding:
+  authority: engine/control/governance/release.py
+  invocation: scripts/governance_release.py
+  contract:
+  - immutable-source-and-authority-git-blobs-bind-every-manifest-field
+  - canonical-unsigned-manifest-is-committed-in-independent-authority
+  - release-source-check-and-tag-share-one-exact-commit
+  - squash-merge-tree-is-identical-and-reachable-from-canonical-main
+  - unverified-root-controls-and-unapproved-baselines-block-release-verification
+  - explicit-workflow-dispatch-declares-and-verifies-the-release-candidate
+  - metadata-generation-does-not-approve-publish-tag-or-open-admission
 governance_qualification:
   authority: engine/control/governance/readiness.py
   invocation: scripts/governance_qualify.py
   required_controls:
+    release_metadata_binding:
+      policy_ref: release_metadata_binding
+      implementation:
+      - engine/control/governance/release.py
+      - engine/adapters/scm/github_release.py
+      - scripts/governance_release.py
+      - .github/workflows/governance-release.yml
+      test_evidence:
+      - tests/control/governance/test_release.py
+      - tests/scripts/test_governance_release.py
+      - tests/adapters/scm/test_github_release.py
     temporary_tooling:
       policy_ref: temporary_tooling
       implementation:

@@ -26,6 +26,7 @@ def _fixture(tmp_path: Path) -> Path:
         "integrations/github-app-local/requirements.txt",
         "integrations/github-app-local/requirements-dev.txt",
         ".github/workflows/governance.yml",
+        ".github/workflows/governance-release.yml",
         ".github/workflows/governance-evaluator.yml",
         ".github/workflows/local-app-tooling.yml",
     ):
@@ -43,6 +44,18 @@ def test_current_reproducibility_policy_passes():
 @pytest.mark.parametrize(
     ("relative", "old", "new", "error"),
     [
+        (
+            ".github/workflows/governance-release.yml",
+            'node-version: "24.21.0"',
+            'node-version: "24"',
+            "release-node-runner",
+        ),
+        (
+            ".github/workflows/governance-release.yml",
+            'python-version: "3.13.15"',
+            'python-version: "3.13"',
+            "python-runner",
+        ),
         ("pyproject.toml", "setuptools==84.0.0", "setuptools>=84.0.0", "build-backend"),
         (
             "pyproject.toml",
