@@ -43,7 +43,7 @@ Governance 1.0 readiness            : NOT READY (later phases remain)
 This snapshot is source-bound historical evidence, not an automatically refreshed
 current-state feed. Phase 10 is closed for the accepted reference-provider scope;
 the Phase 11 ledger and Current Next Action below own implementation sequencing.
-Phase 11 and Phase 12 are closed. Phase 13 is active; Slices 13.1 and 13.3 are complete, and Slice 13.4 is the current implementation candidate. This status grants no standing publication.
+Phase 11 and Phase 12 are closed. Phase 13 is active; Slices 13.1, 13.3 and 13.4 are complete; Slice 13.5 is preparing the first GDC baseline candidate for owner ARB review. This status grants no standing publication.
 
 Git history is the historical ledger
 
@@ -1122,7 +1122,7 @@ Status: DONE; Codex PR #45 merged at `db18d03440afa2097f926314df53749a5d2bd7aa` 
 
 Invariant: a Governance release is identified by one deterministic, verifiable manifest.
 
-Status: ACTIVE; the candidate implements deterministic manifest preparation and strict verification from exact Git blob snapshots and independently retained Authority publication blobs. The manifest is committed in Authority after publication, avoiding a self-referential Codex commit SHA. Release source, App check and tag bind the same published PR head; independent provider readback also requires its PR to be merged, its squash tree to be identical, and that merge to be reachable from fetched canonical main. The verifier rejects pending roots and unapproved or unstable GDCs. An explicit release-candidate workflow dispatch verifies the pinned manifest and runs full qualification on the exact source; normal implementation PRs do not declare releases. Metadata generation does not approve, publish, tag or open admission. No actual Governance 1.0 manifest or tag is created in this implementation slice; the 29 pending roots and individual owner ARB approvals remain separate obligations. Canonical qualification, exact-head Authority publication and governed merge of this candidate remain required.
+Status: DONE; Codex PR #47 merged at `0582d15b4c77dbc3c7eab8314a22c4db6a1c6c49` after dedicated App check `121288035795` succeeded on exact head `f8a145d00a885d8c4d606550d4efa05b19c10846`. The squash tree equals the published candidate tree. Authority PR #118 retained the actual publication outcome and restored disabled state with null activation. Local clean-checkout qualification passed 1266 tests with 98.59% aggregate coverage and the per-file floor intact; all four candidate CI checks passed, including Linux qualification. The implemented manifest/verifier and explicit release-candidate workflow bind exact Git source and independent publication evidence, reject pending roots and unapproved or unstable GDCs, and create no approval, tag or admission. No actual Governance 1.0 manifest or tag is declared. The 29 pending roots and individual owner ARB approvals remain separate obligations.
 
 - implement the release manifest selected by REC-13-002
 - a release verifier recomputes every bound identity from the exact source commit and fails closed on drift
@@ -1131,6 +1131,8 @@ Status: ACTIVE; the candidate implements deterministic manifest preparation and 
 ### Slice 13.5 — Stable GDC Baseline
 
 Invariant: every GDC in `required_baseline_ids` is `approved` at `>=1.0.0` through the review evidence selected by REC-13-003.
+
+Status: ACTIVE; the first unmerged candidate proposes GDC-000 `approved` / `1.0.0`, its UTC review-date field, and corrections to C4/repository labels and the rubric reference. Obsolete blanket parent and attachment rules are reconciled with the already-authoritative executable Relationship Registry; enforcement prose distinguishes automated checks from explicit human or provider evidence. `CTRL-GDC-000-019` retains its id and executable evidence mappings with its corrected statement/fingerprint. Other normative statements, all control classifications and all evidence states are unchanged; no runtime, schema, ontology, threshold or admission policy is changed. The candidate PR carries an author-proposed rubric score sheet and normative-control delta. These are preparation for owner review, not an approval record. The owner acting as ARB must create the exact-head approval record required by REC-13-003 before publication and merge; the proposed review date must match the actual review date. Approval of GDC-000 alone does not approve the other eleven GDCs or declare Governance 1.0.
 
 - GDC-000 is promoted first, because every other GDC is `governed_by` GDC-000
 - each candidate carries a GDC-002 quality rubric score sheet with at least 9 passes and its normative-control delta
@@ -1275,7 +1277,8 @@ Phase 12 Reproducibility and Supply-Chain Closure: DONE
 -> Phase 13 Governance 1.0: ACTIVE / NOT READY
 -> REC-13-001 through REC-13-003: ACCEPTED by owner (2026-10-05)
 -> Slice 13.1 Root-of-Trust Release Classification: DONE (#46)
--> Slice 13.4 Release Metadata Binding
+-> Slice 13.4 Release Metadata Binding: DONE (#47)
+-> Slice 13.5 Stable GDC Baseline: GDC-000 candidate / owner ARB review pending
 ```
 
 Phase 10 reference-provider acceptance, Phase 11 executable-framework closure, and Phase 12 reproducibility closure are complete. Phase 13 is now the active workstream, but Governance 1.0 is not released and architecture admission remains closed.

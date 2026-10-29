@@ -3,12 +3,13 @@ doc_meta:
   id: GDC-000
   title: Documentation Governance Policy
   owner: Architecture Authority
-  version: 0.1.0
-  status: draft
+  version: 1.0.0
+  status: approved
   classification: public
   governed_by: [GDC-000]
   review_cycle_days: 365
   created_date: 2026-01-01
+  last_reviewed: 2026-10-29
 ---
 
 # Documentation Governance Policy (The Constitution)
@@ -76,14 +77,14 @@ The 9 dimensions of the SoC Philosophy (Scope, Abstraction, NFR Focus, etc.) are
 - **C4 Model (The Vertical Axis)**: Standard C4 is used as the foundational Y-axis (depth) of our ecosystem. It dictates how we zoom in from the Enterprise level (System Landscape / C0) down to the Component level (C3). This guarantees that every artifact operates at the correct level of abstraction and naturally serves the right audience (from C-Level executives at C0 down to SWEs at C3) without mixing technical depths.
   - _Why not UML or ArchiMate?_ UML is too syntax-heavy and demands specialized training, while ArchiMate is often disconnected from the reality of code. C4 provides a lightweight, intuitive "map-like" mental model that developers natively understand without requiring proprietary modeling tools.
 
-  | Level    | C4 Name              | Scnehaux Artifacts           | SoC Scope             | Location                               |
-  | :------- | :------------------- | :--------------------------- | :-------------------- | :------------------------------------- |
-  | **Meta** | **Cross-Cutting**    | **GDC**, **ADR**, **STD**    | Ecosystem / Inherited | Root Repo (`00`, `02`, `05`)           |
-  | **C0**   | **System Landscape** | **EAD**                      | Enterprise            | Architecture Repo (`enterprise/`)      |
-  | **C1**   | **System Context**   | **PAD**                      | Domain                | Architecture Repo (`domains/`)         |
-  | **C2**   | **Container**        | **SAD**                      | System                | Architecture Repo (`systems/`)         |
-  | **C3**   | **Component**        | **TDD**                      | Component             | **Architecture or Project Repository** |
-  | **C4**   | **Code**             | Source Code / Implementation | Code Base             | **Architecture or Project Repository** |
+  | Level    | C4 Name              | Scnehaux Artifacts           | SoC Scope             | Location                                        |
+  | :------- | :------------------- | :--------------------------- | :-------------------- | :---------------------------------------------- |
+  | **Meta** | **Cross-Cutting**    | **GDC**, **ADR**, **STD**    | Ecosystem / Inherited | Framework / Architecture / Project Repositories |
+  | **C0**   | **System Landscape** | **EAD**                      | Enterprise            | Architecture Repo (`enterprise/`)               |
+  | **C1**   | **System Context**   | **PAD**                      | Domain                | Architecture Repo (`domains/`)                  |
+  | **C2**   | **Container**        | **SAD**                      | System                | Architecture Repo (`systems/`)                  |
+  | **C3**   | **Component**        | **TDD**                      | Component             | **Architecture or Project Repository**          |
+  | **C4**   | **Code**             | Source Code / Implementation | Code Base             | **Architecture or Project Repository**          |
 
 - **Domain-Driven Design (DDD) & Team Topologies (The Business Anchor)**: While C4 handles technical zoom, DDD and Team Topologies provide the strategic anchor. At the macro level, **DDD Strategic Design** (Bounded Contexts) constructs the long-term foundations of our EAD and PAD artifacts, enforcing a strict separation between horizontal Platform services and vertical Business Products. As we zoom in, **DDD Tactical Design** (Aggregates, Entities) shapes the physical boundaries within our SADs and TDDs. Concurrently, **Team Topologies** enforces Conway's Law across the entire ecosystem, dictating the ownership and collaboration models for every single artifact.
   - _Why not TOGAF?_ TOGAF's 4 domains (Business, Data, Application, Technology) are often too rigid and academic for hyper-growth cloud-native engineering teams. DDD provides the most pragmatic vocabulary for forcing technologists to define "What bounded context are we actually building?" while Team Topologies enforces Conway's Law in our documentation ownership.
@@ -279,6 +280,7 @@ graph TD
 
     ADR -.->|Modifies / Attaches To| EAD
     ADR -.->|Modifies / Attaches To| PAD
+    ADR -.->|Modifies / Attaches To| SAD
 
     style ADR fill:#dd6b20,stroke:#c05621,stroke-width:2px,color:#fff
     style EAD fill:#1a365d,stroke:#3182ce,stroke-width:2px,color:#fff
@@ -294,10 +296,10 @@ graph TD
 To maintain the unbroken DAG illustrated above, the following structural policies apply:
 
 1. **The Root Node**: The Enterprise Architecture Document (EAD) is the supreme root of the C4 Contractual Lineage. It does not require a parent attachment, though it may link to a fellow EAD if necessary.
-2. **The Core Hierarchy (EAD → PAD → SAD → TDD)**: Starting from the PAD and moving downwards, every artifact **MUST** establish a strict upward relationship to exactly one structural parent above it. (A TDD attaches to a SAD, a SAD attaches to a PAD, and a PAD attaches to an EAD). **Orphan artifacts are strictly prohibited.**
+2. **The Core Hierarchy (EAD to PAD to SAD to TDD)**: PAD, SAD, and TDD artifacts **MUST** satisfy the source type, target type, and structural-parent cardinality defined by the executable Relationship Registry. Orphan artifacts are strictly prohibited.
 3. **The Meta Attachments (STD & ADR)**: Standards and Decision Records do not sit in the core execution hierarchy. Instead, they act as meta-level modifiers:
    - **Target Scope**: ADRs and STDs can be applied Globally (Enterprise-wide) or restricted to a specific Domain.
-   - **Attachment Policy**: ADRs and STDs can **ONLY** be attached to an **EAD** or a **PAD**. They cannot be attached to a SAD or a TDD.
+   - **Attachment Policy**: Permitted relationship fields, source/target combinations, and cardinalities come from the executable Relationship Registry. A `governed_by` policy edge does not substitute for the structural fields `realizes_capability`, `parent_pad`, or `parent_sad`.
    - **Independence**: An STD is established directly by an EAD or PAD, it does not require an ADR to enforce its existence. ADRs and STDs have no structural relationship with each other.
 
 #### 2.4.2 The 1-to-N Execution Mapping (PAD to SAD)
@@ -306,7 +308,7 @@ A single Domain Capability (PAD) is often fulfilled by one or more physical syst
 
 ```mermaid
 graph TD
-  PAD["ui-platform.pad.md (C2 Domain Capability)"]
+  PAD["ui-platform.pad.md (C1 Domain Capability)"]
   PAD --> SAD1["core-ui.sad.md (Core UI Library)"]
   PAD --> SAD2["design-token.sad.md (Design Token System)"]
 
@@ -379,7 +381,7 @@ A governance policy without an automated enforcement mechanism is merely a sugge
 Rather than relying solely on human oversight (which is subjective and slow), the policies dictated by the Constitution (GDC-000) and its Guidelines are codified into machine-readable formats (as established in the [Fractal Triad](#232-logical-decentralization-the-fractal-triad)).
 
 1. **Deterministic Execution**: The ecosystem utilizes a centralized CI/CD engine (The Fitness Function) to deterministically validate every architectural artifact against its domain-specific schema. This ensures structural integrity, semantic lineage, and NFR quantification are mathematically verified before any human reviewer intervenes.
-2. **The Acid Test**: The Architecture Authority is prohibited from establishing new governance policies that cannot be mechanically validated by the Fitness Function.
+2. **Enforcement Accountability**: Each policy has an explicit enforcement mechanism. Mechanically decidable constraints use the Fitness Function; qualitative judgments and external process or repository obligations use review or Authority evidence tracked by the Normative Control Registry.
 
 ### 2.8 The Quality Framework
 
@@ -433,8 +435,8 @@ To manage governance across federated repositories without creating a human bott
 | **PRD**           | Product Requirements Document    | **[Owner: Product Managers]** Business "What" and "Why" (Non-technical). Not part of this framework.                                                                              |
 | **GDC (Vision)**  | Global Design Concept            | **[REJECTED]** High-Level Vision (C1). Replaced by the **EAD** (for enterprise strategy) and integrated into the **Domain Capability** section of **PAD**s.                       |
 | **GDC (Gov)**     | Governance Document Contract     | **[Owner: Architecture Authority]** Automated policy definitions and deterministic fitness function enforcement. _(See [Appendix 4.2](#appendix-4-2) for acronym clarification)._ |
-| **EAD**           | Enterprise Architecture Document | **[Owner: Architecture Authority]** Strategic "North Star" (C1), cross-domain policies, and enterprise capability models.                                                         |
-| **PAD**           | Product Architecture Document    | **[Owner: Domain Team]** Domain Capability (C2). Defines domain capabilities, integration contracts, and system positioning.                                                      |
+| **EAD**           | Enterprise Architecture Document | **[Owner: Architecture Authority]** Strategic "North Star" (C0), cross-domain policies, and enterprise capability models.                                                         |
+| **PAD**           | Product Architecture Document    | **[Owner: Domain Team]** Domain Capability (C1). Defines domain capabilities, integration contracts, and system positioning.                                                      |
 | **SAD**           | System Architecture Document     | **[Owner: System Team]** System Architecture (C2). Defines internal structure, deployment topology, observability, and resilience mechanics.                                      |
 | **ADR**           | Architecture Decision Record     | **[Owner: Inherited (Architecture Authority or Domain/System Team)]** Meta. Rationale for significant technical pivots and trade-offs (`decisions`).                              |
 | **STD**           | Standard Document                | **[Owner: Inherited (Architecture Authority or Domain/System Team)]** Meta. Mandatory engineering policies and guardrails (`standards`).                                          |
@@ -463,7 +465,7 @@ At Scnehaux, we **do not use** a standalone TRD. We believe that technical requi
 
 ### 4.4 Framework Trade-Offs (Why Docs-as-Code?)
 
-In accordance with the 10th parameter of the Quality Rubric (Trade-Offs), the Architecture Authority explicitly documents the rationale and technical compromises accepted when designing this custom, Markdown-based Governance Framework:
+In accordance with the 7th parameter of the Quality Rubric (Trade-Offs), the Architecture Authority explicitly documents the rationale and technical compromises accepted when designing this custom, Markdown-based Governance Framework:
 
 1. **Markdown + Custom Fitness Function vs. Spotify Backstage / Structurizr**
    - _Why rejected_: Commercial/Enterprise systems like Backstage or Structurizr require dedicated infrastructure, operational overhead, and steep learning curves for UI-based modeling.

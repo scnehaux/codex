@@ -406,11 +406,11 @@ controls:
   source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.4 Contractual Lineage (The C4
     DAG) > 2.4.1 DAG Integrity & Attachment Policies
-  source_fingerprint: 73283ade603d
+  source_fingerprint: 24f7b05de01d
   modality: MUST
-  statement: 'The Core Hierarchy (EAD → PAD → SAD → TDD): Starting from the PAD and moving downwards, every artifact MUST
-    establish a strict upward relationship to exactly one structural parent above it. (A TDD attaches to a SAD, a SAD attaches
-    to a PAD, and a PAD attaches to an EAD). Orphan artifacts are strictly prohibited.'
+  statement: 'The Core Hierarchy (EAD to PAD to SAD to TDD): PAD, SAD, and TDD artifacts MUST satisfy the source type,
+    target type, and structural-parent cardinality defined by the executable Relationship Registry. Orphan artifacts
+    are strictly prohibited.'
   scope: governance-constitution
   severity: ERROR
   enforcement_mode: automated
