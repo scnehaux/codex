@@ -139,6 +139,28 @@ def test_injected_lifecycle_controls_age_and_baseline_semantics(monkeypatch):
 
     monkeypatch.setenv("SCNEHAUX_EVALUATION_DATE", "2026-10-05")
     runtime = executable_framework()
+    # This test needs an old, unstable draft regardless of the live GDC baseline.
+    body = _real_candidate().parsed.source.content.split("---", 2)[2]
+    source = SourceDocument(
+        "governance/GDC-000-governance-policy.md",
+        "---\ndoc_meta:\n"
+        "  id: GDC-000\n"
+        "  title: Synthetic lifecycle candidate\n"
+        "  owner: Synthetic owner\n"
+        "  version: 0.1.0\n"
+        "  status: draft\n"
+        "  classification: public\n"
+        "  governed_by: [GDC-000]\n"
+        "  review_cycle_days: 365\n"
+        "  created_date: 2026-01-01\n"
+        "---" + body,
+    )
+    candidate = build_artifact_candidate(parse_source_document(source))
+    ids, metadata, _ = _registry()
+    control = validate_candidate(
+        candidate, framework=runtime, all_doc_ids=ids, all_doc_metadata=metadata
+    )
+    assert control.outcome.value == "pass"
     lifecycle = dict(runtime.lifecycle)
     lifecycle["GDC"] = dict(lifecycle["GDC"])
     lifecycle["GDC"]["draft"] = replace(
@@ -149,9 +171,8 @@ def test_injected_lifecycle_controls_age_and_baseline_semantics(monkeypatch):
     injected = replace(
         runtime, artifacts=replace(runtime.artifacts, lifecycle=lifecycle)
     )
-    ids, metadata, _ = _registry()
     report = validate_candidate(
-        _real_candidate(),
+        candidate,
         framework=injected,
         all_doc_ids=ids,
         all_doc_metadata=metadata,

@@ -348,8 +348,8 @@ No architecture admission opens merely because the engine tests are green
 | 13.1  | Root-of-Trust Release Classification | DONE    | Every control carries one release class; readiness reports pending root-of-trust ids        |
 | 13.2  | Registry Evidence Reconciliation     | ACTIVE  | No pending control targets a retired phase; phase targets are validated                     |
 | 13.3  | Runtime Authority Closure            | DONE    | PR #45 merged after exact-head Authority check `111729656469`; PR #110 disarmed publication |
-| 13.4  | Release Metadata Binding             | ACTIVE  | Deterministic release manifest and fail-closed release verifier                             |
-| 13.5  | Stable GDC Baseline                  | PLANNED | Twelve required GDCs `approved` at `>=1.0.0` with explicit approval records                 |
+| 13.4  | Release Metadata Binding             | DONE    | PR #47 merged after exact-head Authority check `121288035795`; PR #118 disarmed publication |
+| 13.5  | Stable GDC Baseline                  | ACTIVE  | First GDC-000 candidate prepared; exact-head owner ARB approval remains pending             |
 | 13.6  | Governance 1.0 Release               | PLANNED | Release manifest, Authority evidence and tag bind one qualified commit                      |
 
 Slice 13.2's retained-evidence reconciliation merged in Codex PR #44 after Authority check `111666125699` succeeded on the exact head; Authority PR #107 disarmed publication. Bootstrap provenance and two history/PR-path controls map to immutable Genesis and owner-accepted Phase 10 evidence, with its original reference-provider limits preserved. Registry counts are 82 verified / 84 pending. Four obligations remain pending: historical pre-root qualification, complete short-lived-branch evidence, automatic branch cleanup, and actual behind-main refusal. Slice 13.2 is not complete.
@@ -360,7 +360,9 @@ The owner accepted REC-13-001, REC-13-002 and REC-13-003 on 2026-10-05 by replyi
 
 Slice 13.1 merged in Codex PR #46 at `86545a1324388fcc0777f7ca1f6ab1bcd2ab5def`, after exact-head Authority check `120984021092`; Authority PR #114 disarmed publication. The 166 controls retain 82 verified / 84 pending, including 29 pending roots. Local qualification passed 1184 tests with 98.55% aggregate coverage and the per-file floor intact.
 
-Slice 13.4 is active. Its candidate binds deterministic release metadata to exact Git source and independently retained Authority publication evidence, verifies all fields and live App/PR readback, and requires the published head's tree to match its merged canonical squash tree. Explicit release-candidate CI verifies the pinned manifest and runs exact-source qualification. Authority stores the manifest to avoid commit self-reference. No actual release manifest, tag, GDC approval or architecture admission is declared; candidate qualification, publication and governed merge are still required.
+Slice 13.4 merged in Codex PR #47 at `0582d15b4c77dbc3c7eab8314a22c4db6a1c6c49`, after exact-head Authority check `121288035795` on `f8a145d00a885d8c4d606550d4efa05b19c10846`. The canonical squash tree equals the published candidate tree. Authority PR #118 retained the actual outcome and restored disabled state with null activation. Local clean-checkout qualification passed 1266 tests with 98.59% aggregate coverage; all candidate CI checks passed. The manifest/verifier and explicit release-candidate workflow are implemented. No Governance 1.0 manifest, tag or admission is declared.
+
+Slice 13.5 prepares GDC-000 first. Its unmerged candidate proposes the coordinated `approved` / `1.0.0` metadata and reference corrections. Obsolete parent/attachment and enforcement prose is reconciled with existing executable ontology and evidence mechanisms; `CTRL-GDC-000-019` retains its id/evidence mappings with a corrected statement/fingerprint. Other statements, all classifications and all evidence states are unchanged. Runtime behavior, schemas, ontology, thresholds and admission are unchanged. The PR carries an author-proposed rubric score sheet; formal exact-head ARB approval must be created by the owner under PLAN REC-13-003. Candidate metadata and a proposed score are not approval evidence. The other eleven required GDCs and all 29 pending roots remain separate obligations.
 
 ---
 
@@ -401,7 +403,8 @@ Phase 10 Stabilization + scoped reference-provider acceptance  DONE
 → Phase 13 Governance 1.0                                     ACTIVE
 -> REC-13-001..003 owner decisions                             ACCEPTED (2026-10-05)
 -> Slice 13.1 Root-of-Trust Release Classification            DONE (#46)
--> Slice 13.4 Release Metadata Binding                         NEXT
+-> Slice 13.4 Release Metadata Binding                         DONE (#47)
+-> Slice 13.5 Stable GDC Baseline: GDC-000 owner ARB review       NEXT
 → Phase 14 Architecture Re-Admission                          BLOCKED
 ```
 
