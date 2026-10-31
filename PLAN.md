@@ -43,7 +43,7 @@ Governance 1.0 readiness            : NOT READY (later phases remain)
 This snapshot is source-bound historical evidence, not an automatically refreshed
 current-state feed. Phase 10 is closed for the accepted reference-provider scope;
 the Phase 11 ledger and Current Next Action below own implementation sequencing.
-Phase 11 and Phase 12 are closed. Phase 13 is active; Slices 13.1, 13.3 and 13.4 are complete; Slice 13.5 is preparing the first GDC baseline candidate for owner ARB review. This status grants no standing publication.
+Phase 11 and Phase 12 are closed. Phase 13 is active; Slices 13.1, 13.3 and 13.4 are complete; Slice 13.5 has promoted GDC-000 to `approved` / `1.0.0` and the other eleven required GDCs remain draft. This status grants no standing publication.
 
 Git history is the historical ledger
 
@@ -1132,12 +1132,17 @@ Status: DONE; Codex PR #47 merged at `0582d15b4c77dbc3c7eab8314a22c4db6a1c6c49` 
 
 Invariant: every GDC in `required_baseline_ids` is `approved` at `>=1.0.0` through the review evidence selected by REC-13-003.
 
-Status: ACTIVE; the first unmerged candidate proposes GDC-000 `approved` / `1.0.0`, its UTC review-date field, and corrections to C4/repository labels and the rubric reference. Obsolete blanket parent and attachment rules are reconciled with the already-authoritative executable Relationship Registry; enforcement prose distinguishes automated checks from explicit human or provider evidence. `CTRL-GDC-000-019` retains its id and executable evidence mappings with its corrected statement/fingerprint. Other normative statements, all control classifications and all evidence states are unchanged; no runtime, schema, ontology, threshold or admission policy is changed. The candidate PR carries an author-proposed rubric score sheet and normative-control delta. These are preparation for owner review, not an approval record. The owner acting as ARB must create the exact-head approval record required by REC-13-003 before publication and merge; the proposed review date must match the actual review date. Approval of GDC-000 alone does not approve the other eleven GDCs or declare Governance 1.0.
+Status: ACTIVE; GDC-000 is `approved` / `1.0.0`. Codex PR #48 merged at `a8ea1e313000883a5186db8d7e0675c6e2ce00f5` after dedicated App check `124511720935` succeeded on exact head `f01908ef03e361b60b5b298c75378d5ee60c53b3`. Authority PR #119 attested the head, #122 activated publication and #123 retained the outcome and restored disabled state with null activation. An earlier activation, #120, was merged with the previous candidate's values unchanged; it was expired and unusable, received no preview or publication, and #121 disarmed it.
+
+Process deviation: the owner's REC-13-003 ARB approval record for that exact head (GDC-002 score 10/10, review date 2026-10-29, review bootstrap exception active, author and approver the same person) was created after the merge, in Authority PR #124, instead of before publication. A revert was not possible because governed versions cannot regress below `1.0.0`. The record states the deviation. To prevent recurrence, Authority PR #126 makes permit issuance fail closed for any candidate that promotes or re-versions an approved GDC without a valid exact-head record in `governance/arb-approvals/`.
+
+The other eleven required GDCs remain `draft`. All control classifications and evidence states are unchanged: 166 controls, 82 verified / 84 pending, including 29 pending roots. Approval of GDC-000 does not approve any other GDC or declare Governance 1.0.
 
 - GDC-000 is promoted first, because every other GDC is `governed_by` GDC-000
 - each candidate carries a GDC-002 quality rubric score sheet with at least 9 passes and its normative-control delta
 - approval and the `1.0.0` version change happen in the same governed change, per GDC-000 §2.6 item 6
 - the ARB approval is an owner act; preparation of a candidate does not approve it
+- the owner's exact-head ARB record is merged in Authority before the candidate's permit, publication and merge; a new candidate head needs a new record
 
 ### Slice 13.6 — Governance 1.0 Release
 
@@ -1278,7 +1283,8 @@ Phase 12 Reproducibility and Supply-Chain Closure: DONE
 -> REC-13-001 through REC-13-003: ACCEPTED by owner (2026-10-05)
 -> Slice 13.1 Root-of-Trust Release Classification: DONE (#46)
 -> Slice 13.4 Release Metadata Binding: DONE (#47)
--> Slice 13.5 Stable GDC Baseline: GDC-000 candidate / owner ARB review pending
+-> Slice 13.5 Stable GDC Baseline: GDC-000 approved 1.0.0 (#48; ARB record Authority #124)
+-> Slice 13.5 next: GDC-001 candidate; owner ARB record before publication
 ```
 
 Phase 10 reference-provider acceptance, Phase 11 executable-framework closure, and Phase 12 reproducibility closure are complete. Phase 13 is now the active workstream, but Governance 1.0 is not released and architecture admission remains closed.
