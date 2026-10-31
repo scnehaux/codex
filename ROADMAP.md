@@ -343,14 +343,14 @@ No architecture admission opens merely because the engine tests are green
 
 ## 6.1 Phase 13 Ledger
 
-| Slice | Capability                           | Status  | Exit Evidence                                                                               |
-| ----- | ------------------------------------ | ------- | ------------------------------------------------------------------------------------------- |
-| 13.1  | Root-of-Trust Release Classification | DONE    | Every control carries one release class; readiness reports pending root-of-trust ids        |
-| 13.2  | Registry Evidence Reconciliation     | ACTIVE  | No pending control targets a retired phase; phase targets are validated                     |
-| 13.3  | Runtime Authority Closure            | DONE    | PR #45 merged after exact-head Authority check `111729656469`; PR #110 disarmed publication |
-| 13.4  | Release Metadata Binding             | DONE    | PR #47 merged after exact-head Authority check `121288035795`; PR #118 disarmed publication |
-| 13.5  | Stable GDC Baseline                  | ACTIVE  | GDC-000 `approved` / `1.0.0` (PR #48; ARB record Authority #124); eleven GDCs remain draft  |
-| 13.6  | Governance 1.0 Release               | PLANNED | Release manifest, Authority evidence and tag bind one qualified commit                      |
+| Slice | Capability                           | Status  | Exit Evidence                                                                                               |
+| ----- | ------------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------- |
+| 13.1  | Root-of-Trust Release Classification | DONE    | Every control carries one release class; readiness reports pending root-of-trust ids                        |
+| 13.2  | Registry Evidence Reconciliation     | ACTIVE  | No pending control targets a retired phase; phase targets are validated                                     |
+| 13.3  | Runtime Authority Closure            | DONE    | PR #45 merged after exact-head Authority check `111729656469`; PR #110 disarmed publication                 |
+| 13.4  | Release Metadata Binding             | DONE    | PR #47 merged after exact-head Authority check `121288035795`; PR #118 disarmed publication                 |
+| 13.5  | Stable GDC Baseline                  | ACTIVE  | GDC-000 `approved` / `1.0.0` (PR #48; ARB record Authority #124); GDC-001 candidate awaits owner ARB record |
+| 13.6  | Governance 1.0 Release               | PLANNED | Release manifest, Authority evidence and tag bind one qualified commit                                      |
 
 Slice 13.2's retained-evidence reconciliation merged in Codex PR #44 after Authority check `111666125699` succeeded on the exact head; Authority PR #107 disarmed publication. Bootstrap provenance and two history/PR-path controls map to immutable Genesis and owner-accepted Phase 10 evidence, with its original reference-provider limits preserved. Registry counts are 82 verified / 84 pending. Four obligations remain pending: historical pre-root qualification, complete short-lived-branch evidence, automatic branch cleanup, and actual behind-main refusal. Slice 13.2 is not complete.
 
@@ -362,7 +362,9 @@ Slice 13.1 merged in Codex PR #46 at `86545a1324388fcc0777f7ca1f6ab1bcd2ab5def`,
 
 Slice 13.4 merged in Codex PR #47 at `0582d15b4c77dbc3c7eab8314a22c4db6a1c6c49`, after exact-head Authority check `121288035795` on `f8a145d00a885d8c4d606550d4efa05b19c10846`. The canonical squash tree equals the published candidate tree. Authority PR #118 retained the actual outcome and restored disabled state with null activation. Local clean-checkout qualification passed 1266 tests with 98.59% aggregate coverage; all candidate CI checks passed. The manifest/verifier and explicit release-candidate workflow are implemented. No Governance 1.0 manifest, tag or admission is declared.
 
-Slice 13.5 promoted GDC-000 to `approved` / `1.0.0` in Codex PR #48, merged at `a8ea1e313000883a5186db8d7e0675c6e2ce00f5` after exact-head Authority check `124511720935` on `f01908ef03e361b60b5b298c75378d5ee60c53b3`. Authority PRs #119, #122 and #123 attested, activated and disarmed the publication; #120 merged an unedited earlier activation that was never usable and #121 disarmed it. The owner's REC-13-003 ARB approval record (score 10/10, review date 2026-10-29, bootstrap exception active) was created after the merge, in Authority PR #124, which states the deviation. Authority PR #126 now blocks permits for GDC promotions without a valid exact-head record. The other eleven required GDCs and all 29 pending roots remain separate obligations; GDC-001 is next.
+Slice 13.5 promoted GDC-000 to `approved` / `1.0.0` in Codex PR #48, merged at `a8ea1e313000883a5186db8d7e0675c6e2ce00f5` after exact-head Authority check `124511720935` on `f01908ef03e361b60b5b298c75378d5ee60c53b3`. Authority PRs #119, #122 and #123 attested, activated and disarmed the publication; #120 merged an unedited earlier activation that was never usable and #121 disarmed it. The owner's REC-13-003 ARB approval record (score 10/10, review date 2026-10-29, bootstrap exception active) was created after the merge, in Authority PR #124, which states the deviation. Authority PR #126 now blocks permits for GDC promotions without a valid exact-head record. The other eleven required GDCs and all 29 pending roots remain separate obligations.
+
+The unmerged GDC-001 candidate proposes `approved` / `1.0.0` and corrects module paths, binding-contract resolution, Relationship Registry graph edges, `lint_disable` blocking semantics, the mutation-integrity version lock, the Technology Radar location and the unpublished downstream delivery options. Eleven controls keep their ids, mappings, classes and evidence states with rebound fingerprints; none is added or removed. The author-proposed score sheet is not approval evidence: the owner's exact-head ARB record must be merged in Authority before the permit.
 
 ---
 

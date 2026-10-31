@@ -911,12 +911,12 @@ controls:
   source_file: GDC-001-fitness-functions.md
   source_clause: 'Architecture Fitness Functions & Compliance Engine > 1. Context & Scope > 1.1 The Core Mandate: The Master
     Fitness Function'
-  source_fingerprint: f2f415d15c2e
+  source_fingerprint: 0bc2ba695114
   modality: MUST
   statement: Rather than relying on manual, bottleneck-prone reviews, we enforce these goals through the philosophy of Separation
-    of Concerns (SoC) Artifact Domains. We mandate that every architectural perimeter must be fully automatable. To achieve
-    this, we centralize critical boundaries, taxonomies, and lineages into the document's YAML Frontmatter (docmeta) and structural
-    Abstract Syntax Tree (AST).
+    of Concerns (SoC) Artifact Domains. We mandate that every mechanically decidable architectural perimeter must be automated.
+    To achieve this, we centralize critical boundaries, taxonomies, and lineages into the document's YAML Frontmatter (docmeta)
+    and structural Abstract Syntax Tree (AST).
   scope: fitness-function
   severity: ERROR
   enforcement_mode: automated
@@ -1004,13 +1004,14 @@ controls:
   source_file: GDC-001-fitness-functions.md
   source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > 2.3 The Schema Architecture (JSON
     Federation)
-  source_fingerprint: d91a9471dda9
+  source_fingerprint: ef7893ec6bee
   modality: MUST
   statement: 'Naming Convention Rule: To achieve dynamic Deep-Merging of the Fractal Triad, the engine automatically identifies
     the necessary document-specific schema by extracting the Document Type prefix from the artifact''s docmeta.id (e.g., ADR-IAM-000
-    -> ADR). It then resolves the specific JSON schema file by mapping it to the strict naming convention: schemas/[doctype].schema.json
-    (where [doctype] is the exact acronym in lowercase, e.g., schemas/adr.schema.json). If a specific schema
-    is required but missing, the engine MUST trigger a Hard Block.'
+    -> ADR). It then resolves the specific JSON schema file through the executable schema bindings contract (governance/framework/contracts/schema-bindings.yaml),
+    which binds each Document Type to the strict naming convention: schemas/[doctype].schema.json (where [doctype] is the
+    exact acronym in lowercase, e.g., schemas/adr.schema.json). If a specific schema is required but missing, the engine MUST
+    trigger a Hard Block.'
   scope: fitness-function
   severity: CRITICAL
   enforcement_mode: automated
@@ -1029,12 +1030,13 @@ controls:
   source_file: GDC-001-fitness-functions.md
   source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > 2.4 Validator Federation (Polymorphic
     Engine)
-  source_fingerprint: 13f32a0da7c3
+  source_fingerprint: a5fff9ed6d6a
   modality: MUST
   statement: 'Naming Convention Rule: To enforce the Fractal Triad, the engine/control/validators/registry.py automatically
     maps the artifact to its validator by extracting the Document Type prefix from the artifact''s docmeta.id (e.g., ADR-IAM-000
-    -> ADR). It then attempts to load the validator class using the strict naming convention: [DocType]Validator (e.g., ADRValidator),
-    which must reside in the python file engine/control/validators/domains/[doctype]validator.py (lowercase, e.g., engine/control/validators/domains/adrvalidator.py).
+    -> ADR). It then loads the validator class bound by the executable validator bindings contract (governance/framework/contracts/validator-bindings.yaml),
+    which follows the strict naming convention: [DocType]Validator (e.g., ADRValidator), which must reside in the python file
+    engine/control/validators/domains/[doctype]validator.py (lowercase, e.g., engine/control/validators/domains/adrvalidator.py).
     If the registry fails to find a validator for an expected Document Type, the engine MUST trigger a Hard Block.'
   scope: fitness-function
   severity: CRITICAL
@@ -1074,12 +1076,13 @@ controls:
   target_phase: Slice 13.5 Stable GDC Baseline
 - control_id: CTRL-GDC-001-008
   release_class: consumer-artifact
-  release_rationale: GDC-001 obligation governs consumer architecture content or admission, rather than changes to canonical governance authority.
+  release_rationale: GDC-001 obligation governs consumer architecture content or admission, rather than changes to canonical
+    governance authority.
   source_gdc: GDC-001
   source_file: GDC-001-fitness-functions.md
-  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > 2.4 NFR Taxonomy Enforcement (AWS
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > 2.6 NFR Taxonomy Enforcement (AWS
     WAF)
-  source_fingerprint: e4b4d68f5ab7
+  source_fingerprint: 76a428e8a1c4
   modality: MUST
   statement: 'To ensure non-functional requirements are structured uniformly across all systems, the engine enforces strict
     mapping to the AWS Well-Architected Framework. Any NFRs declared in architecture documents must be categorized under one
@@ -1102,9 +1105,9 @@ controls:
   release_rationale: Artifact-aware validation prevents lifecycle bypasses of qualification.
   source_gdc: GDC-001
   source_file: GDC-001-fitness-functions.md
-  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > 2.4 Lifecycle-Aware Validation
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > 2.8 Lifecycle-Aware Validation
     Profiles
-  source_fingerprint: 7d2e59c87cbd
+  source_fingerprint: f51a43076534
   modality: MUST
   statement: The Fitness Function MUST resolve document type before applying any lifecycle-based validation shortcut. Lifecycle
     state does not select validation strictness by itself.
@@ -1124,8 +1127,8 @@ controls:
   release_rationale: Per-file coverage qualifies the implementation of governance authority.
   source_gdc: GDC-001
   source_file: GDC-001-fitness-functions.md
-  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > Per-File Test Coverage Contract
-  source_fingerprint: cb7bb4a64bed
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > 2.9 Per-File Test Coverage Contract
+  source_fingerprint: 527d584eef35
   modality: MUST NOT
   statement: The Fitness Function implementation is governed by a per-file statement coverage floor of 95% for every production
     Python source file under engine/control/. Repository-wide average coverage is retained only as a secondary defense-in-depth
@@ -1145,8 +1148,8 @@ controls:
   release_rationale: Aggregate regression coverage is a required implementation qualification gate.
   source_gdc: GDC-001
   source_file: GDC-001-fitness-functions.md
-  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > Per-File Test Coverage Contract
-  source_fingerprint: 3f69052c3d8c
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > 2.9 Per-File Test Coverage Contract
+  source_fingerprint: 40a0066236af
   modality: MUST
   statement: aggregate statement coverage MUST be at least 95%
   scope: fitness-function
@@ -1163,8 +1166,8 @@ controls:
   release_rationale: Individual source coverage prevents hiding untested enforcement code.
   source_gdc: GDC-001
   source_file: GDC-001-fitness-functions.md
-  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > Per-File Test Coverage Contract
-  source_fingerprint: adc747a9b23e
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > 2.9 Per-File Test Coverage Contract
+  source_fingerprint: f784c322a1a7
   modality: MUST
   statement: every individual production source file MUST be at least 95%
   scope: fitness-function
@@ -1182,8 +1185,8 @@ controls:
   release_rationale: Reachable production enforcement prevents misleading qualification claims.
   source_gdc: GDC-001
   source_file: GDC-001-fitness-functions.md
-  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > Dead Code and Coverage Integrity
-  source_fingerprint: 98c7ce0bf081
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > 2.10 Dead Code and Coverage Integrity
+  source_fingerprint: 7df5fce91db0
   modality: MUST NOT
   statement: Production code under engine/control/ MUST NOT retain unreachable functions, branches, commented-out implementations,
     or compatibility paths that cannot occur under the repository's enforced invariants.
@@ -1202,8 +1205,8 @@ controls:
   release_rationale: Coverage must represent executable enforcement behavior.
   source_gdc: GDC-001
   source_file: GDC-001-fitness-functions.md
-  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > Dead Code and Coverage Integrity
-  source_fingerprint: 3269a92c1d6a
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > 2.10 Dead Code and Coverage Integrity
+  source_fingerprint: 8dd4f3244060
   modality: MUST
   statement: 'Coverage MUST represent executable production behavior:'
   scope: fitness-function
@@ -1221,8 +1224,8 @@ controls:
   release_rationale: Real contract and failure-mode tests qualify enforcement behavior.
   source_gdc: GDC-001
   source_file: GDC-001-fitness-functions.md
-  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > Dead Code and Coverage Integrity
-  source_fingerprint: 3f67cdb13530
+  source_clause: Architecture Fitness Functions & Compliance Engine > 2. Policy Framework > 2.10 Dead Code and Coverage Integrity
+  source_fingerprint: 8fc36386cea8
   modality: MUST
   statement: tests MUST exercise reachable contracts, failure modes, and supported configurations
   scope: fitness-function
