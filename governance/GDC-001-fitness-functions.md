@@ -9,7 +9,7 @@ doc_meta:
   governed_by: [GDC-000]
   review_cycle_days: 365
   created_date: 2026-01-01
-  last_reviewed: 2026-11-01
+  last_reviewed: 2026-10-31
 ---
 
 # Architecture Fitness Functions & Compliance Engine
