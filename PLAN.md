@@ -1138,6 +1138,8 @@ Process deviation: the owner's REC-13-003 ARB approval record for that exact hea
 
 The other eleven required GDCs remain `draft`. All control classifications and evidence states are unchanged: 166 controls, 82 verified / 84 pending, including 29 pending roots. Approval of GDC-000 does not approve any other GDC or declare Governance 1.0.
 
+GDC-001 candidate: the unmerged candidate proposes GDC-001 `approved` / `1.0.0` with a proposed `last_reviewed` date. It corrects the document to the implemented engine: `engine/control/` module paths, the generated topography roots, schema and validator resolution through the executable binding contracts, graph edges from the Relationship Registry, blocking (`CRITICAL` and `ERROR`) rather than only `CRITICAL` findings for rejected `lint_disable` directives, the mutation-integrity version lock in place of the no-op Git auditor seam, the Technology Radar location, and an explicit note that the downstream reusable workflow and linter image are not yet published. Duplicate section numbers and character-encoding damage are fixed. Eleven GDC-001 controls keep their ids, mappings, classes and evidence states with rebound statements or clauses and fingerprints; no control is added or removed, and no runtime, schema, ontology, threshold or admission policy changes. The PR carries an author-proposed rubric score sheet, which is not approval evidence. The owner's exact-head ARB record must be merged in Authority before the candidate's permit; Authority #126 refuses the permit otherwise.
+
 - GDC-000 is promoted first, because every other GDC is `governed_by` GDC-000
 - each candidate carries a GDC-002 quality rubric score sheet with at least 9 passes and its normative-control delta
 - approval and the `1.0.0` version change happen in the same governed change, per GDC-000 §2.6 item 6
@@ -1284,7 +1286,7 @@ Phase 12 Reproducibility and Supply-Chain Closure: DONE
 -> Slice 13.1 Root-of-Trust Release Classification: DONE (#46)
 -> Slice 13.4 Release Metadata Binding: DONE (#47)
 -> Slice 13.5 Stable GDC Baseline: GDC-000 approved 1.0.0 (#48; ARB record Authority #124)
--> Slice 13.5 next: GDC-001 candidate; owner ARB record before publication
+-> Slice 13.5 next: GDC-001 candidate prepared; owner ARB record before publication
 ```
 
 Phase 10 reference-provider acceptance, Phase 11 executable-framework closure, and Phase 12 reproducibility closure are complete. Phase 13 is now the active workstream, but Governance 1.0 is not released and architecture admission remains closed.
