@@ -3,19 +3,20 @@ doc_meta:
   id: GDC-003
   title: Architecture Review Process
   owner: Architecture Authority
-  version: 0.2.0
-  status: draft
+  version: 1.0.0
+  status: approved
   classification: public
   governed_by: [GDC-000]
   review_cycle_days: 90
   created_date: 2026-01-01
+  last_reviewed: 2026-11-03
 ---
 
 # Architecture Review Process
 
 ## 1. Context & Scope
 
-This document defines the formal evaluation process, review rubric, and audit procedures used to assess architectural artifacts (PAD, SAD, TDD, ADR, EAD) against the Scnehaux Architecture Documentation Quality Framework.
+This document defines the formal evaluation process, review rubric, and audit procedures used to assess architectural artifacts (GDC, EAD, STD, PAD, SAD, TDD, ADR) against the Scnehaux Architecture Documentation Quality Framework ([GDC-002](./GDC-002-quality-rubric.md)).
 
 While automated CI/CD linter tools enforce structural syntax, this manual process serves as the qualitative **Strategic Oversight & Human Fallback** mechanism. It is conducted by Certified Reviewers and the Architecture Review Board (ARB).
 
@@ -27,18 +28,18 @@ While automated CI/CD linter tools enforce structural syntax, this manual proces
 
 Reviewers must evaluate the target document against the following 10 parameters. When required, the score sheet must be filled out as a markdown snippet and attached directly to the Pull Request.
 
-| #   | Criterion                          | Enterprise Requirement (10/10 Standard)                                                                                                                      | Result            | Reviewer Notes |
-| --- | :--------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------- | :------------- |
-| 1   | **Clarity & Precision**            | Zero ambiguity. Words like "scalable", "fast", or "secure" are banned unless strictly quantified. No motivational filler.                                    | Pass / Fail / N/A |                |
-| 2   | **Living Scope Boundaries**        | System boundaries rigidly defined. For SADs, ensure C4 Level 1/2 topology maps are clear, and prevent implementation encyclopedia leaks.                     | Pass / Fail / N/A |                |
-| 3   | **Traceability & Inheritance**     | Project-level ADRs/STDs inherit from global standards via the `governed_by` list. SADs map to a governing Platform PAD.                                      | Pass / Fail / N/A |                |
-| 4   | **Architectural Drivers**          | Explicit listing of functional constraints, business goals, assumptions, and **integration of past Incident/COE learnings**.                                 | Pass / Fail / N/A |                |
-| 5   | **Measurable NFRs**                | Latency (P95/P99), Throughput (RPS), Availability (%), and Error Budgets are documented with concrete targets.                                               | Pass / Fail / N/A |                |
-| 6   | **Cross-Cutting Concerns**         | Strictly addresses Observability (SLIs/SLOs/Tracing) and Security (_Data Classification_, **Zero-Trust boundaries**).                                        | Pass / Fail / N/A |                |
-| 7   | **Trade-Offs**                     | Documents the _Alternatives Considered_ (why other patterns were rejected) and the conscious technical compromises made.                                     | Pass / Fail / N/A |                |
-| 8   | **Risk & Graceful Degradation**    | Blast Radius and SPOFs are mapped. **Must define how the system degrades gracefully under failure.**                                                         | Pass / Fail / N/A |                |
-| 9   | **TDD Lifecycle & Fates**          | Ensures the _Ephemeral TDD Matrix_ is executed (Class B folded to SAD; Class A archived to `historical/` only if matching strict forensic/incident filters). | Pass / Fail / N/A |                |
-| 10  | **Governance & Namespace Hygiene** | Adheres strictly to structural templates. All files must conform to scalable federated namespaces (e.g. `ADR-IAM-000`).                                      | Pass / Fail / N/A |                |
+| #   | Criterion                          | Enterprise Requirement (10/10 Standard)                                                                                                                                                    | Result            | Reviewer Notes |
+| --- | :--------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------- | :------------- |
+| 1   | **Clarity & Precision**            | Zero ambiguity. Words like "scalable", "fast", or "secure" are banned unless strictly quantified. No motivational filler.                                                                  | Pass / Fail / N/A |                |
+| 2   | **Living Scope Boundaries**        | System boundaries rigidly defined. For SADs, ensure C4 Level 1/2 topology maps are clear, and prevent implementation encyclopedia leaks.                                                   | Pass / Fail / N/A |                |
+| 3   | **Traceability & Inheritance**     | Project-level ADRs/STDs inherit from global standards via the `governed_by` list. SADs map to a governing Platform PAD.                                                                    | Pass / Fail / N/A |                |
+| 4   | **Architectural Drivers**          | Explicit listing of functional constraints, business goals, assumptions, and **integration of past Incident/COE learnings**.                                                               | Pass / Fail / N/A |                |
+| 5   | **Measurable NFRs**                | Latency (P95/P99), Throughput (RPS), Availability (%), and Error Budgets are documented with concrete targets.                                                                             | Pass / Fail / N/A |                |
+| 6   | **Cross-Cutting Concerns**         | Strictly addresses Observability (SLIs/SLOs/Tracing) and Security (_Data Classification_, **Zero-Trust boundaries**).                                                                      | Pass / Fail / N/A |                |
+| 7   | **Trade-Offs**                     | Documents the _Alternatives Considered_ (why other patterns were rejected) and the conscious technical compromises made.                                                                   | Pass / Fail / N/A |                |
+| 8   | **Risk & Graceful Degradation**    | Blast Radius and SPOFs are mapped. **Must define how the system degrades gracefully under failure.**                                                                                       | Pass / Fail / N/A |                |
+| 9   | **TDD Lifecycle & Fates**          | Ensures the [_TDD Fate Matrix_](./GDC-011-tdd-guideline.md#241-tdd-fate-matrix) is executed (Class A archived to `designs/historical/`; Class B and C deleted, never folded into the SAD). | Pass / Fail / N/A |                |
+| 10  | **Governance & Namespace Hygiene** | Adheres strictly to structural templates. All files must conform to scalable federated namespaces (e.g. `ADR-IAM-000`).                                                                    | Pass / Fail / N/A |                |
 
 ---
 
@@ -55,21 +56,7 @@ While the Peer Reviewer executes the rubric above, the Architecture Review Board
 | **Public Contract Breaking**       | Introducing backward-incompatible changes to external-facing Public APIs or enterprise-wide event schemas.                             |
 | **Significant Financial Impact**   | Architectural changes projected to increase cloud infrastructure or vendor licensing costs by $>20\%$ within the domain.               |
 | **Vendor Lock-In Decisions**       | Integrating a deeply-coupled 3rd-party SaaS or managed service where future migration would require $>3$ months of engineering effort. |
-| **Technology Radar Shifts**        | Moving a core technology standard from `Adopted` to `Hold` or `Deprecated`.                                                            |
-
----
-
-### 2.4 Review Turnaround SLA
-
-To prevent review bottlenecks from degrading engineering velocity, all review tiers are bound by strict turnaround commitments:
-
-| Review Tier               | Maximum Turnaround  | Escalation if Breached                              |
-| :------------------------ | :------------------ | :-------------------------------------------------- |
-| Peer Review (Standard PR) | **3 business days** | Auto-assign secondary reviewer from the owning team |
-| ARB Review (High-Risk PR) | **5 business days** | Escalate to Architecture Authority lead             |
-| Waiver Decision           | **5 business days** | Per [GDC-004 §4.2](GDC-004-tech-lifecycle.md)       |
-
-If a reviewer fails to respond within the SLA, the PR author may escalate by tagging the next-level authority defined in the approval matrix (§3.2). An SLA breach does not grant auto-approval; it grants escalation rights.
+| **Technology Radar Shifts**        | Moving a core technology standard from the `adopt` ring of the Technology Radar to `hold` ([GDC-004](./GDC-004-tech-lifecycle.md)).    |
 
 ---
 
@@ -91,7 +78,7 @@ The ARB assumes the document is already structurally perfect before interrogatin
    - If this component fails, does the failure cascade globally?
 3. **TCO & Tech Lifecycle (GDC-004)**:
    - Does this introduce a fragmented technology that Platform Engineering/SRE cannot support?
-   - Does it align with the `Invest` or `Hold` rings of the technology radar?
+   - Does it use technologies in the `adopt` ring of the Technology Radar, and avoid technologies in the `hold` ring?
 4. **Enterprise Risk Posture**:
    - Does this introduce unacceptable security, compliance, or data sovereignty risks (e.g., exposing PII to a lower trust zone)?
 5. **Reversibility (One-Way vs. Two-Way Doors)**:
@@ -103,6 +90,20 @@ The ARB assumes the document is already structurally perfect before interrogatin
 7. **Scalability Ceiling (The 10x Horizon)**:
    - Does this architecture have a known structural upper bound?
    - At what exact traffic scale (10x, 100x) will this design fundamentally break and require a complete rewrite?
+
+---
+
+### 2.4 Review Turnaround SLA
+
+To prevent review bottlenecks from degrading engineering velocity, all review tiers are bound by strict turnaround commitments:
+
+| Review Tier               | Maximum Turnaround  | Escalation if Breached                           |
+| :------------------------ | :------------------ | :----------------------------------------------- |
+| Peer Review (Standard PR) | **3 business days** | Assign a secondary reviewer from the owning team |
+| ARB Review (High-Risk PR) | **5 business days** | Escalate to Architecture Authority lead          |
+| Waiver Decision           | **5 business days** | Per [GDC-004 §4.2](GDC-004-tech-lifecycle.md)    |
+
+If a reviewer fails to respond within the SLA, the PR author may escalate by tagging the next-level authority defined in the approval matrix (§3.2). An SLA breach does not grant auto-approval; it grants escalation rights.
 
 ---
 
@@ -142,7 +143,7 @@ Every Pull Request targeting `main` must satisfy the following algorithmic and h
 | **ADR** (Decision Record)  | Contextual Pivot    | **Inherited Lead** (ARB for Global ADRs, Domain/System Lead for Local ADRs) |
 
 3. **The ARB Gate (Two Escalation Paths)**: The Architecture Review Board (ARB) must approve the Pull Request if it reaches their desk via either of these two paths:
-   - **Path A (Automated Git Routing)**: The Pull Request modifies globally restricted documents (e.g., GDC, EAD, or ADR). Git will automatically block the merge and assign the ARB via the `CODEOWNERS` file. _Exception for Trivial Changes: If the Pull Request is strictly a typo, formatting, or dead-link fix (a `Patch` version bump), any single ARB member may "Fast-Track" approve the PR in seconds without conducting a formal 7-dimension audit._
+   - **Path A (Automated Git Routing)**: The Pull Request modifies globally restricted documents (e.g., GDC, EAD, or ADR). The `CODEOWNERS` file automatically requests ARB review; ARB approval becomes a provider-enforced merge block when the bootstrap exception above expires. _Exception for Trivial Changes: If the Pull Request is strictly a typo, formatting, or dead-link fix (a `Patch` version bump), any single ARB member may "Fast-Track" approve the PR in seconds without conducting a formal 7-dimension audit._
    - **Path B (Human Escalation)**: The Pull Request modifies a standard domain document (PAD/SAD), but its content triggers a "High-Risk Pivot" (see [Section 2.2: High-Risk Pivots (ARB Escalation Triggers)](#22-high-risk-pivots-arb-escalation-triggers)). Because Git cannot read business context, the Peer Reviewer is strictly prohibited from merging and MUST manually escalate the Pull Request by tagging the ARB.
 4. **Merge Strategy & Cleanup**: Only `Squash and Merge` is permitted to ensure the `main` branch history remains clean, linear, and readable. Upon a successful merge, the source feature branch MUST be automatically deleted to prevent branch clutter.
 
@@ -160,16 +161,16 @@ If a rare collision occurs, standard Git rebasing protocols apply. The later PR 
 
 ## 4. Temporal Governance & Document Lifecycle
 
-### 4.1 Konsep Tiga Tanggal (Tri-Date Concept)
+### 4.1 Tri-Date Concept
 
-Di dalam ekosistem Scnehaux, status `reviewed` TIDAK SAMA dengan `updated`. Sebuah arsitektur bisa saja tidak berubah selama setahun, tetapi butuh di-_review_ secara berkala untuk memastikan desain tersebut masih valid dengan keadaan sistem saat ini. Oleh karena itu, kita memecah _metadata date_ menjadi tiga:
+In the Scnehaux ecosystem, `reviewed` is not the same as `updated`. An architecture can stay unchanged for a year and still need periodic review to confirm that the design still matches the current system. Document metadata therefore carries three dates:
 
-1. **`created_date` (Wajib untuk semua dokumen)**: Tanggal dokumen pertama kali dibuat (_Immutable_).
-   - _Tujuan_: Sebagai _anchor_ (acuan) utama untuk mengukur batas umur dokumen, khususnya yang berstatus `draft`.
-2. **`last_updated` (Otomatis/Disarankan)**: Tanggal dokumen terakhir kali diubah isinya.
-   - _Tujuan_: Mengukur tingkat keaktifan revisi dokumen.
-3. **`last_reviewed` (Wajib HANYA untuk dokumen pada baseline-bearing/final status yang ditetapkan guideline artifact tersebut)**: Tanggal dokumen terakhir diaudit/disetujui.
-   - _Tujuan_: Untuk mendeteksi dan mencegah _Architecture Rot_ (desain yang basi). Dokumen pada baseline-bearing/final status harus di-review secara berkala (misal tiap 6-12 bulan).
+1. **`created_date` (required for every document)**: the date the document was first created. It is immutable.
+   - _Purpose_: the anchor for document age limits, in particular for `draft` documents.
+2. **`last_updated` (optional)**: the date the document content last changed.
+   - _Purpose_: shows how actively the document is revised.
+3. **`last_reviewed` (required only for the baseline-bearing status that the artifact's guideline defines)**: the date the document was last audited or approved.
+   - _Purpose_: detects _Architecture Rot_ (stale designs). A baseline-bearing document is due for its next review within its `review_cycle_days` (365 days when unset); an overdue review raises a `review_age_violation` warning.
 
 ### 4.1.1 Temporal Integrity Contract
 
@@ -200,7 +201,7 @@ Current validation policy:
 - EAD, STD, PAD, SAD, and TDD `draft` use relaxed validation while they remain eligible pre-baseline work
 - PAD and SAD `chartered` remain full-validation states until a separate metamodel policy explicitly changes that contract
 - ADR `proposed` remains full validation
-- `approved`, ADR `accepted`, `deprecated`, and ADR `superseded` remain full validation
+- `approved`, ADR `accepted`, ADR `rejected`, `deprecated`, and ADR `superseded` remain full validation
 - unknown lifecycle values fail closed to full validation and are rejected by the artifact schema
 
 Lifecycle age is declared per artifact lifecycle state, not globally by status spelling.
@@ -223,7 +224,7 @@ Architecture admission is evaluated independently by the repository governance a
 
 - **Score Calculation**: Sum the "Pass" counts. Max score is 10. Minimum approval threshold is 9/10.
 - **Reject (Score < 9)**: The document fails to meet the minimum threshold and must be revised. It cannot be merged.
-- **Approve (Score $\ge$ 9)**: The document is approved as Governance-Grade.
+- **Approve (Score $\ge$ 9)**: The document is approved. GDC-002 §4 names the bands: 9 is Enterprise-Ready and 10 is Governance-Grade.
 - **Exceptions**: If a criterion is fundamentally "Not Applicable" (N/A) for a specific document type, the reviewer must mark it as Pass but explicitly document the justification in the Reviewer Notes.
 
 ---
