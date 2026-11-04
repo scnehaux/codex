@@ -50,7 +50,7 @@ When a standard technology, framework, or library decays (due to security concer
    - Existing active systems enter a grace window of maximum `180 days` to migrate off the legacy technology.
    - During this phase, compile checks emit warnings but do not fail the build.
 3. **Hard Enforcement Block (Stage 3)**:
-   - Upon expiration of the grace window, warnings escalate to hard errors. The CI compliance engine blocks any new pull requests containing references to the deprecated technology.
+   - Upon expiration of the grace window, warnings escalate to hard errors. The CI compliance engine blocks any pull request in which a SAD or TDD declares the deprecated technology in its `technologies` metadata (§3.1).
 
 _Current automation_: the linter does not read `sunset_date` yet, so Stage 2 has no automated warning. A technology in the `hold` ring is blocked from the day it enters the ring (§3.1). Until the grace check exists, the ARB keeps a technology in its current ring during the grace window and moves it to `hold` when the window ends.
 
