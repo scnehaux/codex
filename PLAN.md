@@ -43,7 +43,7 @@ Governance 1.0 readiness            : NOT READY (later phases remain)
 This snapshot is source-bound historical evidence, not an automatically refreshed
 current-state feed. Phase 10 is closed for the accepted reference-provider scope;
 the Phase 11 ledger and Current Next Action below own implementation sequencing.
-Phase 11 and Phase 12 are closed. Phase 13 is active; Slices 13.1, 13.3 and 13.4 are complete; Slice 13.5 has promoted GDC-000 and GDC-001 to `approved` / `1.0.0` and the other ten required GDCs remain draft. This status grants no standing publication.
+Phase 11 and Phase 12 are closed. Phase 13 is active; Slices 13.1, 13.3 and 13.4 are complete; Slice 13.5 has promoted GDC-000, GDC-001 and GDC-002 to `approved` / `1.0.0` and the other nine required GDCs remain draft. This status grants no standing publication.
 
 Git history is the historical ledger
 
@@ -1138,9 +1138,11 @@ Process deviation: the owner's REC-13-003 ARB approval record for that exact hea
 
 GDC-001 is `approved` / `1.0.0`. Codex PR #50 merged at `785977e8afc4e2596a2d82c9e0aaf2bdb18e1be1` after dedicated App check `124666189317` succeeded on exact head `de7defe07c6aa0c7648e00c2fdcb129d4ecc5d5a`. The order required by REC-13-003 was kept: Authority PR #133 merged the owner's exact-head ARB approval record (GDC-002 score 10/10, review date 2026-10-31, review bootstrap exception active, author and approver the same person) before #134 attested the head, #135 activated publication and #136 retained the outcome and restored disabled state with null activation. The candidate corrected GDC-001 to the implemented engine; eleven GDC-001 controls kept their ids, mappings, classes and evidence states with rebound statements or clauses and fingerprints.
 
-GDC-002 candidate: the unmerged candidate proposes GDC-002 `approved` / `1.0.0` with a `last_reviewed` date. It corrects cross-references: the GDC-003 scope wording (high-risk escalation triggers and strategic audit dimensions), the score-sheet location in GDC-003 §2.1, the TDD Fate Matrix in GDC-011 §2.4.1 (obsolete TDDs are archived or deleted by class, not only archived), `lint_disable` suppressions limited to non-blocking findings per GDC-001 §2.5, and the Trade-Offs parameter number (7th, not 10th). §5 now also states the cost accepted with binary scoring. The scoring thresholds, the ten parameters and all four GDC-002 control statements, clauses and fingerprints are unchanged; no control is added or removed, and no runtime, schema, ontology, threshold or admission policy changes. The PR carries an author-proposed rubric score sheet, which is not approval evidence. The owner's exact-head ARB record must be merged in Authority before the candidate's permit; Authority #126 refuses the permit otherwise.
+GDC-002 is `approved` / `1.0.0`. Codex PR #51 merged at `7ead894fc19fdf72c0160e0cc2bf87420d63966e` after dedicated App check `125863102419` succeeded on exact head `19988ad917a07f19aba9d19c41ee0ec5d64e4c63`. The REC-13-003 order held: Authority PR #139 merged the owner's exact-head ARB approval record (GDC-002 score 9/10, review date 2026-11-03, review bootstrap exception active, author and approver the same person) before #140 attested the head, #141 activated publication and #142 retained the outcome and restored disabled state with null activation. The candidate corrected GDC-002 cross-references; all four GDC-002 control fingerprints were unchanged.
 
-The other ten required GDCs remain `draft`. All control classifications and evidence states are unchanged: 166 controls, 82 verified / 84 pending, including 29 pending roots. Approval of one GDC does not approve any other GDC or declare Governance 1.0.
+GDC-003 candidate: the unmerged candidate proposes GDC-003 `approved` / `1.0.0` with a `last_reviewed` date. It corrects the document to the other GDCs and the implemented controls: the TDD Fate Matrix rubric row now follows GDC-011 §2.4.1 (Class A archived, Class B and C deleted, never folded into the SAD); Technology Radar ring names are the schema's `adopt` and `hold`, replacing the non-existent `Invest` ring and `Deprecated` phase; `CODEOWNERS` requests ARB review and becomes a merge block only when the bootstrap exception expires; the SLA no longer claims automatic reviewer assignment; ADR `rejected` is listed as full validation; the §5.1 score bands match GDC-002 §4 (9 Enterprise-Ready, 10 Governance-Grade). The §4.1 Tri-Date Concept is translated into English, and §2.3 now precedes §2.4. All 19 GDC-003 control statements, clauses and fingerprints are unchanged; no control is added or removed, and no runtime, schema, ontology, threshold or admission policy changes. The PR carries an author-proposed rubric score sheet, which is not approval evidence. The owner's exact-head ARB record must be merged in Authority before the candidate's permit; Authority #126 refuses the permit otherwise.
+
+The other nine required GDCs remain `draft`. All control classifications and evidence states are unchanged: 166 controls, 82 verified / 84 pending, including 29 pending roots. Approval of one GDC does not approve any other GDC or declare Governance 1.0.
 
 - GDC-000 is promoted first, because every other GDC is `governed_by` GDC-000
 - each candidate carries a GDC-002 quality rubric score sheet with at least 9 passes and its normative-control delta
@@ -1289,7 +1291,8 @@ Phase 12 Reproducibility and Supply-Chain Closure: DONE
 -> Slice 13.4 Release Metadata Binding: DONE (#47)
 -> Slice 13.5 Stable GDC Baseline: GDC-000 approved 1.0.0 (#48; ARB record Authority #124)
 -> Slice 13.5 Stable GDC Baseline: GDC-001 approved 1.0.0 (#50; ARB record Authority #133)
--> Slice 13.5 next: GDC-002 candidate prepared; owner ARB record before publication
+-> Slice 13.5 Stable GDC Baseline: GDC-002 approved 1.0.0 (#51; ARB record Authority #139)
+-> Slice 13.5 next: GDC-003 candidate prepared; owner ARB record before publication
 ```
 
 Phase 10 reference-provider acceptance, Phase 11 executable-framework closure, and Phase 12 reproducibility closure are complete. Phase 13 is now the active workstream, but Governance 1.0 is not released and architecture admission remains closed.
