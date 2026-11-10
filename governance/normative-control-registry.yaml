@@ -2089,10 +2089,10 @@ controls:
   source_gdc: GDC-005
   source_file: GDC-005-gdc-guideline.md
   source_clause: Governance Document Contract (GDC) Guideline > 2. Policy Framework > 2.5 The Downstream Guideline Interface
-  source_fingerprint: eb1e64076afd
+  source_fingerprint: 13074e8047cb
   modality: MUST
   statement: To be recognized by the Linter as a Downstream Guideline, the artifact's filename MUST end with the suffix -guideline.md
-    (e.g., GDC-009-pad-guideline.md).
+    (e.g., GDC-008-pad-guideline.md).
   scope: governance-guideline
   severity: ERROR
   enforcement_mode: automated
@@ -2233,10 +2233,10 @@ controls:
   source_gdc: GDC-005
   source_file: GDC-005-gdc-guideline.md
   source_clause: Governance Document Contract (GDC) Guideline > 3. The Reconciliation Flow (Adding or Modifying Rules)
-  source_fingerprint: 4374e093488c
+  source_fingerprint: 6e15e830d10b
   modality: MUST
   statement: 'Reconcile Documentation (Generate, Don''t Duplicate): To maintain the Single Source of Truth (SSOT), the human-readable
-    markdown tables inside the Guideline artifacts must be synchronized with the YAML. You MUST regenerate the documentation
+    markdown tables inside the Guideline artifacts must be synchronized with the JSON schemas. You MUST regenerate the documentation
     by executing:'
   scope: governance-guideline
   severity: ERROR
