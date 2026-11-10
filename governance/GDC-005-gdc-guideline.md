@@ -3,12 +3,13 @@ doc_meta:
   id: GDC-005
   title: Governance Document Contract (GDC) Guideline
   owner: Architecture Authority
-  version: 0.1.1
-  status: draft
+  version: 1.0.0
+  status: approved
   classification: public
   governed_by: [GDC-000]
   review_cycle_days: 180
   created_date: 2026-01-01
+  last_reviewed: 2026-11-10
 ---
 
 # Governance Document Contract (GDC) Guideline
@@ -53,7 +54,7 @@ The filename must strictly adhere to the regex: `^GDC-\d{3}-[a-z0-9-]+\.md$`. If
 All Governance Document Contracts (GDC) must be placed strictly in the root of the `governance/` directory. To maintain the "Fractal Triad" of automated governance (Policy, Rules, and Schemas), supplementary technical enforcement assets must be categorized into their respective subdirectories:
 
 - `schemas/`: Contains the declarative JSON Schema definitions (`*.schema.json`) that act as the Single Source of Truth (SSOT) for metadata, structural, and declarative content requirements.
-- `../engine/control/validators/domains/`: Contains the executable domain validators that enforce complex dynamic logic not expressible in static schemas.
+- `engine/control/validators/domains/`: Contains the executable domain validators that enforce complex dynamic logic not expressible in static schemas.
 - `templates/`: Contains non-authoritative reviewer or authoring templates. Files in this directory are excluded from artifact discovery by directory scope, never by filename suffix.
 
 #### 2.3.3 Directory Structure
@@ -66,7 +67,9 @@ codex/
 │   ├── GDC-000-governance-policy.md
 │   ├── GDC-001-fitness-functions.md
 │   ├── framework/
-│   └── github/
+│   ├── github/
+│   ├── releases/
+│   └── scm/
 ├── schemas/
 │   ├── base.schema.json
 │   └── gdc.schema.json
@@ -79,16 +82,18 @@ codex/
 
 #### 2.3.4 Metadata Schema Properties
 
-| Metadata Field      | Type    | Description / Purpose                                               |
-| ------------------- | ------- | ------------------------------------------------------------------- |
-| `id`                | String  | Unique identifier (e.g., `GDC-000`).                                |
-| `title`             | String  | Descriptive title of the artifact.                                  |
-| `owner`             | String  | Lead Owner (e.g., Architecture Authority).                          |
-| `version`           | String  | Must comply with Semantic Versioning (e.g., 1.0.0).                 |
-| `status`            | Enum    | The current lifecycle state (Refers to Allowed Lifecycle Statuses). |
-| `classification`    | Enum    | The data sensitivity (Refers to Classification Semantics below).    |
-| `review_cycle_days` | Integer | The frequency in days for required review.                          |
-| `last_reviewed`     | Date    | The date of the last formal review (YYYY-MM-DD).                    |
+| Metadata Field      | Type    | Description / Purpose                                                                  |
+| ------------------- | ------- | -------------------------------------------------------------------------------------- |
+| `id`                | String  | Unique identifier (e.g., `GDC-000`).                                                   |
+| `title`             | String  | Descriptive title of the artifact.                                                     |
+| `owner`             | String  | Lead Owner (e.g., Architecture Authority).                                             |
+| `version`           | String  | Must comply with Semantic Versioning (e.g., 1.0.0).                                    |
+| `status`            | Enum    | The current lifecycle state (Refers to Allowed Lifecycle Statuses).                    |
+| `classification`    | Enum    | The data sensitivity (Refers to Classification Semantics below).                       |
+| `review_cycle_days` | Integer | The frequency in days for required review.                                             |
+| `governed_by`       | Array   | Parent GDC ids (e.g., `[GDC-000]`); a single string is accepted.                       |
+| `created_date`      | Date    | The date the artifact was created (YYYY-MM-DD).                                        |
+| `last_reviewed`     | Date    | Date of the last formal review (YYYY-MM-DD); required when `approved` or `deprecated`. |
 
 ##### Allowed Lifecycle Statuses
 
@@ -119,16 +124,16 @@ While the exact string values are enforced by the CI Linter, their semantic mean
 
 #### 2.3.5 Artifact Section
 
-The linter enforces the presence of these sections. Their semantic purposes are:
+The linter requires the first two sections; the others are optional. The generated table in §2.1 lists every recommended section name. Their semantic purposes are:
 
-| Section Name                           | Purpose / Content Requirement                                                                  |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| **Context & Scope**                    | Defines the boundaries, objectives, and scope of the governance policy.                        |
-| **Policy Framework**                   | Documents the core guidelines, philosophies, schemas, or models being established.             |
-| **Enforcement Mechanism**              | (Optional) Redefine ONLY if the artifact has domain-specific linter rules.                     |
-| **Severity & Exceptions**              | (Optional) Redefine ONLY if the artifact explicitly blocks waivers or alters severity scaling. |
-| **Artifact Types (Glossary of Truth)** | (Optional) Defines the glossary of truth.                                                      |
-| **Artifact Lifecycle & Statuses**      | (Optional) Defines the lifecycle statuses.                                                     |
+| Section Name                              | Purpose / Content Requirement                                                                  |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **Context & Scope**                       | Defines the boundaries, objectives, and scope of the governance policy.                        |
+| **Policy Framework**                      | Documents the core guidelines, philosophies, schemas, or models being established.             |
+| **Enforcement Mechanism**                 | (Optional) Redefine ONLY if the artifact has domain-specific linter rules.                     |
+| **Severity & Exceptions**                 | (Optional) Redefine ONLY if the artifact explicitly blocks waivers or alters severity scaling. |
+| **Document Types (Glossary of Truth)**    | (Optional) Defines the glossary of truth.                                                      |
+| **Document Lifecycle & State Management** | (Optional) Defines the lifecycle statuses.                                                     |
 
 ### 2.4 Artifact Lifecycle & Statuses
 
@@ -144,7 +149,7 @@ A GDC in `draft`:
 - is not yet a stable downstream contract
 - cannot authorize architecture artifact admission
 
-Promotion to `approved` requires a stable Semantic Version of `1.0.0` or higher and a formal Git review event. Architecture admission is independently controlled by the bootstrap manifest and opens only when its declared required GDC baseline set satisfies those conditions.
+Promotion to `approved` requires a stable Semantic Version of `1.0.0` or higher and a formal Git review event. While the review bootstrap exception of [GDC-003 §3.2](./GDC-003-review-process.md) is active, a merge alone does not prove ARB approval: the approver's exact-head approval record is also required (Codex PLAN REC-13-003). Architecture admission is independently controlled by the bootstrap manifest and opens only when its declared required GDC baseline set satisfies those conditions.
 
 #### 2.4.1 Git-Centric Audit Trail (No Backdoor Approvals)
 
@@ -154,7 +159,7 @@ The Genesis Bootstrap root commit may admit GDCs only in `draft` state. It is no
 
 If a Governance Document Contract (GDC) is specifically authored to serve as a **Guideline** governing a downstream architectural artifact type (e.g., EAD, PAD, SAD, STD, ADR, TDD), it is legally bound to the "Downstream Guideline Interface".
 
-To be recognized by the Linter as a Downstream Guideline, the artifact's filename **MUST** end with the suffix `-guideline.md` (e.g., `GDC-009-pad-guideline.md`).
+To be recognized by the Linter as a Downstream Guideline, the artifact's filename **MUST** end with the suffix `-guideline.md` (e.g., `GDC-008-pad-guideline.md`).
 
 Any GDC adopting this interface must explicitly define the following 4 structural pillars to completely eradicate implicit knowledge:
 
@@ -172,10 +177,14 @@ If you need to introduce a new constraint or modify an existing rule across any 
 1. **Codify the Rule**: Do not edit the Markdown guidelines directly. Instead, encode the rule into the machine-readable format.
    - For declarative constraints (e.g., required sections, metadata schemas, allowed formats), edit the appropriate `schemas/[type].schema.json`.
    - For complex dynamic logic, modify the corresponding Python validator under `engine/control/validators/`.
-2. **Reconcile Documentation (Generate, Don't Duplicate)**: To maintain the Single Source of Truth (SSOT), the human-readable markdown tables inside the Guideline artifacts must be synchronized with the YAML. You **MUST** regenerate the documentation by executing:
+2. **Reconcile Documentation (Generate, Don't Duplicate)**: To maintain the Single Source of Truth (SSOT), the human-readable markdown tables inside the Guideline artifacts must be synchronized with the JSON schemas. You **MUST** regenerate the documentation by executing:
+
    ```bash
-   python generators/generate_rules_doc.py
+   make generate-docs
    ```
+
+   `make verify-generated` (run in CI) fails when the generated tables drift from the schemas.
+
 3. **Update Semantic Definitions**: The automated script only updates the machine-readable table. You **MUST** manually update the Semantic Definitions section in the corresponding Guideline artifact to explain the "Why" and "How" behind your new constraints for human readers.
 4. **Qualitative Synchronization (Human Governance)**: If your rule modification impacts the qualitative evaluation of architecture (e.g., prohibiting new vague terms, demanding new quantitative NFR metrics, or altering risk disclosure requirements), you **MUST** also manually synchronize the human-driven governance artifacts:
    - Update `GDC-002-quality-rubric.md` (The 10-Parameter Qualitative Benchmark).
@@ -189,10 +198,10 @@ Failure to follow this reconciliation flow will result in Documentation Drift an
 
 In addition to the global structural enforcement defined in `GDC-001`, GDC artifacts are strictly governed by the following domain-specific linter components:
 
-| Linter Component  | File                                         | Enforcement Logic                                                                                             |
-| :---------------- | :------------------------------------------- | :------------------------------------------------------------------------------------------------------------ |
-| **Domain Schema** | `schemas/gdc.schema.json`                    | Specific `review_cycle_days`, strict metadata, and policy structure.                                          |
-| **Python Engine** | `engine/validators/domains/gdc_validator.py` | **Taxonomy**: Validates `allowed_statuses` and `allowed_classifications` ensuring proper baseline governance. |
+| Linter Component  | File                                                 | Enforcement Logic                                                                                                                                                                                                      |
+| :---------------- | :--------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Domain Schema** | `schemas/gdc.schema.json`                            | Specific `review_cycle_days`, strict metadata, and policy structure.                                                                                                                                                   |
+| **Python Engine** | `engine/control/validators/domains/gdc_validator.py` | **Downstream Guideline Interface**: For `*-guideline.md` files, checks that the required subsections exist under their parent sections and appear in order. Allowed statuses and classifications come from the schema. |
 
 ---
 
@@ -201,5 +210,5 @@ In addition to the global structural enforcement defined in `GDC-001`, GDC artif
 In accordance with the Quality Rubric (Trade-Offs), the Architecture Authority explicitly documents the compromises of this GDC Guideline:
 
 1. **Self-Referential Linter Rules vs Hardcoded Engine Logic**
-   - _Why rejected_: Writing specific logic in the main engine `engine/cli.py` to validate `GDC` files pollutes the global execution engine with domain-specific concerns.
-   - _The Trade-Off_: We accept the cognitive overhead of creating a specific `engine/validators/domains/gdc_validator.py` module and a `schemas/gdc.schema.json` to validate the files that define the rules themselves. In exchange, the global linter engine remains perfectly domain-agnostic, treating `GDC` files identically to `SAD` or `PAD` files during execution.
+   - _Why rejected_: Writing specific logic in the main engine `engine/interfaces/cli.py` to validate `GDC` files pollutes the global execution engine with domain-specific concerns.
+   - _The Trade-Off_: We accept the cognitive overhead of creating a specific `engine/control/validators/domains/gdc_validator.py` module and a `schemas/gdc.schema.json` to validate the files that define the rules themselves. In exchange, the global linter engine remains domain-agnostic, treating `GDC` files identically to `SAD` or `PAD` files during execution.
