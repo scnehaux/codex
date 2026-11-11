@@ -2631,10 +2631,10 @@ controls:
   source_gdc: GDC-008
   source_file: GDC-008-pad-guideline.md
   source_clause: Product Architecture Document (PAD) Guideline > 1. Context & Scope > 1.1 Philosophy & Decision Horizon
-  source_fingerprint: 83fdc4dac594
+  source_fingerprint: 660878b7a614
   modality: MUST
-  statement: Stability / half-life — 10+ years (one-way door). The longest-lived C2 artifact. To stay durable it must remain
-    thin — capability, boundaries, contracts, NFR promises — and exclude implementation detail.
+  statement: Stability / half-life — 10+ years (one-way door). It outlives the SADs and TDDs that realize it. To stay durable
+    it must remain thin — capability, boundaries, contracts, NFR promises — and exclude implementation detail.
   scope: pad
   severity: ERROR
   enforcement_mode: human-review
@@ -2695,9 +2695,9 @@ controls:
   source_file: GDC-008-pad-guideline.md
   source_clause: Product Architecture Document (PAD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.1 Naming
     Conventions
-  source_fingerprint: 7e4d8476f620
+  source_fingerprint: 9b8701b75572
   modality: MUST
-  statement: 'The filename must strictly adhere to the regex: ^[a-z0-9-]+\.pad\.md$.'
+  statement: 'The filename must strictly adhere to the regex: ^[A-Za-z0-9-]+\.pad\.md$.'
   scope: pad
   severity: ERROR
   enforcement_mode: automated
