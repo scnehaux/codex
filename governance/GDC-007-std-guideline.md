@@ -3,12 +3,13 @@ doc_meta:
   id: GDC-007
   title: Enterprise Standards (STD) Guideline
   owner: Architecture Authority
-  version: 0.1.0
-  status: draft
+  version: 1.0.0
+  status: approved
   classification: public
   governed_by: [GDC-000]
   review_cycle_days: 180
   created_date: 2026-01-01
+  last_reviewed: 2026-11-11
 ---
 
 # Enterprise Standards (STD) Guideline
@@ -51,18 +52,20 @@ In addition to the global structural enforcement defined in **[GDC-001](GDC-001-
 
 <!-- AUTO-GENERATED-SCHEMA:END -->
 
-| Linter Component  | File                                         | Enforcement Logic                                                                                                                                                                                                                      |
-| :---------------- | :------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Domain Schema** | `schemas/std.schema.json`                    | Validates normative rule structures and exact exception tracking.                                                                                                                                                                      |
-| **Python Engine** | `engine/validators/domains/std_validator.py` | **Taxonomy**: Validates `allowed_statuses` and `allowed_classifications`.<br>**Domain Validation**: Triggers `operational_stability_violation` if a document's status is `hold`, explicitly preventing adoption of retired components. |
+| Linter Component  | File                                                 | Enforcement Logic                                                                                                                                                                  |
+| :---------------- | :--------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Domain Schema** | `schemas/std.schema.json`                            | Requires the five sections of §2.3.5 and the filename pattern of §2.3.1; reports `prohibited_words` (ERROR) for `waiver`, `ADR`, `ARB` or `Approval Requirements` in `Exceptions`. |
+| **Python Engine** | `engine/control/validators/domains/std_validator.py` | **Hold check**: reports `operational_stability_violation` (ERROR) when the STD's own `status` is `hold`. Allowed statuses and classifications come from the schema.                |
 
-**Engine Execution Mechanics**: The automated linter will execute a Hard Block (Exit 1) on any STD artifact that mandates a technology currently marked as `Hold` in its respective lifecycle phase.
+**Engine Execution Mechanics**: the linter does not read which technologies an STD mandates. Technology `hold` blocks apply to the `technologies` metadata of SADs and TDDs ([GDC-004 §3.1](GDC-004-tech-lifecycle.md)). For an STD, only its own `hold` status is checked, and `ERROR` is a blocking severity.
 
 ### 2.3 Semantic Definitions
 
 #### 2.3.1 Naming Conventions
 
-- **Enterprise Naming Convention**: `STD-EXAMPLE-001-[N]-[slug].md` (Global) or `STD-[DOMAIN]-[CAPABILITY]-[N]-[slug].md` (Domain).
+`schemas/std.schema.json` checks filenames against `^STD-[A-Z]+(?:-[A-Z]+)?-\d{3}-[a-z0-9-]+\.md$`: one or two uppercase segments, a three-digit sequence and a lowercase slug.
+
+- **Enterprise Naming Convention**: `STD-[DOMAIN]-[N]-[slug].md` (Global, e.g., `STD-GLB-001-api-design.md`) or `STD-[DOMAIN]-[CAPABILITY]-[N]-[slug].md` (Domain).
 - **Project Naming Convention**: `STD-[REPO]-[COMPONENT]-[N]-[slug].md`.
 
 #### 2.3.2 Taxonomy
@@ -72,7 +75,7 @@ Because STDs are authored at both the Root Enterprise level and the Local Projec
 **Enterprise Level (Architecture Repo)** Enterprise standards must strictly adhere to a **Domain-Driven Taxonomy** within the `standards/` directory.
 
 - **Rule 1 (Max Depth)**: Directory nesting is strictly capped at Level 3 (`Root -> Domain -> Capability`). Creating further subdirectories inside a capability folder (Level 4+) is prohibited to prevent the "Russian Doll" anti-pattern.
-- **Rule 2 (Lexicographical Suffixing)**: To group multi-part documents without violating the Max Depth rule, use alphanumeric suffixing on the sequence ID (e.g., `001A`, `001B`).
+- **Rule 2 (Sequential Grouping)**: To group multi-part documents without violating the Max Depth rule, place them in the same capability folder with consecutive sequence numbers (e.g., `001`, `002`). The filename pattern of §2.3.1 rejects letter suffixes such as `001A`.
 
 **Project Level (Local Repo)** Because a project repository inherently represents a single Domain or System, Domain-Driven Taxonomy is redundant. Local standards must utilize **Module/Feature-Driven Taxonomy** to closely mirror the source code structure.
 
@@ -84,11 +87,11 @@ Because STDs are authored at both the Root Enterprise level and the Local Projec
 architecture/
 └── standards/                    # (Domain-Driven Taxonomy)
     ├── _global/
-    │   └── STD-EXAMPLE-001-001-api-design.md
+    │   └── STD-GLB-001-api-design.md
     └── ui-platform/
         └── design-tokens/
-            ├── STD-UIP-TKN-001A-architecture.md
-            └── STD-UIP-TKN-001B-tier1-core-tokens.md
+            ├── STD-UIP-TKN-001-architecture.md
+            └── STD-UIP-TKN-002-tier1-core-tokens.md
 ```
 
 **Project Level (Local Repo)** Must reside in the `docs/01-standards/` directory.
@@ -109,46 +112,50 @@ scnehaux-ui-platform/                # (Project Repository)
 
 ```yaml
 doc_meta:
-  id: STD-EXAMPLE-001-[Seq][Suffix] | STD-[DOM]-[CAP]-[Seq][Suffix] # e.g., STD-EXAMPLE-001-001 or STD-UIP-TKN-001A
+  id: STD-[DOM]-[Seq] | STD-[DOM]-[CAP]-[Seq] # e.g., STD-GLB-001 or STD-UIP-TKN-001
   title: Short Descriptive Title
   owner: Lead Domain Architect Name / Team
   version: Y.Y.Y
   status: adopted | trial | assessed | hold
-  classification: public | internal | restricted
-  governed_by: [Parent Context ID] # Required: Must point to EAD, PAD, SAD, or GDC-000 (if purely technical/global)
+  classification: public | internal | restricted | confidential
+  created_date: YYYY-MM-DD
+  governed_by: [Parent Context ID] # Required: at least one EAD, PAD or GDC id
 ```
 
 **Project/Local Level (Project Repo)**
 
 ```yaml
 doc_meta:
-  id: STD-[REPO]-[COMPONENT]-[Seq][Suffix] # e.g., STD-SCNX-IAM-GO-001 or STD-UIP-CORE-001A
+  id: STD-[REPO]-[COMPONENT]-[Seq] # e.g., STD-UIP-CORE-001
   title: Short Descriptive Title
   owner: Lead System Engineer / Team Name
   version: Y.Y.Y
   status: adopted | trial | assessed | hold
-  classification: public | internal | restricted
-  parent_std: [Parent Enterprise Standard ID] # e.g., STD-EXAMPLE-001-001 or STD-E006 (Traceability link)
-  governed_by: [Parent Context ID] # Required: Must point to EAD, PAD, SAD, or GDC-000 (if purely technical/global)
+  classification: public | internal | restricted | confidential
+  created_date: YYYY-MM-DD
+  parent_std: [Parent Enterprise Standard ID] # e.g., STD-GLB-001 (traceability link; not checked by the linter)
+  governed_by: [Parent Context ID] # Required: at least one EAD, PAD or GDC id
 ```
 
-| Metadata Field   | Type   | Description / Purpose                                            |
-| ---------------- | ------ | ---------------------------------------------------------------- |
-| `id`             | String | Unique identifier.                                               |
-| `title`          | String | Descriptive title of the artifact.                               |
-| `owner`          | String | Lead System Engineer / Team Name.                                |
-| `version`        | String | Must comply with Semantic Versioning (e.g., 1.0.0).              |
-| `status`         | Enum   | The current lifecycle state (must match Allowed Statuses below). |
-| `classification` | Enum   | The data sensitivity (must match Allowed Classifications below). |
+| Metadata Field   | Type            | Description / Purpose                                            |
+| ---------------- | --------------- | ---------------------------------------------------------------- |
+| `id`             | String          | Unique identifier.                                               |
+| `title`          | String          | Descriptive title of the artifact.                               |
+| `owner`          | String or array | Lead System Engineer / Team Name.                                |
+| `version`        | String          | Must comply with Semantic Versioning (e.g., 1.0.0).              |
+| `status`         | Enum            | The current lifecycle state (must match Allowed Statuses below). |
+| `classification` | Enum            | The data sensitivity (must match Allowed Classifications below). |
+| `created_date`   | Date            | The date the artifact was created (YYYY-MM-DD).                  |
+| `governed_by`    | Array           | At least one EAD, PAD or GDC id (`relationships.yaml`).          |
 
 ##### Allowed Lifecycle Statuses
 
-| Status     | Meaning / Lifecycle Stage                                                   |
-| ---------- | --------------------------------------------------------------------------- |
-| `adopted`  | Formally accepted and enforced.                                             |
-| `trial`    | In evaluation or POC phase.                                                 |
-| `assessed` | Evaluated but not necessarily adopted.                                      |
-| `hold`     | Suspended or pending retirement. (Triggers linter block for new adoptions). |
+| Status     | Meaning / Lifecycle Stage                                                            |
+| ---------- | ------------------------------------------------------------------------------------ |
+| `adopted`  | Formally accepted and enforced.                                                      |
+| `trial`    | In evaluation or POC phase.                                                          |
+| `assessed` | Evaluated but not necessarily adopted.                                               |
+| `hold`     | Retirement. The STD fails validation with `operational_stability_violation` (ERROR). |
 
 ##### Allowed Classifications
 
@@ -157,6 +164,7 @@ doc_meta:
 | `public`       | Available to anyone.                   |
 | `internal`     | Restricted to company employees.       |
 | `restricted`   | Restricted to specific teams or roles. |
+| `confidential` | Need-to-know access only.              |
 
 ##### Semantic Versioning Classification
 
@@ -188,6 +196,8 @@ To prevent rigid compliance grids from stifling innovation, every enterprise sta
 
 All STD artifacts must declare one of the four phases defined in GDC-004 in their `status` metadata field.
 
+_Current automation_: `schemas/std.schema.json` accepts the four phases and also `draft`, `proposed`, `approved` and `deprecated`, so the linter does not reject a status that is not a phase. `governance/framework/contracts/lifecycle.yaml` gives STDs lifecycle classes only for `draft` (relaxed validation; fails with `lifecycle_age_violation` 30 days after `created_date`), `approved` and `deprecated`. A phase status gets full validation, and an STD in `hold` fails validation (§2.2). The ARB checks the phase in review.
+
 #### 2.4.2 The Living Specification Principle (Mutability & Versioning)
 
 Unlike ADRs (which are immutable historical logs of a specific point-in-time decision), **STDs are living specifications** that represent the _currently active_ engineering mandates.
@@ -197,7 +207,9 @@ Unlike ADRs (which are immutable historical logs of a specific point-in-time dec
    - **Major (X.0.0)**: Introducing new mandatory restrictions, breaking changes, or deprecating existing active paths.
    - **Minor (1.X.0)**: Adding optional recommendations, non-breaking rules, or clarifying examples.
    - **Patch (1.0.X)**: Fixing typos, broken links, or minor metadata updates.
-3. **ADR Authorization Invariant**: Any change resulting in a **Major (X.0.0)** version bump of an enterprise standard MUST be authorized by an approved ADR. The `governed_by` metadata field of the STD must be updated to point to the new ADR.
+3. **ADR Authorization Invariant**: Any change resulting in a **Major (X.0.0)** version bump of an enterprise standard MUST be authorized by an approved ADR. The STD must cite that ADR (id and link) in its `Design Principles` section.
+
+`governance/framework/contracts/relationships.yaml` accepts only EAD, GDC and PAD ids in an STD's `governed_by`, so the authorizing ADR is cited in the text, not in `governed_by`.
 
 ---
 
