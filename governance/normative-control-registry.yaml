@@ -2611,10 +2611,10 @@ controls:
   source_file: GDC-007-std-guideline.md
   source_clause: Enterprise Standards (STD) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit > 2.4.2 The Living Specification
     Principle (Mutability & Versioning)
-  source_fingerprint: e446b8dfa450
+  source_fingerprint: 753bb21f0082
   modality: MUST
   statement: 'ADR Authorization Invariant: Any change resulting in a Major (X.0.0) version bump of an enterprise standard
-    MUST be authorized by an approved ADR. The governedby metadata field of the STD must be updated to point to the new ADR.'
+    MUST be authorized by an approved ADR. The STD must cite that ADR (id and link) in its Design Principles section.'
   scope: std
   severity: ERROR
   enforcement_mode: process-control
