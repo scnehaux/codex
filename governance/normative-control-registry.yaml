@@ -2341,11 +2341,11 @@ controls:
   source_gdc: GDC-006
   source_file: GDC-006-ead-guideline.md
   source_clause: Enterprise Architecture Document (EAD) Guideline > 2. Policy Framework > 2.1 Agnosticity Policies
-  source_fingerprint: 48689889cdcc
+  source_fingerprint: 18d7f4359088
   modality: MUST
   statement: EADs must remain conceptually agnostic (e.g., Capability, Data, Integration domains) and at a high level of abstraction.
     Strict SLA (Service Level Agreement) metrics (e.g., P95 <= 200ms or >= 95% availability) are mandated, but implementation-specific
-    details are prohibited. The sole exception is the Platform & Cloud Strategy domain (EAD-EXAMPLE-005), which must explicitly
+    details are prohibited. The sole exception is the Enterprise Platform Architecture domain (EAD-005), which must explicitly
     define the enterprise technology portfolio and execution runtimes.
   scope: ead
   severity: ERROR
