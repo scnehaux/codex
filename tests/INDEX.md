@@ -526,6 +526,16 @@ This index documents the test suite utilities and fixtures.
 | **test_provider_assessment_remains_bound_to_unchanged_semantic_policy**           | _(No docstring provided)_ |
 | **test_incomplete_obligations_remain_pending**                                    | _(No docstring provided)_ |
 | **test_promotion_evidence_does_not_grant_publication_or_change_component_claims** | _(No docstring provided)_ |
+| **\_evidence_002**                                                                | _(No docstring provided)_ |
+| **\_registry**                                                                    | _(No docstring provided)_ |
+| **\_doc_meta**                                                                    | _(No docstring provided)_ |
+| **test_owner_records_retain_reviewed_content_and_identity**                       | _(No docstring provided)_ |
+| **test_every_required_gdc_has_an_owner_record_for_its_approved_head**             | _(No docstring provided)_ |
+| **test_single_person_review_is_disclosed_not_claimed_as_two_party**               | _(No docstring provided)_ |
+| **test_examined_controls_are_bound_to_this_assessment**                           | _(No docstring provided)_ |
+| **test_reclassifications_match_the_registry**                                     | _(No docstring provided)_ |
+| **test_no_pending_control_targets_a_closed_slice**                                | _(No docstring provided)_ |
+| **test_unresolved_roots_remain_pending_in_slice_13_2**                            | _(No docstring provided)_ |
 
 ### `tests/control/governance/test_relationships.py`
 
@@ -890,9 +900,11 @@ This index documents the test suite utilities and fixtures.
 
 ### `tests/control/validators/domains/test_all_domains.py`
 
-| Function                          | Description               |
-| :-------------------------------- | :------------------------ |
-| **test_missing_doc_meta_for_all** | _(No docstring provided)_ |
+| Function                                                        | Description               |
+| :-------------------------------------------------------------- | :------------------------ |
+| **test_missing_doc_meta_for_all**                               | _(No docstring provided)_ |
+| **test_domain_validators_only_override_validate_type_specific** | _(No docstring provided)_ |
+| **test_base_validator_runs_global_rules_before_domain_rules**   | _(No docstring provided)_ |
 
 ### `tests/control/validators/domains/test_ead_validator.py`
 

@@ -1,0 +1,618 @@
+{
+  "schema_version": 1,
+  "kind": "codex-registry-evidence-reconciliation",
+  "recorded_date": "2026-11-12",
+  "codex_baseline": "2e84573acd574ab7dfc076bc200a30938ab8b9e5",
+  "scope": "Owner ARB approval records for the twelve required GDCs and the Authority ARB gate, examined as review evidence; no fresh provider observation and no standing publication authority.",
+  "methods": {
+    "examine": "NIST SP 800-53A Rev. 5 assessment method: review, inspect or analyse assessment objects (here: pinned Authority records and the gate source).",
+    "test": "NIST SP 800-53A Rev. 5 assessment method: exercise objects under specified conditions and compare actual with expected behaviour (here: repository tests named in the registry)."
+  },
+  "claims": {
+    "owner_review_recorded_for_every_required_gdc": true,
+    "two_party_review_proven": false,
+    "independent_human_review_proven": false,
+    "provider_observation_performed": false,
+    "consumer_architecture_conformance_proven": false
+  },
+  "claim_limits": [
+    "Every record has author_is_approver true under the GDC-003 bootstrap exception: one person reviewed and approved. SLSA Source v1.2 Level 4 (two different trusted persons) is not claimed; the exception and this residual risk belong in the Governance 1.0 release notes (REC-13-003).",
+    "The GDC-000 record was created after its merge (Authority PR #124, recorded deviation); the other eleven were merged before their attestation.",
+    "A record proves that the owner reviewed the exact head against GDC-002 with the stated score; it does not prove that consumer architecture meets each statement.",
+    "Repository-control obligations that need a fresh provider observation or a negative test remain pending."
+  ],
+  "sources": {
+    "repository": "scnehaux/codex-authority",
+    "revision": "42c3ed6eaf5d32be941e6157a7630bab0774da9c",
+    "arb_gate": {
+      "path": "src/codex_authority/arb_gate.py",
+      "git_blob": "019f866c11b0787207b17737944ce5b7b0628ee6",
+      "minimum_score_pattern": "(9|10)/10"
+    },
+    "arb_approvals": {
+      "GDC-000": {
+        "path": "governance/arb-approvals/GDC-000-1.0.0-f01908ef03e361b60b5b298c75378d5ee60c53b3.json",
+        "git_blob": "54aee35640a74edd9a5e44345ae3c17470939c3a",
+        "canonical_sha256": "4f5ce7fa85f1b2f7a4c24f4f51a9d3d861c51b1c50a05d30dd037fe5e3f40470",
+        "record": {
+          "approver": {
+            "github": "anshacerbia2",
+            "name": "Ansha Cerbia",
+            "role": "repository owner acting as ARB (GDC-003 section 3.2)"
+          },
+          "decision": "approve",
+          "kind": "codex-arb-approval-record",
+          "review": {
+            "date": "2026-10-29",
+            "notes": "Owner assessment: 10/10. Criterion 1 judged Pass: the section 1.1-1.2 statements are aspirational goals of the constitution, not testable requirements; all testable obligations are quantified elsewhere. Criteria 2-10 Pass as proposed on Codex PR #48.",
+            "rubric": "GDC-002",
+            "score": "10/10"
+          },
+          "review_exception": {
+            "author_is_approver": true,
+            "exit_condition": "independent qualified reviewer count reaches 2",
+            "reason": "fewer than 2 independent qualified reviewers",
+            "status": "active-zero-mandatory-approvals"
+          },
+          "schema_version": 1,
+          "sequence_deviation": "Recorded on 2026-10-31, after Codex #48 merged at 2026-10-31T10:22:34Z. PLAN REC-13-003 required this record before publication and merge; the owner chose to record it post-merge rather than revert, because governed versions cannot regress below 1.0.0.",
+          "subject": {
+            "base_sha": "0582d15b4c77dbc3c7eab8314a22c4db6a1c6c49",
+            "document": "GDC-000",
+            "head_sha": "f01908ef03e361b60b5b298c75378d5ee60c53b3",
+            "merge_sha": "a8ea1e313000883a5186db8d7e0675c6e2ce00f5",
+            "pull_request": 48,
+            "repository": "scnehaux/codex",
+            "status": "approved",
+            "version": "1.0.0"
+          }
+        }
+      },
+      "GDC-001": {
+        "path": "governance/arb-approvals/GDC-001-1.0.0-de7defe07c6aa0c7648e00c2fdcb129d4ecc5d5a.json",
+        "git_blob": "2ee220eb4b60995e1a8196f939ec64202c95a8eb",
+        "canonical_sha256": "2b2017f39c9ae8fd2bcf1304c8b3a252263c87c18af9542671cb7601da1b65f5",
+        "record": {
+          "approver": {
+            "github": "anshacerbia2",
+            "name": "Ansha Cerbia",
+            "role": "repository owner acting as ARB (GDC-003 section 3.2)"
+          },
+          "decision": "approve",
+          "kind": "codex-arb-approval-record",
+          "review": {
+            "date": "2026-10-31",
+            "notes": "Owner review of Codex PR 50 score sheet: GDC-001 matches the implemented engine; remaining absolute wording accepted.",
+            "rubric": "GDC-002",
+            "score": "10/10"
+          },
+          "review_exception": {
+            "author_is_approver": true,
+            "exit_condition": "independent qualified reviewer count reaches 2",
+            "reason": "fewer than 2 independent qualified reviewers",
+            "status": "active-zero-mandatory-approvals"
+          },
+          "schema_version": 1,
+          "subject": {
+            "base_sha": "d1f3f7f25ac124798b3bcfb9d856c14387bc78a3",
+            "document": "GDC-001",
+            "head_sha": "de7defe07c6aa0c7648e00c2fdcb129d4ecc5d5a",
+            "pull_request": 50,
+            "repository": "scnehaux/codex",
+            "status": "approved",
+            "version": "1.0.0"
+          }
+        }
+      },
+      "GDC-002": {
+        "path": "governance/arb-approvals/GDC-002-1.0.0-19988ad917a07f19aba9d19c41ee0ec5d64e4c63.json",
+        "git_blob": "63a85f1250b5b556623ca4bda3e78dedcfa866f3",
+        "canonical_sha256": "88a27e04e7c00595c3d40cc92eeb5dc0a6ff60fc684078aff87c82139d371d27",
+        "record": {
+          "approver": {
+            "github": "anshacerbia2",
+            "name": "Ansha Cerbia",
+            "role": "repository owner acting as ARB (GDC-003 section 3.2)"
+          },
+          "decision": "approve",
+          "kind": "codex-arb-approval-record",
+          "review": {
+            "date": "2026-11-03",
+            "notes": "Owner review of Codex PR 51 score sheet: GDC-002 cross-references match GDC-001/003/011; filler wording accepted.",
+            "rubric": "GDC-002",
+            "score": "9/10"
+          },
+          "review_exception": {
+            "author_is_approver": true,
+            "exit_condition": "independent qualified reviewer count reaches 2",
+            "reason": "fewer than 2 independent qualified reviewers",
+            "status": "active-zero-mandatory-approvals"
+          },
+          "schema_version": 1,
+          "subject": {
+            "base_sha": "785977e8afc4e2596a2d82c9e0aaf2bdb18e1be1",
+            "document": "GDC-002",
+            "head_sha": "19988ad917a07f19aba9d19c41ee0ec5d64e4c63",
+            "pull_request": 51,
+            "repository": "scnehaux/codex",
+            "status": "approved",
+            "version": "1.0.0"
+          }
+        }
+      },
+      "GDC-003": {
+        "path": "governance/arb-approvals/GDC-003-1.0.0-0c992ccdd9a961082d0ff87e4b5635a1a45ce7a0.json",
+        "git_blob": "dfa6553a1b778823bf4f21a19096751ea8f7d7ce",
+        "canonical_sha256": "6fdcd2edf024a73c5236ff6ae4d315eaae11be8704f067ed0d92d3873efd1137",
+        "record": {
+          "approver": {
+            "github": "anshacerbia2",
+            "name": "Ansha Cerbia",
+            "role": "repository owner acting as ARB (GDC-003 section 3.2)"
+          },
+          "decision": "approve",
+          "kind": "codex-arb-approval-record",
+          "review": {
+            "date": "2026-11-04",
+            "notes": "Owner review of Codex PR 52 score sheet: GDC-003 now matches GDC-002/004/011, radar schema, lifecycle contract and SCM policy; filler wording accepted.",
+            "rubric": "GDC-002",
+            "score": "9/10"
+          },
+          "review_exception": {
+            "author_is_approver": true,
+            "exit_condition": "independent qualified reviewer count reaches 2",
+            "reason": "fewer than 2 independent qualified reviewers",
+            "status": "active-zero-mandatory-approvals"
+          },
+          "schema_version": 1,
+          "subject": {
+            "base_sha": "7ead894fc19fdf72c0160e0cc2bf87420d63966e",
+            "document": "GDC-003",
+            "head_sha": "0c992ccdd9a961082d0ff87e4b5635a1a45ce7a0",
+            "pull_request": 52,
+            "repository": "scnehaux/codex",
+            "status": "approved",
+            "version": "1.0.0"
+          }
+        }
+      },
+      "GDC-004": {
+        "path": "governance/arb-approvals/GDC-004-1.0.0-3e10ea381becb55b7d581a8da14872a98ec94fb0.json",
+        "git_blob": "596dfd1f7277e27c3f211f123536666fe66fce0f",
+        "canonical_sha256": "563873ec4695c3ad6138decf8f1594945c30b02140ebe7599f5a1af7147d2159",
+        "record": {
+          "approver": {
+            "github": "anshacerbia2",
+            "name": "Ansha Cerbia",
+            "role": "repository owner acting as ARB (GDC-003 section 3.2)"
+          },
+          "decision": "approve",
+          "kind": "codex-arb-approval-record",
+          "review": {
+            "date": "2026-11-04",
+            "notes": "Owner review of Codex PR 53 score sheet: GDC-004 now matches the engine, GDC-001/010, radar schema and severities; missing sunset_date grace check accepted as a documented gap.",
+            "rubric": "GDC-002",
+            "score": "9/10"
+          },
+          "review_exception": {
+            "author_is_approver": true,
+            "exit_condition": "independent qualified reviewer count reaches 2",
+            "reason": "fewer than 2 independent qualified reviewers",
+            "status": "active-zero-mandatory-approvals"
+          },
+          "schema_version": 1,
+          "subject": {
+            "base_sha": "6e016957eb4ce5d883940d787952a234ff2189cc",
+            "document": "GDC-004",
+            "head_sha": "3e10ea381becb55b7d581a8da14872a98ec94fb0",
+            "pull_request": 53,
+            "repository": "scnehaux/codex",
+            "status": "approved",
+            "version": "1.0.0"
+          }
+        }
+      },
+      "GDC-005": {
+        "path": "governance/arb-approvals/GDC-005-1.0.0-bf684b4783bf07c51bd1beacc589add94bc69883.json",
+        "git_blob": "ecc1863dac5610be084b1c3438c0ec492ab0fb56",
+        "canonical_sha256": "2508d42e883b5c28592c57b04d3a217beb946114930ee9e254fa7602b8247560",
+        "record": {
+          "approver": {
+            "github": "anshacerbia2",
+            "name": "Ansha Cerbia",
+            "role": "repository owner acting as ARB (GDC-003 section 3.2)"
+          },
+          "decision": "approve",
+          "kind": "codex-arb-approval-record",
+          "review": {
+            "date": "2026-11-10",
+            "notes": "Owner review of Codex PR 54 score sheet: GDC-005 now matches the repository, gdc.schema.json, gdc_validator.py and the Makefile; CTRL-GDC-005-004 and -011 rebinds accepted; filler wording and section 2.2 gap accepted.",
+            "rubric": "GDC-002",
+            "score": "9/10"
+          },
+          "review_exception": {
+            "author_is_approver": true,
+            "exit_condition": "independent qualified reviewer count reaches 2",
+            "reason": "fewer than 2 independent qualified reviewers",
+            "status": "active-zero-mandatory-approvals"
+          },
+          "schema_version": 1,
+          "subject": {
+            "base_sha": "7ab674aff330eefb3f74e835f966440f8da1153a",
+            "document": "GDC-005",
+            "head_sha": "bf684b4783bf07c51bd1beacc589add94bc69883",
+            "pull_request": 54,
+            "repository": "scnehaux/codex",
+            "status": "approved",
+            "version": "1.0.0"
+          }
+        }
+      },
+      "GDC-006": {
+        "path": "governance/arb-approvals/GDC-006-1.0.0-9b5876dc90fe15173e63835b6e0a0ccfeb6b8b05.json",
+        "git_blob": "0b9b737a42e3207b22365194c26908cd00af7c91",
+        "canonical_sha256": "7860af13864c50fd489116f79026fbcda55a23562b2a889f95cab206f30f0f70",
+        "record": {
+          "approver": {
+            "github": "anshacerbia2",
+            "name": "Ansha Cerbia",
+            "role": "repository owner acting as ARB (GDC-003 section 3.2)"
+          },
+          "decision": "approve",
+          "kind": "codex-arb-approval-record",
+          "review": {
+            "date": "2026-11-10",
+            "notes": "Owner review of Codex PR 55 score sheet: GDC-006 now matches GDC-000 (C0), ead.schema.json, ead_validator.py and lifecycle.yaml; EAD-001 to EAD-006 ids and CTRL-GDC-006-003 rebind accepted; filler wording and 95% SLA example accepted.",
+            "rubric": "GDC-002",
+            "score": "9/10"
+          },
+          "review_exception": {
+            "author_is_approver": true,
+            "exit_condition": "independent qualified reviewer count reaches 2",
+            "reason": "fewer than 2 independent qualified reviewers",
+            "status": "active-zero-mandatory-approvals"
+          },
+          "schema_version": 1,
+          "subject": {
+            "base_sha": "fda84648ac11937f72487c8afbd6fcc7789b5b26",
+            "document": "GDC-006",
+            "head_sha": "9b5876dc90fe15173e63835b6e0a0ccfeb6b8b05",
+            "pull_request": 55,
+            "repository": "scnehaux/codex",
+            "status": "approved",
+            "version": "1.0.0"
+          }
+        }
+      },
+      "GDC-007": {
+        "path": "governance/arb-approvals/GDC-007-1.0.0-ab724e243dbc2c4e91729a15384c985a269f07e7.json",
+        "git_blob": "04544ba80735617961c6d55f853231c0b7d08a23",
+        "canonical_sha256": "74511070e6d7d23ae74532101eaef7eb8adbe348af73e0e942379fde4713baaa",
+        "record": {
+          "approver": {
+            "github": "anshacerbia2",
+            "name": "Ansha Cerbia",
+            "role": "repository owner acting as ARB (GDC-003 section 3.2)"
+          },
+          "decision": "approve",
+          "kind": "codex-arb-approval-record",
+          "review": {
+            "date": "2026-11-11",
+            "notes": "Owner review of Codex PR 56 score sheet: GDC-007 now matches std.schema.json, std_validator.py, relationships.yaml and lifecycle.yaml; CTRL-GDC-007-010 rebind accepted (authorizing ADR cited in Design Principles, not governed_by); filler wording and the four listed follow-ups accepted.",
+            "rubric": "GDC-002",
+            "score": "9/10"
+          },
+          "review_exception": {
+            "author_is_approver": true,
+            "exit_condition": "independent qualified reviewer count reaches 2",
+            "reason": "fewer than 2 independent qualified reviewers",
+            "status": "active-zero-mandatory-approvals"
+          },
+          "schema_version": 1,
+          "subject": {
+            "base_sha": "6e8236b8e715dc3296f86831644c50932b33539d",
+            "document": "GDC-007",
+            "head_sha": "ab724e243dbc2c4e91729a15384c985a269f07e7",
+            "pull_request": 56,
+            "repository": "scnehaux/codex",
+            "status": "approved",
+            "version": "1.0.0"
+          }
+        }
+      },
+      "GDC-008": {
+        "path": "governance/arb-approvals/GDC-008-1.0.0-2d3b1a5f8cc2db9012db3b9be938cd543898a73b.json",
+        "git_blob": "d53c9e3b7bc7c58c6f47e5a28b28dd1e32a7ed9f",
+        "canonical_sha256": "afebbdbb31f49e8df8ba3541413785d156de9029188adbc86a8861f6a20ecdf4",
+        "record": {
+          "approver": {
+            "github": "anshacerbia2",
+            "name": "Ansha Cerbia",
+            "role": "repository owner acting as ARB (GDC-003 section 3.2)"
+          },
+          "decision": "approve",
+          "kind": "codex-arb-approval-record",
+          "review": {
+            "date": "2026-11-11",
+            "notes": "Owner review of Codex PR 57 score sheet: GDC-008 now matches GDC-000, pad.schema.json, pad_validator.py, relationships.yaml and lifecycle.yaml; CTRL-GDC-008-001 and CTRL-GDC-008-004 rebinds accepted (schema filename regex, lowercase convention); filler wording and the listed follow-ups accepted.",
+            "rubric": "GDC-002",
+            "score": "9/10"
+          },
+          "review_exception": {
+            "author_is_approver": true,
+            "exit_condition": "independent qualified reviewer count reaches 2",
+            "reason": "fewer than 2 independent qualified reviewers",
+            "status": "active-zero-mandatory-approvals"
+          },
+          "schema_version": 1,
+          "subject": {
+            "base_sha": "9c5f45dc218cf8ab8b96db95d42ba62eb688858a",
+            "document": "GDC-008",
+            "head_sha": "2d3b1a5f8cc2db9012db3b9be938cd543898a73b",
+            "pull_request": 57,
+            "repository": "scnehaux/codex",
+            "status": "approved",
+            "version": "1.0.0"
+          }
+        }
+      },
+      "GDC-009": {
+        "path": "governance/arb-approvals/GDC-009-1.0.0-229289b07077dfa4a60049e17e4da3fc2d4253e2.json",
+        "git_blob": "8ce6bd71587c4a503a6f1df791d4ea1a5f4c6480",
+        "canonical_sha256": "afdeb8ae46456a13d6749f42e6a6508466e68b21774b844da761c1b3fdc47562",
+        "record": {
+          "approver": {
+            "github": "anshacerbia2",
+            "name": "Ansha Cerbia",
+            "role": "repository owner acting as ARB (GDC-003 section 3.2)"
+          },
+          "decision": "approve",
+          "kind": "codex-arb-approval-record",
+          "review": {
+            "date": "2026-11-12",
+            "notes": "Owner review of Codex PR 58 score sheet: GDC-009 now matches sad.schema.json, sad_validator.py, the Tech Radar rule, relationships.yaml and lifecycle.yaml; section model follows the schema and section renumbering accepted; five control rebinds accepted; filler wording and the listed follow-ups accepted.",
+            "rubric": "GDC-002",
+            "score": "9/10"
+          },
+          "review_exception": {
+            "author_is_approver": true,
+            "exit_condition": "independent qualified reviewer count reaches 2",
+            "reason": "fewer than 2 independent qualified reviewers",
+            "status": "active-zero-mandatory-approvals"
+          },
+          "schema_version": 1,
+          "subject": {
+            "base_sha": "879dffb7f64c4e088c06a9da0043562105d23692",
+            "document": "GDC-009",
+            "head_sha": "229289b07077dfa4a60049e17e4da3fc2d4253e2",
+            "pull_request": 58,
+            "repository": "scnehaux/codex",
+            "status": "approved",
+            "version": "1.0.0"
+          }
+        }
+      },
+      "GDC-010": {
+        "path": "governance/arb-approvals/GDC-010-1.0.0-e11aadd8b1d13d7b40cf0585c316224d56b77b96.json",
+        "git_blob": "fe4703cda3d5efdaee0443e34727f92b59892f5c",
+        "canonical_sha256": "4e049a38f37ffa88b5e64e005889a9ca3f64244b7fa021d657775230b5a675e4",
+        "record": {
+          "approver": {
+            "github": "anshacerbia2",
+            "name": "Ansha Cerbia",
+            "role": "repository owner acting as ARB (GDC-003 section 3.2)"
+          },
+          "decision": "approve",
+          "kind": "codex-arb-approval-record",
+          "review": {
+            "date": "2026-11-12",
+            "notes": "Owner review of Codex PR 59 score sheet: GDC-010 now matches adr.schema.json, adr_validator.py, waiver_auditor.py, relationships.yaml and lifecycle.yaml; three control rebinds accepted; criterion 6 N/A marked Pass per GDC-003; waiver date-type runtime defect accepted as follow-up before admission; filler wording accepted.",
+            "rubric": "GDC-002",
+            "score": "9/10"
+          },
+          "review_exception": {
+            "author_is_approver": true,
+            "exit_condition": "independent qualified reviewer count reaches 2",
+            "reason": "fewer than 2 independent qualified reviewers",
+            "status": "active-zero-mandatory-approvals"
+          },
+          "schema_version": 1,
+          "subject": {
+            "base_sha": "75da9af4415ef9b4f930995e1047a241d32fc952",
+            "document": "GDC-010",
+            "head_sha": "e11aadd8b1d13d7b40cf0585c316224d56b77b96",
+            "pull_request": 59,
+            "repository": "scnehaux/codex",
+            "status": "approved",
+            "version": "1.0.0"
+          }
+        }
+      },
+      "GDC-011": {
+        "path": "governance/arb-approvals/GDC-011-1.0.0-06f4ec41e6f533234931882382982f082f2278ac.json",
+        "git_blob": "88b7207f2abfdfd93496893822b6d87df5a0218a",
+        "canonical_sha256": "a18ae597e3666ac55b436cb587eba089c4801d25f3186d0cc7fe1e7fa9ef25e3",
+        "record": {
+          "approver": {
+            "github": "anshacerbia2",
+            "name": "Ansha Cerbia",
+            "role": "repository owner acting as ARB (GDC-003 section 3.2)"
+          },
+          "decision": "approve",
+          "kind": "codex-arb-approval-record",
+          "review": {
+            "date": "2026-11-12",
+            "notes": "Owner review of Codex PR 60 score sheet: GDC-011 now matches tdd.schema.json, tdd_validator.py, global_rules.py, metadata_rules.py, relationships.yaml and lifecycle.yaml; section model follows the schema; one control rebind accepted; registry evidence follow-ups accepted; filler wording accepted.",
+            "rubric": "GDC-002",
+            "score": "9/10"
+          },
+          "review_exception": {
+            "author_is_approver": true,
+            "exit_condition": "independent qualified reviewer count reaches 2",
+            "reason": "fewer than 2 independent qualified reviewers",
+            "status": "active-zero-mandatory-approvals"
+          },
+          "schema_version": 1,
+          "subject": {
+            "base_sha": "d5e197a5adff35672bea351a6a3b1a15e15f1154",
+            "document": "GDC-011",
+            "head_sha": "06f4ec41e6f533234931882382982f082f2278ac",
+            "pull_request": 60,
+            "repository": "scnehaux/codex",
+            "status": "approved",
+            "version": "1.0.0"
+          }
+        }
+      }
+    }
+  },
+  "reclassifications": {
+    "CTRL-GDC-000-006": {
+      "from": "root-of-trust",
+      "to": "governance-content",
+      "reason": "A GDC-000 core maxim states a design philosophy; it is not a mechanism that protects who may change the governed source, separation of candidate and authority, integrity verification, or release provenance (REC-13-001). It is assessed as approved policy."
+    },
+    "CTRL-GDC-000-009": {
+      "from": "root-of-trust",
+      "to": "governance-content",
+      "reason": "A GDC-000 core maxim states a design philosophy; it is not a mechanism that protects who may change the governed source, separation of candidate and authority, integrity verification, or release provenance (REC-13-001). It is assessed as approved policy."
+    },
+    "CTRL-GDC-000-017": {
+      "from": "root-of-trust",
+      "to": "governance-content",
+      "reason": "A GDC-000 core maxim states a design philosophy; it is not a mechanism that protects who may change the governed source, separation of candidate and authority, integrity verification, or release provenance (REC-13-001). It is assessed as approved policy."
+    },
+    "CTRL-GDC-000-022": {
+      "from": "root-of-trust",
+      "to": "consumer-artifact",
+      "reason": "Semantic versioning and ADR supersession apply to architecture artifacts; GDC versions are already protected by the verified approved-version stability and Authority gates. The obligation can be exercised only once Phase 14 admits artifacts."
+    },
+    "CTRL-GDC-003-002": {
+      "from": "root-of-trust",
+      "to": "consumer-artifact",
+      "reason": "ARB escalation triggers are high-risk pivots in architecture PRs; GDC changes already require the owner ARB record (CTRL-GDC-003-008). The obligation can be exercised only once Phase 14 admits artifacts."
+    }
+  },
+  "controls": {
+    "CTRL-GDC-000-030": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "Every required GDC was validated by the automated corpus qualification and reviewed against the GDC-002 rubric; each owner record states the rubric and score for its exact head.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-005-001": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "The governance documents themselves passed the same linter and GDC-002 review that they impose on architecture artifacts; one owner record per GDC.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-002-004": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "All twelve records score 9/10 or 10/10; the Authority ARB gate refuses a permit for a GDC promotion whose record is missing or scores below 9/10.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-003-001": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "Each GDC promotion PR (#48, #50 to #60) carried a GDC-002 score sheet; each owner record reviews that sheet for the exact head.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-003-008": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "Each GDC promotion reached the ARB; the owner acting as ARB approved the exact head, and Authority refuses the permit without that record.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-003-018": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "Score sheets mark not-applicable criteria as Pass with a written justification; the owner record for GDC-010 (PR #59) accepts criterion 6 on that basis.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-000-032": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "The independently administered Authority repository holds the owner's role as ARB and the approval records; Authority PR #126 makes the record a precondition of publication.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-000-001": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "Policy statement in a GDC that the owner approved at 1.0.0 after GDC-002 review; the claim is that the policy is documented, approved and under the 180-day review cycle, not that consumer architecture meets it.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-000-003": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "Policy statement in a GDC that the owner approved at 1.0.0 after GDC-002 review; the claim is that the policy is documented, approved and under the 180-day review cycle, not that consumer architecture meets it.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-000-004": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "Policy statement in a GDC that the owner approved at 1.0.0 after GDC-002 review; the claim is that the policy is documented, approved and under the 180-day review cycle, not that consumer architecture meets it.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-000-005": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "Policy statement in a GDC that the owner approved at 1.0.0 after GDC-002 review; the claim is that the policy is documented, approved and under the 180-day review cycle, not that consumer architecture meets it.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-000-006": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "Policy statement in a GDC that the owner approved at 1.0.0 after GDC-002 review; the claim is that the policy is documented, approved and under the 180-day review cycle, not that consumer architecture meets it.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-000-009": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "Policy statement in a GDC that the owner approved at 1.0.0 after GDC-002 review; the claim is that the policy is documented, approved and under the 180-day review cycle, not that consumer architecture meets it.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-000-017": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "Policy statement in a GDC that the owner approved at 1.0.0 after GDC-002 review; the claim is that the policy is documented, approved and under the 180-day review cycle, not that consumer architecture meets it.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-001-004": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "Policy statement in a GDC that the owner approved at 1.0.0 after GDC-002 review; the claim is that the policy is documented, approved and under the 180-day review cycle, not that consumer architecture meets it.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-002-001": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "Policy statement in a GDC that the owner approved at 1.0.0 after GDC-002 review; the claim is that the policy is documented, approved and under the 180-day review cycle, not that consumer architecture meets it.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-002-002": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "Policy statement in a GDC that the owner approved at 1.0.0 after GDC-002 review; the claim is that the policy is documented, approved and under the 180-day review cycle, not that consumer architecture meets it.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-005-005": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "Policy statement in a GDC that the owner approved at 1.0.0 after GDC-002 review; the claim is that the policy is documented, approved and under the 180-day review cycle, not that consumer architecture meets it.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-005-006": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "Policy statement in a GDC that the owner approved at 1.0.0 after GDC-002 review; the claim is that the policy is documented, approved and under the 180-day review cycle, not that consumer architecture meets it.",
+      "records": "GDC-000 to GDC-011"
+    },
+    "CTRL-GDC-005-008": {
+      "assessment": "verified",
+      "method": "examine",
+      "basis": "Policy statement in a GDC that the owner approved at 1.0.0 after GDC-002 review; the claim is that the policy is documented, approved and under the 180-day review cycle, not that consumer architecture meets it.",
+      "records": "GDC-000 to GDC-011"
+    }
+  }
+}
