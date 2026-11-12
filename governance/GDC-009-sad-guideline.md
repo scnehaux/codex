@@ -3,12 +3,13 @@ doc_meta:
   id: GDC-009
   title: System Architecture Document (SAD) Guideline
   owner: Architecture Authority
-  version: 0.1.0
-  status: draft
+  version: 1.0.0
+  status: approved
   classification: public
   governed_by: [GDC-000]
   review_cycle_days: 180
   created_date: 2026-01-01
+  last_reviewed: 2026-11-12
 ---
 
 # System Architecture Document (SAD) Guideline
@@ -41,13 +42,13 @@ SADs establish the "How". They serve as the definitive physical blueprint for a 
 
 - **Specificity Rule**: Unlike PADs, SADs must completely drop agnosticity. They must explicitly specify the concrete physical deployment topology, technology stacks, cache stores, database engines, and physical container boundaries.
 - **Containment Invariant**: SADs must explicitly document failure containment boundaries, specifically defining the Blast Radius for all major failure modes.
-- **Physical Container Separation (Deployable Units Only)**: To prevent logical boundaries from being contaminated by deployment-specific execution mechanics, **every distinct deployable unit must have its own SAD**. Non-deployable components (e.g., shared UI libraries, internal SDKs) are strictly exempt from requiring a standalone SAD (see Section 2.2). For deployable systems, a single Identity PAD (`scnehaux-iam.pad.md`) might be fulfilled by:
+- **Physical Container Separation (Deployable Units Only)**: To prevent logical boundaries from being contaminated by deployment-specific execution mechanics, **every distinct deployable unit must have its own SAD**. Non-deployable components (e.g., shared UI libraries, internal SDKs) are strictly exempt from requiring a standalone SAD (see Section 2.1.1). For deployable systems, a single Identity PAD (`scnehaux-iam.pad.md`) might be fulfilled by:
   - **Backend API Service**: `scnehaux-iam.sad.md` (The core HTTP server).
   - **Frontend SPA**: `scnehaux-iam-web.sad.md` (The browser client).
   - **Async Worker**: `scnehaux-iam-worker.sad.md` (Kafka consumer handling background email dispatch).
   - **Data Pipeline/Cron**: `scnehaux-iam-archiver.sad.md` (Nightly job moving old sessions to cold storage).
 
-### 2.2 The Master SAD Federation (Multi-Repo & SDKs)
+#### 2.1.1 The Master SAD Federation (Multi-Repo & SDKs)
 
 While microservices map neatly (one repo to one deployable unit), modern ecosystems often utilize **multi-repo libraries, SDKs, or Module Federation** where multiple repositories compile into a single deployable artifact. Forcing a SAD for every library repository creates excessive documentation noise and violates the physical deployment definition of a SAD.
 
@@ -58,11 +59,11 @@ To govern this, Scnehaux utilizes the **Aggregator-Component Pattern**:
 3. **The Traceability Pointer**: To maintain the automated CI/CD Directed Acyclic Graph (DAG) and prevent the linter from flagging the library as an illegal orphan, the library repository must explicitly declare its governance inheritance in its linter configuration:
    ```yaml
    governance:
-     master_sad: "SAD-UIP-001-scnehaux-ui-platform"
+     master_sad: "SAD-001"
    ```
-   The Compliance Engine (`engine/cli.py`) will automatically validate that the referenced Master SAD exists in the Root Architecture Registry, and gracefully exempt the local repository from the SAD requirement.
+   _Current automation_: no engine module reads `master_sad`, and the linter has no repository-level SAD requirement to exempt a library from. The control registry keeps this obligation pending until a repository topology check exists.
 
-### 2.3 The Schema Architecture
+### 2.2 The Schema Architecture
 
 In addition to the global structural enforcement defined in **[GDC-001](GDC-001-fitness-functions.md)**, the SAD specification is strictly governed by the following domain-specific linter schemas:
 
@@ -92,19 +93,23 @@ In addition to the global structural enforcement defined in **[GDC-001](GDC-001-
 
 <!-- AUTO-GENERATED-SCHEMA:END -->
 
-| Linter Component  | File                                         | Enforcement Logic                                                                                                                                                                         |
-| :---------------- | :------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **JSON Schema**   | `schemas/sad.schema.json`                    | Checks for `parent_pad`, enforces `Blast Radius` keywords under the Resilience section, and deployment topologies.                                                                        |
-| **Python Engine** | `engine/validators/domains/sad_validator.py` | **Taxonomy**: Validates `allowed_statuses` and `allowed_classifications`.<br>**Domain Validation**: Enforces upward traceability by guaranteeing the presence of a valid `parent_pad` ID. |
+| Linter Component     | File                                                 | Enforcement Logic                                                                                                                                                                                                                                        |
+| :------------------- | :--------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **JSON Schema**      | `schemas/sad.schema.json`                            | Requires the `doc_meta` fields of §2.3.4 (including `governed_by` and `parent_pad`), the ten required sections of §2.3.5 with their required subsection terms, and the filename pattern of §2.3.1. Checks the shape of the optional `technologies` list. |
+| **Python Engine**    | `engine/control/validators/domains/sad_validator.py` | `parent_pad` must name a PAD that exists and lists this SAD in its `fulfilled_by`; a `draft` or `approved` SAD needs an `approved` parent PAD (§2.3.6). Each failure reports `traceability_violation` (ERROR).                                           |
+| **Technology Radar** | `engine/control/validators/metadata_rules.py`        | Each `technologies` entry (`name` and `base`) must be in the Tech Radar: a `hold` entry reports `technology_hold_violation` (CRITICAL); an unknown entry reports `unapproved_technology` (ERROR).                                                        |
 
 **Engine Execution Mechanics**:
 
-1. **Physical Containment Audit**: The linter will verify that SADs contain technology-specific information. Unlike PADs, SADs must specify the concrete database engines, cache stores, and container topologies.
-2. **Hold Technology Enforcement**: The automated linter will execute a Hard Block (Exit 1) on any SAD artifact that implements a technology currently marked as `Hold` in its respective lifecycle phase.
+1. **Physical Containment Audit**: Unlike PADs, SADs must specify the concrete database engines, cache stores, and container topologies. No linter rule checks that a SAD contains this information; the ARB checks it in review.
+2. **Hold Technology Enforcement**: a technology in the SAD's `technologies` metadata that the Tech Radar marks `hold` reports `technology_hold_violation` (CRITICAL, blocking). The linter reads only the `technologies` metadata, not technologies named in the text ([GDC-004 §3.1](GDC-004-tech-lifecycle.md)).
+3. **Draft SADs**: a `draft` SAD gets relaxed validation, which skips the schema and the checks above. The parent PAD gate of §2.3.6 still applies (§2.4).
 
 ### 2.3 Semantic Definitions
 
 #### 2.3.1 Naming Conventions
+
+`schemas/sad.schema.json` checks filenames against `^[a-z0-9-]+\.sad\.md$`: lowercase letters, digits and hyphens only.
 
 - **Naming Convention**:
   - `[system-name].sad.md` (no suffix): Represents the **primary/core application** of the system.
@@ -138,28 +143,36 @@ Every SAD must begin with a YAML frontmatter block containing these fields:
 
 ```yaml
 doc_meta:
-  id: SAD-XXX # Unique software system ID
+  id: SAD-001 # Unique software system ID
   title: [Application Title] # Descriptive title of the application
-  owner: [System Team/Role] # Authoritative system owner
+  owner: [System Team/Role] # Authoritative system owner (string or list)
   version: 1.0.0 # Semantic versioning format
   status: chartered # chartered | draft | approved | deprecated
-  classification: internal # public | internal | restricted
-  parent_pad: PAD-PLT-XXX # Referencing the Parent Domain Capability PAD ID
+  classification: internal # public | internal | restricted | confidential
+  parent_pad: PAD-001 # Exactly one parent PAD; that PAD lists this SAD in fulfilled_by
+  governed_by: [GDC-009] # At least one ADR, EAD, GDC or STD id
   review_cycle_days: 180 # Review cycle period
+  created_date: YYYY-MM-DD # Creation date
   last_reviewed: YYYY-MM-DD # Last audit date
+  technologies: # Optional; each name (and base) must be in the Tech Radar
+    - name: PostgreSQL
+      type: database
 ```
 
-| Metadata Field      | Type    | Description / Purpose                                             |
-| ------------------- | ------- | ----------------------------------------------------------------- |
-| `id`                | String  | Unique identifier (e.g., `SAD-EXAMPLE-001`).                      |
-| `title`             | String  | Descriptive title of the artifact.                                |
-| `owner`             | String  | Lead Owner (e.g., System Architect).                              |
-| `version`           | String  | Must comply with Semantic Versioning (e.g., 1.0.0).               |
-| `status`            | Enum    | The current lifecycle state (must match Allowed Statuses below).  |
-| `classification`    | Enum    | The data sensitivity (must match Allowed Classifications below).  |
-| `parent_pad`        | String  | The parent PAD ID this system fulfills (e.g., `PAD-EXAMPLE-001`). |
-| `review_cycle_days` | Integer | The frequency in days for required review.                        |
-| `last_reviewed`     | Date    | The date of the last formal review (YYYY-MM-DD).                  |
+| Metadata Field      | Type            | Description / Purpose                                                                   |
+| ------------------- | --------------- | --------------------------------------------------------------------------------------- |
+| `id`                | String          | Unique identifier matching `^SAD-\d{3}(?:-[A-Z0-9-]+)?$` (e.g., `SAD-001`).             |
+| `title`             | String          | Descriptive title of the artifact.                                                      |
+| `owner`             | String or array | Lead Owner (e.g., System Architect).                                                    |
+| `version`           | String          | Must comply with Semantic Versioning (e.g., 1.0.0).                                     |
+| `status`            | Enum            | The current lifecycle state (must match Allowed Statuses below).                        |
+| `classification`    | Enum            | The data sensitivity (must match Allowed Classifications below).                        |
+| `parent_pad`        | String          | Exactly one parent PAD id (e.g., `PAD-001`); that PAD lists this SAD in `fulfilled_by`. |
+| `governed_by`       | String or array | At least one ADR, EAD, GDC or STD id (`relationships.yaml`).                            |
+| `review_cycle_days` | Integer         | The frequency in days for required review.                                              |
+| `last_reviewed`     | Date            | The date of the last formal review (YYYY-MM-DD).                                        |
+| `created_date`      | Date            | The date the artifact was created (YYYY-MM-DD).                                         |
+| `technologies`      | Array           | Optional. Each entry has `name`, `type` and an optional `base`; see §2.2.               |
 
 ##### Allowed Lifecycle Statuses
 
@@ -177,6 +190,7 @@ doc_meta:
 | `public`       | Available to anyone.                   |
 | `internal`     | Restricted to company employees.       |
 | `restricted`   | Restricted to specific teams or roles. |
+| `confidential` | Need-to-know access only.              |
 
 ##### Semantic Versioning Classification
 
@@ -190,20 +204,24 @@ doc_meta:
 
 The linter enforces the presence of these sections. Their semantic purposes are:
 
-| Section Name                          | Objective                                                                         | Requirement                                                                                                                         |
-| ------------------------------------- | --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| **Context & Scope**                   | Explain the technical "Why" behind the system boundary.                           | Must explicitly link to the governing domain capability PAD and outline objectives and system context.                              |
-| **System Architecture**               | Concrete C2 container diagrams detailing the physical technology stack.           | Must illustrate all physical containers and boundaries.                                                                             |
-| **Runtime Flows**                     | Detail request lifecycles, asynchronous event publishing, and degradation paths.  | Must contain sequence diagrams for critical operations.                                                                             |
-| **Data Architecture**                 | Document data classification, persistence layers, and caching strategies.         | Must detail database engines, storage, and data sensitivity (PII/PHI).                                                              |
-| **Integration**                       | Specify API endpoints, consumed services, and published events.                   | Must detail external/internal integrations and data contracts.                                                                      |
-| **Security**                          | Detail system-level threat mitigations, input validation, and secrets management. | Must address threat models, data encryption at rest/transit, and IAM boundaries.                                                    |
-| **Resilience & Failure Modes**        | Identify SPOFs, fallback strategies, and the exact **Blast Radius**.              | Must document circuit breaker configurations and fallback states.<br>**Constraint**: Must contain the exact keyword `Blast Radius`. |
-| **Observability & Operations**        | Mandate specific SLIs, SLOs, alert thresholds, and distributed tracing spans.     | Must define specific monitoring, logging, tracing, and runbook details.                                                             |
-| **Deployment**                        | Document CI/CD pipelines, release environments, and scaling triggers.             | Must contain deployment strategies and hardware/container limits.                                                                   |
-| **Trade-offs & Alternatives**         | Document technical alternatives evaluated and their trade-offs.                   | Must list rejected technologies/designs and the rationale for rejection.                                                            |
-| **Assumptions (Optional)**            | Document external operational assumptions.                                        | Must list business, external, or operational assumptions the design relies upon.                                                    |
-| **Compatibility Strategy (Optional)** | Detail schema migration or API versioning compatibility rules.                    | Must outline API versioning or schema migration paths to avoid breaking changes.                                                    |
+| Section Name                          | Objective                                                                                                 | Requirement                                                                                             |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Purpose & Scope**                   | Explain the technical "Why" behind the system boundary.                                                   | Must contain **Objective**, **Constraint** and **Capability**.                                          |
+| **Enterprise Traceability**           | Link the system to its parent PAD and its governing documents.                                            | Must name the parent PAD and the documents in `governed_by`.                                            |
+| **Solution Context**                  | Show the system among its users and its external and internal systems.                                    | Recommended terms: System Context, External, Internal.                                                  |
+| **Architecture Model**                | Concrete C2 container diagrams, request lifecycles, asynchronous event publishing, and degradation paths. | Must illustrate all physical containers and boundaries, with sequence diagrams for critical operations. |
+| **State & Data Architecture**         | Document data classification, persistence layers, and caching strategies.                                 | Must detail database engines, storage, and data sensitivity (PII/PHI).                                  |
+| **Integration Contracts**             | Specify API endpoints, consumed services, and published events.                                           | Must detail external/internal integrations and data contracts.                                          |
+| **Security & Trust Boundary**         | Detail system-level threat mitigations, input validation, and secrets management.                         | Must address threat models, data encryption at rest/transit, and IAM boundaries.                        |
+| **NFR**                               | Quantified targets, SPOFs, fallback strategies, monitoring, and the exact **Blast Radius**.               | Must contain **Blast Radius** (§2.4).                                                                   |
+| **Deployment Strategy**               | Document CI/CD pipelines, release environments, and scaling triggers.                                     | Must contain **CI/CD**.                                                                                 |
+| **Architecture Decisions**            | Document the decisions taken, the alternatives evaluated, and their trade-offs.                           | Must contain **Rejected**, listing rejected technologies or designs with the rationale.                 |
+| **Assumptions (Optional)**            | Document external operational assumptions.                                                                | Lists business, external, or operational assumptions the design relies upon.                            |
+| **Compatibility Strategy (Optional)** | Detail schema migration or API versioning compatibility rules.                                            | Outlines API versioning or schema migration paths to avoid breaking changes.                            |
+| **Migration Strategy (Optional)**     | Describe how the system moves from its current to its target state.                                       | Lists the migration steps and their rollback.                                                           |
+| **Alternatives (Optional)**           | Record alternatives in more depth than Architecture Decisions.                                            | Lists each alternative and why it was not chosen.                                                       |
+
+The linter matches each required subsection term case-insensitively at the start of a line: plain text, a bold term, a bold list item, or a `###` to `#####` heading. It does not check the recommended terms or the content of the other cells.
 
 #### 2.3.6 Parent PAD Activation Gate
 
@@ -214,17 +232,19 @@ SAD lifecycle is subordinate to the parent PAD commitment state.
 - a SAD SHALL NOT enter `approved` while its parent PAD is not `approved`
 - promotion of the parent PAD does not automatically approve the SAD; physical design still follows the SAD review lifecycle
 
-The SAD validator enforces this cross-layer activation rule.
+The relationship contract `sad-parent-pad` enforces this rule for `draft` and `approved` SADs (`structural_integrity_violation`, CRITICAL). The SAD validator reports it as well (`traceability_violation`, ERROR) for SADs that get full validation.
 
 ### 2.4 Lifecycle & Audit
 
 All SAD artifacts must undergo a periodic review every `review_cycle_days` (default 180 days) to ensure structural integrity and relevance against the enterprise capability map.
 
+_Current automation_: a `last_reviewed` date older than `review_cycle_days` reports `review_age_violation` (WARNING, not blocking). `governance/framework/contracts/lifecycle.yaml` gives `chartered`, `approved` and `deprecated` SADs full validation. A `draft` SAD gets relaxed validation and fails with `lifecycle_age_violation` (ERROR) 30 days after `created_date`. The schema requires the term `Blast Radius` in the NFR section; it does not check each failure mode.
+
 **Qualitative Enforcement (Architecture Authority Audit)** _Note: Qualitative scoring is inherited from **[GDC-002 §2 — Scoring Criteria](GDC-002-quality-rubric.md)**._
 
 SADs have the following custom overriding audit metric:
 
-1. **Blast Radius Analysis**: Under the Resilience section, every major failure mode must specify the _Blast Radius_ (e.g., "Single User Session", "Full Tenant Isolation", "Entire Platform Outage") to pass the review gate.
+1. **Blast Radius Analysis**: Under the NFR section, every major failure mode must specify the _Blast Radius_ (e.g., "Single User Session", "Full Tenant Isolation", "Entire Platform Outage") to pass the review gate.
 
 ---
 

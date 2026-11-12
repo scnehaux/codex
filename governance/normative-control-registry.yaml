@@ -2841,11 +2841,11 @@ controls:
   source_gdc: GDC-009
   source_file: GDC-009-sad-guideline.md
   source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.1 Specificity & Containment
-  source_fingerprint: aca12c8b5100
+  source_fingerprint: b02b4504a0c2
   modality: MUST
-  statement: 'Physical Container Separation (Deployable Units Only): To prevent logical boundaries from being contaminated
-    by deployment-specific execution mechanics, every distinct deployable unit must have its own SAD. Non-deployable components
-    (e.g., shared UI libraries, internal SDKs) are strictly exempt from requiring a standalone SAD (see Section 2.2). For
+  statement: 'Physical Container Separation (Deployable Units Only): To prevent logical boundaries from being contaminated by
+    deployment-specific execution mechanics, every distinct deployable unit must have its own SAD. Non-deployable components
+    (e.g., shared UI libraries, internal SDKs) are strictly exempt from requiring a standalone SAD (see Section 2.1.1). For
     deployable systems, a single Identity PAD (scnehaux-iam.pad.md) might be fulfilled by:'
   scope: sad
   severity: ERROR
@@ -2863,9 +2863,9 @@ controls:
   release_rationale: GDC-009 obligation governs consumer architecture content or admission, rather than changes to canonical governance authority.
   source_gdc: GDC-009
   source_file: GDC-009-sad-guideline.md
-  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.2 The Master SAD Federation (Multi-Repo
-    & SDKs)
-  source_fingerprint: 315df5e7c6f3
+  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.1 Specificity & Containment > 2.1.1
+    The Master SAD Federation (Multi-Repo & SDKs)
+  source_fingerprint: c8ba0c0d4415
   modality: MUST
   statement: 'The Host Repository (The Master SAD): The primary repository responsible for compiling or deploying the final
     execution unit acts as the Aggregator. It must maintain the Master SAD. This artifact defines the aggregate physical topology,
@@ -2886,9 +2886,9 @@ controls:
   release_rationale: GDC-009 obligation governs consumer architecture content or admission, rather than changes to canonical governance authority.
   source_gdc: GDC-009
   source_file: GDC-009-sad-guideline.md
-  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.2 The Master SAD Federation (Multi-Repo
-    & SDKs)
-  source_fingerprint: 0aee40182514
+  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.1 Specificity & Containment > 2.1.1
+    The Master SAD Federation (Multi-Repo & SDKs)
+  source_fingerprint: 57376c7ed304
   modality: MUST
   statement: 'The Traceability Pointer: To maintain the automated CI/CD Directed Acyclic Graph (DAG) and prevent the linter
     from flagging the library as an illegal orphan, the library repository must explicitly declare its governance inheritance
@@ -2908,11 +2908,11 @@ controls:
   release_rationale: GDC-009 obligation governs consumer architecture content or admission, rather than changes to canonical governance authority.
   source_gdc: GDC-009
   source_file: GDC-009-sad-guideline.md
-  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.3 The Schema Architecture
-  source_fingerprint: de189dd84577
+  source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.2 The Schema Architecture
+  source_fingerprint: f492087605bc
   modality: MUST
-  statement: 'Physical Containment Audit: The linter will verify that SADs contain technology-specific information. Unlike
-    PADs, SADs must specify the concrete database engines, cache stores, and container topologies.'
+  statement: 'Physical Containment Audit: Unlike PADs, SADs must specify the concrete database engines, cache stores, and container
+    topologies. No linter rule checks that a SAD contains this information; the ARB checks it in review.'
   scope: sad
   severity: ERROR
   enforcement_mode: automated
@@ -3079,10 +3079,10 @@ controls:
   source_gdc: GDC-009
   source_file: GDC-009-sad-guideline.md
   source_clause: System Architecture Document (SAD) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit
-  source_fingerprint: ca1c00d1f320
+  source_fingerprint: c2cc52ca246f
   modality: MUST
-  statement: 'Blast Radius Analysis: Under the Resilience section, every major failure mode must specify the Blast Radius
-    (e.g., "Single User Session", "Full Tenant Isolation", "Entire Platform Outage") to pass the review gate.'
+  statement: 'Blast Radius Analysis: Under the NFR section, every major failure mode must specify the Blast Radius (e.g., "Single
+    User Session", "Full Tenant Isolation", "Entire Platform Outage") to pass the review gate.'
   scope: sad
   severity: ERROR
   enforcement_mode: human-review
