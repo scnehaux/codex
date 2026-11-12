@@ -3142,14 +3142,14 @@ controls:
   source_gdc: GDC-010
   source_file: GDC-010-adr-guideline.md
   source_clause: Architecture Decision Record (ADR) Guideline > 2. Policy Framework > 2.2 The Schema Architecture
-  source_fingerprint: 453c6ac817d0
+  source_fingerprint: c6b91435c631
   modality: MUST
-  statement: 'Automated Waiver Expiration (Hard Block): The CI pipeline performs temporal validation on Exception ADRs. If
-    an active (accepted) waiver ADR reaches its expirydate, the linter triggers a Hard CI Block (Exit 1) with an exceptionexpired
-    error. To clear this block, the team must either resolve the technical debt or secure a waiver renewal. In either case,
-    the expired ADR''s status MUST be transitioned from accepted to either deprecated (if the debt is resolved and the waiver
-    is no longer needed) or superseded (if a new Exception ADR is approved to extend the timeline). It cannot revert to proposed
-    or be arbitrarily deleted.'
+  statement: 'Automated Waiver Expiration (Hard Block): The CI pipeline performs temporal validation on Exception ADRs. If an
+    active (accepted) waiver ADR passes its expirydate (the waiver is valid through that date), the linter triggers a Hard CI
+    Block (Exit 1) with an exceptionexpired error. To clear this block, the team must either resolve the technical debt or secure
+    a waiver renewal. In either case, the expired ADR''s status MUST be transitioned from accepted to either deprecated (if
+    the debt is resolved and the waiver is no longer needed) or superseded (if a new Exception ADR is approved to extend the
+    timeline). It cannot revert to proposed or be arbitrarily deleted.'
   scope: adr
   severity: CRITICAL
   enforcement_mode: automated
@@ -3168,10 +3168,10 @@ controls:
   source_file: GDC-010-adr-guideline.md
   source_clause: Architecture Decision Record (ADR) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.1 Naming
     Conventions
-  source_fingerprint: b9991b649bae
+  source_fingerprint: 5695c3700a7b
   modality: MUST
-  statement: 'ADR filenames must adhere to the pattern ^ADR-[A-Z]{2,4}(?:-[A-Z]{2,4})?-\d{3}-[a-z0-9-]+\.md$. Example: ADR-EXAMPLE-001-api-design.md
-    or ADR-EXAMPLE-002-color-palette.md.'
+  statement: 'ADR filenames must adhere to the pattern ^ADR-[A-Z]{2,4}(?:-[A-Z]{2,4})?-\d{3}-[a-z0-9-]+\.md$. Example: ADR-GLB-001-api-design.md
+    or ADR-UIP-002-color-palette.md.'
   scope: adr
   severity: ERROR
   enforcement_mode: automated
@@ -3323,10 +3323,10 @@ controls:
   source_file: GDC-010-adr-guideline.md
   source_clause: Architecture Decision Record (ADR) Guideline > 2. Policy Framework > 2.4 Lifecycle & Audit > 2.4.3 Resolving
     Expired Waivers (Exception ADRs)
-  source_fingerprint: ba7bced65b5e
+  source_fingerprint: 512cea97906b
   modality: MUST
-  statement: 'When an Exception ADR reaches its expirydate, the CI pipeline will block the repository. To clear the block,
-    the team must execute one of the following three scenarios:'
+  statement: 'When an accepted Exception ADR passes its expirydate, the CI pipeline will block the repository. To clear the
+    block, the team must execute one of the following three scenarios:'
   scope: adr
   severity: ERROR
   enforcement_mode: automated
