@@ -3449,11 +3449,11 @@ controls:
   source_gdc: GDC-011
   source_file: GDC-011-tdd-guideline.md
   source_clause: Technical Design Document (TDD) Guideline > 2. Policy Framework > 2.3 Semantic Definitions > 2.3.2 Taxonomy
-  source_fingerprint: e38bd42d3a9d
+  source_fingerprint: 74b89f3aff32
   modality: MUST
-  statement: 'TDDs are single, cohesive documents (TDD-[REPO]-[COMPONENT].md). The Cohesion Rule: Splitting a TDD into separate
-    micro-files (e.g., separating it into schema.md and tests.md) is strictly prohibited. All component design aspects must
-    be fully encapsulated within the single canonical document''s mandated sections to prevent drift.'
+  statement: 'TDDs are single, cohesive documents (TDD-[repo]-[component]-[seq]-[slug].md, §2.3.1). The Cohesion Rule: Splitting
+    a TDD into separate micro-files (e.g., separating it into schema.md and tests.md) is strictly prohibited. All component
+    design aspects must be fully encapsulated within the single canonical document''s mandated sections to prevent drift.'
   scope: tdd
   severity: ERROR
   enforcement_mode: automated
