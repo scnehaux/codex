@@ -3,12 +3,13 @@ doc_meta:
   id: GDC-010
   title: Architecture Decision Record (ADR) Guideline
   owner: Architecture Authority
-  version: 0.1.0
-  status: draft
+  version: 1.0.0
+  status: approved
   classification: public
   governed_by: [GDC-000]
   review_cycle_days: 180
   created_date: 2026-01-01
+  last_reviewed: 2026-11-12
 ---
 
 # Architecture Decision Record (ADR) Guideline
@@ -54,21 +55,25 @@ In addition to the global structural enforcement defined in **[GDC-001](GDC-001-
 
 <!-- AUTO-GENERATED-SCHEMA:END -->
 
-| Linter Component  | File                                         | Enforcement Logic                                                                                                                                                                                                                                                                                              |
-| :---------------- | :------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **JSON Schema**   | `schemas/adr.schema.json`                    | Enforces the `decision_record` properties and specific `allowed_statuses` for the ADR lifecycle.                                                                                                                                                                                                               |
-| **Python Engine** | `engine/validators/domains/adr_validator.py` | **Taxonomy**: Validates `allowed_statuses` and `allowed_classifications`.<br>**Domain Validation**: Verifies immutability limits for `accepted` ADRs to prevent silent historical alterations.<br>**Temporal Enforcement**: Executes time-based checks against `expiry_date` to trigger expired waiver errors. |
+| Linter Component  | File                                                 | Enforcement Logic                                                                                                                                                                                                                                                   |
+| :---------------- | :--------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **JSON Schema**   | `schemas/adr.schema.json`                            | Requires `adr_type`, `created` and `created_by` (plus the base fields `id`, `title`, `status` and `created_date`), the eight sections of §2.3.5 and the filename pattern of §2.3.1. When `adr_type` is `exception`, requires `exception_info` with its four fields. |
+| **Python Engine** | `engine/control/validators/domains/adr_validator.py` | Reports `exception_expired` (ERROR) for an `accepted` Exception ADR whose `expiry_date` is a date before today.                                                                                                                                                     |
+| **Waiver Audit**  | `engine/control/auditors/waiver_auditor.py`          | Repository audit of `accepted` Exception ADRs: `exception_expired` (ERROR) once `expiry_date` has passed, `exception_expiring_soon` (WARNING) within 30 days of it, and ERROR when `expiry_date` is missing or not `YYYY-MM-DD`.                                    |
 
 **Engine Execution Mechanics**:
 
 1. **Conditional Schema Validation**: The CI linter dynamically shifts its validation rules based on the `adr_type`. If `exception` is selected, the pipeline automatically enforces the presence and validity of the `exception_info` block.
-2. **Automated Waiver Expiration (Hard Block)**: The CI pipeline performs temporal validation on Exception ADRs. If an active (`accepted`) waiver ADR reaches its `expiry_date`, the linter triggers a **Hard CI Block (Exit 1)** with an `exception_expired` error. To clear this block, the team must either resolve the technical debt or secure a waiver renewal. In either case, the expired ADR's `status` MUST be transitioned from `accepted` to either `deprecated` (if the debt is resolved and the waiver is no longer needed) or `superseded` (if a new Exception ADR is approved to extend the timeline). It cannot revert to `proposed` or be arbitrarily deleted.
+2. **Automated Waiver Expiration (Hard Block)**: The CI pipeline performs temporal validation on Exception ADRs. If an active (`accepted`) waiver ADR passes its `expiry_date` (the waiver is valid through that date), the linter triggers a **Hard CI Block (Exit 1)** with an `exception_expired` error. To clear this block, the team must either resolve the technical debt or secure a waiver renewal. In either case, the expired ADR's `status` MUST be transitioned from `accepted` to either `deprecated` (if the debt is resolved and the waiver is no longer needed) or `superseded` (if a new Exception ADR is approved to extend the timeline). It cannot revert to `proposed` or be arbitrarily deleted.
+3. **No Immutability Check**: no engine rule compares an `accepted` or `rejected` ADR with its earlier content, and the version-bump audit reports no findings. The Immutability Principle (§2.4.2) is a review obligation.
+
+_Current automation_: write `expiry_date` as a quoted string (`expiry_date: '2027-06-30'`). The waiver audit parses text; an unquoted date is read by YAML as a date value, which the waiver audit does not accept. Every ADR status gets full validation (`governance/framework/contracts/lifecycle.yaml`); a `proposed` ADR has no age limit.
 
 ### 2.3 Semantic Definitions
 
 #### 2.3.1 Naming Conventions
 
-ADR filenames must adhere to the pattern `^ADR-[A-Z]{2,4}(?:-[A-Z]{2,4})?-\d{3}-[a-z0-9-]+\.md$`. Example: `ADR-EXAMPLE-001-api-design.md` or `ADR-EXAMPLE-002-color-palette.md`.
+ADR filenames must adhere to the pattern `^ADR-[A-Z]{2,4}(?:-[A-Z]{2,4})?-\d{3}-[a-z0-9-]+\.md$`. Example: `ADR-GLB-001-api-design.md` or `ADR-UIP-002-color-palette.md`.
 
 #### 2.3.2 Taxonomy
 
@@ -85,31 +90,32 @@ ADRs are organized by their scope (Global vs Domain/System context).
 architecture/
 └── decisions/
     ├── _global/
-    │   └── ADR-EXAMPLE-001-api-design.md
+    │   └── ADR-GLB-001-api-design.md
     └── ui-platform/
         └── ADR-UIP-001-react-framework.md
 ```
 
 #### 2.3.4 Metadata Schema Properties
 
-| Metadata Field | Type         | Description / Purpose                                                                                         |
-| -------------- | ------------ | ------------------------------------------------------------------------------------------------------------- |
-| `id`           | String       | Unique identifier (e.g., `ADR-IAM-000`).                                                                      |
-| `title`        | String       | Descriptive title of the document.                                                                            |
-| `adr_type`     | Enum         | The intent of the decision (must match Allowed Types in §2.1).                                                |
-| `status`       | Enum         | The current lifecycle state (must match Allowed Statuses below).                                              |
-| `created`      | Date         | The creation date (YYYY-MM-DD).                                                                               |
-| `created_by`   | String       | The author of the ADR.                                                                                        |
-| `governed_by`  | List[String] | **Required**: Must point to EAD, PAD, SAD, or GDC-000 (if purely technical/global). Links the ADR to the DAG. |
+| Metadata Field | Type         | Description / Purpose                                                                                                                                           |
+| -------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`           | String       | Unique identifier (e.g., `ADR-IAM-000`).                                                                                                                        |
+| `title`        | String       | Descriptive title of the document.                                                                                                                              |
+| `adr_type`     | Enum         | The intent of the decision (must match Allowed Types in §2.1).                                                                                                  |
+| `status`       | Enum         | The current lifecycle state (must match Allowed Statuses below).                                                                                                |
+| `created`      | Date         | The creation date (YYYY-MM-DD).                                                                                                                                 |
+| `created_by`   | String       | The author of the ADR.                                                                                                                                          |
+| `created_date` | Date         | Required by the base schema (YYYY-MM-DD), in addition to `created`.                                                                                             |
+| `governed_by`  | List[String] | **Required**: at least one EAD, GDC, PAD or SAD id (`relationships.yaml`). Links the ADR to the DAG; a missing `governed_by` reports `orphan_document` (ERROR). |
 
 **Exception Info Required Fields (Conditional)** _Required only if `adr_type` is `exception`._
 
-| Metadata Field        | Type   | Description / Purpose                                   |
-| --------------------- | ------ | ------------------------------------------------------- |
-| `approved_by`         | String | The Sponsor, Approver Name, or ARB granting the waiver. |
-| `expiry_date`         | Date   | Waiver validity cap (max 365 days).                     |
-| `risk_classification` | Enum   | The evaluated risk (`low`, `medium`, `high`).           |
-| `exception_reason`    | String | Brief rationale explaining the standard deviation.      |
+| Metadata Field        | Type   | Description / Purpose                                                                                                                  |
+| --------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `approved_by`         | String | The Sponsor, Approver Name, or ARB granting the waiver.                                                                                |
+| `expiry_date`         | Date   | Last day of waiver validity, written as a quoted `YYYY-MM-DD` string. The 365-day cap is a review check; the linter does not check it. |
+| `risk_classification` | String | The evaluated risk (`low`, `medium`, `high`). The schema accepts any string.                                                           |
+| `exception_reason`    | String | Brief rationale explaining the standard deviation.                                                                                     |
 
 ##### Allowed Lifecycle Statuses
 
@@ -168,7 +174,7 @@ Every architectural decision must progress through a managed, auditable lifecycl
 An ADR is a strict historical record. Once an ADR reaches the **Accepted** or **Rejected** state, its core substantive content (Context, Decision Drivers, Decision, Consequences) **MUST NEVER BE MODIFIED**.
 
 - If a decision needs to be reversed or fundamentally changed, you must create a **new ADR** (using the `replacement` type) and update the old ADR's status to `Superseded`.
-- **Administrative Exemption (Decoupled Execution)**: Strategic decisions (ADRs) are decoupled from tactical execution (STDs). An ADR may be approved before its corresponding Standard document is finalized. Appending hyperlinks to newly drafted Standards (STDs) or cross-referencing newer ADRs in the "Related Standards" section is classified as a metadata update and is explicitly permitted.
+- **Administrative Exemption (Decoupled Execution)**: Strategic decisions (ADRs) are decoupled from tactical execution (STDs). An ADR may be approved before its corresponding Standard document is finalized. Appending hyperlinks to newly drafted Standards (STDs) or cross-referencing newer ADRs in the `Compliance Impact` section is classified as a metadata update and is explicitly permitted.
 - Other permissible edits to an existing Accepted ADR include: updating the Status table to reflect a lifecycle transition, or fixing minor typographical errors that do not alter the technical context.
 
 > [!IMPORTANT]
@@ -179,7 +185,7 @@ An ADR is a strict historical record. Once an ADR reaches the **Accepted** or **
 
 #### 2.4.3 Resolving Expired Waivers (Exception ADRs)
 
-When an Exception ADR reaches its `expiry_date`, the CI pipeline will block the repository. To clear the block, the team must execute one of the following three scenarios:
+When an accepted Exception ADR passes its `expiry_date`, the CI pipeline will block the repository. To clear the block, the team must execute one of the following three scenarios:
 
 1. **Scenario A: Resolving Temporary Tech Debt**
    - _Context_: The deviation was a temporary hack (e.g., using an unapproved library to hit a deadline).
