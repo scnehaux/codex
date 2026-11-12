@@ -3,6 +3,7 @@ from __future__ import annotations
 from hashlib import sha1, sha256
 import json
 from pathlib import Path
+import re
 import subprocess
 
 import pytest
@@ -167,3 +168,158 @@ def test_promotion_evidence_does_not_grant_publication_or_change_component_claim
     assert maintenance["permanent_runtime"]["state"] == "promoted"
     for record in (handover, maintenance):
         assert record["claims"]["effective_enforcement_proven"] is False
+
+
+# Slice 13.2 evidence reconciliation 002: owner ARB records examined as review evidence.
+EVIDENCE_002 = "governance/github/evidence/registry-reconciliation-002.json"
+REGISTRY = ROOT / "governance/normative-control-registry.yaml"
+PROFILE = ROOT / "governance/framework/profiles/scnehaux-codex-default.yaml"
+ARB_AUTHORITY_REVISION = "42c3ed6eaf5d32be941e6157a7630bab0774da9c"
+RECORD_PATH = re.compile(
+    r"governance/arb-approvals/(GDC-\d{3})-1\.0\.0-([0-9a-f]{40})\.json"
+)
+SCORE = re.compile(r"(9|10)/10")
+CLOSED_SLICES = {
+    "Slice 13.1 Root-of-Trust Release Classification",
+    "Slice 13.3 Runtime Authority Closure",
+    "Slice 13.4 Release Metadata Binding",
+    "Slice 13.5 Stable GDC Baseline",
+}
+UNRESOLVED_ROOTS = {
+    "CTRL-GDC-000-026",
+    "CTRL-GDC-001-013",
+    "CTRL-GDC-001-014",
+    "CTRL-GDC-001-015",
+    "CTRL-GDC-002-003",
+    "CTRL-GDC-003-004",
+    "CTRL-GDC-003-005",
+    "CTRL-GDC-003-006",
+    "CTRL-GDC-003-010",
+    "CTRL-GDC-003-011",
+    "CTRL-GDC-005-010",
+    "CTRL-GDC-005-012",
+    "CTRL-GDC-005-013",
+}
+
+
+def _evidence_002():
+    return json.loads((ROOT / EVIDENCE_002).read_text(encoding="utf-8"))
+
+
+def _registry():
+    return {item.control_id: item for item in load_control_registry(REGISTRY)}
+
+
+def _doc_meta(path):
+    text = path.read_text(encoding="utf-8")
+    return yaml.safe_load(text.split("---", 2)[1])["doc_meta"]
+
+
+def test_owner_records_retain_reviewed_content_and_identity():
+    sources = _evidence_002()["sources"]
+    assert sources["repository"] == "scnehaux/codex-authority"
+    assert sources["revision"] == ARB_AUTHORITY_REVISION
+    assert sources["arb_gate"]["path"] == "src/codex_authority/arb_gate.py"
+    assert sources["arb_gate"]["minimum_score_pattern"] == SCORE.pattern
+    for document, source in sources["arb_approvals"].items():
+        record = source["record"]
+        match = RECORD_PATH.fullmatch(source["path"])
+        assert match is not None, document
+        assert match.group(1) == document
+        assert re.fullmatch(r"[0-9a-f]{40}", source["git_blob"])
+        assert _canonical_digest(record) == source["canonical_sha256"]
+        assert record["kind"] == "codex-arb-approval-record"
+        assert record["schema_version"] == 1
+        assert record["decision"] == "approve"
+        subject = record["subject"]
+        assert subject["repository"] == "scnehaux/codex"
+        assert subject["document"] == document
+        assert subject["head_sha"] == match.group(2)
+        assert (subject["status"], subject["version"]) == ("approved", "1.0.0")
+        assert record["review"]["rubric"] == "GDC-002"
+        assert SCORE.fullmatch(record["review"]["score"])
+
+
+def test_every_required_gdc_has_an_owner_record_for_its_approved_head():
+    required = yaml.safe_load(PROFILE.read_text(encoding="utf-8"))["governance"][
+        "required_baseline_ids"
+    ]
+    records = _evidence_002()["sources"]["arb_approvals"]
+    assert sorted(records) == sorted(required)
+    pull_requests = [
+        records[doc]["record"]["subject"]["pull_request"] for doc in required
+    ]
+    assert len(set(pull_requests)) == len(required)
+    for document in required:
+        (path,) = (ROOT / "governance").glob(f"{document}-*.md")
+        meta = _doc_meta(path)
+        assert (meta["status"], meta["version"]) == ("approved", "1.0.0"), document
+
+
+def test_single_person_review_is_disclosed_not_claimed_as_two_party():
+    evidence = _evidence_002()
+    claims = evidence["claims"]
+    assert claims["owner_review_recorded_for_every_required_gdc"] is True
+    for claim in (
+        "two_party_review_proven",
+        "independent_human_review_proven",
+        "provider_observation_performed",
+        "consumer_architecture_conformance_proven",
+    ):
+        assert claims[claim] is False, claim
+    for source in evidence["sources"]["arb_approvals"].values():
+        assert source["record"]["review_exception"]["author_is_approver"] is True
+    limits = " ".join(evidence["claim_limits"])
+    assert "Level 4" in limits and "release notes" in limits
+    assert "GDC-000 record was created after its merge" in limits
+
+
+def test_examined_controls_are_bound_to_this_assessment():
+    registry = _registry()
+    controls = _evidence_002()["controls"]
+    assert controls
+    for control_id, entry in controls.items():
+        record = registry[control_id]
+        assert entry["assessment"] == "verified"
+        assert entry["method"] == "examine"
+        assert entry["basis"]
+        assert record.evidence_status == "verified"
+        assert record.enforcement_mode != "automated"
+        assert f"{EVIDENCE_002}#controls/{control_id}" in record.test_evidence
+
+
+def test_reclassifications_match_the_registry():
+    registry = _registry()
+    reclassified = _evidence_002()["reclassifications"]
+    assert set(reclassified) == {
+        "CTRL-GDC-000-006",
+        "CTRL-GDC-000-009",
+        "CTRL-GDC-000-017",
+        "CTRL-GDC-000-022",
+        "CTRL-GDC-003-002",
+    }
+    for control_id, change in reclassified.items():
+        assert change["from"] == "root-of-trust"
+        assert change["reason"]
+        assert registry[control_id].release_class == change["to"]
+
+
+def test_no_pending_control_targets_a_closed_slice():
+    for record in _registry().values():
+        if record.evidence_status != "verified":
+            assert record.target_phase not in CLOSED_SLICES, record.control_id
+
+
+def test_unresolved_roots_remain_pending_in_slice_13_2():
+    pending_roots = {
+        record.control_id
+        for record in _registry().values()
+        if record.release_class == "root-of-trust"
+        and record.evidence_status != "verified"
+    }
+    assert pending_roots == UNRESOLVED_ROOTS
+    registry = _registry()
+    for control_id in UNRESOLVED_ROOTS:
+        assert registry[control_id].target_phase == (
+            "Slice 13.2 Registry Evidence Reconciliation"
+        )

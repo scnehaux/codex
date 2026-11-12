@@ -28,11 +28,14 @@ controls:
   implementation:
   - governance/GDC-002-quality-rubric.md
   - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-000-001
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): policy statement in an owner-approved 1.0.0 GDC under the 180-day review
+    cycle; consumer architecture conformance not claimed'
 - control_id: CTRL-GDC-000-002
   release_class: consumer-artifact
   release_rationale: GDC-000 obligation governs consumer architecture content or admission, rather than changes to canonical governance authority.
@@ -71,11 +74,14 @@ controls:
   implementation:
   - governance/GDC-002-quality-rubric.md
   - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-000-003
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): policy statement in an owner-approved 1.0.0 GDC under the 180-day review
+    cycle; consumer architecture conformance not claimed'
 - control_id: CTRL-GDC-000-004
   release_class: governance-content
   release_rationale: Institutional architecture knowledge retention is a content-quality objective.
@@ -93,11 +99,14 @@ controls:
   implementation:
   - governance/GDC-002-quality-rubric.md
   - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-000-004
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): policy statement in an owner-approved 1.0.0 GDC under the 180-day review
+    cycle; consumer architecture conformance not claimed'
 - control_id: CTRL-GDC-000-005
   release_class: governance-content
   release_rationale: Developer experience is a governance usability objective.
@@ -115,14 +124,18 @@ controls:
   implementation:
   - governance/GDC-002-quality-rubric.md
   - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-000-005
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): policy statement in an owner-approved 1.0.0 GDC under the 180-day review
+    cycle; consumer architecture conformance not claimed'
 - control_id: CTRL-GDC-000-006
-  release_class: root-of-trust
-  release_rationale: Deterministic governance enforcement prevents unverified policy becoming canonical.
+  release_class: governance-content
+  release_rationale: GDC-000 core maxim states a design philosophy, not a mechanism that protects source change, candidate/authority
+    separation, integrity verification or release provenance (REC-13-001); assessed as approved policy.
   source_gdc: GDC-000
   source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.2 Core Philosophy (The Existential
@@ -138,11 +151,14 @@ controls:
   implementation:
   - governance/GDC-002-quality-rubric.md
   - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-000-006
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): policy statement in an owner-approved 1.0.0 GDC under the 180-day review
+    cycle; consumer architecture conformance not claimed'
 - control_id: CTRL-GDC-000-007
   release_class: consumer-artifact
   release_rationale: GDC-000 obligation governs consumer architecture content or admission, rather than changes to canonical governance authority.
@@ -166,7 +182,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-000-008
   release_class: root-of-trust
   release_rationale: Explicit identity, ownership and trust-boundary contracts protect governed-source validation.
@@ -193,8 +209,9 @@ controls:
   evidence_status: verified
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-009
-  release_class: root-of-trust
-  release_rationale: Consolidated governance definitions prevent competing canonical policy authorities.
+  release_class: governance-content
+  release_rationale: GDC-000 core maxim states a design philosophy, not a mechanism that protects source change, candidate/authority
+    separation, integrity verification or release provenance (REC-13-001); assessed as approved policy.
   source_gdc: GDC-000
   source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 1. Context & Scope > 1.2 Core Philosophy (The Existential
@@ -212,11 +229,14 @@ controls:
   implementation:
   - governance/GDC-002-quality-rubric.md
   - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-000-009
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): policy statement in an owner-approved 1.0.0 GDC under the 180-day review
+    cycle; consumer architecture conformance not claimed'
 - control_id: CTRL-GDC-000-010
   release_class: root-of-trust
   release_rationale: The governed policy itself must pass its authoritative fitness functions.
@@ -231,15 +251,17 @@ controls:
     same automated Fitness Function they mandate.'
   scope: governance-constitution
   severity: ERROR
-  enforcement_mode: human-review
+  enforcement_mode: automated
   implementation:
-  - governance/GDC-002-quality-rubric.md
-  - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  - scripts/governance_qualify.py
+  - engine/control/governance/corpus.py
+  - .github/workflows/governance.yml
+  test_evidence:
+  - tests/control/governance/test_corpus.py::test_real_corpus_builds_commit_bound_snapshot_and_graph
+  - tests/control/governance/test_corpus.py::test_malformed_committed_gdc_blocks_qualification
+  - tests/control/governance/test_corpus.py::test_missing_required_gdc_blocks_qualification
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-011
   release_class: consumer-artifact
   release_rationale: GDC-000 obligation governs consumer architecture content or admission, rather than changes to canonical governance authority.
@@ -260,7 +282,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-000-012
   release_class: consumer-artifact
   release_rationale: GDC-000 obligation governs consumer architecture content or admission, rather than changes to canonical governance authority.
@@ -282,7 +304,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-000-013
   release_class: consumer-artifact
   release_rationale: GDC-000 obligation governs consumer architecture content or admission, rather than changes to canonical governance authority.
@@ -355,8 +377,9 @@ controls:
   evidence_status: verified
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-017
-  release_class: root-of-trust
-  release_rationale: Policy, schema and validator isolation preserves governed runtime authority.
+  release_class: governance-content
+  release_rationale: GDC-000 core maxim states a design philosophy, not a mechanism that protects source change, candidate/authority
+    separation, integrity verification or release provenance (REC-13-001); assessed as approved policy.
   source_gdc: GDC-000
   source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.3 The Fractal Boundary (Physical
@@ -372,11 +395,14 @@ controls:
   implementation:
   - governance/GDC-002-quality-rubric.md
   - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-000-017
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): policy statement in an owner-approved 1.0.0 GDC under the 180-day review
+    cycle; consumer architecture conformance not claimed'
 - control_id: CTRL-GDC-000-018
   release_class: consumer-artifact
   release_rationale: GDC-000 obligation governs consumer architecture content or admission, rather than changes to canonical governance authority.
@@ -444,7 +470,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-000-021
   release_class: root-of-trust
   release_rationale: Explicit lifecycle metadata prevents implicit claims of baseline authority.
@@ -467,8 +493,9 @@ controls:
   evidence_status: verified
   evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-000-022
-  release_class: root-of-trust
-  release_rationale: GDC semantic versioning makes canonical policy changes identifiable.
+  release_class: consumer-artifact
+  release_rationale: Semantic versioning and ADR supersession apply to architecture artifacts; GDC versions are protected by
+    the verified approved-version stability and Authority gates. Exercisable once Phase 14 admits artifacts.
   source_gdc: GDC-000
   source_file: GDC-000-governance-policy.md
   source_clause: Documentation Governance Policy (The Constitution) > 2. Policy Framework > 2.6 Artifact Lifecycle & Versioning
@@ -638,7 +665,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  target_phase: Phase 14 Architecture Re-Admission
 - control_id: CTRL-GDC-000-030
   release_class: root-of-trust
   release_rationale: Machine validation and human evaluation both apply before GDC admission.
@@ -656,11 +683,14 @@ controls:
   implementation:
   - governance/GDC-002-quality-rubric.md
   - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-000-030
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): pinned owner ARB records for GDC-000 to GDC-011 and the Authority ARB gate;
+    single-person review under the GDC-003 bootstrap exception, two-party review not claimed'
 - control_id: CTRL-GDC-000-031
   release_class: root-of-trust
   release_rationale: New canonical policies cannot bypass their own automated validation.
@@ -702,12 +732,16 @@ controls:
   severity: ERROR
   enforcement_mode: process-control
   implementation:
-  - documented governance process / accountable authority
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: auditable process record or approval artifact
-  control_owner: Governance Process Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  - governance/GDC-000-governance-policy.md
+  - governance/GDC-003-review-process.md
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-000-032
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): pinned owner ARB records for GDC-000 to GDC-011 and the Authority ARB gate;
+    single-person review under the GDC-003 bootstrap exception, two-party review not claimed'
 - control_id: CTRL-GDC-000-033
   release_class: root-of-trust
   release_rationale: Repository disclosure boundaries apply to governed-source admission.
@@ -992,11 +1026,14 @@ controls:
   implementation:
   - governance/GDC-002-quality-rubric.md
   - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-001-004
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): policy statement in an owner-approved 1.0.0 GDC under the 180-day review
+    cycle; consumer architecture conformance not claimed'
 - control_id: CTRL-GDC-001-005
   release_class: root-of-trust
   release_rationale: Missing required schemas must block source qualification.
@@ -1040,15 +1077,17 @@ controls:
     If the registry fails to find a validator for an expected Document Type, the engine MUST trigger a Hard Block.'
   scope: fitness-function
   severity: CRITICAL
-  enforcement_mode: human-review
+  enforcement_mode: automated
   implementation:
-  - governance/GDC-002-quality-rubric.md
-  - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  - engine/control/validators/registry.py
+  - engine/control/framework/artifacts.py
+  - governance/framework/contracts/validator-bindings.yaml
+  test_evidence:
+  - tests/control/framework/test_artifact_runtime.py::test_schema_and_validator_bindings_cover_exact_vocabulary
+  - tests/control/framework/test_artifact_runtime.py::test_validator_registry_fails_closed_on_import_and_type_drift
+  - tests/control/framework/test_artifact_runtime.py::test_artifact_type_from_id_rejects_non_string_and_unknown
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-001-007
   release_class: root-of-trust
   release_rationale: Isolated domain validation prevents replacement of shared governance rules.
@@ -1065,15 +1104,15 @@ controls:
     exclusive sandbox for executing document-specific rules.'
   scope: fitness-function
   severity: ERROR
-  enforcement_mode: human-review
+  enforcement_mode: automated
   implementation:
-  - governance/GDC-002-quality-rubric.md
-  - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  - engine/control/validators/base.py
+  - engine/control/validators/domains
+  test_evidence:
+  - tests/control/validators/domains/test_all_domains.py::test_domain_validators_only_override_validate_type_specific
+  - tests/control/validators/domains/test_all_domains.py::test_base_validator_runs_global_rules_before_domain_rules
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-001-008
   release_class: consumer-artifact
   release_rationale: GDC-001 obligation governs consumer architecture content or admission, rather than changes to canonical
@@ -1199,7 +1238,7 @@ controls:
   evidence_status: pending
   evidence_expectation: continuous code review plus dead-code audit; no artificial coverage tests
   control_owner: Architecture Review Authority
-  target_phase: Slice 13.3 Runtime Authority Closure
+  target_phase: Slice 13.2 Registry Evidence Reconciliation
 - control_id: CTRL-GDC-001-014
   release_class: root-of-trust
   release_rationale: Coverage must represent executable enforcement behavior.
@@ -1218,7 +1257,7 @@ controls:
   evidence_status: pending
   evidence_expectation: test review must confirm coverage represents reachable production behavior
   control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  target_phase: Slice 13.2 Registry Evidence Reconciliation
 - control_id: CTRL-GDC-001-015
   release_class: root-of-trust
   release_rationale: Real contract and failure-mode tests qualify enforcement behavior.
@@ -1237,7 +1276,7 @@ controls:
   evidence_status: pending
   evidence_expectation: test review must exercise reachable contracts and failure modes
   control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  target_phase: Slice 13.2 Registry Evidence Reconciliation
 - control_id: CTRL-GDC-001-016
   release_class: root-of-trust
   release_rationale: Commit-time schema checks protect governed document identity.
@@ -1363,11 +1402,14 @@ controls:
   implementation:
   - governance/GDC-002-quality-rubric.md
   - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-002-001
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): policy statement in an owner-approved 1.0.0 GDC under the 180-day review
+    cycle; consumer architecture conformance not claimed'
 - control_id: CTRL-GDC-002-002
   release_class: governance-content
   release_rationale: The ten qualitative parameters describe review content.
@@ -1382,12 +1424,16 @@ controls:
   severity: ERROR
   enforcement_mode: process-control
   implementation:
-  - documented governance process / accountable authority
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: auditable process record or approval artifact
-  control_owner: Governance Process Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-002-002
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): policy statement in an owner-approved 1.0.0 GDC under the 180-day review
+    cycle; consumer architecture conformance not claimed'
 - control_id: CTRL-GDC-002-003
   release_class: root-of-trust
   release_rationale: Canonical approval requires the governed PR path and retained Git evidence.
@@ -1409,7 +1455,7 @@ controls:
   evidence_status: pending
   evidence_expectation: effective repository ruleset evidence and negative enforcement test
   control_owner: Repository Governance Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  target_phase: Slice 13.2 Registry Evidence Reconciliation
 - control_id: CTRL-GDC-002-004
   release_class: root-of-trust
   release_rationale: Insufficiently evaluated GDCs cannot become authoritative baselines.
@@ -1425,11 +1471,14 @@ controls:
   enforcement_mode: human-review
   implementation:
   - governance/GDC-002-quality-rubric.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: P1-B quality gate reconciliation; score cannot grant authority below threshold
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-002-004
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): pinned owner ARB records for GDC-000 to GDC-011 and the Authority ARB gate;
+    single-person review under the GDC-003 bootstrap exception, two-party review not claimed'
 - control_id: CTRL-GDC-003-001
   release_class: root-of-trust
   release_rationale: PR-bound scoring supplies review evidence for GDC approval.
@@ -1442,17 +1491,22 @@ controls:
     must be filled out as a markdown snippet and attached directly to the Pull Request.
   scope: review-process
   severity: ERROR
-  enforcement_mode: repository-control
+  enforcement_mode: process-control
   implementation:
-  - GitHub repository ruleset / branch protection
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: effective repository ruleset evidence and negative enforcement test
-  control_owner: Repository Governance Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-003-001
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): pinned owner ARB records for GDC-000 to GDC-011 and the Authority ARB gate;
+    single-person review under the GDC-003 bootstrap exception, two-party review not claimed'
 - control_id: CTRL-GDC-003-002
-  release_class: root-of-trust
-  release_rationale: Mandatory ARB escalation reserves high-risk governance decisions to authority.
+  release_class: consumer-artifact
+  release_rationale: ARB escalation triggers are high-risk pivots in architecture PRs; GDC changes already require the owner
+    ARB record (CTRL-GDC-003-008). Exercisable once Phase 14 admits artifacts.
   source_gdc: GDC-003
   source_file: GDC-003-review-process.md
   source_clause: Architecture Review Process > 2. Policy Framework > 2.2 High-Risk Pivots (ARB Escalation Triggers)
@@ -1532,7 +1586,7 @@ controls:
   evidence_status: pending
   evidence_expectation: effective repository ruleset evidence and negative enforcement test
   control_owner: Repository Governance Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  target_phase: Slice 13.2 Registry Evidence Reconciliation
 - control_id: CTRL-GDC-003-006
   release_class: root-of-trust
   release_rationale: Failing source validation must block canonical merge.
@@ -1552,7 +1606,7 @@ controls:
   evidence_status: pending
   evidence_expectation: effective repository ruleset evidence and negative enforcement test
   control_owner: Repository Governance Authority
-  target_phase: Slice 13.3 Runtime Authority Closure
+  target_phase: Slice 13.2 Registry Evidence Reconciliation
 - control_id: CTRL-GDC-003-007
   release_class: root-of-trust
   release_rationale: Semantic approval authority is independent of SCM projection.
@@ -1590,14 +1644,17 @@ controls:
     reaches their desk via either of these two paths:'
   scope: review-process
   severity: ERROR
-  enforcement_mode: repository-control
+  enforcement_mode: process-control
   implementation:
-  - GitHub repository ruleset / branch protection
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: effective repository ruleset evidence and negative enforcement test
-  control_owner: Repository Governance Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  - governance/GDC-003-review-process.md
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-003-008
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): pinned owner ARB records for GDC-000 to GDC-011 and the Authority ARB gate;
+    single-person review under the GDC-003 bootstrap exception, two-party review not claimed'
 - control_id: CTRL-GDC-003-009
   release_class: consumer-artifact
   release_rationale: GDC-003 obligation governs consumer architecture content or admission, rather than changes to canonical governance authority.
@@ -1794,12 +1851,16 @@ controls:
   severity: ERROR
   enforcement_mode: process-control
   implementation:
-  - documented governance process / accountable authority
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: auditable process record or approval artifact
-  control_owner: Governance Process Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  - governance/GDC-002-quality-rubric.md
+  - governance/GDC-003-review-process.md
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-003-018
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): pinned owner ARB records for GDC-000 to GDC-011 and the Authority ARB gate;
+    single-person review under the GDC-003 bootstrap exception, two-party review not claimed'
 - control_id: CTRL-GDC-003-019
   release_class: root-of-trust
   release_rationale: An explicit expiring bootstrap exception bounds approval projection.
@@ -2034,11 +2095,14 @@ controls:
   implementation:
   - governance/GDC-002-quality-rubric.md
   - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-005-001
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): pinned owner ARB records for GDC-000 to GDC-011 and the Authority ARB gate;
+    single-person review under the GDC-003 bootstrap exception, two-party review not claimed'
 - control_id: CTRL-GDC-005-002
   release_class: root-of-trust
   release_rationale: Canonical GDC naming binds source identity and validator selection.
@@ -2120,11 +2184,14 @@ controls:
   implementation:
   - governance/GDC-002-quality-rubric.md
   - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-005-005
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): policy statement in an owner-approved 1.0.0 GDC under the 180-day review
+    cycle; consumer architecture conformance not claimed'
 - control_id: CTRL-GDC-005-006
   release_class: governance-content
   release_rationale: Guidelines must explain consumer artifact storage layout.
@@ -2140,11 +2207,14 @@ controls:
   enforcement_mode: human-review
   implementation:
   - governance/GDC-005-gdc-guideline.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: guideline review evidence for explicit taxonomy and directory semantics
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-005-006
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): policy statement in an owner-approved 1.0.0 GDC under the 180-day review
+    cycle; consumer architecture conformance not claimed'
 - control_id: CTRL-GDC-005-007
   release_class: governance-content
   release_rationale: Guidelines must explain consumer naming syntax.
@@ -2181,11 +2251,14 @@ controls:
   implementation:
   - governance/GDC-002-quality-rubric.md
   - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  test_evidence:
+  - governance/github/evidence/registry-reconciliation-002.json#controls/CTRL-GDC-005-008
+  - tests/control/governance/test_registry_reconciliation.py::test_owner_records_retain_reviewed_content_and_identity
+  - tests/control/governance/test_registry_reconciliation.py::test_every_required_gdc_has_an_owner_record_for_its_approved_head
+  - tests/control/governance/test_registry_reconciliation.py::test_examined_controls_are_bound_to_this_assessment
+  evidence_status: verified
+  evidence_expectation: 'examine (NIST SP 800-53A): policy statement in an owner-approved 1.0.0 GDC under the 180-day review
+    cycle; consumer architecture conformance not claimed'
 - control_id: CTRL-GDC-005-009
   release_class: root-of-trust
   release_rationale: Explicit governed metadata schemas bind source to executable validation.
@@ -2226,7 +2299,7 @@ controls:
   evidence_status: pending
   evidence_expectation: governance-rule change PR demonstrates reconciliation flow
   control_owner: Governance Process Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  target_phase: Slice 13.2 Registry Evidence Reconciliation
 - control_id: CTRL-GDC-005-011
   release_class: root-of-trust
   release_rationale: Generated policy projections prevent source/runtime drift.
@@ -2240,15 +2313,16 @@ controls:
     by executing:'
   scope: governance-guideline
   severity: ERROR
-  enforcement_mode: human-review
+  enforcement_mode: automated
   implementation:
-  - governance/GDC-002-quality-rubric.md
-  - governance/GDC-003-review-process.md
-  test_evidence: []
-  evidence_status: pending
-  evidence_expectation: review record / approval evidence
-  control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  - generators/generate_rules_doc.py
+  - Makefile
+  - .github/workflows/governance.yml
+  test_evidence:
+  - tests/generators/test_support_generator_coverage_contracts.py::test_rules_process_update_and_check_modes
+  - tests/scripts/test_makefile_generated_state.py::test_verify_generated_uses_real_nul_delimiter_for_git_z_output
+  evidence_status: verified
+  evidence_expectation: executable rule and control-specific test evidence
 - control_id: CTRL-GDC-005-012
   release_class: root-of-trust
   release_rationale: Changed semantic definitions must agree with changed executable policy.
@@ -2270,7 +2344,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  target_phase: Slice 13.2 Registry Evidence Reconciliation
 - control_id: CTRL-GDC-005-013
   release_class: root-of-trust
   release_rationale: Changed qualitative constraints must agree with their human approval gate.
@@ -2292,7 +2366,7 @@ controls:
   evidence_status: pending
   evidence_expectation: review record / approval evidence
   control_owner: Architecture Review Authority
-  target_phase: Slice 13.5 Stable GDC Baseline
+  target_phase: Slice 13.2 Registry Evidence Reconciliation
 - control_id: CTRL-GDC-006-001
   release_class: consumer-artifact
   release_rationale: GDC-006 obligation governs consumer architecture content or admission, rather than changes to canonical governance authority.

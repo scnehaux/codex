@@ -19,8 +19,8 @@
 ## 2. Normative Control Evidence
 
 - Total registered controls: **166**
-- `pending`: **84**
-- `verified`: **82**
+- `pending`: **60**
+- `verified`: **106**
 
 ## 3. Evidence Registry Integrity
 
